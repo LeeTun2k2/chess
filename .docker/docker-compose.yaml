@@ -1,0 +1,35 @@
+services:
+  frontend:
+    build:
+      context: ./front-end
+      dockerfile: .docker/Dockerfile
+    ports:
+      - 8080:80
+    depends_on:
+      - backend
+    networks:
+      - frontend_backend
+
+  backend:
+    build:
+      context: ./back-end
+      dockerfile: .docker/Dockerfile
+    stop_signal: SIGINT
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - mongodb
+    networks:
+      - frontend_backend
+      - backend_mongodb
+
+  mongodb:
+    image: mongo:latest
+    networks:
+      - backend_mongodb
+
+networks:
+  frontend_backend:
+    driver: bridge
+  backend_mongodb:
+    driver: bridge
