@@ -32,5 +32,6 @@ jobs:
           git pull
           cat ./.docker/docker-compose.yaml .
           docker-compose down
+          docker-compose build
           docker-compose up -d
         '
