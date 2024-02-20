@@ -26,7 +26,7 @@ jobs:
 
     - name: Command to deploy
       run: |
-        ssh -i private.pem -o "StrictHostKeyChecking no" ec2-user@${{env.EC2_IP_ADDRESS}} '
+        ssh -i private.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{env.EC2_IP_ADDRESS}} '
           cd chess
           git checkout production
           git pull
