@@ -1,0 +1,33 @@
+name: Deploy to Amazon EC2
+
+on:
+  push:
+    branches: [ "production" ]
+env:
+  AWS_REGION: ap-southeast-2
+  EC2_IP_ADDRESS: "3.27.242.207"
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Copy SSH private key
+      env:
+        SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private.pem
+        chmod 600 private.pem
+        
+    - name: Command to deploy
+      run: ssh -i private.pem -o "StrictHostKeyChecking no" ec2-user@${{env.EC2_IP_ADDRESS}} '
+        cd chess
+        git checkout production
+        git pull
+        docker-compose -f .docker/docker-compose.yaml down
+        docker-compose -f .docker/docker-compose.yaml up -d
+      '
