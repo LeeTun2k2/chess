@@ -5,15 +5,25 @@ from controllers.index import index_bp
 from controllers.auth import auth_bp
 from controllers.test import test_bp
 
-from database.mongodb import MongoDB
+from flask_login import LoginManager
+from flask_jwt_extended import JWTManager
+from secrets import token_hex
+from services.user import UserService
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['MONGO_URI'] = 'mongodb+srv://admin:admin@db.sraixjh.mongodb.net/?retryWrites=true&w=majority&appName=DB'
+app.config['SECRET_KEY'] = "a" #token_hex() # Random
 
-# Register mongodb service
-mongo = MongoDB(app)
+# Register authentication service
+login_manager = LoginManager(app)
+jwt = JWTManager(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    userService = UserService()
+    user = userService.get_by_id(user_id)
+    return user
 
 # Register API service
 app.register_blueprint(test_bp)

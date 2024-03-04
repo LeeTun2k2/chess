@@ -1,17 +1,12 @@
 from pymongo import MongoClient
 
-class MongoDB:
-    def __init__(self, app=None):
-        self.client = None
-
-        if app is not None:
-            self.init_app(app)
-
-    def init_app(self, app):
-        mongo_uri = app.config.get('MONGO_URI', 'mongodb://localhost:27017/')
-        self.client = MongoClient(mongo_uri)
-        app.mongo = self
-        self.db = self.client[app.config.get('MONGO_DB_NAME', 'chess')]
+MONGO_URI = 'mongodb://localhost:27017/'
+MONGO_URI_ATLAS = 'mongodb+srv://admin:admin@db.sraixjh.mongodb.net/?retryWrites=true&w=majority&appName=DB'
+MONGO_DB_NAME = 'chess'
 
 def get_mongo():
-    return MongoDB()
+    return MongoClient(MONGO_URI_ATLAS)
+
+def get_db():
+    client = MongoClient(MONGO_URI_ATLAS)
+    return client[MONGO_DB_NAME]
