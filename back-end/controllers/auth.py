@@ -2,7 +2,7 @@ from flask import Blueprint
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route('/api/register')
+@auth_bp.post('/api/register')
 def register():
     return "Register", 200
 
