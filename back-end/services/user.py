@@ -17,10 +17,25 @@ class UserService():
 
     def get_by_id(self, user_id: str):
         user_data = self.users_collection.find_one({'_id': ObjectId(user_id)})
-        
         if not user_data:
             return None
-        
         user = self.map_user(user_data)
-        
         return user
+    
+    def update_current_user(self, user_id, username = None, email = None, name = None):
+        updated = {}
+        if username != None: 
+            updated['username'] = username
+        if email != None: 
+            updated['email'] = email
+        if name != None: 
+            updated['name'] = name
+        
+        result = self.users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$set': updated}
+        )
+
+        if result.modified_count == 0:
+            return False, "Failed to update profile."
+        return True, "Profile updated successfully."

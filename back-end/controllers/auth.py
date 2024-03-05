@@ -3,7 +3,7 @@ from logging import error
 from flask_login import login_required
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth import AuthServices
-from services.validate.user import validate, validate_short
+from services.validate.user import validate, validate_short, validate_email
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -30,7 +30,7 @@ def register():
         return message, 201
     except Exception as e:
         error(e)
-        return "Fail to register.", 500
+        return 'Fail to register.', 500
 
 @auth_bp.post('/api/login')
 def login():
@@ -53,7 +53,7 @@ def login():
         return jsonify(access_token=access_token), 200
     except Exception as e:
         error(e)
-        return "Fail to log in.", 500
+        return 'Fail to log in.', 500
 
 @auth_bp.get('/api/logout')
 @login_required
@@ -62,10 +62,10 @@ def logout():
     try:
         authService = AuthServices()
         authService.logout()
-        return "Log out successful.", 200
+        return 'Log out successful.', 200
     except Exception as e:
         error(e)
-        return "Fail to log out.", 500
+        return 'Fail to log out.', 500
     
 @auth_bp.get('/api/protected')
 @login_required
@@ -74,6 +74,38 @@ def protected():
     current_username = get_jwt_identity()
     return jsonify(logged_in_as=current_username), 200
 
-@auth_bp.get('/api/forgot')
-def forgot():
-    return "Forgot", 200
+@auth_bp.get('/api/forgot-password')
+def forgot_password():
+    try:
+        email = request.args.get('email')
+        ok, msg = validate_email(email)
+        if not ok: 
+            return msg, 400
+
+        authService = AuthServices()
+        ok, msg = authService.forgot_password(email)
+        if not ok: 
+            return msg, 404
+        return msg, 200
+    except Exception as e:
+        error(e)
+        return 'Fail to forgot password.', 500
+
+@auth_bp.get('/api/reset-password')
+def reset_password():
+    try:
+        email = request.args.get('email')
+        token = request.args.get('token')
+
+        ok, msg = validate_email(email)
+        if not ok: 
+            return msg, 400
+
+        authService = AuthServices()
+        ok, msg = authService.reset_password(email, token)
+        if not ok: 
+            return msg, 404
+        return msg, 200
+    except Exception as e:
+        error(e)
+        return 'Fail to reset password.', 500

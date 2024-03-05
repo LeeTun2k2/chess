@@ -1,7 +1,16 @@
 import re
 
-def validate(username, password, email, name):
-    validations = [validate_username(username), validate_password(password), validate_email(email), validate_name(name)]
+def validate(username = None, password = None, email = None, name = None):
+    validations = []
+    if username != None:
+        validations.append(validate_username(username))
+    if password != None:
+        validations.append(validate_password(password))
+    if email != None:
+        validations.append(validate_email(email))
+    if name != None:
+        validations.append(validate_name(name))
+    
 
     ok, msg = True, ''
     for validation in validations:
