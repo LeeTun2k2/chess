@@ -11,9 +11,15 @@ import {
   Button,
   Avatar,
   Image,
+  VStack,
+  HStack,
+  Stack,
+  useTab,
+  Show,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { FaList } from "react-icons/fa";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -28,104 +34,112 @@ const Header = () => {
   return (
     <Box bg="#ccc" p={4}>
       <Flex align="center">
-        <Image
-          src="/logo.png"
-          alt="UTE CHESS CLUB"
-          h={16}
-          position="absolute"
+        <HStack
           cursor="pointer"
           onClick={() => navigate("/")}
-          top={2}
-          left={16}
-        />
-        <Text
-          fontSize="xl"
-          fontWeight="bold"
-          pl={32}
-          display={{ md: "block", sm: "none" }}
-          cursor="pointer"
-          onClick={() => navigate("/")}
+          ml={{ base: 0, md: 16 }}
         >
-          UTE CHESS CLUB
-        </Text>
+          <Image src="/logo.png" alt="UTE CHESS CLUB" w={16} />
+          <Text fontSize="xl" fontWeight="bold">
+            UTE CHESS CLUB
+          </Text>
+        </HStack>
         <Spacer />
-        <Menu>
-          <MenuButton
-            as={Button}
-            variant="ghost"
-            rightIcon={<ChevronDownIcon />}
-            mx={2}
-          >
-            CLUB
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
-            <MenuItem onClick={() => navigate("/blogs")}>Blogs</MenuItem>
-            <MenuItem onClick={() => navigate("/achievements")}>
-              Achievements
-            </MenuItem>
-            <MenuItem onClick={() => navigate("/donate")}>Donate</MenuItem>
-            <MenuItem onClick={() => navigate("/about")}>About</MenuItem>
-          </MenuList>
-        </Menu>
-        <Menu>
-          <MenuButton
-            as={Button}
-            variant="ghost"
-            rightIcon={<ChevronDownIcon />}
-            mx={2}
-          >
-            PLAY
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => navigate("/play/online")}>
-              Play Online
-            </MenuItem>
-            <MenuItem onClick={() => navigate("/play/friend")}>
-              Play vs Friend
-            </MenuItem>
-            <MenuItem onClick={() => navigate("/play/computer")}>
-              Play vs Computer
-            </MenuItem>
-            <MenuItem onClick={() => navigate("/arena")}>Arena</MenuItem>
-          </MenuList>
-        </Menu>
-        <Menu>
-          <MenuButton
-            as={Button}
-            variant="ghost"
-            rightIcon={<ChevronDownIcon />}
-            mx={2}
-          >
-            PRACTICE
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => navigate("/puzzle")}>Puzzles</MenuItem>
-            <MenuItem onClick={() => navigate("/videos")}>Videos</MenuItem>
-            <MenuItem onClick={() => navigate("/books")}>Books</MenuItem>
-          </MenuList>
-        </Menu>
-        <Menu>
-          <MenuButton
-            as={Button}
-            variant="ghost"
-            mx={2}
-            onClick={() => navigate("/tv")}
-          >
-            TV
-          </MenuButton>
-        </Menu>
-        <Spacer />
-        <Menu>
-          <MenuButton>
-            <Avatar name={user.name} src={user.avatar} />
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
-            <MenuItem onClick={() => navigate("/settings")}>Settings</MenuItem>
-            <MenuItem onClick={() => navigate("/logout")}>Logout</MenuItem>
-          </MenuList>
-        </Menu>
+        <Box display={{ base: "none", md: "block" }}>
+          <Menu>
+            <MenuButton
+              as={Button}
+              variant="ghost"
+              rightIcon={<ChevronDownIcon />}
+              mx={2}
+            >
+              CLUB
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
+              <MenuItem onClick={() => navigate("/blogs")}>Blogs</MenuItem>
+              <MenuItem onClick={() => navigate("/achievements")}>
+                Achievements
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/donate")}>Donate</MenuItem>
+              <MenuItem onClick={() => navigate("/about")}>About</MenuItem>
+            </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton
+              as={Button}
+              variant="ghost"
+              rightIcon={<ChevronDownIcon />}
+              mx={2}
+            >
+              PLAY
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => navigate("/play/online")}>
+                Play Online
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/play/friend")}>
+                Play vs Friend
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/play/computer")}>
+                Play vs Computer
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/arena")}>Arena</MenuItem>
+            </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton
+              as={Button}
+              variant="ghost"
+              rightIcon={<ChevronDownIcon />}
+              mx={2}
+            >
+              PRACTICE
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => navigate("/puzzle")}>Puzzles</MenuItem>
+              <MenuItem onClick={() => navigate("/videos")}>Videos</MenuItem>
+              <MenuItem onClick={() => navigate("/books")}>Books</MenuItem>
+            </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton
+              as={Button}
+              variant="ghost"
+              mx={2}
+              onClick={() => navigate("/tv")}
+            >
+              TV
+            </MenuButton>
+          </Menu>
+          <Spacer />
+          <Menu>
+            <MenuButton>
+              <Flex align="center">
+                <Avatar name={user.name} src={user.avatar} />
+                <Text
+                  ml={2}
+                  fontWeight="500"
+                  display={{ base: "none", md: "block" }}
+                >
+                  {user.name}
+                </Text>
+              </Flex>
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
+              <MenuItem onClick={() => navigate("/settings")}>
+                Settings
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/logout")}>Logout</MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
+        <Box display={{ base: "block", md: "none" }}>
+          <Button variant="ghost" py={8} px={4}>
+            <FaList size={36} />
+          </Button>
+        </Box>
       </Flex>
     </Box>
   );
