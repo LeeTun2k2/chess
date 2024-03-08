@@ -38,8 +38,8 @@ export default function Footer() {
           More
         </Text>
         <VStack spacing={2} alignItems="flex-start" color="gray.500">
-          <CustomLink>FAQ</CustomLink>
-          <CustomLink>About</CustomLink>
+          <CustomLink href="/faq">FAQ</CustomLink>
+          <CustomLink href="/about">About</CustomLink>
         </VStack>
       </VStack>
       <VStack spacing={4} alignItems="flex-start">
