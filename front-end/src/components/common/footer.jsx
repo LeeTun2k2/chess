@@ -1,17 +1,5 @@
-import {
-  ButtonGroup,
-  IconButton,
-  Text,
-  Image,
-  Flex,
-  Spacer,
-  HStack,
-  VStack,
-  Link,
-  Icon,
-} from "@chakra-ui/react";
-import { FaFacebook } from "react-icons/fa";
-import { IoIosMail } from "react-icons/io";
+import { Text, Image, Spacer, HStack, VStack, Link } from "@chakra-ui/react";
+import { FaEnvelope, FaFacebook } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -20,6 +8,7 @@ export default function Footer() {
       d={{ base: "none", sm: "flex" }}
       justifyContent={{ sm: "space-between", md: "normal" }}
       px={40}
+      bgColor={"lightgray"}
     >
       <VStack>
         <Image src="/logo.png" alt="UTE CHESS CLUB" h={128} />
@@ -37,7 +26,7 @@ export default function Footer() {
         <Text fontSize="xl" fontWeight="bold">
           More
         </Text>
-        <VStack spacing={2} alignItems="flex-start" color="gray.500">
+        <VStack spacing={2} alignItems="flex-start" color="gray.700">
           <CustomLink href="/faq">FAQ</CustomLink>
           <CustomLink href="/about">About</CustomLink>
         </VStack>
@@ -46,14 +35,18 @@ export default function Footer() {
         <Text fontSize="xl" fontWeight="bold">
           Community
         </Text>
-        <VStack spacing={2} alignItems="flex-start" color="gray.500">
-          <CustomLink>
-            <FaFacebook href="https://www.facebook.com/utechessclub" />
-            <Text ml={2}>Facebook</Text>
+        <VStack spacing={2} alignItems="flex-start" color="gray.700">
+          <CustomLink href="https://www.facebook.com/utechessclub">
+            <Text ml={2} display="flex" alignItems="center">
+              <FaFacebook style={{ marginRight: "8px" }} />
+              Facebook
+            </Text>
           </CustomLink>
           <CustomLink href="https://mail.google.com/mail/?view=cm&fs=1&to=clbcospkt@gmail.com">
-            <IoIosMail />
-            <Text ml={2}>Gmail</Text>
+            <Text ml={2} display="flex" alignItems="center">
+              <FaEnvelope style={{ marginRight: "8px" }} />
+              Gmail
+            </Text>
           </CustomLink>
         </VStack>
       </VStack>
