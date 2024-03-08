@@ -30,17 +30,14 @@ function App() {
           <Route exact path="/test" element={<TestPage/>}/>
 
           {/* Auth Pages */}
-          <Route exact path="/auth/login" element={<LoginPage/>}/>
-          <Route exact path="/auth/register" element={<RegisterPage/>}/>
-          <Route exact path="/auth/forgot-password" element={<ForgotPasswordPage/>}/>
-          <Route exact path="/auth/reset-password" element={<ResetPasswordPage/>}/>
+          <Route exact path="/login" element={<LoginPage/>}/>
+          <Route exact path="/register" element={<RegisterPage/>}/>
+          <Route exact path="/forgot-password" element={<ForgotPasswordPage/>}/>
+          <Route exact path="/reset-password" element={<ResetPasswordPage/>}/>
 
           {/* Club Pages */}
-          <Route exact path="/club/blogs" element={<BlogListPage/>}/>
-          <Route exact path="/club/blog/:slug" element={<BlogPage/>}/>
-          <Route exact path="/club/achievements" element={<RegisterPage/>}/>
-          <Route exact path="/club/donate" element={<ForgotPasswordPage/>}/>
-          <Route exact path="/club/about" element={<ResetPasswordPage/>}/>
+          <Route exact path="/blogs" element={<BlogListPage/>}/>
+          <Route exact path="/blog/:slug" element={<BlogPage/>}/>
 
           {/* User Pages */}
           <Route exact path="/profile/:username" element={<UserProfile/>}/>
