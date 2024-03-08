@@ -59,11 +59,13 @@ const Header = () => {
             CLUB
           </MenuButton>
           <MenuList>
-            <MenuItem>Home</MenuItem>
-            <MenuItem>Blog</MenuItem>
-            <MenuItem>Achievements</MenuItem>
-            <MenuItem>Donate</MenuItem>
-            <MenuItem>About</MenuItem>
+            <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
+            <MenuItem onClick={() => navigate("/blogs")}>Blogs</MenuItem>
+            <MenuItem onClick={() => navigate("/achievements")}>
+              Achievements
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/donate")}>Donate</MenuItem>
+            <MenuItem onClick={() => navigate("/about")}>About</MenuItem>
           </MenuList>
         </Menu>
         <Menu>
@@ -76,10 +78,16 @@ const Header = () => {
             PLAY
           </MenuButton>
           <MenuList>
-            <MenuItem>Play Online</MenuItem>
-            <MenuItem>Play vs Friend</MenuItem>
-            <MenuItem>Play vs Computer</MenuItem>
-            <MenuItem>Arena</MenuItem>
+            <MenuItem onClick={() => navigate("/play/online")}>
+              Play Online
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/play/friend")}>
+              Play vs Friend
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/play/computer")}>
+              Play vs Computer
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/arena")}>Arena</MenuItem>
           </MenuList>
         </Menu>
         <Menu>
@@ -92,24 +100,20 @@ const Header = () => {
             PRACTICE
           </MenuButton>
           <MenuList>
-            <MenuItem>Puzzles</MenuItem>
-            <MenuItem>Videos</MenuItem>
-            <MenuItem>Books</MenuItem>
+            <MenuItem onClick={() => navigate("/puzzle")}>Puzzles</MenuItem>
+            <MenuItem onClick={() => navigate("/videos")}>Videos</MenuItem>
+            <MenuItem onClick={() => navigate("/books")}>Books</MenuItem>
           </MenuList>
         </Menu>
         <Menu>
           <MenuButton
             as={Button}
             variant="ghost"
-            rightIcon={<ChevronDownIcon />}
             mx={2}
+            onClick={() => navigate("/tv")}
           >
             TV
           </MenuButton>
-          <MenuList>
-            <MenuItem>All Games</MenuItem>
-            <MenuItem>Top Games</MenuItem>
-          </MenuList>
         </Menu>
         <Spacer />
         <Menu>
