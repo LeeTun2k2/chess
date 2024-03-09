@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
 from secrets import token_hex
 from services.user import UserService
+from datetime import timedelta
 
 from controllers.index import index_bp
 from controllers.auth import auth_bp
@@ -15,6 +16,8 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
 
 # Register email service
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
