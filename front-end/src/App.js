@@ -18,6 +18,7 @@ import BlogListPage from "./pages/club/blog_list";
 import BlogPage from "./pages/club/blog";
 import LogoutPage from "./pages/auth/logout";
 import LobbyPage from "./pages/game/lobby";
+import TournamentsPage from "./pages/tournament/tournaments";
 
 function App() {
   return (
@@ -46,6 +47,9 @@ function App() {
           {/* Game Pages */}
           <Route exact path="/lobby" element={<LobbyPage/>}/>
           <Route exact path="/game/:id" element={<GamePage/>}/>
+
+          {/* Tournament Pages */}
+          <Route exact path="/tournaments" element={<TournamentsPage/>}/>
 
           {/* Error Pages */}
           <Route path="/error" element={<ErrorPage />} />
