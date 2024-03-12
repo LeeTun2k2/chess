@@ -13,7 +13,14 @@ from controllers.test import test_bp
 from controllers.user import user_bp
 
 app = Flask(__name__)
-cors = CORS(app)
+
+# enable cors
+CORS(app)
+CORS(index_bp)
+CORS(auth_bp)
+CORS(test_bp)
+CORS(user_bp)
+
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
