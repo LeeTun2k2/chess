@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Route,
   Routes} from "react-router-dom";
-import { ChakraProvider } from '@chakra-ui/react'
 import TestPage from "./pages/test";
 import GamePage from "./pages/game";
 import LoginPage from "./pages/auth/login";
@@ -17,10 +16,10 @@ import UserProfile from "./pages/user/user_profile";
 import HomePage from "./pages/home";
 import BlogListPage from "./pages/club/blog_list";
 import BlogPage from "./pages/club/blog";
+import LogoutPage from "./pages/auth/logout";
 
 function App() {
   return (
-    <ChakraProvider>
       <Router>
         <Routes>
           {/* Home Pages */}
@@ -34,6 +33,7 @@ function App() {
           <Route exact path="/register" element={<RegisterPage/>}/>
           <Route exact path="/forgot-password" element={<ForgotPasswordPage/>}/>
           <Route exact path="/reset-password" element={<ResetPasswordPage/>}/>
+          <Route exact path="/logout" element={<LogoutPage/>}/>
 
           {/* Club Pages */}
           <Route exact path="/blogs" element={<BlogListPage/>}/>
@@ -57,7 +57,6 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
-    </ChakraProvider>
   );
 }
 

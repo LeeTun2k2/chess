@@ -85,7 +85,7 @@ export default function ForgotPasswordConfirmationPage() {
             </Stack>
             <Stack spacing="6">
               <Text color="fg.muted" textAlign="center">
-                <Link href="/auth/login" color="darkcyan">
+                <Link href="/login" color="darkcyan">
                   Log in
                 </Link>
               </Text>

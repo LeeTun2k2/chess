@@ -25,10 +25,15 @@ import {
 
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_PROXY } from "../../settings/appSettings";
+import { setAccessToken, setRefreshToken } from "../../lib/auth";
 
 export default function LoginPage() {
   const toast = useToast();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -67,9 +72,26 @@ export default function LoginPage() {
   const onSubmit = () => {
     const ok = validate();
     if (ok) {
-      const model = toast_success("Log in successfully.");
-      toast(model);
-      navigate("/");
+      const ok = validate();
+
+      if (ok) {
+        const body = { username, password };
+        setLoading(true);
+        axios
+          .post(`${API_PROXY}/login`, body)
+          .then((resp) => {
+            toast(toast_success("Login successfully."));
+            setAccessToken(resp.data.access_token);
+            setRefreshToken(resp.data.refresh_token);
+            navigate("/");
+          })
+          .catch((err) => {
+            toast(toast_error(err.response.data));
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
     }
   };
 
@@ -157,13 +179,15 @@ export default function LoginPage() {
               <Button
                 variant="text"
                 size="sm"
-                onClick={() => navigate("/auth/forgot-password")}
+                onClick={() => navigate("/forgot-password")}
               >
                 Forgot password?
               </Button>
             </HStack>
             <Stack spacing="6">
-              <Button onClick={onSubmit}>Log in</Button>
+              <Button onClick={onSubmit} isLoading={loading}>
+                Log in
+              </Button>
               <Divider />
               <Text color="fg.muted" textAlign="center">
                 Don't have an account?{" "}

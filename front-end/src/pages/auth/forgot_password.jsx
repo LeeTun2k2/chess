@@ -19,10 +19,14 @@ import { useState } from "react";
 import { validateEmail } from "../../lib/hooks/validateUser";
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_PROXY } from "../../settings/appSettings";
 
 export default function ForgotPasswordPage() {
   const toast = useToast();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
 
@@ -44,11 +48,25 @@ export default function ForgotPasswordPage() {
 
   const onSubmit = () => {
     if (validate()) {
-      const model = toast_success(
-        "Password reset instructions sent to your email."
-      );
-      toast(model);
-      navigate("/auth/login");
+      const ok = validate();
+
+      if (ok) {
+        const body = { email };
+        setLoading(true);
+        axios
+          .get(`${API_PROXY}/forgot-password`, { params: body })
+          .then((resp) => {
+            toast(toast_success(resp.data));
+            navigate("/login");
+          })
+          .catch((err) => {
+            console.log(err);
+            toast(toast_error(err.response.data));
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
     }
   };
 
@@ -131,11 +149,13 @@ export default function ForgotPasswordPage() {
               </FormControl>
             </Stack>
             <Stack spacing="6">
-              <Button onClick={onSubmit}>Reset Password</Button>
+              <Button onClick={onSubmit} isLoading={loading}>
+                Reset Password
+              </Button>
               <Divider />
               <Text color="fg.muted" textAlign="center">
                 Remember your password?{" "}
-                <Link href="/auth/login" color="darkcyan">
+                <Link href="/login" color="darkcyan">
                   Log in
                 </Link>
               </Text>

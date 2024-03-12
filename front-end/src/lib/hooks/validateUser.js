@@ -14,6 +14,6 @@ export function validateEmail(email) {
 }
 
 export function validateName(name) {
-    const nameRegex = /^[a-zA-Z]{4,}$/;
+    const nameRegex = /^[\p{L} ]{4,}$/u;
     return nameRegex.test(name);
 }

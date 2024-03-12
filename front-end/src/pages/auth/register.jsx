@@ -23,14 +23,16 @@ import {
   validateEmail,
   validateName,
 } from "../../lib/hooks/validateUser";
-
 import { toast_error, toast_success } from "../../lib/hooks/toast";
+import axios from "axios";
+import { API_PROXY } from "../../settings/appSettings";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
   const toast = useToast();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -53,50 +55,53 @@ export default function RegisterPage() {
   };
 
   const validate = () => {
-    let ok = true;
+    const validateField = (value, validationFunction, errorMessage) => {
+      if (!validationFunction(value)) {
+        const model = toast_error("Register fail.", errorMessage);
+        toast(model);
+        return false;
+      }
+      return true;
+    };
 
-    if (validateUsername(username) === false) {
-      const model = toast_error(
-        "Register fail.",
-        "Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
-      );
-      toast(model);
-      ok = false;
-    }
-
-    if (validatePassword(password) === false) {
-      const model = toast_error(
-        "Register fail.",
-        "Password has a minimum length of 8 characters and do not contain any special charaters."
-      );
-      toast(model);
-      ok = false;
-    }
-
-    if (validateEmail(email) === false) {
-      const model = toast_error("Register fail.", "Invalid email address.");
-      toast(model);
-      ok = false;
-    }
-
-    if (validateName(name) === false) {
-      const model = toast_error(
-        "Register fail.",
-        "Name has a minimum length of 4 characters and contains only letters."
-      );
-
-      toast(model);
-      ok = false;
-    }
-    return ok;
+    return (
+      validateField(
+        username,
+        validateUsername,
+        "Username must be at least 8 characters and contain only lowercase letters or numbers"
+      ) &&
+      validateField(
+        password,
+        validatePassword,
+        "Password must be at least 8 characters and should not contain any special characters"
+      ) &&
+      validateField(email, validateEmail, "Invalid email address") &&
+      validateField(
+        name,
+        validateName,
+        "Name must be at least 4 characters and contain only letters"
+      )
+    );
   };
 
   const onSubmit = () => {
     const ok = validate();
+
     if (ok) {
-      const model = toast_success("Register successfully.");
-      toast(model);
-      navigate("/auth/login");
+      const body = { username, email, password, name };
+      setLoading(true);
+      axios
+        .post(`${API_PROXY}/register`, body)
+        .then((res) => {
+          toast(toast_success("Register success. Please login."));
+          navigate("/login");
+        })
+        .catch((error) => {
+          toast(toast_error("Register fail.", error.response.data));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
@@ -193,11 +198,13 @@ export default function RegisterPage() {
               </FormControl>
             </Stack>
             <Stack spacing="6">
-              <Button onClick={onSubmit}>Register</Button>
+              <Button onClick={onSubmit} isLoading={loading}>
+                Register
+              </Button>
               <Divider />
               <Text color="fg.muted" textAlign="center">
                 Already have account ?{" "}
-                <Link href="/auth/login" color="darkcyan">
+                <Link href="/login" color="darkcyan">
                   Log in
                 </Link>
               </Text>
