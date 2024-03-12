@@ -17,6 +17,7 @@ import HomePage from "./pages/home";
 import BlogListPage from "./pages/club/blog_list";
 import BlogPage from "./pages/club/blog";
 import LogoutPage from "./pages/auth/logout";
+import LobbyPage from "./pages/game/lobby";
 
 function App() {
   return (
@@ -43,9 +44,7 @@ function App() {
           <Route exact path="/profile/:username" element={<UserProfile/>}/>
 
           {/* Game Pages */}
-          <Route exact path="/game/:id" element={<GamePage/>}/>
-
-          {/* Game Pages */}
+          <Route exact path="/lobby" element={<LobbyPage/>}/>
           <Route exact path="/game/:id" element={<GamePage/>}/>
 
           {/* Error Pages */}

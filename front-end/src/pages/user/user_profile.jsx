@@ -46,15 +46,10 @@ export default function UserProfile() {
     <ClientLayout>
       <Container maxW="6xl" py={8}>
         <Flex direction={{ base: "column", md: "row" }}>
-          {/* User Info */}
           <Box w={{ base: "100%", md: "30%" }} mb={{ base: 8, md: 0 }}>
             <UserInfo user={user} />
           </Box>
-
-          {/* Spacer for separating boxes on larger screens */}
           <Spacer display={{ base: "none", md: "block" }} />
-
-          {/* Statistics */}
           <Box w={{ base: "100%", md: "66%" }}>
             <Statistics data={statistic} />
           </Box>

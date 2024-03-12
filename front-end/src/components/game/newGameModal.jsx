@@ -1,0 +1,174 @@
+import React, { useState } from "react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  Input,
+  FormControl,
+  FormLabel,
+  Select,
+  HStack,
+  Text,
+  useToast,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  RangeSliderThumb,
+  SliderMark,
+} from "@chakra-ui/react";
+import { CHESS, XIANGQI } from "../../settings/game";
+import { useNavigate } from "react-router-dom";
+import { toast_error } from "../../lib/hooks/toast";
+
+const NewOnlineGameModal = ({
+  isOpen,
+  onClose,
+  mode = "online" | "friend" | "offline",
+}) => {
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const [variant, setVariant] = useState(undefined);
+  const [initial_time, setInitialTime] = useState();
+  const [bonus_time, setBonusTime] = useState();
+  const [bot_level, setBotLevel] = useState(1);
+
+  const onVariantChange = (e) => {
+    setVariant(e.target.value);
+  };
+
+  const onInitialTimeChange = (e) => {
+    setInitialTime(e.target.value);
+  };
+
+  const onBonusTimeChange = (e) => {
+    setBonusTime(e.target.value);
+  };
+
+  const onBotLevelChange = (value) => {
+    setBotLevel(value);
+  };
+
+  const validate = () => {
+    if (!variant) {
+      toast(toast_error("Please select a variant!"));
+      return false;
+    }
+    if (!initial_time) {
+      toast(toast_error("Please enter initial time!"));
+      return false;
+    }
+    if (!bonus_time) {
+      toast(toast_error("Please enter bonus time!"));
+      return false;
+    }
+    return true;
+  };
+
+  const onSubmit = () => {
+    if (!validate()) {
+      return false;
+    }
+    const data = { variant, initial_time, bonus_time };
+
+    // post to server, then get data and navigate to game page
+    const game = {
+      _id: "123123",
+      ...data,
+    };
+
+    navigate(`/game/${game._id}`);
+    onClose();
+  };
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="sm">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>
+          Play{" "}
+          {mode === "online"
+            ? "online game"
+            : mode === "friend"
+            ? "vs friend"
+            : "vs computer"}
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <FormControl>
+            <FormLabel>Variant</FormLabel>
+            <Select
+              variant="outline"
+              placeholder="-- Variant --"
+              onChange={onVariantChange}
+              value={variant}
+            >
+              <option value={CHESS}>Chess</option>
+              <option value={XIANGQI}>Xiangqi</option>
+            </Select>
+          </FormControl>
+          <HStack mt={4}>
+            <FormControl>
+              <FormLabel htmlFor="initial-time">Initial time </FormLabel>
+              <Input
+                id="initial-time"
+                placeholder="Minutes"
+                type="number"
+                required
+                onChange={onInitialTimeChange}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="bonus-time">Bonus time</FormLabel>
+              <Input
+                id="bonus-time"
+                placeholder="Seconds"
+                type="number"
+                required
+                onChange={onBonusTimeChange}
+              />
+            </FormControl>
+          </HStack>
+          {mode === "offline" && (
+            <FormControl mt={4}>
+              <FormLabel>Bot level</FormLabel>
+              <Slider
+                defaultValue={1}
+                min={1}
+                max={10}
+                onChange={onBotLevelChange}
+              >
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <SliderMark key={i} value={i + 1} mt="1" fontSize="sm">
+                    {i + 1}
+                  </SliderMark>
+                ))}
+                <SliderTrack bgColor={"gray.100"}>
+                  <SliderFilledTrack bg="black" />
+                </SliderTrack>
+                <SliderThumb bgColor={"black"} />
+              </Slider>
+            </FormControl>
+          )}
+        </ModalBody>
+
+        <ModalFooter>
+          <Button colorScheme="teal" onClick={onSubmit}>
+            Create
+          </Button>
+          <Button ml={2} onClick={onClose}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+export default NewOnlineGameModal;
