@@ -67,7 +67,7 @@ export default function LobbyPage(props) {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     const socket = io(PROXY, { transports: ["websocket"], autoConnect: false });

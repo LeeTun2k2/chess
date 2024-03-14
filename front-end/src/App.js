@@ -4,7 +4,7 @@ import {
   Route,
   Routes} from "react-router-dom";
 import TestPage from "./pages/test";
-import GamePage from "./pages/game";
+import OnlineGamePage from "./pages/game/online-game";
 import LoginPage from "./pages/auth/login";
 import RegisterPage from "./pages/auth/register";
 import ForgotPasswordPage from "./pages/auth/forgot_password";
@@ -48,7 +48,7 @@ function App() {
           {/* Game Pages */}
           <Route exact path="/lobby" element={<LobbyPage/>}/>
           <Route exact path="/new-game" element={<GameSettingsPage/>}/>
-          <Route exact path="/game/:id" element={<GamePage/>}/>
+          <Route exact path="/online/:id" element={<OnlineGamePage/>}/>
 
           {/* Tournament Pages */}
           <Route exact path="/tournaments" element={<TournamentsPage/>}/>

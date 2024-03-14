@@ -1,6 +1,3 @@
-import axios from "axios";
-import { API_PROXY } from "../settings/appSettings";
-
 export const setAccessToken = (access_token) => {
     document.cookie = `access_token=${access_token}; SameSite=Strict; Secure;`;
     const now = new Date();

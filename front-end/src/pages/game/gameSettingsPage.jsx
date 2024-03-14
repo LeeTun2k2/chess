@@ -9,12 +9,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import ClientLayout from "../../components/layouts/clientLayout";
-import { useNavigate } from "react-router-dom";
 import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 import NewOnlineGameModal from "../../components/game/newGameModal";
 
 export default function GameSettingsPage(props) {
-  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [gameMode, setGameMode] = useState("online");
 
