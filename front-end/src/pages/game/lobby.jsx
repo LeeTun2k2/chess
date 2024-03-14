@@ -37,9 +37,8 @@ import {
 import NewOnlineGameModal from "../../components/game/newGameModal";
 import { API_PROXY, PROXY } from "../../settings/appSettings";
 import io from "socket.io-client";
-import axios from "axios";
+import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
-import { getHeaders } from "../../lib/api";
 
 export default function LobbyPage(props) {
   const navigate = useNavigate();
@@ -49,7 +48,7 @@ export default function LobbyPage(props) {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/lobby`, { headers: getHeaders() })
+      .get(`${API_PROXY}/lobby`)
       .then((res) => {
         if (res.data) {
           setData(res.data);
@@ -64,7 +63,7 @@ export default function LobbyPage(props) {
   }, []);
 
   useEffect(() => {
-    const socket = io(PROXY, { transports: ["websocket"] });
+    const socket = io(PROXY, { transports: ["websocket"], autoConnect: false });
     socket.on("lobby_created", (resp) => {
       const lobby = resp.lobby;
       setData((prevData) => [lobby, ...prevData]);

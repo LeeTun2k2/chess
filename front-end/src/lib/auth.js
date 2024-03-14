@@ -3,6 +3,20 @@ import { API_PROXY } from "../settings/appSettings";
 
 export const setAccessToken = (access_token) => {
     document.cookie = `access_token=${access_token}; SameSite=Strict; Secure;`;
+    const now = new Date();
+    const time = now.getTime();
+    const expireTime = time + 1800 * 1000;
+    now.setTime(expireTime);
+    document.cookie = `access_token_expiry=${now.toUTCString()}; SameSite=Strict; Secure;`;
+}
+
+export const getAccessTokenExpiry = () => {
+    const cookie = document.cookie;
+    const expiry = cookie.split(";").find((c) => c.trim().startsWith("access_token_expiry="));
+    if (expiry) {
+        return expiry.split("=")[1];
+    }
+    return null;
 }
 
 export const setRefreshToken = (refresh_token) => {
@@ -30,19 +44,4 @@ export const getRefreshToken = () => {
 export const clearTokens = () => {
     document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     document.cookie = 'refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-}
-
-export const refresh = () => {
-    const refresh_token = getRefreshToken();
-    if (refresh_token) {
-        const body = { refresh_token };
-        axios
-            .post(`${API_PROXY}/refresh`, body)
-            .then((resp) => {
-                setAccessToken(resp.data.access_token);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }
 }

@@ -1,40 +1,16 @@
 import React, { useState } from "react";
 import {
   Box,
-  ButtonGroup,
   Flex,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
   Button,
   Container,
   Spacer,
-  Select,
-  HStack,
-  Input,
   Heading,
   useDisclosure,
 } from "@chakra-ui/react";
 import ClientLayout from "../../components/layouts/clientLayout";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import {
-  BLITZ,
-  BULLET,
-  CHESS,
-  CLASSICAL,
-  FRIEND,
-  OFFLINE,
-  ONLINE,
-  RAPID,
-  XIANGQI,
-} from "../../settings/game";
+import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 import NewOnlineGameModal from "../../components/game/newGameModal";
 
 export default function GameSettingsPage(props) {

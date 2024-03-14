@@ -23,8 +23,7 @@ import {
 import { CHESS, XIANGQI } from "../../settings/game";
 import { useNavigate } from "react-router-dom";
 import { toast_error, toast_success } from "../../lib/hooks/toast";
-import axios from "axios";
-import { getHeaders } from "../../lib/api";
+import axios from "../../lib/axios";
 import { ONLINE, FRIEND, OFFLINE } from "../../settings/game";
 import { API_PROXY } from "../../settings/appSettings";
 
@@ -48,11 +47,11 @@ const NewOnlineGameModal = ({
   };
 
   const onInitialTimeChange = (e) => {
-    setInitialTime(parseInt(e.target.value));
+    setInitialTime(e.target.value);
   };
 
   const onBonusTimeChange = (e) => {
-    setBonusTime(parseInt(e.target.value));
+    setBonusTime(e.target.value);
   };
 
   const onBotLevelChange = (value) => {
@@ -78,7 +77,7 @@ const NewOnlineGameModal = ({
   const newLobby = (data) => {
     setLoading(true);
     axios
-      .post(`${API_PROXY}/lobby`, data, { headers: getHeaders() })
+      .post(`${API_PROXY}/lobby`, data)
       .then((res) => {
         if (res.data) {
           toast(toast_success("Lobby created!"));
@@ -104,7 +103,12 @@ const NewOnlineGameModal = ({
     if (!validate()) {
       return false;
     }
-    const data = { variant, initial_time, bonus_time, mode };
+    const data = {
+      variant,
+      initial_time: parseInt(initial_time),
+      bonus_time: parseInt(bonus_time),
+      mode,
+    };
     if (mode === OFFLINE) {
       data.bot_level = bot_level;
       newOfflineGame(data);
