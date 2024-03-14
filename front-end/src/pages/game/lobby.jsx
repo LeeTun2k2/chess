@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   ButtonGroup,
@@ -20,6 +20,7 @@ import {
   Input,
   Heading,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import ClientLayout from "../../components/layouts/clientLayout";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -29,67 +30,61 @@ import {
   BULLET,
   CHESS,
   CLASSICAL,
+  ONLINE,
   RAPID,
   XIANGQI,
 } from "../../settings/game";
 import NewOnlineGameModal from "../../components/game/newGameModal";
+import { API_PROXY, PROXY } from "../../settings/appSettings";
+import io from "socket.io-client";
+import axios from "axios";
+import { toast_error } from "../../lib/hooks/toast";
+import { getHeaders } from "../../lib/api";
 
 export default function LobbyPage(props) {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const getData = () => {
-    return [
-      {
-        _id: "123123",
-        variant: "Chess",
-        player: "leetun2k2",
-        rating: 1200,
-        initial_time: 5,
-        bonus_time: 2,
-      },
-      {
-        _id: "123124",
-        variant: "Chess",
-        player: "leetun2k2",
-        rating: 1200,
-        initial_time: 15,
-        bonus_time: 3,
-      },
-      {
-        _id: "123125",
-        variant: "Xiangqi",
-        player: "leetun2k2",
-        rating: 1200,
-        initial_time: 5,
-        bonus_time: 2,
-      },
-      {
-        _id: "123126",
-        variant: "Chess",
-        player: "leetun2k2",
-        rating: 1200,
-        initial_time: 5,
-        bonus_time: 2,
-      },
-      {
-        _id: "123127",
-        variant: "Xiangqi",
-        player: "leetun2k2",
-        rating: 1200,
-        initial_time: 5,
-        bonus_time: 2,
-      },
-    ];
-  };
+  const [data, setData] = useState([]);
+  const toast = useToast();
 
-  const data = getData();
+  useEffect(() => {
+    axios
+      .get(`${API_PROXY}/lobby`, { headers: getHeaders() })
+      .then((res) => {
+        if (res.data) {
+          setData(res.data);
+        } else {
+          toast(toast_error("Fail to load lobby!"));
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        toast(toast_error("Fail to load lobby!"));
+      });
+  }, []);
+
+  useEffect(() => {
+    const socket = io(PROXY, { transports: ["websocket"] });
+    socket.on("lobby_created", (resp) => {
+      const lobby = resp.lobby;
+      setData((prevData) => [lobby, ...prevData]);
+    });
+
+    socket.on("lobby_closed", (resp) => {
+      const lobbyId = resp.lobbyId;
+      setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const [pageNumber, setPageNumber] = React.useState(1);
   const pageSize = 10;
 
   return (
     <ClientLayout>
-      <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={"online"} />
+      <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
       <Container maxW="6xl" py={8}>
         <Heading mb={4}>Lobby</Heading>
         <Flex direction={{ base: "column", md: "row" }}>

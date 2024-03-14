@@ -29,6 +29,9 @@ import {
   BULLET,
   CHESS,
   CLASSICAL,
+  FRIEND,
+  OFFLINE,
+  ONLINE,
   RAPID,
   XIANGQI,
 } from "../../settings/game";
@@ -59,7 +62,7 @@ export default function GameSettingsPage(props) {
             <Button
               w="100%"
               onClick={() => {
-                setGameMode("online");
+                setGameMode(ONLINE);
                 onOpen();
               }}
             >
@@ -69,7 +72,7 @@ export default function GameSettingsPage(props) {
               w="100%"
               mt={4}
               onClick={() => {
-                setGameMode("friend");
+                setGameMode(FRIEND);
                 onOpen();
               }}
             >
@@ -79,7 +82,7 @@ export default function GameSettingsPage(props) {
               w="100%"
               mt={4}
               onClick={() => {
-                setGameMode("offline");
+                setGameMode(OFFLINE);
                 onOpen();
               }}
             >

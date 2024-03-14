@@ -13,26 +13,30 @@ import {
   FormLabel,
   Select,
   HStack,
-  Text,
   useToast,
   Slider,
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
-  RangeSliderThumb,
   SliderMark,
 } from "@chakra-ui/react";
 import { CHESS, XIANGQI } from "../../settings/game";
 import { useNavigate } from "react-router-dom";
-import { toast_error } from "../../lib/hooks/toast";
+import { toast_error, toast_success } from "../../lib/hooks/toast";
+import axios from "axios";
+import { getHeaders } from "../../lib/api";
+import { ONLINE, FRIEND, OFFLINE } from "../../settings/game";
+import { API_PROXY } from "../../settings/appSettings";
 
 const NewOnlineGameModal = ({
   isOpen,
   onClose,
-  mode = "online" | "friend" | "offline",
+  mode = ONLINE | FRIEND | OFFLINE,
 }) => {
   const toast = useToast();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [variant, setVariant] = useState(undefined);
   const [initial_time, setInitialTime] = useState();
@@ -44,11 +48,11 @@ const NewOnlineGameModal = ({
   };
 
   const onInitialTimeChange = (e) => {
-    setInitialTime(e.target.value);
+    setInitialTime(parseInt(e.target.value));
   };
 
   const onBonusTimeChange = (e) => {
-    setBonusTime(e.target.value);
+    setBonusTime(parseInt(e.target.value));
   };
 
   const onBotLevelChange = (value) => {
@@ -71,19 +75,42 @@ const NewOnlineGameModal = ({
     return true;
   };
 
+  const newLobby = (data) => {
+    setLoading(true);
+    axios
+      .post(`${API_PROXY}/lobby`, data, { headers: getHeaders() })
+      .then((res) => {
+        if (res.data) {
+          toast(toast_success("Lobby created!"));
+          navigate(`/game/${res.data._id}`);
+        } else {
+          toast(toast_error("Fail to create lobby!"));
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        toast(toast_error("Fail to create lobby!"));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const newOfflineGame = () => {
+    setLoading(true);
+  };
+
   const onSubmit = () => {
     if (!validate()) {
       return false;
     }
-    const data = { variant, initial_time, bonus_time };
-
-    // post to server, then get data and navigate to game page
-    const game = {
-      _id: "123123",
-      ...data,
-    };
-
-    navigate(`/game/${game._id}`);
+    const data = { variant, initial_time, bonus_time, mode };
+    if (mode === OFFLINE) {
+      data.bot_level = bot_level;
+      newOfflineGame(data);
+    } else {
+      newLobby(data);
+    }
     onClose();
   };
 
@@ -93,9 +120,9 @@ const NewOnlineGameModal = ({
       <ModalContent>
         <ModalHeader>
           Play{" "}
-          {mode === "online"
+          {mode === ONLINE
             ? "online game"
-            : mode === "friend"
+            : mode === FRIEND
             ? "vs friend"
             : "vs computer"}
         </ModalHeader>
@@ -135,7 +162,7 @@ const NewOnlineGameModal = ({
               />
             </FormControl>
           </HStack>
-          {mode === "offline" && (
+          {mode === OFFLINE && (
             <FormControl mt={4}>
               <FormLabel>Bot level</FormLabel>
               <Slider
@@ -159,7 +186,7 @@ const NewOnlineGameModal = ({
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="teal" onClick={onSubmit}>
+          <Button colorScheme="teal" onClick={onSubmit} isLoading={loading}>
             Create
           </Button>
           <Button ml={2} onClick={onClose}>

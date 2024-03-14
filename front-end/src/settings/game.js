@@ -2,8 +2,9 @@
 export const CHESS = "CHESS"
 export const XIANGQI = "XIANGQI"
 
-// user status
+// game status
 export const ONLINE = "ONLINE"
+export const FRIEND = "FRIEND"
 export const OFFLINE = "OFFLINE"
 
 // time type
