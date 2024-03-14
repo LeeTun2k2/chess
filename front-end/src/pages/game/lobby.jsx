@@ -21,6 +21,7 @@ import {
   Heading,
   useDisclosure,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import ClientLayout from "../../components/layouts/clientLayout";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -46,7 +47,10 @@ export default function LobbyPage(props) {
   const [data, setData] = useState([]);
   const toast = useToast();
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${API_PROXY}/lobby`)
       .then((res) => {
@@ -59,6 +63,9 @@ export default function LobbyPage(props) {
       .catch((err) => {
         console.log(err.response.data);
         toast(toast_error("Fail to load lobby!"));
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -85,8 +92,14 @@ export default function LobbyPage(props) {
     <ClientLayout>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
       <Container maxW="6xl" py={8}>
-        <Heading mb={4}>Lobby</Heading>
-        <Flex direction={{ base: "column", md: "row" }}>
+        <Heading mb={4}>
+          Lobby {loading && <Spinner size="lg" variant="primary" />}
+        </Heading>
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
           <Box w={{ base: "100%", md: "66%" }} mb={{ base: 8, md: 0 }}>
             <TableContainer>
               <Table
@@ -94,6 +107,7 @@ export default function LobbyPage(props) {
                 colorScheme="gray"
                 borderRadius={4}
                 overflow={"hidden"}
+                transition={"background-color 0.5s ease-in-out"}
               >
                 <Thead bgColor="gray.200">
                   <Tr>

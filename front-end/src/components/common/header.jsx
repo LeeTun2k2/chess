@@ -94,14 +94,13 @@ const PcMenu = (user) => {
           PLAY
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => navigate("/lobby")}>Play Online</MenuItem>
+          <MenuItem onClick={() => navigate("/lobby")}>Lobby</MenuItem>
           <MenuItem onClick={() => navigate("/new-game")}>
-            Play vs Friend
+            Play with options
           </MenuItem>
-          <MenuItem onClick={() => navigate("/new-game")}>
-            Play vs Computer
+          <MenuItem onClick={() => navigate("/tournaments")}>
+            Tournaments
           </MenuItem>
-          <MenuItem onClick={() => navigate("/arena")}>Arena</MenuItem>
         </MenuList>
       </Menu>
       <Menu>
