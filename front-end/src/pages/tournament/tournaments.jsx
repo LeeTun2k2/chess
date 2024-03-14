@@ -119,8 +119,8 @@ export default function TournamentsPage(props) {
                   <Td>
                     {item.initial_time}m + {item.bonus_time}s
                   </Td>
-                  <Td>item.start</Td>
-                  <Td>item.end</Td>
+                  <Td>{item.start}</Td>
+                  <Td>{item.end}</Td>
 
                   {/* <Td>{formatDate(item.start)}</Td>
                   <Td>{formatDate(item.end)}</Td> */}
