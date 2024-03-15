@@ -1,8 +1,6 @@
 services:
   frontend:
-    build:
-      context: ./front-end
-      dockerfile: .docker/Dockerfile
+    image: chess/frontend
     ports:
       - 80:80
     depends_on:
@@ -11,12 +9,7 @@ services:
       - frontend_backend
 
   backend:
-    build:
-      context: ./back-end
-      dockerfile: .docker/Dockerfile
-    stop_signal: SIGINT
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+    image: chess/backend
     depends_on:
       - mongodb
     networks:
