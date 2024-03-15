@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: chess/frontend
+    image: frontend
     ports:
       - 80:80
     depends_on:
@@ -9,7 +9,7 @@ services:
       - frontend_backend
 
   backend:
-    image: chess/backend
+    image: backend
     depends_on:
       - mongodb
     networks:
