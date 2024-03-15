@@ -7,7 +7,6 @@ on:
 env:
   AWS_REGION: ap-southeast-2
   EC2_IP_ADDRESS: "3.27.242.207"
-  ECR_REPOSITORY: chess
   ECR_REGISTRY: 952043753825.dkr.ecr.ap-southeast-2.amazonaws.com
   FE_IMAGE: chess/frontend
   BE_IMAGE: chess/backend
@@ -43,13 +42,13 @@ jobs:
         run: |
           cd front-end
           docker build -f .docker/Dockerfile -t ${{env.FE_IMAGE}}:${{env.IMAGE_TAG}} .
-          docker push ${{env.ECR_REPOSITORY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}}
+          docker push ${{env.FE_IMAGE}}:${{env.IMAGE_TAG}}
 
       - name: Build and push back-end image
         run: |
           cd back-end
           docker build -f .docker/Dockerfile -t ${{env.BE_IMAGE}}:${{env.IMAGE_TAG}} .
-          docker push ${{env.ECR_REPOSITORY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}}
+          docker push ${{env.BE_IMAGE}}:${{env.IMAGE_TAG}}
 
       - name: SSH into EC2 instance
         uses: appleboy/ssh-action@master
