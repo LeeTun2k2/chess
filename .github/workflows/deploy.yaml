@@ -50,14 +50,25 @@ jobs:
           docker build -f .docker/Dockerfile -t ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}} .
           docker push ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}}
           
-      - name: EC2 - Pull imanges, stop and remove containers, start containers
+      - name: EC2 pull images
         run: |
           ssh -o StrictHostKeyChecking=no -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
             docker pull ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}}
-            docker pull ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}}
-            docker image tag ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.FE_IMAGE}}:latest
-            docker image tag ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.BE_IMAGE}}:latest
-            cd chess
-            docker-compose -f .docker/docker-compose.yml down
-            docker-compose -f .docker/docker-compose.yml up -d  
+            docker pull ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}}  
+          '
+      - name: EC2 tag images
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            docker tag ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:latest
+            docker tag ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:latest
+          '
+      - name: EC2 stop and remove containers
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            docker-compose -f docker-compose.yml down
+          '
+      - name: EC2 start containers
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            docker-compose -f docker-compose.yml up -d
           '
