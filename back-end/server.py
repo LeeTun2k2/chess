@@ -58,9 +58,16 @@ app.register_blueprint(lobby_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-@app.get('/')
+from database.mongodb import get_mongo
+@app.get('/api/')
 def index():
-    return "Hello World!"
+    try :
+        mongodb = get_mongo()
+        if mongodb:
+            return "Connected to MongoDB"
+    except Exception as e:
+        print(e)
+        return "Error connecting to MongoDB"
 
 if __name__ == '__main__':
     socketio.run(app,host='0.0.0.0', port=5000)

@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install project dependencies
-RUN yarn install
+RUN yarn install --production --frozen-lockfile
 
 # Copy the entire project to the container
 COPY . .
 
 # Build the React app
-RUN yarn build
+RUN yarn build --production
 
 # Use an official Nginx image as a base image
 FROM nginx:alpine
