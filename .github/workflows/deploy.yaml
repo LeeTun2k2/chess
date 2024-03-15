@@ -37,7 +37,6 @@ jobs:
           chmod 600 private.pem
 
       - name: Login to AWS ECR
-        uses: aws-actions/amazon-ecr-login@v2
         run: docker login -u AWS -p $(aws ecr get-login-password --region ${{env.AWS_REGION}}) ${{env.ECR_REGISTRY}}
 
       - name: Build and push front-end image
