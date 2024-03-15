@@ -14,7 +14,7 @@ RUN yarn install --production --frozen-lockfile
 COPY . .
 
 # Build the React app
-RUN yarn build --production
+RUN yarn build
 
 # Use an official Nginx image as a base image
 FROM nginx:alpine
