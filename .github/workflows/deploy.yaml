@@ -6,7 +6,7 @@ on:
 
 env:
   AWS_REGION: ap-southeast-2
-  EC2_IP_ADDRESS: "3.27.242.207"
+  EC2_IP_ADDRESS: ec2-3-27-9-1.ap-southeast-2.compute.amazonaws.com
   ECR_REGISTRY: 952043753825.dkr.ecr.ap-southeast-2.amazonaws.com
   FE_IMAGE: frontend
   BE_IMAGE: backend
