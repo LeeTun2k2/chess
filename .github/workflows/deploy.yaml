@@ -52,9 +52,7 @@ jobs:
           
       - name: EC2 login to ECR
         run: |
-          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
-            docker login -u AWS -p $(aws ecr get-login-password --region ${{env.AWS_REGION}}) ${{env.ECR_REGISTRY}}
-          '
+          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} 'docker login -u AWS -p $(aws ecr get-login-password --region ${{env.AWS_REGION}}) ${{env.ECR_REGISTRY}}'
 
       - name: EC2 pull images
         run: |
