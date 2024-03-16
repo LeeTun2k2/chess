@@ -52,7 +52,9 @@ jobs:
           
       - name: EC2 login to ECR
         run: |
-          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} 'docker login -u AWS -p $(aws ecr get-login-password --region ${{env.AWS_REGION}}) ${{env.ECR_REGISTRY}}'
+          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            docker login -u AWS -p $(aws ecr get-login-password --region ${{env.AWS_REGION}}) ${{env.ECR_REGISTRY}}
+          '
 
       - name: EC2 pull images
         run: |
@@ -63,16 +65,18 @@ jobs:
       - name: EC2 tag images
         run: |
           ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
-            docker tag ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:latest
-            docker tag ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:latest
+            docker tag ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.FE_IMAGE}}:latest
+            docker tag ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.BE_IMAGE}}:latest
           '
       - name: EC2 stop and remove containers
         run: |
           ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
-            docker-compose -f docker-compose.yml down
+            cd chess
+            docker-compose -f ./.docker/docker-compose.yaml down
           '
       - name: EC2 start containers
         run: |
           ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
-            docker-compose -f docker-compose.yml up -d
+            cd chess
+            docker-compose -f ./.docker/docker-compose.yaml up -d
           '
