@@ -27,7 +27,7 @@ import { toast_error, toast_success } from "../../lib/hooks/toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_PROXY } from "../../settings/appSettings";
-import { setAccessToken, setRefreshToken } from "../../lib/auth";
+import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
 
 export default function LoginPage() {
   const toast = useToast();
@@ -83,6 +83,7 @@ export default function LoginPage() {
             toast(toast_success("Login successfully."));
             setAccessToken(resp.data.access_token);
             setRefreshToken(resp.data.refresh_token);
+            setUserData(resp.data.user);
             navigate("/");
           })
           .catch((err) => {
@@ -191,7 +192,7 @@ export default function LoginPage() {
               <Divider />
               <Text color="fg.muted" textAlign="center">
                 Don't have an account?{" "}
-                <Link href="/auth/register" color="darkcyan">
+                <Link href="/register" color="darkcyan">
                   Register
                 </Link>
               </Text>

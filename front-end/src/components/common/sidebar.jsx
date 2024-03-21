@@ -24,6 +24,7 @@ const Sidebar = ({ data, isOpen, onClose }) => {
           float="right"
           minH="100vh"
           position="fix"
+          zIndex={9999}
         >
           <Heading
             fontSize="xl"

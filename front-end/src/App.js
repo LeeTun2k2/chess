@@ -20,6 +20,7 @@ import LogoutPage from "./pages/auth/logout";
 import LobbyPage from "./pages/game/lobby";
 import TournamentsPage from "./pages/tournament/tournaments";
 import GameSettingsPage from "./pages/game/gameSettingsPage";
+import WaitingGamePage from "./pages/game/waitingGame";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
 
           {/* Game Pages */}
           <Route exact path="/lobby" element={<LobbyPage/>}/>
+          <Route exact path="/wait/:id" element={<WaitingGamePage/>}/>
           <Route exact path="/new-game" element={<GameSettingsPage/>}/>
           <Route exact path="/online/:id" element={<OnlineGamePage/>}/>
 

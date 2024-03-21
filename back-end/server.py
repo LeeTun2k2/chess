@@ -58,6 +58,18 @@ app.register_blueprint(lobby_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+from sockets.game import request_game, join_game, send_move
+@socketio.on('request_game')
+def request_game_socket(data):
+    request_game(data['user_id'], data['lobby_id'])
+
+@socketio.on('join_game')
+def join_game_socket(data):
+    join_game(data['game_id'])
+
+@socketio.on('send_move')
+def send_move_socket(data):
+    send_move(data['game_id'], data['move'])
+
 if __name__ == '__main__':
     socketio.run(app,host='0.0.0.0', port=5000, debug=True)
-

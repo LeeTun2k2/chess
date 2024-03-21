@@ -32,7 +32,7 @@ const Header = () => {
   const [user, setUser] = useState(temp);
 
   return (
-    <Box bg="#ccc" p={4}>
+    <Box bgColor={"lightgray"} p={4} zIndex={9999}>
       <Flex align="center">
         <HStack
           cursor="pointer"
@@ -73,7 +73,7 @@ const PcMenu = (user) => {
         >
           CLUB
         </MenuButton>
-        <MenuList>
+        <MenuList zIndex={9999}>
           <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
           <MenuItem onClick={() => navigate("/blogs")}>Blogs</MenuItem>
           <MenuItem onClick={() => navigate("/achievements")}>
@@ -93,7 +93,7 @@ const PcMenu = (user) => {
         >
           PLAY
         </MenuButton>
-        <MenuList>
+        <MenuList zIndex={9999}>
           <MenuItem onClick={() => navigate("/lobby")}>Lobby</MenuItem>
           <MenuItem onClick={() => navigate("/new-game")}>
             Play with options
@@ -113,7 +113,7 @@ const PcMenu = (user) => {
         >
           PRACTICE
         </MenuButton>
-        <MenuList>
+        <MenuList zIndex={9999}>
           <MenuItem onClick={() => navigate("/puzzle")}>Puzzles</MenuItem>
           <MenuItem onClick={() => navigate("/videos")}>Videos</MenuItem>
           <MenuItem onClick={() => navigate("/books")}>Books</MenuItem>
@@ -144,7 +144,7 @@ const PcMenu = (user) => {
             </Text>
           </Flex>
         </MenuButton>
-        <MenuList>
+        <MenuList zIndex={9999}>
           <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
           <MenuItem onClick={() => navigate("/settings")}>Settings</MenuItem>
           <MenuItem onClick={() => navigate("/logout")}>Logout</MenuItem>
