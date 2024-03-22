@@ -66,10 +66,21 @@ def request_game_socket(data):
 @socketio.on('join_game')
 def join_game_socket(data):
     join_game(data['game_id'])
-
+    
 @socketio.on('send_move')
 def send_move_socket(data):
     send_move(data['game_id'], data['move'])
 
+from database.mongodb import get_mongo
+@app.get('/api/')
+def index():
+    try :
+        mongodb = get_mongo()
+        if mongodb:
+            return "Connected to MongoDB"
+    except Exception as e:
+        print(e)
+        return "Error connecting to MongoDB"
+    
 if __name__ == '__main__':
     socketio.run(app,host='0.0.0.0', port=5000, debug=True)

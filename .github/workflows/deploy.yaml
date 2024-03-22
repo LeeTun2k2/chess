@@ -2,36 +2,81 @@ name: Deploy to Amazon EC2
 
 on:
   push:
-    branches: [ "production" ]
+    branches: ["production"]
 
 env:
   AWS_REGION: ap-southeast-2
-  EC2_IP_ADDRESS: "3.27.242.207"
+  EC2_IP_ADDRESS: ec2-3-27-9-1.ap-southeast-2.compute.amazonaws.com
+  ECR_REGISTRY: 952043753825.dkr.ecr.ap-southeast-2.amazonaws.com
+  FE_IMAGE: frontend
+  BE_IMAGE: backend
+  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy to Amazon EC2
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Copy SSH private key
-      env:
-        SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-      run: |
-        echo "$SSH_PRIVATE_KEY" > private.pem
-        chmod 600 private.pem
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: ${{env.AWS_REGION}}
 
-    - name: Command to deploy
-      run: |
-        ssh -i private.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile=/dev/null" ec2-user@${{env.EC2_IP_ADDRESS}} '
-          cd chess
-          git checkout production
-          git pull
-          cp ./.docker/docker-compose.yaml .
-          docker-compose down
-          docker-compose build
-          docker-compose up -d
-        '
+      - name: Login to AWS EC2
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private.pem
+          chmod 600 private.pem
+
+      - name: Login to AWS ECR
+        run: docker login -u AWS -p $(aws ecr get-login-password --region ${{env.AWS_REGION}}) ${{env.ECR_REGISTRY}}
+
+      - name: Build and push front-end image
+        run: |
+          cd front-end
+          docker build -f .docker/Dockerfile -t ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}} .
+          docker push ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}}
+
+      - name: Build and push back-end image
+        run: |
+          cd back-end
+          docker build -f .docker/Dockerfile -t ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}} .
+          docker push ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}}
+          
+      - name: EC2 login to ECR
+        run: |
+          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            docker login -u AWS -p $(aws ecr get-login-password --region ${{env.AWS_REGION}}) ${{env.ECR_REGISTRY}}
+          '
+
+      - name: EC2 pull images
+        run: |
+          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            docker pull ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}}
+            docker pull ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}}  
+          '
+      - name: EC2 tag images
+        run: |
+          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            docker tag ${{env.ECR_REGISTRY}}/${{env.FE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.FE_IMAGE}}:latest
+            docker tag ${{env.ECR_REGISTRY}}/${{env.BE_IMAGE}}:${{env.IMAGE_TAG}} ${{env.BE_IMAGE}}:latest
+          '
+      - name: EC2 stop and remove containers
+        run: |
+          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            cd chess
+            docker-compose -f ./.docker/docker-compose.yaml down
+          '
+      - name: EC2 start containers
+        run: |
+          ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile=/dev/null" -i private.pem ec2-user@${{env.EC2_IP_ADDRESS}} '
+            cd chess
+            docker-compose -f ./.docker/docker-compose.yaml up -d
+          '
