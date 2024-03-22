@@ -37,9 +37,9 @@ import {
 } from "../../settings/game";
 import NewOnlineGameModal from "../../components/game/newGameModal";
 import { API_PROXY, PROXY } from "../../settings/appSettings";
-import io from "socket.io-client";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
+import io from "socket.io-client";
 
 export default function LobbyPage(props) {
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ export default function LobbyPage(props) {
         }
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.response);
         toast(toast_error("Fail to load lobby!"));
       })
       .finally(() => {
@@ -70,16 +70,19 @@ export default function LobbyPage(props) {
   }, [toast]);
 
   useEffect(() => {
-    const socket = io(PROXY, { transports: ["websocket"], autoConnect: false });
+    const socket = io(PROXY);
+
     socket.on("lobby_created", (resp) => {
       const lobby = resp.lobby;
-      setData((prevData) => [lobby, ...prevData]);
+      if (lobby) setData((prevData) => [lobby, ...prevData]);
     });
 
     socket.on("lobby_closed", (resp) => {
-      const lobbyId = resp.lobbyId;
-      setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
+      const lobbyId = resp.lobby_id;
+      if (lobbyId)
+        setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
     });
+
     return () => {
       socket.disconnect();
     };
@@ -118,29 +121,40 @@ export default function LobbyPage(props) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.map((item, index) => {
-                    return (
-                      (pageNumber - 1) * pageSize <= index &&
-                      index < pageNumber * pageSize && (
-                        <Tr
-                          key={index}
-                          userSelect="none"
-                          cursor="pointer"
-                          bgColor={index % 2 === 1 ? "gray.100" : "white"}
-                          transition="background-color 0.5s ease-in-out"
-                          _hover={{ bgColor: "gray.200 !important" }}
-                          onClick={() => navigate(`/game/${item._id}`)}
-                        >
-                          <Td>{item.variant}</Td>
-                          <Td>{item.player}</Td>
-                          <Td>{item.rating}</Td>
-                          <Td>
-                            {item.initial_time}m + {item.bonus_time}s
-                          </Td>
-                        </Tr>
-                      )
-                    );
-                  })}
+                  {data &&
+                    data.map((item, index) => {
+                      return (
+                        (pageNumber - 1) * pageSize <= index &&
+                        index < pageNumber * pageSize && (
+                          <Tr
+                            key={index}
+                            userSelect="none"
+                            cursor="pointer"
+                            bgColor={index % 2 === 1 ? "gray.100" : "white"}
+                            transition="background-color 0.5s ease-in-out"
+                            _hover={{ bgColor: "gray.200 !important" }}
+                            onClick={() => {
+                              axios
+                                .put(`${API_PROXY}/lobby/${item._id}`)
+                                .then(() => {
+                                  navigate(`/wait/${item._id}`);
+                                })
+                                .catch((err) => {
+                                  console.log(err.response);
+                                  toast(toast_error("Fail to join game!"));
+                                });
+                            }}
+                          >
+                            <Td>{item.variant}</Td>
+                            <Td>{item.player}</Td>
+                            <Td>{item.rating}</Td>
+                            <Td>
+                              {item.initial_time}m + {item.bonus_time}s
+                            </Td>
+                          </Tr>
+                        )
+                      );
+                    })}
                 </Tbody>
                 <Tfoot>
                   <Tr>

@@ -22,6 +22,20 @@ class UserService():
         user = self.map_user(user_data)
         return user
     
+    def get_by_username(self, username: str):
+        user_data = self.users_collection.find_one({'username': username})
+        if not user_data:
+            return None
+        user = self.map_user(user_data)
+        return user
+    
+    def get_by_email(self, email: str):
+        user_data = self.users_collection.find_one({'email': email})
+        if not user_data:
+            return None
+        user = self.map_user(user_data)
+        return user
+    
     def update_current_user(self, user_id, username = None, email = None, name = None):
         updated = {}
         if username != None: 

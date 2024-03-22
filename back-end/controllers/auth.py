@@ -3,6 +3,7 @@ from logging import error
 from flask_login import login_required
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth import AuthServices
+from services.user import UserService
 from services.validate.user import validate, validate_short, validate_email
 
 auth_bp = Blueprint('auth', __name__)
@@ -96,7 +97,8 @@ def login():
         if not ok: 
             return token, 401
         access_token, refresh_token = token
-        return jsonify({'access_token': access_token, 'refresh_token': refresh_token}), 200
+        user = UserService().get_by_username(username).to_json()
+        return jsonify({'access_token': access_token, 'refresh_token': refresh_token, 'user': user}), 200
     except Exception as e:
         error(e)
         return 'Fail to log in.', 500

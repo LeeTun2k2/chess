@@ -1,17 +1,23 @@
-import axios from 'axios';
-import { API_PROXY } from '../settings/appSettings';
-import { getAccessToken, getRefreshToken, setAccessToken, getAccessTokenExpiry} from './auth';
+import axios from "axios";
+import { API_PROXY } from "../settings/appSettings";
+import { getAccessToken, getRefreshToken, setAccessToken, getAccessTokenExpiry} from "./auth";
 
 const refreshAccessToken = async (refreshToken) => {
-    try {
-      const response = await axios.post(`${API_PROXY}/refresh`, { headers: { 'Authorization': `Bearer ${refreshToken}` }});
-      const newAccessToken = response.data.access_token;
-      return newAccessToken;
-    } catch (error) {
-      console.error('Error refreshing access token:', error);
-      throw error;
-    }
-  };
+  try {
+    const response = await axios.post(
+      `${API_PROXY}/refresh`,
+      {
+        headers: { Authorization: `Bearer ${refreshToken}` },
+      }
+    );
+
+    const newAccessToken = response.data.access_token;
+    return newAccessToken;
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+    throw error;
+  }
+};
 
 axios.interceptors.request.use(
   async (config) => {
@@ -19,7 +25,7 @@ axios.interceptors.request.use(
     const accessTokenExpiry = getAccessTokenExpiry();
     if (accessToken && accessTokenExpiry && Date.now() < Date.parse(accessTokenExpiry)) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-      config.headers['Content-Type'] = 'application/json';
+      config.headers["Content-Type"] = "application/json";
     } 
     else {
       const refreshToken = getRefreshToken();
@@ -29,8 +35,8 @@ axios.interceptors.request.use(
         config.headers.Authorization = `Bearer ${newAccessToken}`;
         setAccessToken(newAccessToken);
       } else {
-        console.error('Refresh token not found 1');
-        throw new Error('Refresh token not found');
+        console.error("Refresh token not found 1");
+        throw new Error("Refresh token not found");
       }
     }
     return config;
@@ -42,6 +48,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {
+    console.log("error.response.status", error.response.status)
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -52,8 +59,8 @@ axios.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return axios(originalRequest);
       } else {
-        console.error('Refresh token not found 2');
-        throw new Error('Refresh token not found');
+        window.location.href = "/login";
+        throw new Error("Refresh token not found");
       }
     }
     return Promise.reject(error);

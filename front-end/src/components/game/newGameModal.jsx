@@ -81,7 +81,7 @@ const NewOnlineGameModal = ({
       .then((res) => {
         if (res.data) {
           toast(toast_success("Lobby created!"));
-          navigate(`/game/${res.data._id}`);
+          navigate(`/wait/${res.data._id}`);
         } else {
           toast(toast_error("Fail to create lobby!"));
         }
