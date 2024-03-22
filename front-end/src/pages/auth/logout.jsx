@@ -1,15 +1,17 @@
 import { Flex, Heading, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { clearTokens } from "../../lib/auth";
+import { clearTokens, clearUserData } from "../../lib/auth";
 
-const LogoutPage = () => {
+const LogoutPage = ({ setLoggedIn }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
       clearTokens();
-      navigate("/login");
+      clearUserData();
+      navigate("/");
+      setLoggedIn(false);
     }, 1000);
   }, [navigate]);
 

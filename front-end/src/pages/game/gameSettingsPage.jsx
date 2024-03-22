@@ -11,6 +11,7 @@ import {
 import ClientLayout from "../../components/layouts/clientLayout";
 import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 import NewOnlineGameModal from "../../components/game/newGameModal";
+import NoLogicChessBoard from "../../components/game/noLogicChessBoard";
 
 export default function GameSettingsPage(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,14 +28,22 @@ export default function GameSettingsPage(props) {
             w={{ base: "100%", md: "66%" }}
             mb={{ base: 8, md: 0 }}
           >
-            Something like board
+            <NoLogicChessBoard isFree={true} />
           </Box>
 
           <Spacer display={{ base: "none", md: "block" }} />
 
-          <Box w={{ base: "100%", md: "30%" }}>
+          <Box
+            w={{ base: "100%", md: "30%" }}
+            border={"1px lightgray solid"}
+            p={4}
+            borderRadius={4}
+            boxShadow={2}
+            h={{ base: "auto", md: "fit-content" }}
+          >
             <Button
               w="100%"
+              bgColor="lightgray"
               onClick={() => {
                 setGameMode(ONLINE);
                 onOpen();
@@ -45,6 +54,7 @@ export default function GameSettingsPage(props) {
             <Button
               w="100%"
               mt={4}
+              bgColor="lightgray"
               onClick={() => {
                 setGameMode(FRIEND);
                 onOpen();
@@ -55,6 +65,7 @@ export default function GameSettingsPage(props) {
             <Button
               w="100%"
               mt={4}
+              bgColor="lightgray"
               onClick={() => {
                 setGameMode(OFFLINE);
                 onOpen();

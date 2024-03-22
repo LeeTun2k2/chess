@@ -67,3 +67,17 @@ def profile():
     except Exception as e:
         error(e)
         return "Fail to get user profile.", 500
+    
+@user_bp.get('/api/user/<username>')
+@jwt_required()
+def user_profile(username: str):
+    try:
+        service = UserService()
+        user = service.get_by_username(username)
+        if not user:
+            return 'User not found.', 404
+        
+        return jsonify(user.to_json()), 200
+    except Exception as e:
+        error(e)
+        return "Fail to get user profile.", 500

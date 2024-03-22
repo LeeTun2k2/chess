@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -13,15 +13,39 @@ import {
   FormLabel,
   useDisclosure,
 } from "@chakra-ui/react";
+import { getUserData } from "../../lib/auth";
 
 const AvatarUploadModal = ({ isOpen, onClose }) => {
   const fileInputRef = useRef();
+  const [imageUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const user = getUserData();
 
-  const handleUpload = () => {
-    // Implement your logic to handle the avatar upload here
-    // You can use the selected file from the fileInputRef.current.files
-    // Close the modal after handling the upload
-    onClose();
+  const handleUpload = async () => {
+    setLoading(true);
+    const file = fileInputRef.current.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "chess_api");
+    formData.append("cloud_name", "dkdetevyp");
+    formData.append("folder", "chess");
+    formData.append("public_id", `user-${user.id}`);
+
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dkdetevyp/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      setImageUrl(data.secure_url);
+      onClose();
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+    }
+    setLoading(false);
   };
 
   return (
@@ -38,10 +62,10 @@ const AvatarUploadModal = ({ isOpen, onClose }) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="teal" onClick={handleUpload}>
+          <Button colorScheme="teal" onClick={handleUpload} isLoading={loading}>
             Upload
           </Button>
-          <Button ml={2} onClick={onClose}>
+          <Button ml={2} onClick={onClose} isDisabled={loading}>
             Cancel
           </Button>
         </ModalFooter>

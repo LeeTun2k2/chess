@@ -14,7 +14,7 @@ class LobbyService():
         return lobby
 
     def create_lobby(self, lobby, player_id):
-        lobby["player_id"] = player_id
+        lobby["player_id"] = str(player_id)
         lobby["status"] = "OPEN"
         lobby["created_at"] = datetime.now()
         result = self.lobbies_collection.insert_one(lobby)
@@ -29,4 +29,4 @@ class LobbyService():
         return data
     
     def close_lobby(self, lobby_id):
-        self.lobbies_collection.update_one({'_id': ObjectId(lobby_id)}, {'$set': {'status': 'closed'}})
+        self.lobbies_collection.update_one({'_id': ObjectId(lobby_id)}, {'$set': {'status': 'CLOSED'}})

@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify, request
 from flask_socketio import emit
 from services.lobby import LobbyService
-from flask_login import login_required
+from services.game import GameService
+from services.user import UserService
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 lobby_bp = Blueprint('lobby', __name__)
 lobby_service = LobbyService()
+game_service = GameService()
 
 @lobby_bp.get('/api/lobby')
 def getLobbies():
@@ -29,8 +31,14 @@ def createLobby():
     
 @lobby_bp.put('/api/lobby/<lobby_id>')
 @jwt_required()
-def closeLobby(lobby_id):
+def closeLobby(lobby_id): 
     try:
+        user_id = get_jwt_identity()
+        user = UserService().get_by_id(user_id)
+        if not user: 
+            raise Exception('User not found')
+        
+        # close lobby
         lobby_service.close_lobby(lobby_id)
         emit('lobby_closed', {'lobby_id': lobby_id}, broadcast=True, namespace='/')
         return jsonify({}), 204
