@@ -35,3 +35,7 @@ export const setUserData = (user) => {
 export const getUserData = () => {
     return JSON.parse(sessionStorage.getItem("user"));
 }
+
+export const clearUserData = () => {
+    sessionStorage.removeItem("user");
+}

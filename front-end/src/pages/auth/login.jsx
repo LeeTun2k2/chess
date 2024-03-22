@@ -29,7 +29,7 @@ import axios from "axios";
 import { API_PROXY } from "../../settings/appSettings";
 import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
 
-export default function LoginPage() {
+export default function LoginPage({ setLoggedIn }) {
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -80,10 +80,11 @@ export default function LoginPage() {
         axios
           .post(`${API_PROXY}/login`, body)
           .then((resp) => {
-            toast(toast_success("Login successfully."));
             setAccessToken(resp.data.access_token);
             setRefreshToken(resp.data.refresh_token);
             setUserData(resp.data.user);
+            setLoggedIn(true);
+            toast(toast_success("Login successfully."));
             navigate("/");
           })
           .catch((err) => {

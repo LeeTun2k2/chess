@@ -3,27 +3,42 @@ import { useCurrentPath } from "../../lib/hooks/route";
 import UserInfo from "../../components/user_profile/user_info";
 import ClientLayout from "../../components/layouts/clientLayout";
 import Statistics from "../../components/user_profile/statistic";
+import { getUserData } from "../../lib/auth";
+import axios from "../../lib/axios";
+import { API_PROXY } from "../../settings/appSettings";
+import { useEffect, useState } from "react";
 
 export default function UserProfile() {
   const path = useCurrentPath();
   const username = path[path.length - 1];
-
-  const getUser = () => {
-    return {
-      username: username,
-      email: "lequangtung2002@gmail.com",
-      name: "Lê Quang Tùng",
-    };
-  };
+  const user_data = getUserData();
 
   const getAvatarUrl = () => {
-    return `abc.com/avatar/username`;
+    return `https://res.cloudinary.com/dkdetevyp/image/upload/chess/user-${user_data.id}`;
   };
 
-  const user = {
-    avatar: getAvatarUrl(),
-    ...getUser(),
+  const [user, setUser] = useState({});
+
+  const getUser = () => {
+    if (user_data) {
+      setUser({
+        ...user_data,
+        avatar: getAvatarUrl(),
+      });
+      return;
+    }
+
+    axios
+      .get(`${API_PROXY}/user/${username}`)
+      .then((res) => {})
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const getStatistics = () => {
     return {
