@@ -18,7 +18,6 @@ import TournamentsPage from "./pages/tournament/tournaments";
 import BlogListPage from "./pages/club/blog_list";
 import BlogPage from "./pages/club/blog";
 import LogoutPage from "./pages/auth/logout";
-import { getUserData } from "./lib/auth";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);

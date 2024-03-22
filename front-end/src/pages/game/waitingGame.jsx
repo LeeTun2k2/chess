@@ -6,14 +6,13 @@ import io from "socket.io-client";
 import { PROXY } from "../../settings/appSettings";
 import { useNavigate } from "react-router-dom";
 
-const socket = io(PROXY);
 export default function WaitingGamePage(props) {
   const path = useCurrentPath();
   const id = path[path.length - 1];
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket.connect();
+    const socket = io(PROXY);
 
     socket.on("error", (data) => {
       console.log(data);

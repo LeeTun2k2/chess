@@ -88,7 +88,8 @@ export default function LoginPage({ setLoggedIn }) {
             navigate("/");
           })
           .catch((err) => {
-            toast(toast_error(err.response.data));
+            if (err.response) toast(toast_error(err.response.data));
+            else toast(toast_error("Something went wrong. Please try again."));
           })
           .finally(() => {
             setLoading(false);
