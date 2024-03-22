@@ -14,6 +14,7 @@ from controllers.test import test_bp
 from controllers.user import user_bp
 from controllers.game import game_bp
 from controllers.lobby import lobby_bp
+from controllers.blog import blog_bp
 
 app = Flask(__name__)
 
@@ -25,6 +26,7 @@ CORS(test_bp)
 CORS(user_bp)
 CORS(game_bp)
 CORS(lobby_bp)
+CORS(blog_bp)
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
@@ -55,6 +57,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(game_bp)
 app.register_blueprint(lobby_bp)
+app.register_blueprint(blog_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
