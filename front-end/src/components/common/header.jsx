@@ -20,6 +20,7 @@ import { FaList } from "react-icons/fa";
 import Sidebar from "./sidebar";
 import { client_menu } from "./data";
 import { getUserData } from "../../lib/auth";
+import { API_PROXY } from "../../settings/appSettings";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Header = () => {
     if (user_data)
       setUser({
         ...user_data,
-        avatar: `https://res.cloudinary.com/dkdetevyp/image/upload/chess/user-${user_data.id}`,
+        avatar: `${API_PROXY}/user-${user_data.id}`,
       });
   }, []);
 

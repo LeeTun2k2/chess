@@ -14,6 +14,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { getUserData } from "../../lib/auth";
+import axios from "../../lib/axios";
+import { API_PROXY } from "../../settings/appSettings";
 
 const AvatarUploadModal = ({ isOpen, onClose }) => {
   const fileInputRef = useRef();
@@ -25,20 +27,10 @@ const AvatarUploadModal = ({ isOpen, onClose }) => {
     setLoading(true);
     const file = fileInputRef.current.files[0];
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "chess_api");
-    formData.append("cloud_name", "dkdetevyp");
-    formData.append("folder", "chess");
-    formData.append("public_id", `user-${user.id}`);
+    formData.append("image", file, `user-${user.id}`);
 
     try {
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dkdetevyp/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await axios.post(`${API_PROXY}/images/upload`, formData);
       const data = await response.json();
       setImageUrl(data.secure_url);
       onClose();
