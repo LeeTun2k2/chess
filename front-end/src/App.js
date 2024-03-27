@@ -18,9 +18,23 @@ import TournamentsPage from "./pages/tournament/tournaments";
 import BlogListPage from "./pages/club/blog_list";
 import BlogPage from "./pages/club/blog";
 import LogoutPage from "./pages/auth/logout";
+import {gapi} from "gapi-script"
+
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+
+  const initializeGapi = () => {
+    gapi.client.init({
+      clientId: "792034127875-ia2do320uupm2vvi5amm83b8kkbr9l2q.apps.googleusercontent.com",
+      scope: "",
+    });
+  };
+  
+  useEffect(() =>{
+    // load and init google api scripts
+    gapi.load("client:auth2", initializeGapi);
+  })
 
   return (
     <Router>
