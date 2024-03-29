@@ -24,11 +24,9 @@ def request_game(user_id, lobby_id):
     emit('game_ready', {'game': game, 'lobby_id': lobby_id}, broadcast=True, namespace='/')
 
 def join_game(game_id: str): 
-    print("################## join game")
-    namespace = f'game-{game_id}'
-    emit('game_start', {'message': 'Game start'}, broadcast=True, namespace=f'/{namespace}')
+    print("#################gameStart")
+    emit('game_start', {'message': 'Game start', 'game_id': game_id}, broadcast=True, namespace='/')
 
 def send_move(game_id: str, move): 
     print("################## send move")
-    namespace = f'game-{game_id}'
-    emit('receive_move', {'move': move}, broadcast=True, namespace=f'/{namespace}')
+    emit('receive_move', {'move': move, 'game_id': game_id}, broadcast=True, namespace='/')

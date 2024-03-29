@@ -7,11 +7,14 @@ import { Fragment, useEffect, useState } from "react";
 import { getUserData } from "../../lib/auth";
 import { CHESS_FEN } from "../../settings/game";
 import { Chess } from "chess.js";
-import { PROXY } from "../../settings/appSettings";
 import { io } from "socket.io-client";
+import { API_PROXY, PROXY } from "../../settings/appSettings";
+import axios from "../../lib/axios";
 
 export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
   const user = getUserData() ?? { id: "" };
+  const socket = io(PROXY);
+
   const [chess, setChess] = useState(new Chess(CHESS_FEN));
   const [fen, setFen] = useState("");
   const [lastMove, setLastMove] = useState([]);
@@ -93,17 +96,15 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
             return;
           }
         }
-        if (isValidMove(from, to)) {
-          console.log("Send move");
-          const socket = io(PROXY);
-          socket.emit("send_move", {
-            game_id: game._id,
-            move: { from, to },
-          });
-          socket.disconnect();
-        } else {
-          console.log("Invalid move");
+        if (!isValidMove(from, to)) {
+          console.log("Invalid move.");
+          return;
         }
+        socket.connect();
+        socket.emit("send_move", {
+          game_id: game._id,
+          move: { from, to },
+        });
       },
       dropNewPiece: (piece, key) => {},
       select: (key) => {
@@ -129,24 +130,31 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
     },
   };
 
-  // useEffect(() => {
-  //   const socket = io(`${PROXY}/${namespace}`);
+  useEffect(() => {
+    socket.connect();
+    socket.on("receive_move", async (data) => {
+      if (data && data.game_id == game._id) {
+        const { from, to } = data.move;
+        chess.move({ from, to });
+        toggleTurn();
+        setFen(chess.fen());
+        setIsCheck(chess.inCheck());
+        setLastMove([from, to]);
+      }
 
-  //   socket.on("receive_move", (data) => {
-  //     console.log("receive_move", data.move);
-  //     const { from, to } = data.move;
-  //     chess.move({ from, to });
-  //     console.log(chess, { from, to });
-  //     toggleTurn();
-  //     setFen(chess.fen());
-  //     setIsCheck(chess.inCheck());
-  //     setLastMove([from, to]);
-  //   });
+      if (chess.isCheckmate()) {
+        setGameStatus("ended");
+        const png = chess.pgn();
+        await axios.put(`${API_PROXY}/game/${game._id}`, {
+          game: { ...game, png },
+        });
+      }
+    });
 
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, [game, fen]);
+    return () => {
+      socket.disconnect();
+    };
+  }, [game, fen]);
 
   return (
     <Fragment>

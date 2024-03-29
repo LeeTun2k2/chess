@@ -70,10 +70,12 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 from sockets.game import request_game, join_game, send_move
 @socketio.on('request_game')
 def request_game_socket(data):
+    print("request")
     request_game(data['user_id'], data['lobby_id'])
 
 @socketio.on('join_game')
 def join_game_socket(data):
+    print(data)
     join_game(data['game_id'])
 
 @socketio.on('send_move')
