@@ -20,7 +20,6 @@ import { FaList } from "react-icons/fa";
 import Sidebar from "./sidebar";
 import { client_menu } from "./data";
 import { getUserData } from "../../lib/auth";
-import { API_PROXY } from "../../settings/appSettings";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -131,7 +130,7 @@ const PcMenu = ({ user }) => {
           TV
         </MenuButton>
       </Menu>
-      {user ? (
+      {user?.id ? (
         <Fragment>
           <Spacer />
           <Menu>
