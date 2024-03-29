@@ -29,11 +29,7 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const user_data = getUserData();
   useEffect(() => {
-    if (user_data)
-      setUser({
-        ...user_data,
-        avatar: `${API_PROXY}/user-${user_data.id}`,
-      });
+    if (user_data) setUser({ ...user_data });
   }, []);
 
   return (

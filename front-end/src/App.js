@@ -24,6 +24,8 @@ import DonatePage from "./pages/common/donate";
 import AchievementsPage from "./pages/common/achievements";
 
 import {gapi} from "gapi-script"
+import { getUserData } from "./lib/auth";
+import { set } from "lodash";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -34,11 +36,12 @@ function App() {
       scope: "",
     });
   };
-  
+
+  const user = getUserData();
   useEffect(() =>{
     // load and init google api scripts
     gapi.load("client:auth2", initializeGapi);
-  })
+  }, [])
 
   return (
     <Router>
@@ -74,16 +77,16 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
 
         {/* User Pages */}
-        <Route exact path="/profile" element={isLoggedIn ? <UserProfile /> : <Navigate to={"/login"} />} />
+        <Route exact path="/profile" element={isLoggedIn || user?.id ? <UserProfile /> : <Navigate to={"/login"} />} />
 
         {/* Game Pages */}
-        <Route exact path="/lobby" element={isLoggedIn ? <LobbyPage /> : <Navigate to={"/login"} />} />
-        <Route exact path="/wait/:id" element={isLoggedIn ? <WaitingGamePage /> : <Navigate to={"/login"} />} />
-        <Route exact path="/new-game" element={isLoggedIn ? <GameSettingsPage /> : <Navigate to={"/login"} />} />
-        <Route exact path="/online/:id" element={isLoggedIn ? <OnlineGamePage /> : <Navigate to={"/login"} />} />
+        <Route exact path="/lobby" element={isLoggedIn || user?.id ? <LobbyPage /> : <Navigate to={"/login"} />} />
+        <Route exact path="/wait/:id" element={isLoggedIn || user?.id ? <WaitingGamePage /> : <Navigate to={"/login"} />} />
+        <Route exact path="/new-game" element={isLoggedIn || user?.id ? <GameSettingsPage /> : <Navigate to={"/login"} />} />
+        <Route exact path="/online/:id" element={isLoggedIn || user?.id ? <OnlineGamePage /> : <Navigate to={"/login"} />} />
 
         {/* Tournament Pages */}
-        <Route exact path="/tournaments" element={isLoggedIn ? <TournamentsPage /> : <Navigate to={"/login"} />} />
+        <Route exact path="/tournaments" element={isLoggedIn || user?.id ? <TournamentsPage /> : <Navigate to={"/login"} />} />
 
         {/* Common Pages */}
         <Route exact path="/about" element={<AboutPage/>}/>

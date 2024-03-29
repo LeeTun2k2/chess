@@ -1,3 +1,5 @@
+import { API_PROXY } from "../settings/appSettings";
+
 export const setAccessToken = (access_token) => {
     sessionStorage.setItem("access_token", access_token)
     const now = new Date();
@@ -33,7 +35,8 @@ export const setUserData = (user) => {
 }
 
 export const getUserData = () => {
-    return JSON.parse(sessionStorage.getItem("user"));
+    const user_data = JSON.parse(sessionStorage.getItem("user"));
+    return {...user_data, avatar: `${API_PROXY}/images/user-${user_data?.id ?? ""}`,}
 }
 
 export const clearUserData = () => {

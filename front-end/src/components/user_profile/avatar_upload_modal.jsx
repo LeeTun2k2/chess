@@ -27,12 +27,21 @@ const AvatarUploadModal = ({ isOpen, onClose }) => {
     setLoading(true);
     const file = fileInputRef.current.files[0];
     const formData = new FormData();
-    formData.append("image", file, `user-${user.id}`);
+    formData.append(
+      "file",
+      file,
+      `user-${user.id}.${file.name.split(".").pop()}`
+    );
 
     try {
-      const response = await axios.post(`${API_PROXY}/images/upload`, formData);
-      const data = await response.json();
-      setImageUrl(data.secure_url);
+      const response = await axios.post(
+        `${API_PROXY}/images/upload`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      console.log(response);
+      const data = await response?.data;
+      setImageUrl(data?.image);
       onClose();
     } catch (error) {
       console.error("Error uploading image: ", error);
