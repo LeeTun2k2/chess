@@ -17,9 +17,13 @@ import OnlineGamePage from "./pages/game/online-game";
 import TournamentsPage from "./pages/tournament/tournaments";
 import BlogListPage from "./pages/club/blog_list";
 import BlogPage from "./pages/club/blog";
+import CreateBlogPage from "./pages/club/create_blog";
 import LogoutPage from "./pages/auth/logout";
-import {gapi} from "gapi-script"
+import AboutPage from "./pages/common/about";
+import DonatePage from "./pages/common/donate";
+import AchievementsPage from "./pages/common/achievements";
 
+import {gapi} from "gapi-script"
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -54,8 +58,9 @@ function App() {
         <Route exact path="/logout" element={<LogoutPage setLoggedIn={setLoggedIn} />} />
 
         {/* Club Pages */}
-        <Route exact path="/blogs" element={<BlogListPage />} />
-        <Route exact path="/blog/:slug" element={<BlogPage />} />
+        <Route exact path="/blogs" element={<BlogListPage/>}/>
+        <Route exact path="/blog/:slug" element={<BlogPage/>}/>
+        <Route exact path="/blog/create-blog" element={<CreateBlogPage/>}/>
 
         {/* Error Pages */}
         <Route path="/error" element={<ErrorPage />} />
@@ -79,6 +84,11 @@ function App() {
 
         {/* Tournament Pages */}
         <Route exact path="/tournaments" element={isLoggedIn ? <TournamentsPage /> : <Navigate to={"/login"} />} />
+
+        {/* Common Pages */}
+        <Route exact path="/about" element={<AboutPage/>}/>
+        <Route exact path="/donate" element={<DonatePage/>}/>
+        <Route exact path="/achievements" element={<AchievementsPage/>}/>
       </Routes>
     </Router>
   );
