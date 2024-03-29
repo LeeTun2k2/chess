@@ -14,16 +14,14 @@ import axios from "../../lib/axios";
 export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
   const user = getUserData() ?? { id: "" };
   const socket = io(PROXY);
-
-  const [chess, setChess] = useState(new Chess(CHESS_FEN));
+  const [chess] = useState(new Chess(CHESS_FEN));
   const [fen, setFen] = useState("");
   const [lastMove, setLastMove] = useState([]);
-  const [isMovable, setIsMovable] = useState(false);
+  const [isMovable] = useState(false);
   const [turn, setTurn] = useState("white");
   const [orientation, setOrientation] = useState("white");
   const [isCheck, setIsCheck] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [namespace, setNamespace] = useState("");
+  const [isGameOver] = useState(false);
 
   const toggleTurn = () => {
     setTurn(turn === "white" ? "black" : "white");
@@ -32,7 +30,6 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
 
   useEffect(() => {
     setOrientation(user.id === game.black ? "black" : "white");
-    setNamespace(`game-${game._id}`);
   }, [game, user.id]);
 
   const findMovableDests = (square) => {
@@ -78,14 +75,14 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
       color: turn,
       dests: new Map(),
       events: {
-        after: (orig, dest, metadata) => {},
-        afterNewPiece: (role, key, metadata) => {},
+        after: () => {},
+        afterNewPiece: () => {},
       },
       rookCastle: true,
     },
     events: {
       change: () => {},
-      move: (from, to, capturedPiece) => {
+      move: (from, to) => {
         // Promotion move
         const moves = chess.moves({ verbose: true });
         for (let i = 0, len = moves.length; i < len; i++) {
@@ -106,14 +103,14 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
           move: { from, to },
         });
       },
-      dropNewPiece: (piece, key) => {},
+      dropNewPiece: () => {},
       select: (key) => {
         if (turn === orientation) {
           config.selected = key;
           findMovableDests(key);
         }
       },
-      insert: (elements) => {
+      insert: () => {
         const board = chess.board();
         board.forEach((row) => {
           row.forEach((piece) => {
@@ -133,7 +130,7 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
   useEffect(() => {
     socket.connect();
     socket.on("receive_move", async (data) => {
-      if (data && data.game_id == game._id) {
+      if (data && data.game_id === game._id) {
         const { from, to } = data.move;
         chess.move({ from, to });
         toggleTurn();
@@ -154,7 +151,7 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
     return () => {
       socket.disconnect();
     };
-  }, [game, fen]);
+  }, [game, fen, socket, toggleTurn, setGameStatus, chess]);
 
   return (
     <Fragment>

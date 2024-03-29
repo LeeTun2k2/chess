@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import TestPage from "./pages/test";
 import LoginPage from "./pages/auth/login";
@@ -22,10 +22,22 @@ import LogoutPage from "./pages/auth/logout";
 import AboutPage from "./pages/common/about";
 import DonatePage from "./pages/common/donate";
 import AchievementsPage from "./pages/common/achievements";
-
 import {gapi} from "gapi-script"
 import { getUserData } from "./lib/auth";
-import { set } from "lodash";
+import AdminDashboardPage from "./pages/admin";
+import AdminBlogsPage from "./pages/admin/blogs";
+import AdminBooksPage from "./pages/admin/books";
+import AdminTournamentsPage from "./pages/admin/tournaments";
+import AdminUsersPage from "./pages/admin/users";
+import AdminVideosPage from "./pages/admin/videos";
+import AdminCreateBlogsPage from "./pages/admin/blogs/create_blog";
+import AdminUpdateBlogPage from "./pages/admin/blogs/update_blog";
+import AdminCreateBookPage from "./pages/admin/books/create_book";
+import AdminUpdateBookPage from "./pages/admin/books/update_book";
+import AdminCreateTournamentPage from "./pages/admin/tournaments/create_tournament";
+import AdminUpdateTournamentPage from "./pages/admin/tournaments/update_tournament";
+import AdminCreateVideoPage from "./pages/admin/videos/create_video";
+import AdminUpdateVideoPage from "./pages/admin/videos/update_video";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -92,6 +104,29 @@ function App() {
         <Route exact path="/about" element={<AboutPage/>}/>
         <Route exact path="/donate" element={<DonatePage/>}/>
         <Route exact path="/achievements" element={<AchievementsPage/>}/>
+
+        {/* Admin page */}
+        <Route exact path="/admin" element={<AdminDashboardPage />}/>
+
+        <Route exact path="/admin/blogs" element={<AdminBlogsPage />}/>
+        <Route exact path="/admin/create-blog" element={<AdminCreateBlogsPage />}/>
+        <Route exact path="/admin/update-blog/:id" element={<AdminUpdateBlogPage />}/>
+
+        <Route exact path="/admin/books" element={<AdminBooksPage />}/>
+        <Route exact path="/admin/create-book" element={<AdminCreateBookPage />}/>
+        <Route exact path="/admin/update-book/:id" element={<AdminUpdateBookPage />}/>
+        
+        <Route exact path="/admin/tournaments" element={<AdminTournamentsPage />}/>
+        <Route exact path="/admin/create-tournament" element={<AdminCreateTournamentPage />}/>
+        <Route exact path="/admin/update-tournament/:id" element={<AdminUpdateTournamentPage />}/>
+        
+        <Route exact path="/admin/users" element={<AdminUsersPage />}/>
+        
+        <Route exact path="/admin/videos" element={<AdminVideosPage />}/>
+        <Route exact path="/admin/create-video" element={<AdminCreateVideoPage />}/>
+        <Route exact path="/admin/update-video/:id" element={<AdminUpdateVideoPage />}/>
+        
+        <Route path="/admin/*" element={<Navigate to={"/admin"} />} />
       </Routes>
     </Router>
   );
