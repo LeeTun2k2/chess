@@ -54,7 +54,7 @@ jobs:
         run: |
           cd stockfish
           docker build -f .docker/Dockerfile -t ${{env.STOCKFISH_IMAGE}} .
-          docker push ${{env.PIKAFISH_IMAGE}}
+          docker push ${{env.STOCKFISH_IMAGE}}
 
       - name: Build and push pikafish image
         run: |
