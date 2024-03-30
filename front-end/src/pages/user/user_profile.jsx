@@ -14,7 +14,7 @@ export default function UserProfile() {
   const user_data = getUserData();
 
   const getAvatarUrl = () => {
-    return `https://res.cloudinary.com/dkdetevyp/image/upload/chess/user-${user_data.id}`;
+    return `${API_PROXY}/user-${user_data.id}`;
   };
 
   const [user, setUser] = useState({});

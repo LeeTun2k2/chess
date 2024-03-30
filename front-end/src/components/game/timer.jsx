@@ -29,9 +29,12 @@ export default function Timer({ game, isActive }) {
   useEffect(() => {
     if (active === false && isActive === true) {
       setActive(true);
+    }
+
+    if (active == true && isActive == false) {
       setRemain(remain + bonus);
     }
-  }, [isActive, active, remain, bonus]);
+  }, [isActive, active]);
 
   function onTimeout() {
     alert("timeout");

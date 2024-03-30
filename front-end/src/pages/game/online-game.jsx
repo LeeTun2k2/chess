@@ -21,11 +21,11 @@ import Timer from "../../components/game/timer";
 import { getUserData } from "../../lib/auth";
 import io from "socket.io-client";
 
-const user = getUserData() ?? { id: "" };
 export default function OnlineGamePage(props) {
+  const user = getUserData() ?? { id: "" };
   const path = useCurrentPath();
   const id = path[path.length - 1];
-  const namespace = `game-${id}`;
+  const socket = io(PROXY);
 
   const toast = useToast();
 
@@ -81,9 +81,8 @@ export default function OnlineGamePage(props) {
             : { ...game.white_player, is_turn: true }
         );
         if (!game.png) {
-          const socketio = io(PROXY, { transports: ["websocket"] });
-          socketio.emit("join_game", { game_id: id });
-          socketio.disconnect();
+          socket.connect();
+          socket.emit("join_game", { game_id: id });
           console.log("join_game");
         }
       })
@@ -94,19 +93,23 @@ export default function OnlineGamePage(props) {
   }, [id, toast]);
 
   useEffect(() => {
-    const socket = io(`${PROXY}/${namespace}`);
+    socket.connect();
     socket.on("game_start", (data) => {
-      console.log("game_start");
-      if (gameStatus !== "started") setGameStatus("started");
+      if (data && data.game_id === id && gameStatus !== "started")
+        setGameStatus("started");
     });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [gameStatus]);
+    return () => socket.disconnect();
+  }, []);
 
   return (
     <ClientLayout>
+      <button
+        onClick={() => {
+          console.log(gameStatus);
+        }}
+      >
+        test
+      </button>
       <Container maxW="container.xl" mt={10}>
         <Heading as="h1" size="lg" mb={5}>
           Online Game
@@ -121,6 +124,7 @@ export default function OnlineGamePage(props) {
               game={game}
               setGameStatus={setGameStatus}
               toggleBaseTurn={toggleTurn}
+              socket={socket}
             />
           </Box>
 

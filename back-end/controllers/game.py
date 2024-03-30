@@ -29,12 +29,12 @@ def getGame(game_id: str, mode: str):
     game['black_player'] = user_service.get_by_id(game['black']).to_json()
     return jsonify(game), 200
 
-@game_bp.put('/api/game')
+@game_bp.put('/api/game/<game_id>')
 @jwt_required()
-def updateGame(game_id, mode):
+def updateGame(game_id):
     try:
         game = request.get_json()
-        game_service.update_game(game_id, game, mode)
+        game_service.update_game(game_id, game, "online")
         return "Game updated successfully.", 200
     except Exception as e:
         error(e)

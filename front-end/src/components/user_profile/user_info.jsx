@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -13,8 +13,9 @@ import {
 import AvatarUploadModal from "./avatar_upload_modal";
 import ChangePasswordModal from "./change_password_modal";
 import { EmailIcon, EditIcon } from "@chakra-ui/icons";
+import { getUserData } from "../../lib/auth";
 
-const UserInfo = ({ user }) => {
+const UserInfo = () => {
   const {
     isOpen: isAvatarUploadOpen,
     onOpen: onAvatarUploadOpen,
@@ -27,7 +28,7 @@ const UserInfo = ({ user }) => {
   } = useDisclosure();
 
   const containerWidth = useBreakpointValue({ base: "100%", md: "1/3" });
-
+  const user = getUserData();
   return (
     <Stack
       maxW="container.lg"
