@@ -32,7 +32,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
     if (validatePassword(oldPassword) === false) {
       const model = toast_error(
         "Old password fail.",
-        "New password has a minimum length of 8 characters and do not contain any special charaters."
+        "New password has a minimum length of 8 characters and do not contain any special charaters.",
       );
       toast(model);
       ok = false;
@@ -41,7 +41,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
     if (validatePassword(newPassword) === false) {
       const model = toast_error(
         "Change password fail.",
-        "New password has a minimum length of 8 characters and do not contain any special charaters."
+        "New password has a minimum length of 8 characters and do not contain any special charaters.",
       );
       toast(model);
       ok = false;

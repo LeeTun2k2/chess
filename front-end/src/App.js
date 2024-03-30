@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import TestPage from "./pages/test";
 import LoginPage from "./pages/auth/login";
 import RegisterPage from "./pages/auth/register";
@@ -22,7 +27,7 @@ import LogoutPage from "./pages/auth/logout";
 import AboutPage from "./pages/common/about";
 import DonatePage from "./pages/common/donate";
 import AchievementsPage from "./pages/common/achievements";
-import {gapi} from "gapi-script"
+import { gapi } from "gapi-script";
 import { getUserData } from "./lib/auth";
 import AdminDashboardPage from "./pages/admin";
 import AdminBlogsPage from "./pages/admin/blogs";
@@ -45,16 +50,17 @@ function App() {
 
   const initializeGapi = () => {
     gapi.client.init({
-      clientId: "792034127875-ia2do320uupm2vvi5amm83b8kkbr9l2q.apps.googleusercontent.com",
+      clientId:
+        "792034127875-ia2do320uupm2vvi5amm83b8kkbr9l2q.apps.googleusercontent.com",
       scope: "",
     });
   };
 
   const user = getUserData();
-  useEffect(() =>{
+  useEffect(() => {
     // load and init google api scripts
     gapi.load("client:auth2", initializeGapi);
-  }, [])
+  }, []);
 
   return (
     <Router>
@@ -66,17 +72,25 @@ function App() {
         <Route exact path="/test" element={<TestPage />} />
 
         {/* Auth Pages */}
-        <Route exact path="/login" element={<LoginPage setLoggedIn={setLoggedIn} />} />
+        <Route
+          exact
+          path="/login"
+          element={<LoginPage setLoggedIn={setLoggedIn} />}
+        />
         <Route exact path="/register" element={<RegisterPage />} />
         <Route exact path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route exact path="/reset-password" element={<ResetPasswordPage />} />
         <Route exact path="/reset-password" element={<ResetPasswordPage />} />
-        <Route exact path="/logout" element={<LogoutPage setLoggedIn={setLoggedIn} />} />
+        <Route
+          exact
+          path="/logout"
+          element={<LogoutPage setLoggedIn={setLoggedIn} />}
+        />
 
         {/* Club Pages */}
-        <Route exact path="/blogs" element={<BlogListPage/>}/>
-        <Route exact path="/blog/:slug" element={<BlogPage/>}/>
-        <Route exact path="/blog/create-blog" element={<CreateBlogPage/>}/>
+        <Route exact path="/blogs" element={<BlogListPage />} />
+        <Route exact path="/blog/:slug" element={<BlogPage />} />
+        <Route exact path="/blog/create-blog" element={<CreateBlogPage />} />
 
         {/* Error Pages */}
         <Route path="/error" element={<ErrorPage />} />
@@ -90,44 +104,136 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
 
         {/* User Pages */}
-        <Route exact path="/profile" element={isLoggedIn || user?.id ? <UserProfile /> : <Navigate to={"/login"} />} />
+        <Route
+          exact
+          path="/profile"
+          element={
+            isLoggedIn || user?.id ? (
+              <UserProfile />
+            ) : (
+              <Navigate to={"/login"} />
+            )
+          }
+        />
 
         {/* Game Pages */}
-        <Route exact path="/lobby" element={isLoggedIn || user?.id ? <LobbyPage /> : <Navigate to={"/login"} />} />
-        <Route exact path="/wait/:id" element={isLoggedIn || user?.id ? <WaitingGamePage /> : <Navigate to={"/login"} />} />
-        <Route exact path="/new-game" element={isLoggedIn || user?.id ? <GameSettingsPage /> : <Navigate to={"/login"} />} />
-        <Route exact path="/online/:id" element={isLoggedIn || user?.id ? <OnlineGamePage /> : <Navigate to={"/login"} />} />
+        <Route
+          exact
+          path="/lobby"
+          element={
+            isLoggedIn || user?.id ? <LobbyPage /> : <Navigate to={"/login"} />
+          }
+        />
+        <Route
+          exact
+          path="/wait/:id"
+          element={
+            isLoggedIn || user?.id ? (
+              <WaitingGamePage />
+            ) : (
+              <Navigate to={"/login"} />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/new-game"
+          element={
+            isLoggedIn || user?.id ? (
+              <GameSettingsPage />
+            ) : (
+              <Navigate to={"/login"} />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/online/:id"
+          element={
+            isLoggedIn || user?.id ? (
+              <OnlineGamePage />
+            ) : (
+              <Navigate to={"/login"} />
+            )
+          }
+        />
 
         {/* Tournament Pages */}
-        <Route exact path="/tournaments" element={isLoggedIn || user?.id ? <TournamentsPage /> : <Navigate to={"/login"} />} />
+        <Route
+          exact
+          path="/tournaments"
+          element={
+            isLoggedIn || user?.id ? (
+              <TournamentsPage />
+            ) : (
+              <Navigate to={"/login"} />
+            )
+          }
+        />
 
         {/* Common Pages */}
-        <Route exact path="/about" element={<AboutPage/>}/>
-        <Route exact path="/donate" element={<DonatePage/>}/>
-        <Route exact path="/achievements" element={<AchievementsPage/>}/>
-        <Route exact path="/settings" element={<SettingsPage/>}/>
+        <Route exact path="/about" element={<AboutPage />} />
+        <Route exact path="/donate" element={<DonatePage />} />
+        <Route exact path="/achievements" element={<AchievementsPage />} />
+        <Route exact path="/settings" element={<SettingsPage />} />
 
         {/* Admin page */}
-        <Route exact path="/admin" element={<AdminDashboardPage />}/>
+        <Route exact path="/admin" element={<AdminDashboardPage />} />
 
-        <Route exact path="/admin/blogs" element={<AdminBlogsPage />}/>
-        <Route exact path="/admin/create-blog" element={<AdminCreateBlogsPage />}/>
-        <Route exact path="/admin/update-blog/:id" element={<AdminUpdateBlogPage />}/>
+        <Route exact path="/admin/blogs" element={<AdminBlogsPage />} />
+        <Route
+          exact
+          path="/admin/create-blog"
+          element={<AdminCreateBlogsPage />}
+        />
+        <Route
+          exact
+          path="/admin/update-blog/:id"
+          element={<AdminUpdateBlogPage />}
+        />
 
-        <Route exact path="/admin/books" element={<AdminBooksPage />}/>
-        <Route exact path="/admin/create-book" element={<AdminCreateBookPage />}/>
-        <Route exact path="/admin/update-book/:id" element={<AdminUpdateBookPage />}/>
-        
-        <Route exact path="/admin/tournaments" element={<AdminTournamentsPage />}/>
-        <Route exact path="/admin/create-tournament" element={<AdminCreateTournamentPage />}/>
-        <Route exact path="/admin/update-tournament/:id" element={<AdminUpdateTournamentPage />}/>
-        
-        <Route exact path="/admin/users" element={<AdminUsersPage />}/>
-        
-        <Route exact path="/admin/videos" element={<AdminVideosPage />}/>
-        <Route exact path="/admin/create-video" element={<AdminCreateVideoPage />}/>
-        <Route exact path="/admin/update-video/:id" element={<AdminUpdateVideoPage />}/>
-        
+        <Route exact path="/admin/books" element={<AdminBooksPage />} />
+        <Route
+          exact
+          path="/admin/create-book"
+          element={<AdminCreateBookPage />}
+        />
+        <Route
+          exact
+          path="/admin/update-book/:id"
+          element={<AdminUpdateBookPage />}
+        />
+
+        <Route
+          exact
+          path="/admin/tournaments"
+          element={<AdminTournamentsPage />}
+        />
+        <Route
+          exact
+          path="/admin/create-tournament"
+          element={<AdminCreateTournamentPage />}
+        />
+        <Route
+          exact
+          path="/admin/update-tournament/:id"
+          element={<AdminUpdateTournamentPage />}
+        />
+
+        <Route exact path="/admin/users" element={<AdminUsersPage />} />
+
+        <Route exact path="/admin/videos" element={<AdminVideosPage />} />
+        <Route
+          exact
+          path="/admin/create-video"
+          element={<AdminCreateVideoPage />}
+        />
+        <Route
+          exact
+          path="/admin/update-video/:id"
+          element={<AdminUpdateVideoPage />}
+        />
+
         <Route path="/admin/*" element={<Navigate to={"/admin"} />} />
       </Routes>
     </Router>

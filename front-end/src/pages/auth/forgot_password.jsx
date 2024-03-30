@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
     if (validateEmail(email) === false) {
       const model = toast_error(
         "Password reset failed.",
-        "Invalid email address."
+        "Invalid email address.",
       );
       toast(model);
       return false;

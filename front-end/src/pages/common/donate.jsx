@@ -5,10 +5,13 @@ export default function DonatePage() {
   return (
     <ClientLayout>
       <Container maxW="6xl" py={8}>
-        <Heading as="h1" mb={4}>Support SPKT Chess Club</Heading>
+        <Heading as="h1" mb={4}>
+          Support SPKT Chess Club
+        </Heading>
 
         <Text fontSize="lg" mb={4}>
-          Your donation helps us continue providing quality chess education and organizing events for our members.
+          Your donation helps us continue providing quality chess education and
+          organizing events for our members.
         </Text>
 
         <Text fontSize="lg" mb={4}>
@@ -21,9 +24,7 @@ export default function DonatePage() {
           </Link>
         </Button>
 
-        <Text fontSize="lg">
-          Thank you for your support!
-        </Text>
+        <Text fontSize="lg">Thank you for your support!</Text>
       </Container>
     </ClientLayout>
   );
