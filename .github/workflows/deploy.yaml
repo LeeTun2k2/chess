@@ -38,28 +38,40 @@ jobs:
       - name: Login to Docker Hub
         run: docker login --username ${{secrets.DOCKER_LOGIN_USERNAME}} --password ${{secrets.DOCKER_LOGIN_PASSWORD}}
 
-      - name: Build and push front-end image
+      - name: Build front-end image
         run: |
           cd front-end
           docker build -f .docker/Dockerfile -t ${{env.FE_IMAGE}} .
-          docker push ${{env.FE_IMAGE}}
-      
-      - name: Build and push back-end image
+
+      - name: Build back-end image
         run: |
           cd back-end
           docker build -f .docker/Dockerfile -t ${{env.BE_IMAGE}} .
-          docker push ${{env.BE_IMAGE}}
 
-      - name: Build and push stockfish image
+      - name: Build stockfish image
         run: |
           cd stockfish
           docker build -f .docker/Dockerfile -t ${{env.STOCKFISH_IMAGE}} .
-          docker push ${{env.STOCKFISH_IMAGE}}
 
-      - name: Build and push pikafish image
+      - name: Build pikafish image
         run: |
           cd pikafish
           docker build -f .docker/Dockerfile -t ${{env.PIKAFISH_IMAGE}} .
+
+      - name: Push front-end image
+        run: |
+          docker push ${{env.FE_IMAGE}}
+
+      - name: Push back-end image
+        run: |
+          docker push ${{env.BE_IMAGE}}
+
+      - name: Push stockfish image
+        run: |
+          docker push ${{env.STOCKFISH_IMAGE}}
+
+      - name: Push pikafish image
+        run: |
           docker push ${{env.PIKAFISH_IMAGE}}
           
       - name: EC2 stop and remove containers
