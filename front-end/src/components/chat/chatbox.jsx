@@ -4,6 +4,7 @@ import { getUserData } from "../../lib/auth";
 import { IoSend } from "react-icons/io5";
 
 const ChatBox = () => {
+  const user = getUserData();
   const [messages, setMessages] = useState([
     {
       username: "leetun2k2",
@@ -12,7 +13,6 @@ const ChatBox = () => {
     },
   ]);
   const [inputValue, setInputValue] = useState("");
-  const user = getUserData();
 
   const sendMessage = () => {
     if (inputValue.trim() !== "") {
@@ -61,19 +61,25 @@ const ChatBox = () => {
           </Box>
         ))}
       </Flex>
-      <HStack>
-        <Input
-          placeholder="Type your message here..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          colorScheme="gray"
-          variant={"outline"}
-          borderColor={"lightgray"}
-        />
-        <Button colorScheme="gray" onClick={sendMessage}>
-          <IoSend fontSize={24} />
-        </Button>
-      </HStack>
+      {user?.id ? (
+        <HStack>
+          <Input
+            placeholder="Type your message here..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            colorScheme="gray"
+            variant={"outline"}
+            borderColor={"lightgray"}
+          />
+          <Button colorScheme="gray" onClick={sendMessage}>
+            <IoSend fontSize={24} />
+          </Button>
+        </HStack>
+      ) : (
+        <Text color={"gray"} fontSize={"sm"} align={"center"}>
+          Please log in to send message
+        </Text>
+      )}
     </Box>
   );
 };

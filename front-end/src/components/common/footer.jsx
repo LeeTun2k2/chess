@@ -9,8 +9,10 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { FaEnvelope, FaFacebook } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { t } = useTranslation();
   return (
     <Flex
       spacing={4}
@@ -46,28 +48,28 @@ export default function Footer() {
         <HStack>
           <VStack spacing={4} alignItems="flex-start">
             <Text fontSize="xl" fontWeight="bold">
-              More
+              {t("footer.more")}
             </Text>
             <VStack spacing={2} alignItems="flex-start" color="gray.700">
-              <CustomLink href="/faq">FAQ</CustomLink>
-              <CustomLink href="/about">About</CustomLink>
+              <CustomLink href="/about">{t("footer.about")}</CustomLink>
+              <CustomLink href="/settings">{t("footer.settings")}</CustomLink>
             </VStack>
           </VStack>
           <VStack spacing={4} alignItems="flex-start">
             <Text fontSize="xl" fontWeight="bold">
-              Community
+              {t("footer.community")}
             </Text>
             <VStack spacing={2} alignItems="flex-start" color="gray.700">
               <CustomLink href="https://www.facebook.com/utechessclub">
                 <Text ml={2} display="flex" alignItems="center">
                   <FaFacebook style={{ marginRight: "8px" }} />
-                  Facebook
+                  {t("footer.facebook")}
                 </Text>
               </CustomLink>
               <CustomLink href="https://mail.google.com/mail/?view=cm&fs=1&to=clbcospkt@gmail.com">
                 <Text ml={2} display="flex" alignItems="center">
                   <FaEnvelope style={{ marginRight: "8px" }} />
-                  Gmail
+                  {t("footer.gmail")}
                 </Text>
               </CustomLink>
             </VStack>

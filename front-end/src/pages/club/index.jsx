@@ -6,12 +6,8 @@ import {
   Box,
   VStack,
   Spacer,
-  HStack,
   Text,
   Heading,
-  ListItem,
-  UnorderedList,
-  List,
   Card,
 } from "@chakra-ui/react";
 

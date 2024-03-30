@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { FaEnvelope, FaFacebook } from "react-icons/fa";
 
-export default function AdminFooter() {
+export default function Footer() {
   return (
     <Flex
       spacing={4}
@@ -49,8 +49,8 @@ export default function AdminFooter() {
               More
             </Text>
             <VStack spacing={2} alignItems="flex-start" color="gray.700">
-              <CustomLink href="/faq">FAQ</CustomLink>
               <CustomLink href="/about">About</CustomLink>
+              <CustomLink href="/settings">Settings</CustomLink>
             </VStack>
           </VStack>
           <VStack spacing={4} alignItems="flex-start">

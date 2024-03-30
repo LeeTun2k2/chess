@@ -68,18 +68,18 @@ export default function RegisterPage() {
       validateField(
         username,
         validateUsername,
-        "Username must be at least 8 characters and contain only lowercase letters or numbers"
+        "Username must be at least 8 characters and contain only lowercase letters or numbers",
       ) &&
       validateField(
         password,
         validatePassword,
-        "Password must be at least 8 characters and should not contain any special characters"
+        "Password must be at least 8 characters and should not contain any special characters",
       ) &&
       validateField(email, validateEmail, "Invalid email address") &&
       validateField(
         name,
         validateName,
-        "Name must be at least 4 characters and contain only letters"
+        "Name must be at least 4 characters and contain only letters",
       )
     );
   };
