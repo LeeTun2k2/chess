@@ -18,18 +18,14 @@ export default function BlogPage(props) {
   const slug = path[path.length - 1];
 
   const getBlog = () => {
-    return {
-      
-    };
+    return {};
   };
 
   const data = getBlog();
 
   return (
     <ClientLayout>
-      <Container maxW="6xl" py={8}>
-        
-      </Container>
+      <Container maxW="6xl" py={8}></Container>
     </ClientLayout>
   );
 }

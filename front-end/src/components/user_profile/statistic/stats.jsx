@@ -24,8 +24,8 @@ export default function Stats(props) {
                 newValue === oldValue
                   ? ""
                   : newValue > oldValue
-                  ? "increase"
-                  : "decrease"
+                    ? "increase"
+                    : "decrease"
               }
             />
             {Math.abs(newValue - oldValue)}

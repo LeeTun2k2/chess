@@ -54,7 +54,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validateUsername(username) === false) {
       const model = toast_error(
         "Log in fail.",
-        "Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
+        "Username has a minimum length of 8 characters and contains only lowercase letters or numbers",
       );
       toast(model);
       ok = false;
@@ -63,7 +63,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validatePassword(password) === false) {
       const model = toast_error(
         "Log in fail.",
-        "Password has a minimum length of 8 characters and do not contain any special charaters."
+        "Password has a minimum length of 8 characters and do not contain any special charaters.",
       );
       toast(model);
       ok = false;

@@ -20,6 +20,7 @@ import { FaList } from "react-icons/fa";
 import Sidebar from "./sidebar";
 import { client_menu } from "./data";
 import { getUserData } from "../../lib/auth";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -61,80 +62,100 @@ export default Header;
 
 const PcMenu = ({ user }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
     <Fragment>
       <Menu>
         <MenuButton
+          textTransform={"uppercase"}
           as={Button}
           variant="ghost"
           rightIcon={<ChevronDownIcon />}
           mx={2}
           display={{ base: "none", md: "flex" }}
         >
-          CLUB
+          {t("header.club")}
         </MenuButton>
         <MenuList zIndex={9999}>
-          <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
-          <MenuItem onClick={() => navigate("/blogs")}>Blogs</MenuItem>
-          <MenuItem onClick={() => navigate("/achievements")}>
-            Achievements
+          <MenuItem onClick={() => navigate("/")}>{t("header.home")}</MenuItem>
+          <MenuItem onClick={() => navigate("/blogs")}>
+            {t("header.blogs")}
           </MenuItem>
-          <MenuItem onClick={() => navigate("/donate")}>Donate</MenuItem>
-          <MenuItem onClick={() => navigate("/about")}>About</MenuItem>
+          <MenuItem onClick={() => navigate("/achievements")}>
+            {t("header.achievements")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/donate")}>
+            {t("header.donate")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/about")}>
+            {t("header.about")}
+          </MenuItem>
         </MenuList>
       </Menu>
       <Menu>
         <MenuButton
+          textTransform={"uppercase"}
           as={Button}
           variant="ghost"
           rightIcon={<ChevronDownIcon />}
           mx={2}
           display={{ base: "none", md: "flex" }}
         >
-          PLAY
+          {t("header.play")}
         </MenuButton>
         <MenuList zIndex={9999}>
           <MenuItem onClick={() => navigate("/lobby")}>Lobby</MenuItem>
           <MenuItem onClick={() => navigate("/new-game")}>
-            Play with options
+            {t("header.playWithOptions")}
           </MenuItem>
           <MenuItem onClick={() => navigate("/tournaments")}>
-            Tournaments
+            {t("header.tournaments")}
           </MenuItem>
         </MenuList>
       </Menu>
       <Menu>
         <MenuButton
+          textTransform={"uppercase"}
           as={Button}
           variant="ghost"
           rightIcon={<ChevronDownIcon />}
           mx={2}
           display={{ base: "none", md: "flex" }}
         >
-          PRACTICE
+          {t("header.practice")}
         </MenuButton>
         <MenuList zIndex={9999}>
-          <MenuItem onClick={() => navigate("/puzzle")}>Puzzles</MenuItem>
-          <MenuItem onClick={() => navigate("/videos")}>Videos</MenuItem>
-          <MenuItem onClick={() => navigate("/books")}>Books</MenuItem>
+          <MenuItem onClick={() => navigate("/puzzle")}>
+            {t("header.puzzles")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/videos")}>
+            {t("header.videos")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/books")}>
+            {t("header.books")}
+          </MenuItem>
         </MenuList>
       </Menu>
       <Menu>
         <MenuButton
+          textTransform={"uppercase"}
           as={Button}
           variant="ghost"
           mx={2}
           onClick={() => navigate("/tv")}
           display={{ base: "none", md: "flex" }}
         >
-          TV
+          {t("header.tv")}
         </MenuButton>
       </Menu>
       {user?.id ? (
         <Fragment>
           <Spacer />
           <Menu>
-            <MenuButton display={{ base: "none", md: "flex" }}>
+            <MenuButton
+              textTransform={"uppercase"}
+              display={{ base: "none", md: "flex" }}
+            >
               <Flex align="center">
                 <Avatar name={user.name} src={user.avatar} />
                 <Text
@@ -147,11 +168,15 @@ const PcMenu = ({ user }) => {
               </Flex>
             </MenuButton>
             <MenuList zIndex={9999}>
-              <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
-              <MenuItem onClick={() => navigate("/settings")}>
-                Settings
+              <MenuItem onClick={() => navigate("/profile")}>
+                {t("header.profile")}
               </MenuItem>
-              <MenuItem onClick={() => navigate("/logout")}>Logout</MenuItem>
+              <MenuItem onClick={() => navigate("/settings")}>
+                {t("header.settings")}
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/logout")}>
+                {t("header.logout")}
+              </MenuItem>
             </MenuList>
           </Menu>
         </Fragment>
@@ -159,10 +184,10 @@ const PcMenu = ({ user }) => {
         <Fragment>
           <Spacer />
           <Button onClick={() => navigate("/login")} mx={2}>
-            Login
+            {t("header.login")}
           </Button>
           <Button onClick={() => navigate("/register")} mr={16}>
-            Register
+            {t("header.register")}
           </Button>
         </Fragment>
       )}

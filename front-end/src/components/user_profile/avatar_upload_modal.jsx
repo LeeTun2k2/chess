@@ -30,14 +30,14 @@ const AvatarUploadModal = ({ isOpen, onClose }) => {
     formData.append(
       "file",
       file,
-      `user-${user.id}.${file.name.split(".").pop()}`
+      `user-${user.id}.${file.name.split(".").pop()}`,
     );
 
     try {
       const response = await axios.post(
         `${API_PROXY}/images/upload`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
       console.log(response);
       const data = await response?.data;

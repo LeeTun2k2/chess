@@ -127,8 +127,8 @@ const NewOnlineGameModal = ({
           {mode === ONLINE
             ? "online game"
             : mode === FRIEND
-            ? "vs friend"
-            : "vs computer"}
+              ? "vs friend"
+              : "vs computer"}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
