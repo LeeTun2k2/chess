@@ -10,6 +10,8 @@ services:
 
   backend:
     image: backend
+    volumes:
+      - ./uploads:/app/uploads
     depends_on:
       - mongodb
     networks:
