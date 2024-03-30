@@ -1,18 +1,28 @@
 import React, { useEffect } from "react";
-import { Container, Heading, Flex, Spinner, Toast } from "@chakra-ui/react";
+import {
+  Container,
+  Heading,
+  Flex,
+  Spinner,
+  Toast,
+  Button,
+} from "@chakra-ui/react";
 import { useCurrentPath } from "../../lib/hooks/route";
 import ClientLayout from "../../components/layouts/clientLayout";
 import io from "socket.io-client";
 import { PROXY } from "../../settings/appSettings";
 import { useNavigate } from "react-router-dom";
+import { getUserData } from "../../lib/auth";
 
 export default function WaitingGamePage(props) {
   const path = useCurrentPath();
   const id = path[path.length - 1];
   const navigate = useNavigate();
+  const socket = io(PROXY);
+  const user = getUserData();
 
   useEffect(() => {
-    const socket = io(PROXY);
+    socket.connect();
 
     socket.on("error", (data) => {
       console.log(data);
@@ -27,7 +37,7 @@ export default function WaitingGamePage(props) {
 
     socket.emit("request_game", {
       lobby_id: id,
-      user_id: "65eff3fe49af304d1ff6e25c",
+      user_id: user.id,
     });
 
     return () => {

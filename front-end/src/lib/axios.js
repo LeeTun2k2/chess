@@ -25,7 +25,6 @@ axios.interceptors.request.use(
     const accessTokenExpiry = getAccessTokenExpiry();
     if (accessToken && accessTokenExpiry && Date.now() < Date.parse(accessTokenExpiry)) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-      config.headers["Content-Type"] = "application/json";
     } 
     else {
       const refreshToken = getRefreshToken();

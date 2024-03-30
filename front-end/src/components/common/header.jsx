@@ -28,11 +28,7 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const user_data = getUserData();
   useEffect(() => {
-    if (user_data)
-      setUser({
-        ...user_data,
-        avatar: `https://res.cloudinary.com/dkdetevyp/image/upload/chess/user-${user_data.id}`,
-      });
+    if (user_data) setUser({ ...user_data });
   }, []);
 
   return (
@@ -134,7 +130,7 @@ const PcMenu = ({ user }) => {
           TV
         </MenuButton>
       </Menu>
-      {user ? (
+      {user?.id ? (
         <Fragment>
           <Spacer />
           <Menu>

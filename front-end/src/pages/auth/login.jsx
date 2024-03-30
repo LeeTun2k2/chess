@@ -28,6 +28,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_PROXY } from "../../settings/appSettings";
 import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
+import { GoogleIcon } from "../../components/auth/googleIcon";
+import { GoogleLogin } from "react-google-login";
 
 export default function LoginPage({ setLoggedIn }) {
   const toast = useToast();
@@ -96,6 +98,33 @@ export default function LoginPage({ setLoggedIn }) {
           });
       }
     }
+  };
+
+  const onGoogleLoginSuccess = (resp) => {
+    const { email, name } = resp.profileObj;
+    setLoading(true);
+    axios
+      .post(`${API_PROXY}/login-google`, { email, name })
+      .then((resp) => {
+        setAccessToken(resp.data.access_token);
+        setRefreshToken(resp.data.refresh_token);
+        setUserData(resp.data.user);
+        setLoggedIn(true);
+        toast(toast_success("Login successfully."));
+        navigate("/");
+      })
+      .catch((err) => {
+        if (err.response) toast(toast_error(err.response.data));
+        else toast(toast_error("Something went wrong. Please try again."));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const onGoogleLoginFail = (resp) => {
+    toast(toast_error("Login Fail."));
+    console.log(resp);
   };
 
   return (
@@ -187,11 +216,29 @@ export default function LoginPage({ setLoggedIn }) {
                 Forgot password?
               </Button>
             </HStack>
-            <Stack spacing="6">
+            <Stack spacing="4">
               <Button onClick={onSubmit} isLoading={loading}>
                 Log in
               </Button>
-              <Divider />
+              <HStack>
+                <Divider />
+                <Text color={"gray"}>or</Text>
+                <Divider />
+              </HStack>
+              <GoogleLogin
+                clientId="792034127875-ia2do320uupm2vvi5amm83b8kkbr9l2q.apps.googleusercontent.com"
+                onSuccess={onGoogleLoginSuccess}
+                onFailure={onGoogleLoginFail}
+                cookiePolicy={"single_host_origin"}
+                render={(renderProps) => (
+                  <Button onClick={renderProps.onClick} isLoading={loading}>
+                    <Text color={"gray"} size={"md"} mr={2}>
+                      Google
+                    </Text>
+                    <GoogleIcon />
+                  </Button>
+                )}
+              />
               <Text color="fg.muted" textAlign="center">
                 Don't have an account?{" "}
                 <Link href="/register" color="darkcyan">
