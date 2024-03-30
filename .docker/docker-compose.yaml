@@ -1,15 +1,17 @@
 services:
   frontend:
-    image: frontend
+    image: leetun2k2/chess_frontend:latest
     ports:
-      - 80:80
+      - 10040:80
     depends_on:
       - backend
     networks:
       - frontend_backend
+      - frontend_stockfish
+      - frontend_pikafish
 
   backend:
-    image: backend
+    image: leetun2k2/chess_backend:latest
     volumes:
       - ./uploads:/app/uploads
     depends_on:
@@ -17,6 +19,16 @@ services:
     networks:
       - frontend_backend
       - backend_mongodb
+
+  stockfish: 
+    image: leetun2k2/stockfish:latest
+    networks:
+      - frontend_stockfish
+  
+  pikafish: 
+    image: leetun2k2/pikafish:latest
+    networks:
+      - frontend_pikafish
 
   mongodb:
     image: mongo:latest
@@ -27,4 +39,8 @@ networks:
   frontend_backend:
     driver: bridge
   backend_mongodb:
+    driver: bridge
+  frontend_stockfish:
+    driver: bridge
+  backend_pikafish:
     driver: bridge
