@@ -18,9 +18,21 @@ jobs:
       - name: Run SSH Script
         run: |
           expect -c '
-            spawn ssh -o StrictHostKeyChecking=no hcmute@103.130.211.150 -p 10038
-            expect "hcmute@103.130.211.150's password:"
-            send "hcmute@fit"
-            interact && ls && ls && ls
-          '
+            set host "103.130.211.150"
+            set user "hcmute"
+            set password "hcmute@fit"
 
+            spawn ssh -o StrictHostKeyChecking=no -p 10038 $user@$host
+            expect {
+              "assword:" {
+                send "$password\r"
+                exp_continue
+              }
+              "Permission denied" {
+                exit 1
+              }
+              "Welcome" {
+                exit 0
+              }
+            }
+          '
