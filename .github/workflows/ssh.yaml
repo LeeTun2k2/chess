@@ -8,7 +8,6 @@ on:
 jobs:
   ssh:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
 
     steps:
       - name: Checkout Repository
@@ -21,6 +20,7 @@ jobs:
       - name: Run SSH Script
         run: |
           expect -c '
+            set timeout 500
             set host "103.130.211.150"
             set user "hcmute"
             set password "hcmute@fit"
@@ -41,10 +41,6 @@ jobs:
                   "Deploy ute-chess-club project completely" {
                     interact
                   }
-                }
-                timeout {
-                  send_user "Timeout.\n"
-                  exit 1
                 }
               }
             }
