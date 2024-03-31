@@ -3,7 +3,7 @@ name: SSH into Remote Host
 on:
   push:
     branches:
-      - main
+      - test
 
 jobs:
   ssh:
