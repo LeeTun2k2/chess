@@ -1,20 +1,25 @@
-name: Test ssh to workon.space
+name: SSH into Remote Host
 
 on:
   push:
-    branches: ["test"]
+    branches:
+      - main
 
 jobs:
-  deploy:
-    name: Deploy to Amazon EC2
+  ssh:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: SSH to Workonspace host
+      - name: Install expect and ssh-client
+        run: sudo apt-get install -y expect openssh-client
+
+      - name: Run SSH Script
         run: |
-          ssh hcmute@103.130.211.150 -p 10038 
-          hcmute@fit
-          
+          expect -c '
+            spawn ssh hcmute@103.130.211.150 -p 10038
+            expect "password:"
+            send "$password\r"
+            interact
+          '
