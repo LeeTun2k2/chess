@@ -35,7 +35,7 @@ jobs:
                 send "cd project/20110746_20110643\r"
                 send "./cli.sh\r"
                 expect {
-                  "Completed" {
+                  "Deploy ute-chess-club project completely" {
                     interact
                   }
                 }
