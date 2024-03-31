@@ -32,7 +32,9 @@ jobs:
                 exit 1
               }
               "Welcome" {
-                exit 0
+                send "cd projects/20110746_20110643\r"
+                send "./cli.sh\r"
+                exp_continue
               }
             }
           '
