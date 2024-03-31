@@ -1,0 +1,20 @@
+name: Test ssh to workon.space
+
+on:
+  push:
+    branches: ["test"]
+
+jobs:
+  deploy:
+    name: Deploy to Amazon EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: SSH to Workonspace host
+        run: |
+          ssh hcmute@103.130.211.150 -p 10038 
+          hcmute@fit
+          
