@@ -19,12 +19,8 @@ jobs:
         run: |
           expect -c '
             spawn ssh -o StrictHostKeyChecking=no hcmute@103.130.211.150 -p 10038
-            expect "password:"
+            expect "hcmute@103.130.211.150's password:"
             send "hcmute@fit"
-            interact
-            ls
-            ls
-            ls
-            ls
+            interact && ls && ls && ls
           '
 
