@@ -15,7 +15,7 @@ jobs:
       - name: Install expect and ssh-client
         run: sudo apt-get install -y expect openssh-client
 
-      - name: Run SSH Script
+      - name: Run SSH Commands
         run: |
           expect -c '
             set host "103.130.211.150"
@@ -23,18 +23,11 @@ jobs:
             set password "hcmute@fit"
 
             spawn ssh -o StrictHostKeyChecking=no -p 10038 $user@$host
-            expect {
-              "assword:" {
-                send "$password\r"
-                exp_continue
-              }
-              "Permission denied" {
-                exit 1
-              }
-              "Welcome" {
-                send "cd project/20110746_20110643\r"
-                send "./cli.sh\r"
-                exp_continue
-              }
-            }
+            expect "assword:"
+            send "$password\r"
+            expect "Welcome"
+            send "cd projects/20110746_20110643\r"
+            expect "projects/20110746_20110643"
+            send "./cli.sh\r"
+            interact
           '
