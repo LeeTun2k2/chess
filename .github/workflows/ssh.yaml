@@ -20,6 +20,8 @@ jobs:
           expect -c '
             spawn ssh hcmute@103.130.211.150 -p 10038
             expect "password:"
-            send "$password\r"
+            send "hcmute@fit"
             interact
           '
+          ls
+          
