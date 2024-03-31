@@ -43,7 +43,7 @@ jobs:
                   }
                 }
                 timeout {
-                  send_user "Timeout occurred while waiting for completion.\n"
+                  send_user "Timeout.\n"
                   exit 1
                 }
               }
