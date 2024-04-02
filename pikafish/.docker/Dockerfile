@@ -11,6 +11,7 @@ RUN apk update && \
 
 # Copy pikafish source code
 COPY src src
+COPY pikafish.nnue pikafish.nnue
 
 # Copy the Flask app code into the container
 COPY server.py server.py
