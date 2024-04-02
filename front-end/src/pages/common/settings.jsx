@@ -23,10 +23,10 @@ const SettingsPage = () => {
   const [language, setLanguage] = useState(savedLang ?? "en");
   const [theme, setTheme] = useState(savedTheme ?? "light");
   const [boardSettings, setBoardSettings] = useState(
-    savedBoardSettings ?? "standard",
+    savedBoardSettings ?? "standard"
   );
   const [pieceSettings, setPieceSettings] = useState(
-    savedPieceSettings ?? "classic",
+    savedPieceSettings ?? "classic"
   );
   const [soundEnabled, setSoundEnabled] = useState(savedSoundEnabled);
   const [soundSettings, setSoundSettings] = useState(savedSoundSettings);
@@ -73,7 +73,7 @@ const SettingsPage = () => {
   return (
     <ClientLayout>
       <Container maxW="6xl" mt={8}>
-        <Heading mb={16}>{t("settings.settings.heading")}</Heading>
+        <Heading mb={16}>{t("settings.heading")}</Heading>
         <Flex
           w={"100%"}
           justifyContent={"space-between"}
@@ -81,7 +81,7 @@ const SettingsPage = () => {
         >
           <HStack w={"100%"} py={4}>
             <Heading size="md" mb={2}>
-              {t("settings.settings.languageSettings")}
+              {t("settings.languageSettings")}
             </Heading>
             <Spacer />
             <Select
@@ -89,14 +89,14 @@ const SettingsPage = () => {
               onChange={handleLanguageChange}
               w={{ base: 200, md: 300 }}
             >
-              <option value="en">{t("settings.settings.english")}</option>
-              <option value="vi">{t("settings.settings.vietnamese")}</option>
+              <option value="en">{t("settings.english")}</option>
+              <option value="vi">{t("settings.vietnamese")}</option>
             </Select>
           </HStack>
           <Box w={"20%"} />
           <HStack w={"100%"} py={4}>
             <Heading size="md" mb={2}>
-              {t("settings.settings.themeSettings")}
+              {t("settings.themeSettings")}
             </Heading>
             <Spacer />
             <Select
@@ -104,8 +104,8 @@ const SettingsPage = () => {
               onChange={handleThemeChange}
               w={{ base: 200, md: 300 }}
             >
-              <option value="light">{t("settings.settings.light")}</option>
-              <option value="dark">{t("settings.settings.dark")}</option>
+              <option value="light">{t("settings.light")}</option>
+              <option value="dark">{t("settings.dark")}</option>
             </Select>
           </HStack>
         </Flex>
@@ -116,7 +116,7 @@ const SettingsPage = () => {
         >
           <HStack w={"100%"}>
             <Heading size="md" mb={2}>
-              {t("settings.settings.boardSettings")}
+              {t("settings.boardSettings")}
             </Heading>
             <Spacer />
             <Select
@@ -124,16 +124,14 @@ const SettingsPage = () => {
               onChange={handleBoardSettingsChange}
               w={{ base: 200, md: 300 }}
             >
-              <option value="standard">
-                {t("settings.settings.standard")}
-              </option>
-              <option value="custom">{t("settings.settings.custom")}</option>
+              <option value="standard">{t("settings.standard")}</option>
+              <option value="custom">{t("settings.custom")}</option>
             </Select>
           </HStack>
           <Box w={"20%"} />
           <HStack mt={8} w={"100%"}>
             <Heading size="md" mb={2}>
-              {t("settings.settings.pieceSettings")}
+              {t("settings.pieceSettings")}
             </Heading>
             <Spacer />
             <Select
@@ -141,8 +139,8 @@ const SettingsPage = () => {
               onChange={handlePieceSettingsChange}
               w={{ base: 200, md: 300 }}
             >
-              <option value="classic">{t("settings.settings.classic")}</option>
-              <option value="modern">{t("settings.settings.modern")}</option>
+              <option value="classic">{t("settings.classic")}</option>
+              <option value="modern">{t("settings.modern")}</option>
             </Select>
           </HStack>
         </Flex>
@@ -152,7 +150,7 @@ const SettingsPage = () => {
           display={{ base: "block", md: "flex" }}
         >
           <HStack mt={8} w={"100%"} align={"center"}>
-            <Heading size="md">{t("settings.settings.soundSettings")}</Heading>
+            <Heading size="md">{t("settings.soundSettings")}</Heading>
             <Spacer />
             <Switch
               id="sound"
@@ -166,17 +164,17 @@ const SettingsPage = () => {
           <Box w={"20%"} />
           <HStack mt={8} w={"100%"}>
             <Heading size="md" mb={2}>
-              {t("settings.settings.soundEffect")}
+              {t("settings.soundEffect")}
             </Heading>
             <Spacer />
             <Select
-              placeholder={t("settings.settings.selectSoundEffect")}
+              placeholder={t("settings.selectSoundEffect")}
               w={{ base: 200, md: 300 }}
               value={soundSettings}
               onChange={handleSoundSettingsChange}
             >
-              <option value="classic">{t("settings.settings.classic")}</option>
-              <option value="modern">{t("settings.settings.modern")}</option>
+              <option value="classic">{t("settings.classic")}</option>
+              <option value="modern">{t("settings.modern")}</option>
             </Select>
           </HStack>
         </Flex>
