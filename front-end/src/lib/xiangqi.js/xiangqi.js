@@ -1519,8 +1519,3 @@ const Xiangqi = function(fen) {
 /* export Xiangqi object if using node or any other CommonJS compatible
  * environment */
 if (typeof exports !== 'undefined') exports.Xiangqi = Xiangqi;
-/* export Xiangqi object for any RequireJS compatible environment */
-if (typeof define !== 'undefined')
-  define(function() {
-    return Xiangqi;
-  });
