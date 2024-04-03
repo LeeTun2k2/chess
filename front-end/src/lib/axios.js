@@ -6,13 +6,12 @@ import {
   setAccessToken,
   getAccessTokenExpiry,
 } from "./auth";
-import { useCurrentPath } from "./hooks/route";
 
 const PUBLIC_ROUTES = ["refresh", "login", "logout", "register", ""]
 
 const refreshAccessToken = async (refreshToken) => {
   try {
-    const response = await axios.post(`${API_PROXY}/refresh`, {
+    const response = await axios.post(`${API_PROXY}/refresh`, null, {
       headers: { Authorization: `Bearer ${refreshToken}` },
     });
     const newAccessToken = response.data.access_token;
@@ -33,7 +32,6 @@ axios.interceptors.request.use(
     {
       return config
     }
-
     const accessToken = getAccessToken();
     const accessTokenExpiry = getAccessTokenExpiry();
     if (
