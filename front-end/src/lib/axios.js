@@ -6,23 +6,34 @@ import {
   setAccessToken,
   getAccessTokenExpiry,
 } from "./auth";
+import { useCurrentPath } from "./hooks/route";
+
+const PUBLIC_ROUTES = ["refresh", "login", "logout", "register", ""]
 
 const refreshAccessToken = async (refreshToken) => {
   try {
     const response = await axios.post(`${API_PROXY}/refresh`, {
       headers: { Authorization: `Bearer ${refreshToken}` },
     });
-
     const newAccessToken = response.data.access_token;
     return newAccessToken;
   } catch (error) {
     console.error("Error refreshing access token:", error);
+    console.error("Try to login again");
+    window.location.href = "/logout"
     throw error;
   }
 };
 
 axios.interceptors.request.use(
   async (config) => {
+    const paths = config.url.split("/") ?? ["/"]
+    const route = paths[paths.length - 1]
+    if (PUBLIC_ROUTES.includes(route))
+    {
+      return config
+    }
+
     const accessToken = getAccessToken();
     const accessTokenExpiry = getAccessTokenExpiry();
     if (
@@ -34,12 +45,19 @@ axios.interceptors.request.use(
     } else {
       const refreshToken = getRefreshToken();
       if (!accessToken && !refreshToken) {
+        console.error("Access token and refresh token not found");
+        throw new Error("Access token and refresh token not found");
       } else if (refreshToken) {
-        const newAccessToken = await refreshAccessToken(refreshToken);
-        config.headers.Authorization = `Bearer ${newAccessToken}`;
-        setAccessToken(newAccessToken);
+        try {
+          const newAccessToken = await refreshAccessToken(refreshToken);
+          config.headers.Authorization = `Bearer ${newAccessToken}`;
+          setAccessToken(newAccessToken);
+        } catch (refreshError) {
+          console.error("Error refreshing access token:", refreshError.message);
+          throw refreshError;
+        }
       } else {
-        console.error("Refresh token not found 1");
+        console.error("Refresh token not found");
         throw new Error("Refresh token not found");
       }
     }
@@ -48,27 +66,31 @@ axios.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Axios response interceptor
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {
-    console.log("error.response.status", error.response.status);
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = getRefreshToken();
       if (refreshToken) {
-        const newAccessToken = await refreshAccessToken(refreshToken);
-        setAccessToken(newAccessToken);
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axios(originalRequest);
+        try {
+          const newAccessToken = await refreshAccessToken(refreshToken);
+          setAccessToken(newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return axios(originalRequest);
+        } catch (refreshError) {
+          console.error("Error refreshing access token:", refreshError);
+          window.location.href = "/logout";
+          throw refreshError;
+        }
       } else {
         window.location.href = "/login";
         throw new Error("Refresh token not found");
       }
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export default axios;
