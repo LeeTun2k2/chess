@@ -35,3 +35,9 @@ uploads/
 
 # pytest
 **pytest**
+
+# ai
+engine/
+*.fen
+*.epd
+*.pgn

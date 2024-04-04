@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from stockfish import StockfishException
 from app.game import get_parameters, get_board_visual
-from app.generate import generate_move, generate_top_moves
+from app.generate import generate_move, generate_top_moves, generate_puzzles
 from app.analysis import get_evaluation, get_evaluation_game
 
 app = Flask(__name__)
@@ -63,6 +63,11 @@ def get_evaluation_pgn_route():
         return jsonify({'evaluations': evaluations}), 200
     except StockfishException as e:
         return jsonify({'error': str(e)}), 400
+
+@app.route('/stockfish/generate-puzzles', methods=['GET'])
+def get_generated_puzzles():
+    puzzles = generate_puzzles()
+    return jsonify({'puzzles': puzzles})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050, debug=True)
