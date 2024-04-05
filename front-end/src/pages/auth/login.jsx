@@ -25,7 +25,7 @@ import {
 
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../lib/axios";
 import { API_PROXY } from "../../settings/appSettings";
 import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
 import { GoogleIcon } from "../../components/auth/googleIcon";
@@ -54,7 +54,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validateUsername(username) === false) {
       const model = toast_error(
         "Log in fail.",
-        "Username has a minimum length of 8 characters and contains only lowercase letters or numbers",
+        "Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
       );
       toast(model);
       ok = false;
@@ -63,7 +63,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validatePassword(password) === false) {
       const model = toast_error(
         "Log in fail.",
-        "Password has a minimum length of 8 characters and do not contain any special charaters.",
+        "Password has a minimum length of 8 characters and do not contain any special charaters."
       );
       toast(model);
       ok = false;
@@ -92,6 +92,7 @@ export default function LoginPage({ setLoggedIn }) {
           .catch((err) => {
             if (err.response) toast(toast_error(err.response.data));
             else toast(toast_error("Something went wrong. Please try again."));
+            console.log(err);
           })
           .finally(() => {
             setLoading(false);

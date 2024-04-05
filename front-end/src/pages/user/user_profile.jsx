@@ -52,6 +52,26 @@ export default function UserProfile() {
           current_month: 13,
         },
       },
+      xiangqi: {
+        elo: {
+          last_month: 1943,
+          current_month: 2041,
+        },
+        game: {
+          last_month: 24,
+          current_month: 13,
+        },
+      },
+      puzzle: {
+        elo: {
+          last_month: 1943,
+          current_month: 2041,
+        },
+        game: {
+          last_month: 24,
+          current_month: 13,
+        },
+      },
     };
   };
 
