@@ -3,6 +3,7 @@ import settings from "./settings.json";
 import header from "./header.json";
 import footer from "./footer.json";
 import adminFooter from "./adminFooter.json";
+import profile from "./profile.json"
 
 const en = {
   header,
@@ -10,6 +11,7 @@ const en = {
   adminFooter,
   about,
   settings,
+  profile,
 };
 
 export default en;
