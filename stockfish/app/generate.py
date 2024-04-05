@@ -29,18 +29,13 @@ def generate_puzzles():
     
     moves = []
     fens = []
-    fen_pattern = r'\[FEN\s*"([^"]+)"\]'
-    move_pattern = r'(\d+\.\s)?([KQRBN]?[a-h]?[1-8]?[x]?[a-h][1-8][+#]?|[O0]-[O0])'
     lines = content.split('\n')
     for line in lines:
         if len(line) < 2:
            continue
 
         if "FEN" in line:
-            fen_match = re.search(move_pattern, line)
-            if fen_match:
-                fen = fen_match.group(1)
-                fens.append(str(fen))
+            fens.append(str(line))
             continue
 
         if "[" not in line:

@@ -106,6 +106,17 @@ const PcMenu = ({ user }) => {
           Videos
         </MenuButton>
       </Menu>
+      <Menu>
+        <MenuButton
+          as={Button}
+          variant="ghost"
+          mx={2}
+          onClick={() => navigate("/admin/create-lesson")}
+          display={"flex"}
+        >
+          Lessons
+        </MenuButton>
+      </Menu>
       {user ? (
         <Fragment>
           <Spacer />

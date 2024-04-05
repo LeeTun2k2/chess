@@ -10,4 +10,5 @@ export const client_menu = [
   { id: 11, title: "Profile", link: "/profile" },
   { id: 12, title: "Settings", link: "/settings" },
   { id: 13, title: "Log out", link: "/logout" },
+  { id: 14, title: "Lessons", link: "/lessons" },
 ];
