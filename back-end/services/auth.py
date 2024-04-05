@@ -10,7 +10,7 @@ class AuthServices():
     def __init__(self) -> None:
         self.db = get_db()
         self.users_collection = self.db['users']
-        self.proxy = 'http://localhost:5000/api'
+        self.proxy = 'https://chess.workon.space/api'
         self.email_service = EmailService()
 
     def register(self, username: str, password: str, email: str, name: str):
