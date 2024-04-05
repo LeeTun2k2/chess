@@ -44,6 +44,7 @@ import AdminUpdateTournamentPage from "./pages/admin/tournaments/update_tourname
 import AdminCreateVideoPage from "./pages/admin/videos/create_video";
 import AdminUpdateVideoPage from "./pages/admin/videos/update_video";
 import SettingsPage from "./pages/common/settings";
+import LessonsPage from "./pages/practice/lessons";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -177,6 +178,9 @@ function App() {
         <Route exact path="/achievements" element={<AchievementsPage />} />
         <Route exact path="/settings" element={<SettingsPage />} />
 
+
+        <Route exact path="/lessons" element={<LessonsPage />} />
+        
         {/* Admin page */}
         <Route exact path="/admin" element={<AdminDashboardPage />} />
 
