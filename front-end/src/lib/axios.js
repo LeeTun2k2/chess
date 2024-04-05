@@ -7,7 +7,7 @@ import {
   getAccessTokenExpiry,
 } from "./auth";
 
-const PUBLIC_ROUTES = ["refresh", "login", "logout", "register", ""]
+const PUBLIC_ROUTES = ["refresh"]
 
 const refreshAccessToken = async (refreshToken) => {
   try {
@@ -44,7 +44,7 @@ axios.interceptors.request.use(
       const refreshToken = getRefreshToken();
       if (!accessToken && !refreshToken) {
         console.error("Access token and refresh token not found");
-        throw new Error("Access token and refresh token not found");
+        return config
       } else if (refreshToken) {
         try {
           const newAccessToken = await refreshAccessToken(refreshToken);
