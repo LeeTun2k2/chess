@@ -17,6 +17,7 @@ from controllers.lobby import lobby_bp
 from controllers.auth_google import authgg_bp
 from controllers.image import image_bp
 from controllers.blog import blog_bp
+from controllers.puzzle import puzzle_bp
 
 app = Flask(__name__)
 
@@ -31,6 +32,7 @@ CORS(lobby_bp)
 CORS(authgg_bp)
 CORS(image_bp)
 CORS(blog_bp)
+CORS(puzzle_bp)
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
@@ -64,6 +66,7 @@ app.register_blueprint(lobby_bp)
 app.register_blueprint(authgg_bp)
 app.register_blueprint(image_bp)
 app.register_blueprint(blog_bp)
+app.register_blueprint(puzzle_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 

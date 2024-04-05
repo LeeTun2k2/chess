@@ -66,8 +66,8 @@ def get_evaluation_pgn_route():
 
 @app.route('/stockfish/generate-puzzles', methods=['GET'])
 def get_generated_puzzles():
-    puzzles = generate_puzzles()
-    return jsonify({'puzzles': puzzles})
+    moves, fens = generate_puzzles()
+    return jsonify({'moves': moves, 'fens': fens})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050, debug=True)
