@@ -14,8 +14,10 @@ import AvatarUploadModal from "./avatar_upload_modal";
 import ChangePasswordModal from "./change_password_modal";
 import { EmailIcon, EditIcon } from "@chakra-ui/icons";
 import { getUserData } from "../../lib/auth";
+import { useTranslation } from "react-i18next";
 
 const UserInfo = () => {
+  const { t } = useTranslation();
   const {
     isOpen: isAvatarUploadOpen,
     onOpen: onAvatarUploadOpen,
@@ -85,7 +87,7 @@ const UserInfo = () => {
         {/* Change Password */}
         <Box>
           <Button colorScheme="teal" size="sm" onClick={onChangePasswordOpen}>
-            Change Password
+            {t("profile.changePassword")}
           </Button>
         </Box>
       </Stack>

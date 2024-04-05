@@ -4,8 +4,13 @@ from datetime import datetime
 import requests
 from random import randint
 
+<<<<<<< HEAD
 STOCKFISH_URL = '/stockfish'
 PIKAFISH_URL = '/pikafish'
+=======
+STOCKFISH_URL = 'http://localhost:5050/stockfish'
+PIKAFISH_URL = 'http://localhost:5555/pikafish'
+>>>>>>> e07821ebbb60cd826a5009b4a212d6b270c5a759
 
 class PuzzleService():
     def __init__(self) -> None:

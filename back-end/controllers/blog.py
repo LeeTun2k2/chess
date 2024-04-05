@@ -40,7 +40,7 @@ def like_blog(blog_id):
 @blog_bp.get('/api/blog')
 def get_blogs():
     try:
-        blogs = blog_service.get_blogs()  # Thay thế hàm này bằng phương thức thích hợp từ dịch vụ BlogService của bạn
+        blogs = blog_service.get_blogs()
         return jsonify(blogs), 200
     except Exception as e:
         return str(e), 500
