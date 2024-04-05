@@ -28,3 +28,10 @@ class LessonService():
     def clear_lessons(self):
         result = self.lessons_collection.delete_many({})
         return result.deleted_count
+    
+    def get_lesson_by_id(self, lesson_id):
+        lesson = self.lessons_collection.find_one({'_id': ObjectId(lesson_id)})
+        if lesson:
+            return self.map_lesson(lesson)
+        else:
+            raise Exception('Lesson not found')

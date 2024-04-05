@@ -36,3 +36,11 @@ def delete_lesson(lesson_id):
         return 'Lesson deleted successfully', 200
     except Exception as e:
         return str(e), 500
+    
+@lesson_bp.get('/api/lessons/<lesson_id>')
+def get_lesson_by_id(lesson_id):
+    try:
+        lesson = lesson_service.get_lesson_by_id(lesson_id)
+        return jsonify(lesson), 200
+    except Exception as e:
+        return str(e), 404

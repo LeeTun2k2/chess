@@ -56,7 +56,7 @@ export default function LessonsPage() {
                   />
                   <Box flex="1" px={4}>
                     <Heading as="h2" size="md">
-                      <Link as={RouterLink} to={lesson.link}>
+                      <Link as={RouterLink} to={lesson._id}>
                         {lesson.title}
                       </Link>
                     </Heading>

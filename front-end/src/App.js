@@ -45,6 +45,10 @@ import AdminCreateVideoPage from "./pages/admin/videos/create_video";
 import AdminUpdateVideoPage from "./pages/admin/videos/update_video";
 import SettingsPage from "./pages/common/settings";
 import LessonsPage from "./pages/practice/lessons";
+import LessonsDetailPage from "./pages/practice/lesson_detail";
+
+import AdminCreateLessonPage from "./pages/admin/lessons/create_lesson";
+
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -180,7 +184,7 @@ function App() {
 
 
         <Route exact path="/lessons" element={<LessonsPage />} />
-        
+        <Route path="/lessons/:lessonId" element={<LessonsDetailPage />} />
         {/* Admin page */}
         <Route exact path="/admin" element={<AdminDashboardPage />} />
 
@@ -239,6 +243,11 @@ function App() {
         />
 
         <Route path="/admin/*" element={<Navigate to={"/admin"} />} />
+        <Route
+          exact
+          path="/admin/create-lesson"
+          element={<AdminCreateLessonPage />}
+        />
       </Routes>
     </Router>
   );
