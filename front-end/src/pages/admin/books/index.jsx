@@ -1,5 +1,304 @@
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import AdminLayout from "../../../components/layouts/adminLayout";
+import {
+  ButtonGroup,
+  Flex,
+  Box,
+  Table,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  Button,
+  Container,
+  Heading,
+  useToast,
+  Image,
+  Input,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+} from "@chakra-ui/react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DeleteIcon,
+  EditIcon,
+  AddIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import axios from "../../../lib/axios";
+import { API_PROXY } from "../../../settings/appSettings";
+import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import { formatDate } from "../../../lib/datetime";
 
 export default function AdminBooksPage() {
-  return <AdminLayout>AdminBooksPage</AdminLayout>;
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { t } = useTranslation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+  const [data, setData] = useState([]);
+  const [renderData, setRenderData] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [pageNumber, setPageNumber] = React.useState(1);
+  const pageSize = 10;
+
+  useEffect(() => {
+    axios
+      .get(`${API_PROXY}/books`)
+      .then((resp) => {
+        setData(resp.data.books ?? []);
+        setRenderData(resp.data.books ?? []);
+      })
+      .catch((err) => {
+        if (err.response) toast(toast_error(err.response.data));
+        else toast(toast_error("Something went wrong. Please try again."));
+      });
+  }, []);
+
+  const handleDelete = () => {
+    if (!selectedItem) {
+      toast(toast_error(t("common.not_found")));
+    }
+    axios
+      .delete(`${API_PROXY}/books/${selectedItem._id}`)
+      .then((resp) => {
+        setData(renderData.filter((item) => item._id != selectedItem._id));
+        toast(toast_success(t("common.delete_success")));
+      })
+      .catch((err) => {
+        if (err.response) toast(toast_error(err.response.data));
+        else toast(toast_error("Something went wrong. Please try again."));
+      })
+      .finally(() => {
+        onClose();
+      });
+  };
+
+  return (
+    <AdminLayout>
+      <Container maxW="6xl" py={8}>
+        <Flex justify={"space-between"}>
+          <Heading mb={4}>{t("books.heading")}</Heading>
+          <Flex>
+            <Box position={"relative"} mr={4}>
+              <Input
+                colorScheme="gray"
+                placeholder={t("common.search")}
+                onChange={(e) => {
+                  setSearchText(e?.target?.value ?? "");
+                }}
+              />
+              <Button
+                position={"absolute"}
+                top={0}
+                right={0}
+                zIndex={1}
+                variant={"ghost"}
+                onClick={() => {
+                  setRenderData(
+                    data.filter((value) => value?.title?.includes(searchText))
+                  );
+                }}
+              >
+                <SearchIcon />
+              </Button>
+            </Box>
+            <Button
+              onClick={() => {
+                navigate("/admin/create-book");
+              }}
+              colorScheme="green"
+              w={32}
+            >
+              <AddIcon mr={2} /> {t("common.new")}
+            </Button>
+          </Flex>
+        </Flex>
+      </Container>
+
+      <Table
+        size={{ base: "sm", md: "md" }}
+        colorScheme="gray"
+        borderRadius={4}
+        overflow={"hidden"}
+        __css={{ "table-layout": "fixed", width: "full" }}
+      >
+        <Thead bgColor="gray.200">
+          <Tr>
+            <Th width="10%" textAlign={"center"}>
+              {t("common.no")}
+            </Th>
+            <Th width="20%" cursor={"pointer"}>
+              {t("books.title")}
+            </Th>
+            <Th width="35%" cursor={"pointer"}>
+              {t("books.description")}
+            </Th>
+            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
+              {t("books.image")}
+            </Th>
+            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
+              {t("books.updated_at")}
+            </Th>
+            <Th width="15%" textAlign={"center"} cursor={"pointer"}>
+              {t("common.action")}
+            </Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {renderData
+            .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+            .map((item, index) => (
+              <Tr
+                key={index}
+                userSelect="none"
+                cursor="pointer"
+                bgColor={index % 2 === 1 ? "gray.100" : "white"}
+                transition="background-color 0.5s ease-in-out"
+                _hover={{ bgColor: "gray.200 !important" }}
+                onDoubleClick={() => window.open(`/book/${item._id}`)}
+              >
+                <Td textAlign={"center"}>
+                  {(pageNumber - 1) * pageSize + index + 1}
+                </Td>
+                <Td
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {item.title}{" "}
+                </Td>
+                <Td
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {item.description}
+                </Td>
+                <Td
+                  textAlign={"center"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Image
+                    maxH={12}
+                    src={`${API_PROXY}/images/${item.image}`}
+                    alt={item.title}
+                  />
+                </Td>
+                <Td textAlign={"center"}>{formatDate(item.updated_at)}</Td>
+                <Td
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Button
+                    onClick={() => navigate(`/admin/update-book/${item._id}`)}
+                    colorScheme="yellow"
+                    mr={2}
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => {
+                      setSelectedItem(item);
+                      onOpen();
+                    }}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+        </Tbody>
+        <Tfoot>
+          <Tr>
+            <Td colSpan={6}>
+              <Flex justify="center" mt={4}>
+                <ButtonGroup>
+                  <Button
+                    colorScheme="gray"
+                    size="sm"
+                    onClick={() =>
+                      pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
+                    }
+                  >
+                    <ChevronLeftIcon />
+                  </Button>
+                  {Array.from(
+                    { length: Math.ceil(renderData.length / pageSize) },
+                    (_, i) => (
+                      <Button
+                        key={i}
+                        colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
+                        size="sm"
+                        onClick={() => setPageNumber(i + 1)}
+                      >
+                        {i + 1}
+                      </Button>
+                    )
+                  )}
+                  <Button
+                    colorScheme="gray"
+                    size="sm"
+                    onClick={() =>
+                      (pageNumber + 1) * pageSize <= renderData.length &&
+                      setPageNumber(pageNumber + 1)
+                    }
+                  >
+                    <ChevronRightIcon />
+                  </Button>
+                </ButtonGroup>
+              </Flex>
+            </Td>
+          </Tr>
+        </Tfoot>
+      </Table>
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              {t("common.confirm")}
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              {t("common.confirm_delete_question")}
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                {t("common.cancel")}
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                {t("common.delete")}
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </AdminLayout>
+  );
 }

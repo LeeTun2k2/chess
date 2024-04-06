@@ -181,10 +181,9 @@ function App() {
         <Route exact path="/donate" element={<DonatePage />} />
         <Route exact path="/achievements" element={<AchievementsPage />} />
         <Route exact path="/settings" element={<SettingsPage />} />
-
-
         <Route exact path="/lessons" element={<LessonsPage />} />
         <Route path="/lessons/:lessonId" element={<LessonsDetailPage />} />
+        
         {/* Admin page */}
         <Route exact path="/admin" element={<AdminDashboardPage />} />
 

@@ -19,6 +19,7 @@ from controllers.image import image_bp
 from controllers.blog import blog_bp
 from controllers.puzzle import puzzle_bp
 from controllers.lessons import lesson_bp
+from controllers.book import book_bp
 
 app = Flask(__name__)
 
@@ -35,6 +36,7 @@ CORS(image_bp)
 CORS(blog_bp)
 CORS(puzzle_bp)
 CORS(lesson_bp)
+CORS(book_bp)
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
@@ -70,6 +72,7 @@ app.register_blueprint(image_bp)
 app.register_blueprint(blog_bp)
 app.register_blueprint(puzzle_bp)
 app.register_blueprint(lesson_bp)
+app.register_blueprint(book_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
