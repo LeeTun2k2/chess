@@ -20,6 +20,7 @@ from controllers.blog import blog_bp
 from controllers.puzzle import puzzle_bp
 from controllers.lessons import lesson_bp
 from controllers.book import book_bp
+from controllers.tournament import tournament_bp
 
 app = Flask(__name__)
 
@@ -37,6 +38,7 @@ CORS(blog_bp)
 CORS(puzzle_bp)
 CORS(lesson_bp)
 CORS(book_bp)
+CORS(tournament_bp)
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
@@ -73,6 +75,7 @@ app.register_blueprint(blog_bp)
 app.register_blueprint(puzzle_bp)
 app.register_blueprint(lesson_bp)
 app.register_blueprint(book_bp)
+app.register_blueprint(tournament_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 

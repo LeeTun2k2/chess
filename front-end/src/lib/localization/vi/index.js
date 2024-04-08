@@ -6,6 +6,7 @@ import adminFooter from "./adminFooter.json";
 import profile from "./profile.json"
 import common from "./common.json"
 import books from "./books.json"
+import tournaments from "./tournaments.json"
 
 const vi = {
   common,
@@ -16,6 +17,7 @@ const vi = {
   settings,
   profile,
   books,
+  tournaments,
 };
 
 export default vi;

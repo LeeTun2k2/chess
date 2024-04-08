@@ -73,7 +73,10 @@ export default function AdminBooksPage() {
     axios
       .delete(`${API_PROXY}/books/${selectedItem._id}`)
       .then((resp) => {
-        setData(renderData.filter((item) => item._id != selectedItem._id));
+        setRenderData(
+          renderData.filter((item) => item._id != selectedItem._id)
+        );
+        setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
@@ -107,7 +110,11 @@ export default function AdminBooksPage() {
                 variant={"ghost"}
                 onClick={() => {
                   setRenderData(
-                    data.filter((value) => value?.title?.includes(searchText))
+                    data.filter((value) =>
+                      value?.name
+                        ?.toLowerCase()
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >

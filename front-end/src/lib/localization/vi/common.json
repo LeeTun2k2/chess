@@ -22,5 +22,15 @@
     "text_max_100": "Tối đa 100 ký tự",
     "text_max_200": "Tối đa 200 ký tự",
     "text_max_500": "Tối đa 500 ký tự",
-    "text_max_1000": "Tối đa 1000 ký tự"
+    "text_max_1000": "Tối đa 1000 ký tự",
+    "variant": "Thể loại",
+    "initial_time": "Thời Gian",
+    "bonus_time": "Cộng Dồn",
+    "start": "Bắt Đầu",
+    "end": "Kết Thúc",
+    "minute": "Phút",
+    "second": "Giây",
+    "chess": "Cờ Vua",
+    "xiangqi": "Cờ Tướng",
+    "time": "Thời gian"
 }
