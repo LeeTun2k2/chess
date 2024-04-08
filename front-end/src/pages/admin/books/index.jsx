@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import {
   ButtonGroup,
@@ -64,7 +64,7 @@ export default function AdminBooksPage() {
         if (err.response) toast(toast_error(err.response.data));
         else toast(toast_error("Something went wrong. Please try again."));
       });
-  }, []);
+  }, [toast]);
 
   const handleDelete = () => {
     if (!selectedItem) {
@@ -74,7 +74,7 @@ export default function AdminBooksPage() {
       .delete(`${API_PROXY}/books/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id != selectedItem._id)
+          renderData.filter((item) => item._id !== selectedItem._id),
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
@@ -113,8 +113,8 @@ export default function AdminBooksPage() {
                     data.filter((value) =>
                       value?.name
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
               >
@@ -261,7 +261,7 @@ export default function AdminBooksPage() {
                       >
                         {i + 1}
                       </Button>
-                    )
+                    ),
                   )}
                   <Button
                     colorScheme="gray"

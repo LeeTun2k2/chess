@@ -49,7 +49,6 @@ import LessonsDetailPage from "./pages/practice/lesson_detail";
 
 import AdminCreateLessonPage from "./pages/admin/lessons/create_lesson";
 
-
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
@@ -183,7 +182,7 @@ function App() {
         <Route exact path="/settings" element={<SettingsPage />} />
         <Route exact path="/lessons" element={<LessonsPage />} />
         <Route path="/lessons/:lessonId" element={<LessonsDetailPage />} />
-        
+
         {/* Admin page */}
         <Route exact path="/admin" element={<AdminDashboardPage />} />
 

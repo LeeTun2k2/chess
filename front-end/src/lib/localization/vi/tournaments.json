@@ -1,8 +1,8 @@
 {
-    "heading": "Quản Lý Giải Đấu",
-    "create": "Tạo Giải Đấu Mới",
-    "update": "Chỉnh Sửa Giải Đấu",
-    "no": "STT",
-    "name": "Tên",
-    "description": "Mô tả"
+  "heading": "Quản Lý Giải Đấu",
+  "create": "Tạo Giải Đấu Mới",
+  "update": "Chỉnh Sửa Giải Đấu",
+  "no": "STT",
+  "name": "Tên",
+  "description": "Mô tả"
 }

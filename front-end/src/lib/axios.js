@@ -7,7 +7,7 @@ import {
   getAccessTokenExpiry,
 } from "./auth";
 
-const PUBLIC_ROUTES = ["refresh"]
+const PUBLIC_ROUTES = ["refresh"];
 
 const refreshAccessToken = async (refreshToken) => {
   try {
@@ -19,18 +19,17 @@ const refreshAccessToken = async (refreshToken) => {
   } catch (error) {
     console.error("Error refreshing access token:", error);
     console.error("Try to login again");
-    window.location.href = "/logout"
+    window.location.href = "/logout";
     throw error;
   }
 };
 
 axios.interceptors.request.use(
   async (config) => {
-    const paths = config.url.split("/") ?? ["/"]
-    const route = paths[paths.length - 1]
-    if (PUBLIC_ROUTES.includes(route))
-    {
-      return config
+    const paths = config.url.split("/") ?? ["/"];
+    const route = paths[paths.length - 1];
+    if (PUBLIC_ROUTES.includes(route)) {
+      return config;
     }
     const accessToken = getAccessToken();
     const accessTokenExpiry = getAccessTokenExpiry();
@@ -44,7 +43,7 @@ axios.interceptors.request.use(
       const refreshToken = getRefreshToken();
       if (!accessToken && !refreshToken) {
         console.error("Access token and refresh token not found");
-        return config
+        return config;
       } else if (refreshToken) {
         try {
           const newAccessToken = await refreshAccessToken(refreshToken);
@@ -68,7 +67,11 @@ axios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
       const refreshToken = getRefreshToken();
       if (refreshToken) {
@@ -88,7 +91,7 @@ axios.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axios;

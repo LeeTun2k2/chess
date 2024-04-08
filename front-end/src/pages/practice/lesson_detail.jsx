@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Container,
-  Heading,
-  Text,
-  Image,
-  Box,
-} from "@chakra-ui/react";
+import { Container, Heading, Text, Image, Box } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "axios";
