@@ -39,7 +39,7 @@ import { API_PROXY } from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import { formatDate } from "../../../lib/datetime";
 
-export default function AdmintournamentsPage() {
+export default function AdminAchievementsPage() {
   const navigate = useNavigate();
   const toast = useToast();
   const { t } = useTranslation();
@@ -54,10 +54,10 @@ export default function AdmintournamentsPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/tournaments`)
+      .get(`${API_PROXY}/achievements`)
       .then((resp) => {
-        setData(resp.data.tournaments ?? []);
-        setRenderData(resp.data.tournaments ?? []);
+        setData(resp.data.achievements ?? []);
+        setRenderData(resp.data.achievements ?? []);
       })
       .catch((err) => {
         if (err.response) toast(toast_error(err.response.data));
@@ -70,7 +70,7 @@ export default function AdmintournamentsPage() {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .delete(`${API_PROXY}/tournaments/${selectedItem._id}`)
+      .delete(`${API_PROXY}/achievements/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
           renderData.filter((item) => item._id !== selectedItem._id)
@@ -91,7 +91,7 @@ export default function AdmintournamentsPage() {
     <AdminLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("tournaments.heading")}</Heading>
+          <Heading mb={4}>{t("achievements.heading")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -109,10 +109,14 @@ export default function AdmintournamentsPage() {
                 variant={"ghost"}
                 onClick={() => {
                   setRenderData(
-                    data.filter((value) =>
-                      value?.name
-                        ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
+                    data.filter(
+                      (value) =>
+                        value?.event
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase()) ||
+                        value?.member
+                          ?.toLowerCase()
+                          .includes(searchText.toLocaleLowerCase())
                     )
                   );
                 }}
@@ -122,7 +126,7 @@ export default function AdmintournamentsPage() {
             </Box>
             <Button
               onClick={() => {
-                navigate("/admin/create-tournament");
+                navigate("/admin/create-achievement");
               }}
               colorScheme="green"
               w={32}
@@ -145,23 +149,17 @@ export default function AdmintournamentsPage() {
             <Th width="10%" textAlign={"center"}>
               {t("common.no")}
             </Th>
-            <Th width="15%" cursor={"pointer"}>
-              {t("tournaments.name")}
+            <Th width="25%" cursor={"pointer"}>
+              {t("achievements.event")}
             </Th>
-            <Th width="20%" cursor={"pointer"}>
-              {t("tournaments.description")}
+            <Th width="20%" textAlign={"left"} cursor={"pointer"}>
+              {t("achievements.member")}
             </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.variant")}
+            <Th width="20%" textAlign={"left"} cursor={"pointer"}>
+              {t("achievements.reward")}
             </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.time")}
-            </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.start")}
-            </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.end")}
+            <Th width="10%" cursor={"pointer"}>
+              {t("achievements.time")}
             </Th>
             <Th width="15%" textAlign={"center"} cursor={"pointer"}>
               {t("common.action")}
@@ -179,7 +177,6 @@ export default function AdmintournamentsPage() {
                 bgColor={index % 2 === 1 ? "gray.100" : "white"}
                 transition="background-color 0.5s ease-in-out"
                 _hover={{ bgColor: "gray.200 !important" }}
-                onDoubleClick={() => window.open(`/tournament/${item._id}`)}
               >
                 <Td textAlign={"center"}>
                   {(pageNumber - 1) * pageSize + index + 1}
@@ -190,7 +187,7 @@ export default function AdmintournamentsPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.name}{" "}
+                  {item.event}
                 </Td>
                 <Td
                   textAlign={"left"}
@@ -198,24 +195,24 @@ export default function AdmintournamentsPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.description}
+                  {item.member}
                 </Td>
                 <Td
-                  textAlign={"center"}
+                  textAlign={"left"}
                   overflow="hidden"
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
                 >
-                  {item.variant}
+                  {item.reward}
                 </Td>
                 <Td
-                  textAlign={"center"}
-                >{`${item.initial_time} + ${item.bonus_time}`}</Td>
-                <Td textAlign={"center"}>{formatDate(item.start)}</Td>
-                <Td textAlign={"center"}>{formatDate(item.end)}</Td>
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {formatDate(item.time)}
+                </Td>
                 <Td
                   display={"flex"}
                   justifyContent={"center"}
@@ -223,7 +220,7 @@ export default function AdmintournamentsPage() {
                 >
                   <Button
                     onClick={() =>
-                      navigate(`/admin/update-tournament/${item._id}`)
+                      navigate(`/admin/update-achievement/${item._id}`)
                     }
                     colorScheme="yellow"
                     mr={2}

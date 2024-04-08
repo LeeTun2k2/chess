@@ -8,6 +8,7 @@ import common from "./common.json";
 import books from "./books.json";
 import tournaments from "./tournaments.json";
 import blogs from "./blogs.json"
+import achievements from "./achievements.json"
 
 const vi = {
   common,
@@ -20,6 +21,7 @@ const vi = {
   books,
   tournaments,
   blogs,
+  achievements,
 };
 
 export default vi;

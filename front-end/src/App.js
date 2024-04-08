@@ -46,6 +46,9 @@ import AdminUpdateVideoPage from "./pages/admin/videos/update_video";
 import SettingsPage from "./pages/common/settings";
 import LessonsPage from "./pages/practice/lessons";
 import LessonsDetailPage from "./pages/practice/lesson_detail";
+import AdminAchievementsPage from "./pages/admin/achievements";
+import AdminCreateAchievementPage from "./pages/admin/achievements/create_achievement";
+import AdminUpdateAchievementPage from "./pages/admin/achievements/update_achievement";
 
 import AdminCreateLessonPage from "./pages/admin/lessons/create_lesson";
 
@@ -224,6 +227,22 @@ function App() {
           exact
           path="/admin/update-tournament/:id"
           element={<AdminUpdateTournamentPage />}
+        />
+
+<Route
+          exact
+          path="/admin/achievements"
+          element={<AdminAchievementsPage />}
+        />
+        <Route
+          exact
+          path="/admin/create-achievement"
+          element={<AdminCreateAchievementPage />}
+        />
+        <Route
+          exact
+          path="/admin/update-achievement/:id"
+          element={<AdminUpdateAchievementPage />}
         />
 
         <Route exact path="/admin/users" element={<AdminUsersPage />} />
