@@ -16,6 +16,7 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
+import { useTranslation } from "react-i18next";
 
 const AdminHeader = () => {
   const navigate = useNavigate();
@@ -48,75 +49,92 @@ const AdminHeader = () => {
 export default AdminHeader;
 
 const PcMenu = ({ user }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <Fragment>
       <Menu>
         <MenuButton
+          textTransform={"uppercase"}
           as={Button}
           variant="ghost"
           mx={2}
+          display={{ base: "none", md: "flex" }}
           onClick={() => navigate("/admin")}
-          display={"flex"}
         >
-          Dashboard
+          {t("header.dashboard")}
         </MenuButton>
       </Menu>
       <Menu>
         <MenuButton
+          textTransform={"uppercase"}
           as={Button}
           variant="ghost"
+          rightIcon={<ChevronDownIcon />}
           mx={2}
-          onClick={() => navigate("/admin/books")}
-          display={"flex"}
+          display={{ base: "none", md: "flex" }}
         >
-          Books
+          {t("header.documents")}
         </MenuButton>
+        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+          <MenuItem onClick={() => navigate("/admin/blogs")}>
+            {t("header.blogs")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/achievements")}>
+            {t("header.achievements")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/books")}>
+            {t("header.books")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/videos")}>
+            {t("header.videos")}
+          </MenuItem>
+        </MenuList>
       </Menu>
       <Menu>
         <MenuButton
+          textTransform={"uppercase"}
           as={Button}
           variant="ghost"
+          rightIcon={<ChevronDownIcon />}
           mx={2}
-          onClick={() => navigate("/admin/tournaments")}
-          display={"flex"}
+          display={{ base: "none", md: "flex" }}
         >
-          Tournaments
+          {t("header.games")}
         </MenuButton>
+        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+          <MenuItem onClick={() => navigate("/admin/games")}>
+            {t("header.games")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/tournaments")}>
+            {t("header.tournaments")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/puzzles")}>
+            {t("header.puzzles")}
+          </MenuItem>
+        </MenuList>
       </Menu>
       <Menu>
         <MenuButton
+          textTransform={"uppercase"}
           as={Button}
           variant="ghost"
+          rightIcon={<ChevronDownIcon />}
           mx={2}
-          onClick={() => navigate("/admin/users")}
-          display={"flex"}
+          display={{ base: "none", md: "flex" }}
         >
-          Users
+          {t("header.accounts")}
         </MenuButton>
+        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+          <MenuItem onClick={() => navigate("/admin/users")}>
+            {t("header.users")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/roles")}>
+            {t("header.roles")}
+          </MenuItem>
+        </MenuList>
       </Menu>
-      <Menu>
-        <MenuButton
-          as={Button}
-          variant="ghost"
-          mx={2}
-          onClick={() => navigate("/admin/videos")}
-          display={"flex"}
-        >
-          Videos
-        </MenuButton>
-      </Menu>
-      <Menu>
-        <MenuButton
-          as={Button}
-          variant="ghost"
-          mx={2}
-          onClick={() => navigate("/admin/create-lesson")}
-          display={"flex"}
-        >
-          Lessons
-        </MenuButton>
-      </Menu>
+
       {user ? (
         <Fragment>
           <Spacer />
@@ -129,12 +147,16 @@ const PcMenu = ({ user }) => {
                 </Text>
               </Flex>
             </MenuButton>
-            <MenuList zIndex={9999}>
-              <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
-              <MenuItem onClick={() => navigate("/settings")}>
-                Settings
+            <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+              <MenuItem onClick={() => navigate("/profile")}>
+                {t("header.profile")}
               </MenuItem>
-              <MenuItem onClick={() => navigate("/logout")}>Logout</MenuItem>
+              <MenuItem onClick={() => navigate("/settings")}>
+                {t("header.settings")}
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/logout")}>
+                {t("header.logout")}
+              </MenuItem>
             </MenuList>
           </Menu>
         </Fragment>
@@ -142,7 +164,7 @@ const PcMenu = ({ user }) => {
         <Fragment>
           <Spacer />
           <Button onClick={() => navigate("/login")} mx={2}>
-            Login
+            {t("header.login")}
           </Button>
         </Fragment>
       )}

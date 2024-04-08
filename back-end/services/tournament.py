@@ -16,7 +16,7 @@ class TournamentService():
         return tournament
 
     def get_all(self):
-        data = self.tournaments_collection.find({}).sort('created_at', -1)
+        data = self.tournaments_collection.find({}).sort('updated_at', -1)
         data = [self.map(tournament) for tournament in data]
         return data
     

@@ -18,7 +18,7 @@ class BookService():
         return book
 
     def get_all(self):
-        data = self.books_collection.find({}).sort('created_at', -1)
+        data = self.books_collection.find({}).sort('updated_at', -1)
         data = [self.map(book) for book in data]
         return data
     
