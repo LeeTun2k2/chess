@@ -1,0 +1,11 @@
+{
+  "heading": "Blogs Management",
+  "create": "Create New Blog",
+  "update": "Edit Blog",
+  "no": "No",
+  "title": "Title",
+  "description": "Description",
+  "image": "Image",
+  "content": "Content",
+  "updated_at": "Updated At"
+}

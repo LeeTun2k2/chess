@@ -7,6 +7,7 @@ import profile from "./profile.json";
 import common from "./common.json";
 import books from "./books.json";
 import tournaments from "./tournaments.json";
+import blogs from "./blogs.json"
 
 const en = {
   common,
@@ -18,6 +19,7 @@ const en = {
   profile,
   books,
   tournaments,
+  blogs,
 };
 
 export default en;

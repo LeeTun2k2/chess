@@ -30,7 +30,7 @@ def get_blog_by_id(blog_id):
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
-@blog_bp.post('/api/blog')
+@blog_bp.post('/api/blogs')
 @jwt_required()
 def create_blog():
     user_id = get_jwt_identity()
@@ -83,7 +83,7 @@ def delete_blog(blog_id):
         return jsonify({"message": str(e)}), 500
 
 
-@blog_bp.post('/api/blog/<blog_id>/comment')
+@blog_bp.post('/api/blogs/<blog_id>/comment')
 @jwt_required()
 def add_comment(blog_id):
     user_id = get_jwt_identity()
@@ -94,7 +94,7 @@ def add_comment(blog_id):
     except Exception as e:
         return str(e), 500
 
-@blog_bp.put('/api/blog/<blog_id>/like')
+@blog_bp.put('/api/blogs/<blog_id>/like')
 @jwt_required()
 def toggle_like_blog(blog_id):
     user_id = get_jwt_identity()

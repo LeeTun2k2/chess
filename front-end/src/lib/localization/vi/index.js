@@ -7,6 +7,7 @@ import profile from "./profile.json";
 import common from "./common.json";
 import books from "./books.json";
 import tournaments from "./tournaments.json";
+import blogs from "./blogs.json"
 
 const vi = {
   common,
@@ -18,6 +19,7 @@ const vi = {
   profile,
   books,
   tournaments,
+  blogs,
 };
 
 export default vi;
