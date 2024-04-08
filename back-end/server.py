@@ -22,6 +22,7 @@ from controllers.lessons import lesson_bp
 from controllers.book import book_bp
 from controllers.tournament import tournament_bp
 from controllers.achievement import achievement_bp
+from controllers.video import video_bp
 
 app = Flask(__name__)
 
@@ -41,6 +42,7 @@ CORS(lesson_bp)
 CORS(book_bp)
 CORS(tournament_bp)
 CORS(achievement_bp)
+CORS(video_bp)
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
@@ -79,6 +81,7 @@ app.register_blueprint(lesson_bp)
 app.register_blueprint(book_bp)
 app.register_blueprint(tournament_bp)
 app.register_blueprint(achievement_bp)
+app.register_blueprint(video_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 

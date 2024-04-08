@@ -9,6 +9,7 @@ import books from "./books.json";
 import tournaments from "./tournaments.json";
 import blogs from "./blogs.json"
 import achievements from "./achievements.json"
+import videos from "./videos.json"
 
 
 const en = {
@@ -22,8 +23,8 @@ const en = {
   books,
   tournaments,
   blogs,
-  achievements
-  
+  achievements,
+  videos
 };
 
 export default en;
