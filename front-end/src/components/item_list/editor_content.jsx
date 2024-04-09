@@ -1,44 +1,51 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; 
+import "react-quill/dist/quill.snow.css";
 
-export default function EditorContent({ onChange }) {
-  const [content, setContent] = useState("");
-
-  const handleContentChange = (newContent) => {
-    setContent(newContent);
-    onChange(newContent); 
-  };
-
+export default function EditorContent({ content, onChange }) {
   const modules = {
     toolbar: [
-      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-      [{size: []}],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, 
-       {'indent': '-1'}, {'indent': '+1'}],
-      ['link', 'image', 'video'],
-      ['clean']
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image", "video"],
+      ["clean"],
     ],
     clipboard: {
       matchVisual: false,
-    }
+    },
   };
 
   const formats = [
-    'header', 'font', 'size',
-    'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image', 'video'
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
   ];
 
   return (
     <div>
       <ReactQuill
-        theme="snow" 
+        theme="snow"
         value={content}
-        onChange={handleContentChange}
-        modules={modules} 
+        onChange={onChange}
+        modules={modules}
         formats={formats}
       />
     </div>

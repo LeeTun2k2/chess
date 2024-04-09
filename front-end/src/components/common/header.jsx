@@ -76,7 +76,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.club")}
         </MenuButton>
-        <MenuList zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
           <MenuItem onClick={() => navigate("/")}>{t("header.home")}</MenuItem>
           <MenuItem onClick={() => navigate("/blogs")}>
             {t("header.blogs")}
@@ -103,7 +103,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.play")}
         </MenuButton>
-        <MenuList zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
           <MenuItem onClick={() => navigate("/lobby")}>Lobby</MenuItem>
           <MenuItem onClick={() => navigate("/new-game")}>
             {t("header.playWithOptions")}
@@ -118,25 +118,13 @@ const PcMenu = ({ user }) => {
           textTransform={"uppercase"}
           as={Button}
           variant="ghost"
-          mx={2}
-          onClick={() => navigate("/lessons")}
-          display={{ base: "none", md: "flex" }}
-        >
-          {t("header.lessons")}
-        </MenuButton>
-      </Menu>
-      <Menu>
-        <MenuButton
-          textTransform={"uppercase"}
-          as={Button}
-          variant="ghost"
           rightIcon={<ChevronDownIcon />}
           mx={2}
           display={{ base: "none", md: "flex" }}
         >
           {t("header.practice")}
         </MenuButton>
-        <MenuList zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
           <MenuItem onClick={() => navigate("/puzzle")}>
             {t("header.puzzles")}
           </MenuItem>
@@ -146,9 +134,12 @@ const PcMenu = ({ user }) => {
           <MenuItem onClick={() => navigate("/books")}>
             {t("header.books")}
           </MenuItem>
+          <MenuItem onClick={() => navigate("/lessons")}>
+            {t("header.lessons")}
+          </MenuItem>
         </MenuList>
       </Menu>
-      
+
       <Menu>
         <MenuButton
           textTransform={"uppercase"}
@@ -180,7 +171,7 @@ const PcMenu = ({ user }) => {
                 </Text>
               </Flex>
             </MenuButton>
-            <MenuList zIndex={9999}>
+            <MenuList p={0} overflow={"hidden"} zIndex={9999}>
               <MenuItem onClick={() => navigate("/profile")}>
                 {t("header.profile")}
               </MenuItem>
