@@ -129,8 +129,8 @@ const PcMenu = ({ user }) => {
           <MenuItem onClick={() => navigate("/admin/users")}>
             {t("header.users")}
           </MenuItem>
-          <MenuItem onClick={() => navigate("/admin/roles")}>
-            {t("header.roles")}
+          <MenuItem onClick={() => navigate("/admin/admins")}>
+            {t("header.admins")}
           </MenuItem>
         </MenuList>
       </Menu>

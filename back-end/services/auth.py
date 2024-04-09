@@ -27,7 +27,9 @@ class AuthServices():
         # insert user data
         user_data = {
             'username': username, 'password': hashed_password, 
-            'email': email, 'name': name, 'is_verified': False }
+            'email': email, 'name': name, 'is_verified': False,
+            'is_locked': False, 'role': 'PLAYER'
+        }
         
         result = self.users_collection.insert_one(user_data)
 

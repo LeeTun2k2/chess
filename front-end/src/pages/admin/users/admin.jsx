@@ -23,15 +23,24 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverHeader,
+  PopoverBody,
+  List,
+  ListItem,
 } from "@chakra-ui/react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  LockIcon,
-  UnlockIcon,
   CheckIcon,
   CloseIcon,
   SearchIcon,
+  AddIcon,
+  DeleteIcon,
 } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -39,12 +48,14 @@ import axios from "../../../lib/axios";
 import { API_PROXY } from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 
-export default function AdminUsersPage() {
+export default function AdminPage() {
   const navigate = useNavigate();
   const toast = useToast();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
+  const [users, setUsers] = useState([]);
+  const [searchUsers, setSearchUsers] = useState([]);
   const [data, setData] = useState([]);
   const [renderData, setRenderData] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -54,10 +65,21 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     axios
+      .get(`${API_PROXY}/users/admins`)
+      .then((resp) => {
+        setData(resp?.data?.users ?? []);
+        setRenderData(resp?.data?.users ?? []);
+      })
+      .catch((err) => {
+        if (err.response) toast(toast_error(err.response.data));
+        else toast(toast_error("Something went wrong. Please try again."));
+      });
+
+    axios
       .get(`${API_PROXY}/users`)
       .then((resp) => {
-        setData(resp.data.users ?? []);
-        setRenderData(resp.data.users ?? []);
+        setUsers(resp?.data?.users ?? []);
+        setSearchUsers(resp?.data?.users ?? []);
       })
       .catch((err) => {
         if (err.response) toast(toast_error(err.response.data));
@@ -65,35 +87,32 @@ export default function AdminUsersPage() {
       });
   }, [toast]);
 
+  const handleItemClick = (selected) => {
+    axios
+      .put(`${API_PROXY}/users/${selected.id}/role`, { role: "ADMIN" })
+      .then((resp) => {
+        setData([...data, { ...selected, role: "ADMIN" }]);
+        setRenderData([...renderData, { ...selected, role: "ADMIN" }]);
+        toast(toast_success(t("common.success")));
+      })
+      .catch((err) => {
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error("Something went wrong. Please try again."));
+      })
+      .finally(() => {
+        onClose();
+      });
+  };
+
   const handleToggleAccountStatus = () => {
     if (!selectedItem) {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .put(`${API_PROXY}/users/${selectedItem.id}/status`)
+      .put(`${API_PROXY}/users/${selectedItem.id}/role`, { role: "PLAYER" })
       .then((resp) => {
-        setRenderData(
-          renderData.map((item) => {
-            if (item.id === selectedItem.id) {
-              return {
-                ...item,
-                is_locked: !item.is_locked,
-              };
-            }
-            return item;
-          })
-        );
-        setData(
-          data.map((item) => {
-            if (item.id === selectedItem.id) {
-              return {
-                ...item,
-                is_locked: !item.is_locked,
-              };
-            }
-            return item;
-          })
-        );
+        setRenderData(renderData.filter((item) => item.id !== selectedItem.id));
+        setData(data.filter((item) => item.id !== selectedItem.id));
         toast(toast_success(t("common.success")));
       })
       .catch((err) => {
@@ -109,7 +128,7 @@ export default function AdminUsersPage() {
     <AdminLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("users.heading")}</Heading>
+          <Heading mb={4}>{t("users.admin_management")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -118,24 +137,19 @@ export default function AdminUsersPage() {
                 onChange={(e) => {
                   setSearchText(e?.target?.value ?? "");
                 }}
-                w={300}
               />
               <Button
                 position={"absolute"}
                 top={0}
                 right={0}
                 zIndex={1}
-                colorScheme="teal"
+                variant={"ghost"}
                 onClick={() => {
                   setRenderData(
-                    data.filter(
-                      (value) =>
-                        value?.username
-                          ?.toLowerCase()
-                          .includes(searchText.toLowerCase()) ||
-                        value?.email
-                          ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase())
+                    data.filter((value) =>
+                      value?.title
+                        ?.toLowerCase()
+                        .includes(searchText.toLowerCase())
                     )
                   );
                 }}
@@ -143,6 +157,47 @@ export default function AdminUsersPage() {
                 <SearchIcon />
               </Button>
             </Box>
+            <Popover>
+              <PopoverTrigger>
+                <Button colorScheme="green" w={32}>
+                  <AddIcon mr={2} /> {t("users.new_admin")}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverCloseButton />
+                <PopoverHeader>
+                  <Input
+                    variant={"ghost"}
+                    placeholder={t("users.enter_email")}
+                    fontSize={"sm"}
+                    p={0}
+                    onChange={(e) => {
+                      const text = e?.target?.value ?? "";
+                      setSearchUsers(
+                        users.filter((value) =>
+                          value.email.toLowerCase().includes(text.toLowerCase())
+                        )
+                      );
+                    }}
+                  />
+                </PopoverHeader>
+                <PopoverBody maxH={400}>
+                  <List spacing={2}>
+                    {searchUsers.map((item) => (
+                      <ListItem
+                        key={item.id}
+                        cursor={"pointer"}
+                        onClick={() => handleItemClick(item)}
+                        _hover={{ bgColor: "gray.100" }}
+                      >
+                        {item.email}
+                      </ListItem>
+                    ))}
+                  </List>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
           </Flex>
         </Flex>
       </Container>
@@ -252,13 +307,13 @@ export default function AdminUsersPage() {
                   alignItems={"center"}
                 >
                   <Button
-                    colorScheme="yellow"
+                    colorScheme="red"
                     onClick={() => {
                       setSelectedItem(item);
                       onOpen();
                     }}
                   >
-                    {item.is_locked ? <UnlockIcon /> : <LockIcon />}
+                    <DeleteIcon />
                   </Button>
                 </Td>
               </Tr>

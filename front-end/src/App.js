@@ -49,8 +49,8 @@ import LessonsDetailPage from "./pages/practice/lesson_detail";
 import AdminAchievementsPage from "./pages/admin/achievements";
 import AdminCreateAchievementPage from "./pages/admin/achievements/create_achievement";
 import AdminUpdateAchievementPage from "./pages/admin/achievements/update_achievement";
-
 import AdminCreateLessonPage from "./pages/admin/lessons/create_lesson";
+import AdminPage from "./pages/admin/users/admin";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -246,6 +246,7 @@ function App() {
         />
 
         <Route exact path="/admin/users" element={<AdminUsersPage />} />
+        <Route exact path="/admin/admins" element={<AdminPage />} />
 
         <Route exact path="/admin/videos" element={<AdminVideosPage />} />
         <Route
