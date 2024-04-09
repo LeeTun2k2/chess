@@ -229,7 +229,7 @@ function App() {
           element={<AdminUpdateTournamentPage />}
         />
 
-<Route
+        <Route
           exact
           path="/admin/achievements"
           element={<AdminAchievementsPage />}

@@ -74,7 +74,7 @@ export default function AdminBooksPage() {
       .delete(`${API_PROXY}/books/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id)
+          renderData.filter((item) => item._id !== selectedItem._id),
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
@@ -113,8 +113,8 @@ export default function AdminBooksPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
               >
@@ -261,7 +261,7 @@ export default function AdminBooksPage() {
                       >
                         {i + 1}
                       </Button>
-                    )
+                    ),
                   )}
                   <Button
                     colorScheme="gray"
