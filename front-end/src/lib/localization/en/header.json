@@ -19,5 +19,11 @@
   "logout": "Logout",
   "login": "Login",
   "register": "Register",
-  "lessons": "Lessons"
+  "lessons": "Lessons",
+  "dashboard": "Dashboard",
+  "documents": "Documents",
+  "games": "Games",
+  "accounts": "Accounts",
+  "users": "Users",
+  "admins": "Adminstators"
 }

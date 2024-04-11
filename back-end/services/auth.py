@@ -27,7 +27,9 @@ class AuthServices():
         # insert user data
         user_data = {
             'username': username, 'password': hashed_password, 
-            'email': email, 'name': name, 'is_verified': False }
+            'email': email, 'name': name, 'is_verified': False,
+            'is_locked': False, 'role': 'PLAYER'
+        }
         
         result = self.users_collection.insert_one(user_data)
 
@@ -78,11 +80,11 @@ class AuthServices():
 
         user_id = str(user.id)
         access_token = create_access_token(identity=user_id)
-        refresh_token = create_refresh_token(identity=username)
+        refresh_token = create_refresh_token(identity=user_id)
         return True, (access_token, refresh_token)
 
-    def refresh_token(self, username: str):
-        return create_access_token(identity=username)
+    def refresh_token(self, user_id: str):
+        return create_access_token(identity=user_id)
 
     def logout(self):
         logout_user()

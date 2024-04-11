@@ -27,9 +27,9 @@ def get_lessons():
 @jwt_required()
 def delete_lesson(lesson_id):
     try:
-        current_user_id = get_jwt_identity()
+        user_id = get_jwt_identity()
         lesson = lesson_service.get_lesson_by_id(lesson_id)
-        if lesson['author_id'] != current_user_id:
+        if lesson['author_id'] != user_id:
             return 'Unauthorized', 401
 
         lesson_service.delete_lesson(lesson_id)

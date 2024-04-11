@@ -1,0 +1,14 @@
+{
+  "heading": "Users Management",
+  "username": "Username",
+  "email": "Email",
+  "name": "Name",
+  "status": "Status",
+  "verified": "Verified",
+  "unverified": "Unverified",
+  "locked": "Locked",
+  "active": "Active",
+  "admin_management": "Admins Management",
+  "new_admin": "Admin",
+  "enter_email": "Enter Email"
+}

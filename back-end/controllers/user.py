@@ -81,3 +81,57 @@ def user_profile(username: str):
     except Exception as e:
         error(e)
         return "Fail to get user profile.", 500
+    
+@user_bp.route('/api/users', methods=['GET'])
+@jwt_required()
+def get_all_users():
+    try:
+        service = UserService()
+        users = service.get_all()
+        return jsonify({"message": "success", "users": users}), 200
+    except Exception as e:
+        error(e)
+        return "Fail to get user profile.", 500
+
+@user_bp.route('/api/users/admins', methods=['GET'])
+@jwt_required()
+def get_all_admins():
+    try:
+        service = UserService()
+        admins = service.get_all_admin()
+        return jsonify({"message": "success", "users": admins}), 200
+    except Exception as e:
+        error(e)
+        return "Fail to get user profile.", 500
+
+@user_bp.route('/api/users/<user_id>/role', methods=['PUT'])
+@jwt_required()
+def set_role(user_id):
+    try:
+        role_data = request.get_json()
+        if 'role' not in role_data:
+            return jsonify({'error': 'Role is required'}), 400
+        
+        service = UserService()
+        success, message = service.set_role(user_id, role_data['role'])
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            return jsonify({'error': message}), 400
+    except Exception as e:
+        error(e)
+        return "Fail to get user profile.", 500
+    
+@user_bp.route('/api/users/<user_id>/status', methods=['PUT'])
+@jwt_required()
+def toggle_status(user_id):
+    try:
+        service = UserService()
+        success, message = service.toggle_status(user_id)
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            return jsonify({'error': message}), 400
+    except Exception as e:
+        error(e)
+        return "Fail to get user profile.", 500
