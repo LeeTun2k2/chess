@@ -8,12 +8,12 @@ import { getUserData } from "../../lib/auth";
 import { CHESS_FEN } from "../../settings/game";
 import { Chess } from "chess.js";
 import { io } from "socket.io-client";
-import { API_PROXY, PROXY } from "../../settings/appSettings";
+import { API_PROXY, SOCKET_PROXY } from "../../settings/appSettings";
 import axios from "../../lib/axios";
 
 export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
   const user = getUserData() ?? { id: "" };
-  const socket = io(PROXY);
+  const socket = io(SOCKET_PROXY);
   const [chess] = useState(new Chess(CHESS_FEN));
   const [fen, setFen] = useState("");
   const [lastMove, setLastMove] = useState([]);

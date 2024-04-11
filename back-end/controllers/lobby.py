@@ -20,8 +20,11 @@ def getLobbies():
 @lobby_bp.post('/api/lobby')
 @jwt_required()
 def createLobby():
-    user_id = get_jwt_identity()
     try:
+        user_id = get_jwt_identity()
+        user = UserService().get_by_id(user_id)
+        if not user: 
+            raise Exception('User not found')
         lobby = request.get_json()
         newLobby = lobby_service.create_lobby(lobby, user_id)
         emit('lobby_created', {'lobby': newLobby}, broadcast=True, namespace='/')
