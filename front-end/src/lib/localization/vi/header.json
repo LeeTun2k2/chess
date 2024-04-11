@@ -19,5 +19,11 @@
   "logout": "Đăng Xuất",
   "login": "Đăng Nhập",
   "register": "Đăng Ký",
-  "lessons": "Bài học"
+  "lessons": "Bài học",
+  "dashboard": "Bảng điều khiển",
+  "documents": "Tài liệu",
+  "games": "Trò chơi",
+  "accounts": "Tài khoản",
+  "users": "Người dùng",
+  "admins": "Quản Trị Viên"
 }

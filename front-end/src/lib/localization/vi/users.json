@@ -1,0 +1,14 @@
+{
+  "heading": "Quản Lý Người Dùng",
+  "username": "Tên Người Dùng",
+  "email": "Email",
+  "name": "Tên",
+  "status": "Trạng Thái",
+  "verified": "Đã xác thực",
+  "unverified": "Chưa Xác Thực",
+  "locked": "Đã Khóa",
+  "active": "Hoạt Động",
+  "admin_management": "Quản Lý Ban Quản Trị",
+  "new_admin": "Admin",
+  "enter_email": "Nhập Email"
+}

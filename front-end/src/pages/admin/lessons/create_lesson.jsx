@@ -1,18 +1,12 @@
 import { useState } from "react";
-import {
-  Container,
-  Heading,
-  Box,
-  Button,
-  Input,
-} from "@chakra-ui/react";
+import { Container, Heading, Box, Button, Input } from "@chakra-ui/react";
 import { FaBook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_PROXY } from "../../../settings/appSettings";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import LessonEditor from "../../../components/item_list/editor_content";
-import { getAccessToken} from "../../../lib/auth";
+import { getAccessToken } from "../../../lib/auth";
 
 export default function CreateLessonPage() {
   const navigate = useNavigate();
@@ -45,7 +39,7 @@ export default function CreateLessonPage() {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       });
-      
+
       navigate("/admin/lessons");
     } catch (error) {
       console.error(error);

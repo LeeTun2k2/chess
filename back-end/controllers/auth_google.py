@@ -10,7 +10,9 @@ def register_google(email: str, name: str):
             'username': email, 'password': None, 
             'email': email, 
             'name': name, 
-            'is_verified': True 
+            'is_verified': True,
+            'is_locked': False, 
+            'role': 'PLAYER'
         }
         
         result = UserService().users_collection.insert_one(user_data)

@@ -8,7 +8,6 @@ game_service = GameService()
 user_service = UserService()
 
 def request_game(user_id, lobby_id):
-    print("################## request game")
     lobby = lobby_service.get_lobby(lobby_id) 
     if lobby['status'] == 'OPEN':
         emit('error', {'message': 'Lobby is open'}, namespace='/')
@@ -24,9 +23,7 @@ def request_game(user_id, lobby_id):
     emit('game_ready', {'game': game, 'lobby_id': lobby_id}, broadcast=True, namespace='/')
 
 def join_game(game_id: str): 
-    print("#################gameStart")
     emit('game_start', {'message': 'Game start', 'game_id': game_id}, broadcast=True, namespace='/')
 
 def send_move(game_id: str, move): 
-    print("################## send move")
     emit('receive_move', {'move': move, 'game_id': game_id}, broadcast=True, namespace='/')

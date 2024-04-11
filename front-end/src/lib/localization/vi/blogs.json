@@ -1,0 +1,11 @@
+{
+  "heading": "Quản Lý Bài Viết",
+  "create": "Tạo Bài Viết Mới",
+  "update": "Chỉnh Sửa Bài Viết",
+  "no": "STT",
+  "title": "Tên",
+  "description": "Mô tả",
+  "image": "Hình ảnh",
+  "content": "Nội dung",
+  "updated_at": "Cập nhật"
+}

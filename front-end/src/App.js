@@ -46,9 +46,11 @@ import AdminUpdateVideoPage from "./pages/admin/videos/update_video";
 import SettingsPage from "./pages/common/settings";
 import LessonsPage from "./pages/practice/lessons";
 import LessonsDetailPage from "./pages/practice/lesson_detail";
-
+import AdminAchievementsPage from "./pages/admin/achievements";
+import AdminCreateAchievementPage from "./pages/admin/achievements/create_achievement";
+import AdminUpdateAchievementPage from "./pages/admin/achievements/update_achievement";
 import AdminCreateLessonPage from "./pages/admin/lessons/create_lesson";
-
+import AdminPage from "./pages/admin/users/admin";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -181,10 +183,9 @@ function App() {
         <Route exact path="/donate" element={<DonatePage />} />
         <Route exact path="/achievements" element={<AchievementsPage />} />
         <Route exact path="/settings" element={<SettingsPage />} />
-
-
         <Route exact path="/lessons" element={<LessonsPage />} />
         <Route path="/lessons/:lessonId" element={<LessonsDetailPage />} />
+
         {/* Admin page */}
         <Route exact path="/admin" element={<AdminDashboardPage />} />
 
@@ -228,7 +229,24 @@ function App() {
           element={<AdminUpdateTournamentPage />}
         />
 
+        <Route
+          exact
+          path="/admin/achievements"
+          element={<AdminAchievementsPage />}
+        />
+        <Route
+          exact
+          path="/admin/create-achievement"
+          element={<AdminCreateAchievementPage />}
+        />
+        <Route
+          exact
+          path="/admin/update-achievement/:id"
+          element={<AdminUpdateAchievementPage />}
+        />
+
         <Route exact path="/admin/users" element={<AdminUsersPage />} />
+        <Route exact path="/admin/admins" element={<AdminPage />} />
 
         <Route exact path="/admin/videos" element={<AdminVideosPage />} />
         <Route

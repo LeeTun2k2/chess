@@ -106,8 +106,8 @@ def login():
 @auth_bp.post('/api/refresh')
 @jwt_required(refresh=True)
 def refresh():
-    current_username = get_jwt_identity()
-    access_token = AuthServices().refresh_token(username=current_username)
+    user_id = get_jwt_identity()
+    access_token = AuthServices().refresh_token(user_id==user_id)
     return jsonify({'access_token':access_token}), 200
 
 @auth_bp.get('/api/logout')
@@ -126,8 +126,9 @@ def logout():
 @login_required
 @jwt_required()
 def protected():
-    current_username = get_jwt_identity()
-    return jsonify(logged_in_as=current_username), 200
+    user_id = get_jwt_identity()
+    user = UserService().get_by_id(user_id=user_id)
+    return jsonify(logged_in_as=user.username), 200
 
 @auth_bp.get('/api/forgot-password')
 def forgot_password():
