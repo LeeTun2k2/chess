@@ -16,7 +16,7 @@ import ClientLayout from "../../components/layouts/clientLayout";
 import ChessBoard from "../../components/game/chessBoard";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
-import { API_PROXY, PROXY } from "../../settings/appSettings";
+import { API_PROXY, SOCKET_PROXY } from "../../settings/appSettings";
 import Timer from "../../components/game/timer";
 import { getUserData } from "../../lib/auth";
 import io from "socket.io-client";
@@ -25,7 +25,7 @@ export default function OnlineGamePage(props) {
   const user = getUserData() ?? { id: "" };
   const path = useCurrentPath();
   const id = path[path.length - 1];
-  const socket = io(PROXY);
+  const socket = io(SOCKET_PROXY);
 
   const toast = useToast();
 
@@ -70,7 +70,7 @@ export default function OnlineGamePage(props) {
                 ...game.white_player,
                 is_turn: true,
               }
-            : { ...game.black_player, is_turn: false },
+            : { ...game.black_player, is_turn: false }
         );
         setOpponent(
           user.id === game.white
@@ -78,7 +78,7 @@ export default function OnlineGamePage(props) {
                 ...game.black_player,
                 is_turn: false,
               }
-            : { ...game.white_player, is_turn: true },
+            : { ...game.white_player, is_turn: true }
         );
         if (!game.png) {
           socket.connect();

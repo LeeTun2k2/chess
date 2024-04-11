@@ -10,7 +10,7 @@ import {
 import { useCurrentPath } from "../../lib/hooks/route";
 import ClientLayout from "../../components/layouts/clientLayout";
 import io from "socket.io-client";
-import { PROXY } from "../../settings/appSettings";
+import { SOCKET_PROXY } from "../../settings/appSettings";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
 
@@ -18,7 +18,7 @@ export default function WaitingGamePage(props) {
   const path = useCurrentPath();
   const id = path[path.length - 1];
   const navigate = useNavigate();
-  const socket = io(PROXY);
+  const socket = io(SOCKET_PROXY);
   const user = getUserData();
 
   useEffect(() => {
