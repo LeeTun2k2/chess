@@ -36,7 +36,7 @@ import {
   XIANGQI,
 } from "../../settings/game";
 import NewOnlineGameModal from "../../components/game/newGameModal";
-import { API_PROXY, PROXY } from "../../settings/appSettings";
+import { API_PROXY, SOCKET_PROXY } from "../../settings/appSettings";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import io from "socket.io-client";
@@ -70,7 +70,7 @@ export default function LobbyPage(props) {
   }, [toast]);
 
   useEffect(() => {
-    const socket = io(PROXY);
+    const socket = io(SOCKET_PROXY);
 
     socket.on("lobby_created", (resp) => {
       const lobby = resp.lobby;
@@ -184,7 +184,7 @@ export default function LobbyPage(props) {
                               >
                                 {i + 1}
                               </Button>
-                            ),
+                            )
                           )}
                           <Button
                             colorScheme="gray"
