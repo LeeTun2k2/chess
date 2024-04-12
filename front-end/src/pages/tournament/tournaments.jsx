@@ -151,7 +151,7 @@ export default function TournamentsPage(props) {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                     )}
                     <Button
                       colorScheme="gray"

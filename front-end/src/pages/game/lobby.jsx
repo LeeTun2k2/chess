@@ -182,7 +182,7 @@ export default function LobbyPage(props) {
                               >
                                 {i + 1}
                               </Button>
-                            )
+                            ),
                           )}
                           <Button
                             colorScheme="gray"
