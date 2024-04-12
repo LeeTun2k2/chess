@@ -123,7 +123,7 @@ export default function ClubPage(props) {
             borderRadius={8}
           >
             <Heading as={"h2"} fontSize={"xl"} mb={4}>
-              Community
+              Chatbot
             </Heading>
             <ChatBox />
           </Box>
