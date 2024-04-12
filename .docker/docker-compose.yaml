@@ -13,7 +13,7 @@ services:
   backend:
     image: leetun2k2/chess_backend:latest
     volumes:
-      - ./uploads:/app/uploads
+      - ./uploads/images:/app/uploads/images
     environment:
       NEW_RELIC_LICENSE_KEY: 3b17d5c55b244bdd5433f5c852d84f13FFFFNRAL
       NEW_RELIC_APP_NAME: "Python Application"
