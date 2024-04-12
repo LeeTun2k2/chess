@@ -73,7 +73,7 @@ export default function AdminCreateBlogPage() {
         </Flex>
         <form onSubmit={handleSubmit}>
           <FormControl id="title" isRequired>
-            <FormLabel color="gray.600">{t("blogs.title")}</FormLabel>
+            <FormLabel>{t("blogs.title")}</FormLabel>
             <Input
               type="text"
               name="title"
@@ -85,7 +85,7 @@ export default function AdminCreateBlogPage() {
           </FormControl>
 
           <FormControl id="description" mt={4} isRequired>
-            <FormLabel color="gray.600">{t("blogs.description")}</FormLabel>
+            <FormLabel>{t("blogs.description")}</FormLabel>
             <Textarea
               name="description"
               value={formData.description}
@@ -96,7 +96,7 @@ export default function AdminCreateBlogPage() {
           </FormControl>
 
           <FormControl id="images" mt={4} isRequired>
-            <FormLabel color="gray.600">{t("blogs.image")}</FormLabel>
+            <FormLabel>{t("blogs.image")}</FormLabel>
             <Input
               type="file"
               accept=".png, .jpg, .jpeg"
@@ -129,7 +129,7 @@ export default function AdminCreateBlogPage() {
           </FormControl>
 
           <FormControl id="content" mt={4} isRequired>
-            <FormLabel color="gray.600">{t("blogs.content")}</FormLabel>
+            <FormLabel>{t("blogs.content")}</FormLabel>
             <EditorContent
               content={formData.content}
               onChange={(value) => {

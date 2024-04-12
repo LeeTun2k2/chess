@@ -70,7 +70,7 @@ export default function OnlineGamePage(props) {
                 ...game.white_player,
                 is_turn: true,
               }
-            : { ...game.black_player, is_turn: false }
+            : { ...game.black_player, is_turn: false },
         );
         setOpponent(
           user.id === game.white
@@ -78,7 +78,7 @@ export default function OnlineGamePage(props) {
                 ...game.black_player,
                 is_turn: false,
               }
-            : { ...game.white_player, is_turn: true }
+            : { ...game.white_player, is_turn: true },
         );
         if (!game.png) {
           socket.connect();

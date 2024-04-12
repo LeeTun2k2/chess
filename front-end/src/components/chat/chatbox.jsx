@@ -5,6 +5,7 @@ import { IoSend } from "react-icons/io5";
 
 const ChatBox = () => {
   const user = getUserData();
+  const theme = localStorage.getItem("theme");
   const [messages, setMessages] = useState([
     {
       username: "leetun2k2",
@@ -43,15 +44,24 @@ const ChatBox = () => {
           >
             <Text
               fontSize={"x-small"}
-              color={"gray.500"}
+              color={theme === "dark" ? "white" : "gray.500"}
               textAlign={user?.id === message.user_id ? "right" : "left"}
               mx={1}
             >
               @{message.username}
             </Text>
             <Text
-              bgColor={user?.id === message.user_id ? "gray.100" : "lightgray"}
+              bgColor={
+                user?.id === message.user_id
+                  ? theme === "dark"
+                    ? "black"
+                    : "gray.100"
+                  : theme === "dark"
+                    ? "black"
+                    : "lightgray"
+              }
               textAlign={user?.id === message.user_id ? "right" : "left"}
+              color={theme === "dark" ? "white" : "black"}
               px={4}
               py={1}
               borderRadius={8}

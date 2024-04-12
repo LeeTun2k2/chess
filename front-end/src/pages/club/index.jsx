@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function ClubPage(props) {
+  const theme = localStorage.getItem("theme");
   const notifications = [
     {
       title: "Hoi thao truong",
@@ -56,7 +57,7 @@ export default function ClubPage(props) {
               border={"1px solid lightgray"}
               borderRadius={8}
               p={4}
-              bgColor={"gray.100"}
+              bgColor={theme === "dark" ? "black" : "gray.100"}
             >
               <Heading as="h2" mb={4}>
                 Calendar Club Meeting
@@ -89,7 +90,13 @@ export default function ClubPage(props) {
               >
                 {notifications.map((notification, idx) => {
                   return (
-                    <Card px={4} py={2} _hover={{ bgColor: "gray.100" }}>
+                    <Card
+                      px={4}
+                      py={2}
+                      _hover={{
+                        bgColor: theme === "dark" ? "black" : "gray.100",
+                      }}
+                    >
                       <Flex alignItems={"center"} minH={20}>
                         <Box w={"75%"}>
                           <Text fontWeight={"bold"}>{notification.title}</Text>

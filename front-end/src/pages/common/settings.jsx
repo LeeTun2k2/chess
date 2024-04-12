@@ -8,6 +8,7 @@ import {
   Spacer,
   Flex,
   Box,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import ClientLayout from "../../components/layouts/clientLayout";
@@ -22,6 +23,7 @@ const SettingsPage = () => {
 
   const [language, setLanguage] = useState(savedLang ?? "en");
   const [theme, setTheme] = useState(savedTheme ?? "light");
+  const { colorMode, toggleColorMode } = useColorMode();
   const [boardSettings, setBoardSettings] = useState(
     savedBoardSettings ?? "standard",
   );
@@ -42,6 +44,7 @@ const SettingsPage = () => {
 
   const handleThemeChange = (e) => {
     const selectedTheme = e.target.value;
+    toggleColorMode();
     setTheme(selectedTheme);
     localStorage.setItem("theme", selectedTheme);
   };
