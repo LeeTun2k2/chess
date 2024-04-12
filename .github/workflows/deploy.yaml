@@ -37,6 +37,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Build new relic base agent
+        run: |
+          cd back-end
+          docker build -f .docker/newrelic.dockerfile -t python_newrelic:latest .
+
       - name: Build back-end image
         run: |
           cd back-end
