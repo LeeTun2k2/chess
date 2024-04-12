@@ -14,6 +14,13 @@ services:
     image: leetun2k2/chess_backend:latest
     volumes:
       - ./uploads:/app/uploads
+    environment:
+      NEW_RELIC_LICENSE_KEY: 3b17d5c55b244bdd5433f5c852d84f13FFFFNRAL
+      NEW_RELIC_APP_NAME: "Python Application"
+    stdin_open: true
+    tty: true
+    restart: "no"
+    container_name: chess_backend
     depends_on:
       - mongodb
     networks:
