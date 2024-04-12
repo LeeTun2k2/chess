@@ -73,7 +73,7 @@ export default function AdminCreateBookPage() {
         </Flex>
         <form onSubmit={handleSubmit}>
           <FormControl id="title" isRequired>
-            <FormLabel color="gray.600">{t("books.title")}</FormLabel>
+            <FormLabel>{t("books.title")}</FormLabel>
             <Input
               type="text"
               name="title"
@@ -85,7 +85,7 @@ export default function AdminCreateBookPage() {
           </FormControl>
 
           <FormControl id="description" mt={4} isRequired>
-            <FormLabel color="gray.600">{t("books.description")}</FormLabel>
+            <FormLabel>{t("books.description")}</FormLabel>
             <Textarea
               name="description"
               value={formData.description}
@@ -96,7 +96,7 @@ export default function AdminCreateBookPage() {
           </FormControl>
 
           <FormControl id="images" mt={4} isRequired>
-            <FormLabel color="gray.600">{t("books.image")}</FormLabel>
+            <FormLabel>{t("books.image")}</FormLabel>
             <Input
               type="file"
               accept=".png, .jpg, .jpeg"
@@ -129,7 +129,7 @@ export default function AdminCreateBookPage() {
           </FormControl>
 
           <FormControl id="content" mt={4} isRequired>
-            <FormLabel color="gray.600">{t("books.content")}</FormLabel>
+            <FormLabel>{t("books.content")}</FormLabel>
             <EditorContent
               content={formData.content}
               onChange={(value) => {

@@ -42,6 +42,7 @@ import { formatDate } from "../../../lib/datetime";
 
 export default function AdminBooksPage() {
   const navigate = useNavigate();
+  const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -74,7 +75,7 @@ export default function AdminBooksPage() {
       .delete(`${API_PROXY}/books/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
+          renderData.filter((item) => item._id !== selectedItem._id)
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
@@ -113,8 +114,8 @@ export default function AdminBooksPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -140,8 +141,9 @@ export default function AdminBooksPage() {
         borderRadius={4}
         overflow={"hidden"}
         __css={{ "table-layout": "fixed", width: "full" }}
+        variant={"striped"}
       >
-        <Thead bgColor="gray.200">
+        <Thead bgColor={theme === "dark" ? "black" : "gray.200"}>
           <Tr>
             <Th width="10%" textAlign={"center"}>
               {t("common.no")}
@@ -171,9 +173,6 @@ export default function AdminBooksPage() {
                 key={index}
                 userSelect="none"
                 cursor="pointer"
-                bgColor={index % 2 === 1 ? "gray.100" : "white"}
-                transition="background-color 0.5s ease-in-out"
-                _hover={{ bgColor: "gray.200 !important" }}
                 onDoubleClick={() => window.open(`/book/${item._id}`)}
               >
                 <Td textAlign={"center"}>
@@ -200,38 +199,35 @@ export default function AdminBooksPage() {
                   overflow="hidden"
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
                 >
-                  <Image
-                    maxH={12}
-                    src={`${API_PROXY}/images/${item.image}`}
-                    alt={item.title}
-                  />
+                  <Flex justifyContent={"center"} alignItems={"center"}>
+                    <Image
+                      maxH={12}
+                      src={`${API_PROXY}/images/${item.image}`}
+                      alt={item.title}
+                    />
+                  </Flex>
                 </Td>
                 <Td textAlign={"center"}>{formatDate(item.updated_at)}</Td>
-                <Td
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  <Button
-                    onClick={() => navigate(`/admin/update-book/${item._id}`)}
-                    colorScheme="yellow"
-                    mr={2}
-                  >
-                    <EditIcon />
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => {
-                      setSelectedItem(item);
-                      onOpen();
-                    }}
-                  >
-                    <DeleteIcon />
-                  </Button>
+                <Td>
+                  <Flex justifyContent={"center"} alignItems={"center"}>
+                    <Button
+                      onClick={() => navigate(`/admin/update-book/${item._id}`)}
+                      colorScheme="yellow"
+                      mr={2}
+                    >
+                      <EditIcon />
+                    </Button>
+                    <Button
+                      colorScheme="red"
+                      onClick={() => {
+                        setSelectedItem(item);
+                        onOpen();
+                      }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Flex>
                 </Td>
               </Tr>
             ))}
@@ -261,7 +257,7 @@ export default function AdminBooksPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"

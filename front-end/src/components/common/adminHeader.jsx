@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 
 const AdminHeader = () => {
   const navigate = useNavigate();
+  const theme = localStorage.getItem("theme");
   const [user, setUser] = useState(null);
   const user_data = getUserData();
   useEffect(() => {
@@ -27,7 +28,7 @@ const AdminHeader = () => {
   }, []);
 
   return (
-    <Box bgColor={"lightgray"} p={4} zIndex={9999}>
+    <Box bgColor={theme === "dark" ? "black" : "lightgray"} p={4} zIndex={9999}>
       <Flex align="center">
         <HStack
           cursor="pointer"

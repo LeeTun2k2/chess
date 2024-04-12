@@ -87,7 +87,7 @@ export default function AdminCreateTournamentPage() {
         </Flex>
         <form onSubmit={handleSubmit}>
           <FormControl id="name" isRequired>
-            <FormLabel color="gray.600">{t("tournaments.name")}</FormLabel>
+            <FormLabel>{t("tournaments.name")}</FormLabel>
             <Input
               type="text"
               name="name"
@@ -99,9 +99,7 @@ export default function AdminCreateTournamentPage() {
           </FormControl>
 
           <FormControl id="description" mt={4} isRequired>
-            <FormLabel color="gray.600">
-              {t("tournaments.description")}
-            </FormLabel>
+            <FormLabel>{t("tournaments.description")}</FormLabel>
             <Textarea
               name="description"
               value={formData.description}
@@ -112,7 +110,7 @@ export default function AdminCreateTournamentPage() {
           </FormControl>
           <Flex justify={"space-between"}>
             <FormControl id="variant" mt={4} isRequired>
-              <FormLabel color="gray.600">{t("common.variant")}</FormLabel>
+              <FormLabel>{t("common.variant")}</FormLabel>
               <Select
                 value={formData.variant}
                 onChange={(e) => {
@@ -129,7 +127,7 @@ export default function AdminCreateTournamentPage() {
             </FormControl>
             <FormControl />
             <FormControl id="initial_time" mt={4} isRequired>
-              <FormLabel color="gray.600">{t("common.initial_time")}</FormLabel>
+              <FormLabel>{t("common.initial_time")}</FormLabel>
               <Flex alignItems={"center"}>
                 <Input
                   type="number"
@@ -143,7 +141,7 @@ export default function AdminCreateTournamentPage() {
               </Flex>
             </FormControl>
             <FormControl id="bonus_time" mt={4} isRequired>
-              <FormLabel color="gray.600">{t("common.bonus_time")}</FormLabel>
+              <FormLabel>{t("common.bonus_time")}</FormLabel>
               <Flex alignItems={"center"}>
                 <Input
                   type="number"
@@ -159,7 +157,7 @@ export default function AdminCreateTournamentPage() {
           </Flex>
           <Flex justify={"space-between"}>
             <FormControl id="start" mt={4} isRequired>
-              <FormLabel color="gray.600">{t("common.start")}</FormLabel>
+              <FormLabel>{t("common.start")}</FormLabel>
               <DateTimePicker
                 value={formData.start}
                 onChange={(hour, minute, date) => {
@@ -174,7 +172,7 @@ export default function AdminCreateTournamentPage() {
               />
             </FormControl>
             <FormControl id="end" mt={4} isRequired>
-              <FormLabel color="gray.600">{t("common.end")}</FormLabel>
+              <FormLabel>{t("common.end")}</FormLabel>
               <DateTimePicker
                 value={formData.end}
                 onChange={(hour, minute, date) => {

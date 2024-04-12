@@ -41,6 +41,7 @@ import { toast_error, toast_success } from "../../../lib/hooks/toast";
 
 export default function AdminUsersPage() {
   const navigate = useNavigate();
+  const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -81,7 +82,7 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         setData(
           data.map((item) => {
@@ -92,7 +93,7 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         toast(toast_success(t("common.success")));
       })
@@ -135,8 +136,8 @@ export default function AdminUsersPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.email
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
               >
@@ -153,8 +154,9 @@ export default function AdminUsersPage() {
         borderRadius={4}
         overflow={"hidden"}
         __css={{ "table-layout": "fixed", width: "full" }}
+        variant={"striped"}
       >
-        <Thead bgColor="gray.200">
+        <Thead bgColor={theme === "dark" ? "black" : "gray.200"}>
           <Tr>
             <Th width="10%" textAlign={"center"}>
               {t("common.no")}
@@ -183,14 +185,7 @@ export default function AdminUsersPage() {
           {renderData
             .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
             .map((item, index) => (
-              <Tr
-                key={index}
-                userSelect="none"
-                cursor="pointer"
-                bgColor={index % 2 === 1 ? "gray.100" : "white"}
-                transition="background-color 0.5s ease-in-out"
-                _hover={{ bgColor: "gray.200 !important" }}
-              >
+              <Tr key={index} userSelect="none" cursor="pointer">
                 <Td textAlign={"center"}>
                   {(pageNumber - 1) * pageSize + index + 1}
                 </Td>
@@ -246,20 +241,18 @@ export default function AdminUsersPage() {
                     </Button>
                   </Flex>
                 </Td>
-                <Td
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  <Button
-                    colorScheme="yellow"
-                    onClick={() => {
-                      setSelectedItem(item);
-                      onOpen();
-                    }}
-                  >
-                    {item.is_locked ? <UnlockIcon /> : <LockIcon />}
-                  </Button>
+                <Td>
+                  <Flex justifyContent={"center"} alignItems={"center"}>
+                    <Button
+                      colorScheme="yellow"
+                      onClick={() => {
+                        setSelectedItem(item);
+                        onOpen();
+                      }}
+                    >
+                      {item.is_locked ? <UnlockIcon /> : <LockIcon />}
+                    </Button>
+                  </Flex>
                 </Td>
               </Tr>
             ))}
@@ -289,7 +282,7 @@ export default function AdminUsersPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"
