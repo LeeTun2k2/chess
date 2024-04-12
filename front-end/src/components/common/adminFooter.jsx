@@ -12,6 +12,7 @@ import { FaEnvelope, FaFacebook } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
   return (
     <Flex
@@ -19,7 +20,7 @@ export default function Footer() {
       d={{ base: "none", sm: "flex" }}
       px={{ lg: 20, xl: 40 }}
       py={{ base: 4 }}
-      bgColor={"lightgray"}
+      bgColor={theme === "dark" ? "black" : "lightgray"}
       direction={{ base: "column", md: "row" }}
       justifyContent="center"
       alignItems="center"
@@ -50,7 +51,7 @@ export default function Footer() {
             <Text fontSize="xl" fontWeight="bold">
               {t("footer.more")}
             </Text>
-            <VStack spacing={2} alignItems="flex-start" color="gray.700">
+            <VStack spacing={2} alignItems="flex-start">
               <CustomLink href="/about">{t("footer.about")}</CustomLink>
               <CustomLink href="/settings">{t("footer.settings")}</CustomLink>
             </VStack>
@@ -59,7 +60,7 @@ export default function Footer() {
             <Text fontSize="xl" fontWeight="bold">
               {t("footer.community")}
             </Text>
-            <VStack spacing={2} alignItems="flex-start" color="gray.700">
+            <VStack spacing={2} alignItems="flex-start">
               <CustomLink href="https://www.facebook.com/utechessclub">
                 <Text ml={2} display="flex" alignItems="center">
                   <FaFacebook style={{ marginRight: "8px" }} />

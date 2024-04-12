@@ -16,10 +16,10 @@ import {
 import ClientLayout from "../../components/layouts/clientLayout";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import { formatDate } from "../../lib/datetime";
 
 export default function TournamentsPage(props) {
   const navigate = useNavigate();
+  const theme = localStorage.getItem("theme");
   const getData = () => {
     return [
       {
@@ -89,8 +89,10 @@ export default function TournamentsPage(props) {
           colorScheme="gray"
           borderRadius={4}
           overflow={"hidden"}
+          transition={"background-color 0.5s ease-in-out"}
+          variant={"striped"}
         >
-          <Thead bgColor="gray.200">
+          <Thead bgColor={theme === "dark" ? "black" : "gray.200"}>
             <Tr>
               <Th>Name</Th>
               <Th>Description</Th>
@@ -108,9 +110,6 @@ export default function TournamentsPage(props) {
                   key={index}
                   userSelect="none"
                   cursor="pointer"
-                  bgColor={index % 2 === 1 ? "gray.100" : "white"}
-                  transition="background-color 0.5s ease-in-out"
-                  _hover={{ bgColor: "gray.200 !important" }}
                   onClick={() => navigate(`/game/${item._id}`)}
                 >
                   <Td>{item.name}</Td>

@@ -72,7 +72,7 @@ export default function AdminCreateVideoPage() {
         </Flex>
         <form onSubmit={handleSubmit}>
           <FormControl id="title" isRequired mt={2} flex={3} mr={16}>
-            <FormLabel color="gray.600">{t("videos.title")}</FormLabel>
+            <FormLabel>{t("videos.title")}</FormLabel>
             <Input
               type="text"
               name="title"
@@ -83,7 +83,7 @@ export default function AdminCreateVideoPage() {
             />
           </FormControl>
           <FormControl id="description" isRequired mt={2}>
-            <FormLabel color="gray.600">{t("videos.description")}</FormLabel>
+            <FormLabel>{t("videos.description")}</FormLabel>
             <Input
               type="text"
               name="description"
@@ -94,7 +94,7 @@ export default function AdminCreateVideoPage() {
             />
           </FormControl>
           <FormControl id="link" mt={4} isRequired>
-            <FormLabel color="gray.600">{t("videos.video")}</FormLabel>
+            <FormLabel>{t("videos.video")}</FormLabel>
             <Input
               type="text"
               name="link"
@@ -106,7 +106,7 @@ export default function AdminCreateVideoPage() {
             {formData.link && <ReactPlayer url={formData.link} controls />}
           </FormControl>
           <FormControl id="content" mt={4} isRequired>
-            <FormLabel color="gray.600">{t("videos.content")}</FormLabel>
+            <FormLabel>{t("videos.content")}</FormLabel>
             <EditorContent
               content={formData.content}
               onChange={(value) => {

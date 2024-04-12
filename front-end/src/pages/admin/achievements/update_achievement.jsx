@@ -93,7 +93,7 @@ export default function AdminUpdateAchievementPage() {
         <form onSubmit={handleSubmit}>
           <Flex>
             <FormControl id="event" isRequired mt={2} flex={3} mr={16}>
-              <FormLabel color="gray.600">{t("achievements.event")}</FormLabel>
+              <FormLabel>{t("achievements.event")}</FormLabel>
               <Input
                 type="text"
                 name="event"
@@ -104,7 +104,7 @@ export default function AdminUpdateAchievementPage() {
               />
             </FormControl>
             <FormControl id="time" isRequired mt={2} flex={1}>
-              <FormLabel color="gray.600">{t("achievements.time")}</FormLabel>
+              <FormLabel>{t("achievements.time")}</FormLabel>
               <Input
                 type="date"
                 name="time"
@@ -120,7 +120,7 @@ export default function AdminUpdateAchievementPage() {
             </FormControl>
           </Flex>
           <FormControl id="member" isRequired mt={2}>
-            <FormLabel color="gray.600">{t("achievements.member")}</FormLabel>
+            <FormLabel>{t("achievements.member")}</FormLabel>
             <Input
               type="text"
               name="member"
@@ -131,7 +131,7 @@ export default function AdminUpdateAchievementPage() {
             />
           </FormControl>
           <FormControl id="reward" isRequired mt={2}>
-            <FormLabel color="gray.600">{t("achievements.reward")}</FormLabel>
+            <FormLabel>{t("achievements.reward")}</FormLabel>
             <Input
               type="text"
               name="reward"

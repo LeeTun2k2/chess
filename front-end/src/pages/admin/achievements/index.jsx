@@ -41,6 +41,7 @@ import { formatDate } from "../../../lib/datetime";
 
 export default function AdminAchievementsPage() {
   const navigate = useNavigate();
+  const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -143,8 +144,9 @@ export default function AdminAchievementsPage() {
         borderRadius={4}
         overflow={"hidden"}
         __css={{ "table-layout": "fixed", width: "full" }}
+        variant={"striped"}
       >
-        <Thead bgColor="gray.200">
+        <Thead bgColor={theme === "dark" ? "black" : "gray.200"}>
           <Tr>
             <Th width="10%" textAlign={"center"}>
               {t("common.no")}
@@ -170,14 +172,7 @@ export default function AdminAchievementsPage() {
           {renderData
             .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
             .map((item, index) => (
-              <Tr
-                key={index}
-                userSelect="none"
-                cursor="pointer"
-                bgColor={index % 2 === 1 ? "gray.100" : "white"}
-                transition="background-color 0.5s ease-in-out"
-                _hover={{ bgColor: "gray.200 !important" }}
-              >
+              <Tr key={index} userSelect="none" cursor="pointer">
                 <Td textAlign={"center"}>
                   {(pageNumber - 1) * pageSize + index + 1}
                 </Td>
@@ -213,29 +208,27 @@ export default function AdminAchievementsPage() {
                 >
                   {formatDate(item.time)}
                 </Td>
-                <Td
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  <Button
-                    onClick={() =>
-                      navigate(`/admin/update-achievement/${item._id}`)
-                    }
-                    colorScheme="yellow"
-                    mr={2}
-                  >
-                    <EditIcon />
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => {
-                      setSelectedItem(item);
-                      onOpen();
-                    }}
-                  >
-                    <DeleteIcon />
-                  </Button>
+                <Td>
+                  <Flex justifyContent={"center"}>
+                    <Button
+                      onClick={() =>
+                        navigate(`/admin/update-achievement/${item._id}`)
+                      }
+                      colorScheme="yellow"
+                      mr={2}
+                    >
+                      <EditIcon />
+                    </Button>
+                    <Button
+                      colorScheme="red"
+                      onClick={() => {
+                        setSelectedItem(item);
+                        onOpen();
+                      }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Flex>
                 </Td>
               </Tr>
             ))}
