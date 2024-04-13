@@ -1,11 +1,11 @@
 import { Button, Heading } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import { SOCKET_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 
 export default function TestPage() {
   const [data, setData] = useState("Chua co gi");
-  const socket = io(SOCKET_PROXY);
+  const socket = io(appSettings.SOCKET_PROXY);
 
   useEffect(() => {
     socket.on("game_start", (data) => {

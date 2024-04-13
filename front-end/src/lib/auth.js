@@ -1,4 +1,4 @@
-import { API_PROXY } from "../settings/appSettings";
+import appSettings from "../settings/appSettings";
 
 export const setAccessToken = (access_token) => {
   localStorage.setItem("access_token", access_token);
@@ -38,7 +38,7 @@ export const getUserData = () => {
   const user_data = JSON.parse(localStorage.getItem("user"));
   return {
     ...user_data,
-    avatar: `${API_PROXY}/images/user-${user_data?.id ?? ""}`,
+    avatar: `${appSettings.API_PROXY}/images/user-${user_data?.id ?? ""}`,
   };
 };
 

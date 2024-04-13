@@ -16,7 +16,7 @@ import ClientLayout from "../../components/layouts/clientLayout";
 import ChessBoard from "../../components/game/chessBoard";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
-import { API_PROXY, SOCKET_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import Timer from "../../components/game/timer";
 import { getUserData } from "../../lib/auth";
 import io from "socket.io-client";
@@ -25,7 +25,7 @@ export default function OnlineGamePage(props) {
   const user = getUserData() ?? { id: "" };
   const path = useCurrentPath();
   const id = path[path.length - 1];
-  const socket = io(SOCKET_PROXY);
+  const socket = io(appSettings.SOCKET_PROXY);
 
   const toast = useToast();
 
@@ -60,7 +60,7 @@ export default function OnlineGamePage(props) {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/game/${id}&mode=online`)
+      .get(`${appSettings.API_PROXY}/game/${id}&mode=online`)
       .then((res) => {
         const game = res.data;
         setGame(game);

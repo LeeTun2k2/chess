@@ -3,7 +3,7 @@ import { Container, Heading, Box, Button, Input } from "@chakra-ui/react";
 import { FaBook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import LessonEditor from "../../../components/item_list/editor_content";
 import { getAccessToken } from "../../../lib/auth";
@@ -34,7 +34,7 @@ export default function CreateLessonPage() {
 
   const handleSubmit = async () => {
     try {
-      await axios.post(`${API_PROXY}/lessons`, lessonData, {
+      await axios.post(`${appSettings.API_PROXY}/lessons`, lessonData, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },

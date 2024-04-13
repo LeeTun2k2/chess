@@ -26,7 +26,7 @@ import {
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import { useNavigate } from "react-router-dom";
 import axios from "../../lib/axios";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
 import { GoogleIcon } from "../../components/auth/googleIcon";
 import { GoogleLogin } from "react-google-login";
@@ -80,7 +80,7 @@ export default function LoginPage({ setLoggedIn }) {
         const body = { username, password };
         setLoading(true);
         axios
-          .post(`${API_PROXY}/login`, body)
+          .post(`${appSettings.API_PROXY}/login`, body)
           .then((resp) => {
             setAccessToken(resp.data.access_token);
             setRefreshToken(resp.data.refresh_token);
@@ -105,7 +105,7 @@ export default function LoginPage({ setLoggedIn }) {
     const { email, name } = resp.profileObj;
     setLoading(true);
     axios
-      .post(`${API_PROXY}/login-google`, { email, name })
+      .post(`${appSettings.API_PROXY}/login-google`, { email, name })
       .then((resp) => {
         setAccessToken(resp.data.access_token);
         setRefreshToken(resp.data.refresh_token);

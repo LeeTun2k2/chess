@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Input,
-  Button,
-  Text,
-  HStack,
-  Flex,
-  VStack,
-  Spacer,
-} from "@chakra-ui/react";
+import { Box, Input, Button, Text, HStack, Flex } from "@chakra-ui/react";
 import { getUserData } from "../../lib/auth";
 import { IoSend } from "react-icons/io5";
 import OpenAI from "openai";
-import { OPENAI_KEY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import { useTranslation } from "react-i18next";
 
 const ChatBox = () => {
@@ -36,7 +27,7 @@ const ChatBox = () => {
 
   useEffect(() => {
     const openai = new OpenAI({
-      apiKey: OPENAI_KEY,
+      apiKey: appSettings.OPENAI_KEY,
       dangerouslyAllowBrowser: true,
     });
     setOpenAIInstance(openai);

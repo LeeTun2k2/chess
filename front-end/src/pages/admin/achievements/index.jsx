@@ -35,7 +35,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import { formatDate } from "../../../lib/datetime";
 
@@ -55,7 +55,7 @@ export default function AdminAchievementsPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/achievements`)
+      .get(`${appSettings.API_PROXY}/achievements`)
       .then((resp) => {
         setData(resp.data.achievements ?? []);
         setRenderData(resp.data.achievements ?? []);
@@ -71,7 +71,7 @@ export default function AdminAchievementsPage() {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .delete(`${API_PROXY}/achievements/${selectedItem._id}`)
+      .delete(`${appSettings.API_PROXY}/achievements/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
           renderData.filter((item) => item._id !== selectedItem._id),
