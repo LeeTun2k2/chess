@@ -1,4 +1,6 @@
-export const API_PROXY = "http://localhost:5000/api";
-export const PROXY = "http://localhost:5000";
-export const SOCKET_PROXY = "http://localhost:5000";
-export const OPENAI_KEY = "YOUR_SECRECT_KEY";
+export const API_PROXY = process.env.REACT_APP_API_PROXY
+export const PROXY = process.env.REACT_APP_PROXY
+export const SOCKET_PROXY = process.env.REACT_APP_SOCKET_PROXY
+export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY
+
+console.log(process.env);
