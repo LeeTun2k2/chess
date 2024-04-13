@@ -3,13 +3,6 @@ services:
     image: leetun2k2/chess_frontend:latest
     ports:
       - 10040:80
-    environment:
-      - REACT_APP_API_PROXY=API_PROXY
-      - REACT_APP_PROXY=PROXY
-      - REACT_APP_SOCKET_PROXY=SOCKET_PROXY
-      - REACT_APP_OPENAI_KEY=OPENAI_KEY
-    env_file:
-      - ./.env
     depends_on:
       - backend
     networks:
@@ -22,8 +15,8 @@ services:
     volumes:
       - ./uploads/images:/app/uploads/images
     environment:
-      - NEW_RELIC_LICENSE_KEY=NEW_RELIC_LICENSE_KEY
-      - NEW_RELIC_APP_NAME=NEW_RELIC_APP_NAME
+      - NEW_RELIC_LICENSE_KEY=3b17d5c55b244bdd5433f5c852d84f13FFFFNRAL
+      - NEW_RELIC_APP_NAME=Python Application
     stdin_open: true
     tty: true
     restart: "no"
@@ -34,12 +27,12 @@ services:
       - frontend_backend
       - backend_mongodb
 
-  stockfish: 
+  stockfish:
     image: leetun2k2/stockfish:latest
     networks:
       - frontend_stockfish
-  
-  pikafish: 
+
+  pikafish:
     image: leetun2k2/pikafish:latest
     networks:
       - frontend_pikafish

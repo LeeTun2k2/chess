@@ -22,7 +22,13 @@ jobs:
       - name: Build front-end image
         run: |
           cd front-end
-          docker build -f .docker/Dockerfile -t ${{env.FE_IMAGE}} .
+          docker build -f .docker/Dockerfile \
+            -t ${{ env.FE_IMAGE }} \
+            --build-arg REACT_APP_API_PROXY=/api \
+            --build-arg REACT_APP_PROXY="" \
+            --build-arg REACT_APP_SOCKET_PROXY="" \
+            --build-arg REACT_APP_OPENAI_KEY=${{secrets.OPENAI_KEY}} \
+            .
 
       - name: Login to Docker Hub
         run: docker login --username ${{secrets.DOCKER_LOGIN_USERNAME}} --password ${{secrets.DOCKER_LOGIN_PASSWORD}}
