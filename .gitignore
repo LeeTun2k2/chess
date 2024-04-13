@@ -41,3 +41,6 @@ engine/
 *.fen
 *.epd
 *.pgn
+
+# environtments
+**.env**
