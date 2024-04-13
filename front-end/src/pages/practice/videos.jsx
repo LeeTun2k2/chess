@@ -25,8 +25,9 @@ import axios from "../../lib/axios";
 import appSettings from "../../settings/appSettings";
 import { toast_error } from "../../lib/hooks/toast";
 import DocNav from "../../components/nav/doc_nav";
+import VideoIcon from "../../assets/images/icon/video.png";
 
-export default function BookListPage(props) {
+export default function VideoListPage(props) {
   const navigate = useNavigate();
   const toast = useToast();
   const { t } = useTranslation();
@@ -38,10 +39,10 @@ export default function BookListPage(props) {
 
   useEffect(() => {
     axios
-      .get(`${appSettings.API_PROXY}/books`)
+      .get(`${appSettings.API_PROXY}/videos`)
       .then((resp) => {
-        setData(resp?.data?.books ?? []);
-        setRenderData(resp?.data?.books ?? []);
+        setData(resp?.data?.videos ?? []);
+        setRenderData(resp?.data?.videos ?? []);
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
@@ -53,7 +54,7 @@ export default function BookListPage(props) {
     <ClientLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("books.heading")}</Heading>
+          <Heading mb={4}>{t("videos.heading")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -99,7 +100,7 @@ export default function BookListPage(props) {
                   p={4}
                   variant={"outline"}
                   onClick={() => {
-                    navigate(`/book/${item._id}`);
+                    navigate(`/video/${item._id}`);
                   }}
                   cursor={"pointer"}
                   mb={4}
@@ -112,7 +113,7 @@ export default function BookListPage(props) {
                     <Image
                       h={20}
                       w={20}
-                      src={`${appSettings.API_PROXY}/images/${item.image}`}
+                      src={VideoIcon}
                       alt={item.title}
                       objectFit={"cover"}
                       borderRadius={4}
