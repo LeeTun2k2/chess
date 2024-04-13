@@ -35,7 +35,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 
 export default function AdminVideosPage() {
@@ -54,7 +54,7 @@ export default function AdminVideosPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/videos`)
+      .get(`${appSettings.API_PROXY}/videos`)
       .then((resp) => {
         setData(resp.data.videos ?? []);
         setRenderData(resp.data.videos ?? []);
@@ -70,7 +70,7 @@ export default function AdminVideosPage() {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .delete(`${API_PROXY}/videos/${selectedItem._id}`)
+      .delete(`${appSettings.API_PROXY}/videos/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
           renderData.filter((item) => item._id !== selectedItem._id),

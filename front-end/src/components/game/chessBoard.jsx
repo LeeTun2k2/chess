@@ -8,12 +8,12 @@ import { getUserData } from "../../lib/auth";
 import { CHESS_FEN } from "../../settings/game";
 import { Chess } from "chess.js";
 import { io } from "socket.io-client";
-import { API_PROXY, SOCKET_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import axios from "../../lib/axios";
 
 export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
   const user = getUserData() ?? { id: "" };
-  const socket = io(SOCKET_PROXY);
+  const socket = io(appSettings.SOCKET_PROXY);
   const [chess] = useState(new Chess(CHESS_FEN));
   const [fen, setFen] = useState("");
   const [lastMove, setLastMove] = useState([]);
@@ -142,7 +142,7 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
       if (chess.isCheckmate()) {
         setGameStatus("ended");
         const png = chess.pgn();
-        await axios.put(`${API_PROXY}/game/${game._id}`, {
+        await axios.put(`${appSettings.API_PROXY}/game/${game._id}`, {
           game: { ...game, png },
         });
       }

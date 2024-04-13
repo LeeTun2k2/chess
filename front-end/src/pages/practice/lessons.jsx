@@ -14,7 +14,7 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "axios";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 
 export default function LessonsPage() {
   const [lessonData, setLessonData] = useState([]);
@@ -26,7 +26,7 @@ export default function LessonsPage() {
 
   const fetchLessons = async () => {
     try {
-      const response = await axios.get(`${API_PROXY}/lessons`);
+      const response = await axios.get(`${appSettings.API_PROXY}/lessons`);
       setLessonData(response.data); // Cập nhật dữ liệu từ server vào state
       setLoading(false);
     } catch (error) {

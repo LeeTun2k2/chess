@@ -20,7 +20,7 @@ import { validateEmail } from "../../lib/hooks/validateUser";
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 
 export default function ForgotPasswordPage() {
   const toast = useToast();
@@ -54,7 +54,7 @@ export default function ForgotPasswordPage() {
         const body = { email };
         setLoading(true);
         axios
-          .get(`${API_PROXY}/forgot-password`, { params: body })
+          .get(`${appSettings.API_PROXY}/forgot-password`, { params: body })
           .then((resp) => {
             toast(toast_success(resp.data));
             navigate("/login");

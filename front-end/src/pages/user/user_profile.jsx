@@ -5,7 +5,7 @@ import ClientLayout from "../../components/layouts/clientLayout";
 import Statistics from "../../components/user_profile/statistic";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import { useEffect, useState } from "react";
 
 export default function UserProfile() {
@@ -14,7 +14,7 @@ export default function UserProfile() {
   const user_data = getUserData();
 
   const getAvatarUrl = () => {
-    return `${API_PROXY}/user-${user_data.id}`;
+    return `${appSettings.API_PROXY}/user-${user_data.id}`;
   };
 
   const [user, setUser] = useState({});
@@ -29,7 +29,7 @@ export default function UserProfile() {
     }
 
     axios
-      .get(`${API_PROXY}/user/${username}`)
+      .get(`${appSettings.API_PROXY}/user/${username}`)
       .then((res) => {})
       .catch((err) => {
         console.log(err);

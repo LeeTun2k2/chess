@@ -14,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_success, toast_error } from "../../../lib/hooks/toast";
 import { useCurrentPath } from "../../../lib/hooks/route";
 import EditorContent from "../../../components/item_list/editor_content";
@@ -38,7 +38,7 @@ export default function AdminUpdateVideoPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/videos/${id}`)
+      .get(`${appSettings.API_PROXY}/videos/${id}`)
       .then((resp) => {
         setFormData(resp?.data?.video ?? defaultData);
       })
@@ -57,7 +57,7 @@ export default function AdminUpdateVideoPage() {
     e.preventDefault();
     setLoading(true);
     axios
-      .put(`${API_PROXY}/videos/${id}`, formData)
+      .put(`${appSettings.API_PROXY}/videos/${id}`, formData)
       .then(() => {
         navigate("/admin/videos");
         toast(toast_success(t("common.update_success")));

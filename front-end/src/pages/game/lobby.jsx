@@ -36,7 +36,7 @@ import {
   XIANGQI,
 } from "../../settings/game";
 import NewOnlineGameModal from "../../components/game/newGameModal";
-import { API_PROXY, SOCKET_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import io from "socket.io-client";
@@ -53,7 +53,7 @@ export default function LobbyPage(props) {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API_PROXY}/lobby`)
+      .get(`${appSettings.API_PROXY}/lobby`)
       .then((res) => {
         if (res.data) {
           setData(res.data);
@@ -71,7 +71,7 @@ export default function LobbyPage(props) {
   }, [toast]);
 
   useEffect(() => {
-    const socket = io(SOCKET_PROXY);
+    const socket = io(appSettings.SOCKET_PROXY);
 
     socket.on("lobby_created", (resp) => {
       const lobby = resp.lobby;
@@ -133,7 +133,9 @@ export default function LobbyPage(props) {
                             cursor="pointer"
                             onClick={() => {
                               axios
-                                .put(`${API_PROXY}/lobby/${item._id}`)
+                                .put(
+                                  `${appSettings.API_PROXY}/lobby/${item._id}`,
+                                )
                                 .then(() => {
                                   navigate(`/wait/${item._id}`);
                                 })

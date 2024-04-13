@@ -16,7 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_success, toast_error } from "../../../lib/hooks/toast";
 import EditorContent from "../../../components/item_list/editor_content";
 
@@ -42,7 +42,7 @@ export default function AdminCreateBookPage() {
     e.preventDefault();
     setLoading(true);
     axios
-      .post(`${API_PROXY}/books`, formData, {
+      .post(`${appSettings.API_PROXY}/books`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
@@ -111,7 +111,7 @@ export default function AdminCreateBookPage() {
                 <Image
                   h={100}
                   w={100}
-                  src={`${API_PROXY}/images/${formData.image}`}
+                  src={`${appSettings.API_PROXY}/images/${formData.image}`}
                   alt={formData.title}
                 />
               )

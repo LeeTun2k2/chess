@@ -3,7 +3,7 @@ import { Container, Heading, Text, Image, Box } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "axios";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 
 export default function LessonDetailPage() {
   const { lessonId } = useParams();
@@ -16,7 +16,9 @@ export default function LessonDetailPage() {
 
   const fetchLesson = async () => {
     try {
-      const response = await axios.get(`${API_PROXY}/lessons/${lessonId}`);
+      const response = await axios.get(
+        `${appSettings.API_PROXY}/lessons/${lessonId}`,
+      );
       setLesson(response.data);
       setLoading(false);
     } catch (error) {

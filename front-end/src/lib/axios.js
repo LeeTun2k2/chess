@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_PROXY } from "../settings/appSettings";
+import appSettings from "../settings/appSettings";
 import {
   getAccessToken,
   getRefreshToken,
@@ -11,9 +11,13 @@ const PUBLIC_ROUTES = ["refresh"];
 
 const refreshAccessToken = async (refreshToken) => {
   try {
-    const response = await axios.post(`${API_PROXY}/refresh`, null, {
-      headers: { Authorization: `Bearer ${refreshToken}` },
-    });
+    const response = await axios.post(
+      `${appSettings.API_PROXY}/refresh`,
+      null,
+      {
+        headers: { Authorization: `Bearer ${refreshToken}` },
+      },
+    );
     const newAccessToken = response.data.access_token;
     return newAccessToken;
   } catch (error) {

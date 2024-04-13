@@ -36,7 +36,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import { formatDate } from "../../../lib/datetime";
 
@@ -56,7 +56,7 @@ export default function AdminBooksPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/books`)
+      .get(`${appSettings.API_PROXY}/books`)
       .then((resp) => {
         setData(resp.data.books ?? []);
         setRenderData(resp.data.books ?? []);
@@ -72,7 +72,7 @@ export default function AdminBooksPage() {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .delete(`${API_PROXY}/books/${selectedItem._id}`)
+      .delete(`${appSettings.API_PROXY}/books/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
           renderData.filter((item) => item._id !== selectedItem._id),
@@ -203,7 +203,7 @@ export default function AdminBooksPage() {
                   <Flex justifyContent={"center"} alignItems={"center"}>
                     <Image
                       maxH={12}
-                      src={`${API_PROXY}/images/${item.image}`}
+                      src={`${appSettings.API_PROXY}/images/${item.image}`}
                       alt={item.title}
                     />
                   </Flex>

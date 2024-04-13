@@ -36,7 +36,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 
 export default function AdminUsersPage() {
@@ -55,7 +55,7 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/users`)
+      .get(`${appSettings.API_PROXY}/users`)
       .then((resp) => {
         setData(resp.data.users ?? []);
         setRenderData(resp.data.users ?? []);
@@ -71,7 +71,7 @@ export default function AdminUsersPage() {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .put(`${API_PROXY}/users/${selectedItem.id}/status`)
+      .put(`${appSettings.API_PROXY}/users/${selectedItem.id}/status`)
       .then((resp) => {
         setRenderData(
           renderData.map((item) => {
