@@ -7,5 +7,7 @@
   "description": "Mô tả",
   "image": "Hình ảnh",
   "content": "Nội dung",
-  "updated_at": "Cập nhật"
+  "updated_at": "Cập nhật",
+  "books": "Sách",
+  "book": "Sách"
 }

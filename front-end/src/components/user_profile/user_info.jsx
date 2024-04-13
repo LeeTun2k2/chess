@@ -31,6 +31,7 @@ const UserInfo = () => {
 
   const containerWidth = useBreakpointValue({ base: "100%", md: "1/3" });
   const user = getUserData();
+  const theme = localStorage.getItem("theme");
   return (
     <Stack
       maxW="container.lg"
@@ -39,7 +40,7 @@ const UserInfo = () => {
       px={4}
       boxShadow="md"
       borderRadius="md"
-      bg="white"
+      bgColor={theme === "dark" ? "black" : "white"}
       textAlign="center"
     >
       <AvatarUploadModal

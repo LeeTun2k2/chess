@@ -54,7 +54,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validateUsername(username) === false) {
       const model = toast_error(
         "Log in fail.",
-        "Username has a minimum length of 8 characters and contains only lowercase letters or numbers",
+        "Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
       );
       toast(model);
       ok = false;
@@ -63,7 +63,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validatePassword(password) === false) {
       const model = toast_error(
         "Log in fail.",
-        "Password has a minimum length of 8 characters and do not contain any special charaters.",
+        "Password has a minimum length of 8 characters and do not contain any special charaters."
       );
       toast(model);
       ok = false;
@@ -82,16 +82,16 @@ export default function LoginPage({ setLoggedIn }) {
         axios
           .post(`${appSettings.API_PROXY}/login`, body)
           .then((resp) => {
-            setAccessToken(resp.data.access_token);
-            setRefreshToken(resp.data.refresh_token);
-            setUserData(resp.data.user);
+            setAccessToken(resp?.data?.access_token);
+            setRefreshToken(resp?.data?.refresh_token);
+            setUserData(resp?.data?.user);
             setLoggedIn(true);
             toast(toast_success("Login successfully."));
             navigate("/");
           })
           .catch((err) => {
-            if (err.response) toast(toast_error(err.response.data));
-            else toast(toast_error("Something went wrong. Please try again."));
+            if (err?.response) toast(toast_error(err?.response?.data));
+            else toast(toast_error(t("common.something_went_wrong")));
             console.log(err);
           })
           .finally(() => {
@@ -107,16 +107,16 @@ export default function LoginPage({ setLoggedIn }) {
     axios
       .post(`${appSettings.API_PROXY}/login-google`, { email, name })
       .then((resp) => {
-        setAccessToken(resp.data.access_token);
-        setRefreshToken(resp.data.refresh_token);
-        setUserData(resp.data.user);
+        setAccessToken(resp?.data?.access_token);
+        setRefreshToken(resp?.data?.refresh_token);
+        setUserData(resp?.data?.user);
         setLoggedIn(true);
         toast(toast_success("Login successfully."));
         navigate("/");
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         setLoading(false);

@@ -3,5 +3,7 @@
   "create": "Create New Tournament",
   "update": "Edit Tournament",
   "name": "Name",
-  "description": "Description"
+  "description": "Description",
+  "tournaments": "Tournaments",
+  "tournament": "Tournament"
 }

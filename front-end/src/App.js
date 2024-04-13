@@ -20,13 +20,13 @@ import WaitingGamePage from "./pages/game/waitingGame";
 import GameSettingsPage from "./pages/game/gameSettingsPage";
 import OnlineGamePage from "./pages/game/online-game";
 import TournamentsPage from "./pages/tournament/tournaments";
-import BlogListPage from "./pages/club/blog_list";
+import BlogListPage from "./pages/club/blogs";
 import BlogPage from "./pages/club/blog";
 import CreateBlogPage from "./pages/club/create_blog";
 import LogoutPage from "./pages/auth/logout";
 import AboutPage from "./pages/common/about";
-import DonatePage from "./pages/common/donate";
-import AchievementsPage from "./pages/common/achievements";
+import DonatePage from "./pages/club/donate";
+import AchievementsPage from "./pages/club/achievements";
 import { gapi } from "gapi-script";
 import { getUserData } from "./lib/auth";
 import AdminDashboardPage from "./pages/admin";
@@ -51,6 +51,10 @@ import AdminCreateAchievementPage from "./pages/admin/achievements/create_achiev
 import AdminUpdateAchievementPage from "./pages/admin/achievements/update_achievement";
 import AdminCreateLessonPage from "./pages/admin/lessons/create_lesson";
 import AdminPage from "./pages/admin/users/admin";
+import BookListPage from "./pages/practice/books";
+import BookPage from "./pages/practice/book";
+import VideoListPage from "./pages/practice/videos";
+import VideoPage from "./pages/practice/video";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -96,8 +100,13 @@ function App() {
 
         {/* Club Pages */}
         <Route exact path="/blogs" element={<BlogListPage />} />
-        <Route exact path="/blog/:slug" element={<BlogPage />} />
-        <Route exact path="/blog/create-blog" element={<CreateBlogPage />} />
+        <Route exact path="/blog/:id" element={<BlogPage />} />
+
+        {/* Pratice */}
+        <Route exact path="/books" element={<BookListPage />} />
+        <Route exact path="/book/:id" element={<BookPage />} />
+        <Route exact path="/videos" element={<VideoListPage />} />
+        <Route exact path="/video/:id" element={<VideoPage />} />
 
         {/* Error Pages */}
         <Route path="/error" element={<ErrorPage />} />

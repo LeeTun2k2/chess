@@ -21,8 +21,9 @@ import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
 import { formatDate } from "../../lib/datetime";
 import ReactHtmlParser from "html-react-parser";
+import ReactPlayer from "react-player";
 
-export default function BlogPage(props) {
+export default function VideoPage(props) {
   const path = useCurrentPath();
   const id = path[path.length - 1];
   const toast = useToast();
@@ -32,9 +33,9 @@ export default function BlogPage(props) {
 
   useEffect(() => {
     axios
-      .get(`${appSettings.API_PROXY}/blogs/${id}`)
+      .get(`${appSettings.API_PROXY}/videos/${id}`)
       .then((resp) => {
-        setData(resp?.data?.blog ?? {});
+        setData(resp?.data?.video ?? {});
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
@@ -49,7 +50,7 @@ export default function BlogPage(props) {
           <Box w={"66%"}>
             <Flex align={"center"}>
               <Text fontSize={"2xl"} fontWeight={"bold"}>
-                {t("blogs.blog")} {" > "}
+                {t("videos.video")} {" > "}
               </Text>
               <Heading fontSize={"2xl"} textAlign={"justify"}>
                 {data.title}
@@ -68,13 +69,7 @@ export default function BlogPage(props) {
               </Text>
             </Flex>
             <Divider mb={4} borderColor={theme === "dark" ?? "black"} />
-            <Image
-              w={"100%"}
-              src={`${appSettings.API_PROXY}/images/${data.image}`}
-              alt={data.title}
-              objectFit={"cover"}
-              borderRadius={4}
-            />
+            <ReactPlayer url={data.link} controls />
             <Box mt={4}>{ReactHtmlParser(data.content ?? "")}</Box>
           </Box>
           <Spacer />
