@@ -131,12 +131,8 @@ export default function ClubPage(props) {
             w={{ base: "100%", md: "30%" }}
             display={{ base: "none", md: "block" }}
             h={"fit-content"}
-            padding={4}
             borderRadius={8}
           >
-            <Heading as={"h2"} fontSize={"xl"} mb={4}>
-              {t("chat.chat_bot")}
-            </Heading>
             <ChatBox />
           </Box>
         </Flex>

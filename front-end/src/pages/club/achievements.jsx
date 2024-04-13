@@ -10,6 +10,12 @@ import {
   Flex,
   Spacer,
   Divider,
+  Table,
+  Thead,
+  Th,
+  Tbody,
+  Td,
+  Tr,
 } from "@chakra-ui/react";
 import { MdCheckCircle, MdRadioButtonUnchecked } from "react-icons/md";
 import ClientLayout from "../../components/layouts/clientLayout";
@@ -82,62 +88,70 @@ export default function AchievementPage() {
           {t("achievements.achievements")}
         </Heading>
         <Box mt={8}>
-          {events.map((event, index) => (
-            <Box>
-              <Flex key={index} align={"start"}>
-                <Flex
-                  w={"10%"}
-                  bgColor={theme === "dark" ? "black" : "lightgray"}
-                  p={4}
-                  borderRadius={8}
-                  justify={"center"}
-                  align={"center"}
-                  mr={4}
-                >
+          {events
+            .sort((a, b) => ("" + a.time).localeCompare(b.time) * -1)
+            .map((event, index) => (
+              <Box key={index}>
+                <Box mb={4}>
+                  <Text
+                    textAlign={"center"}
+                    fontWeight={"bold"}
+                    fontSize={"lg"}
+                  >
+                    {event.event}
+                  </Text>
                   <Text textAlign={"center"}>{formatDate(event.time)}</Text>
-                </Flex>
-                <Flex
-                  w={"23%"}
-                  bgColor={theme === "dark" ? "black" : "lightgray"}
-                  p={4}
-                  borderRadius={8}
-                  justify={"center"}
-                  align={"center"}
-                >
-                  <Text textAlign={"center"}>{event.event}</Text>
-                </Flex>
-                <Spacer />
-                <Box w={"60%"}>
-                  {data[event?.time] &&
-                    data[event?.time]
-                      .sort(
-                        (a, b) => ("" + a.reward).localeCompare(b.reward) * -1
-                      )
-                      .map((achive, idx) => {
-                        const bgColor = getBackgroundColor(achive.reward);
-                        const textColor = getTextColor(bgColor);
-                        return (
-                          <Flex
-                            bgColor={bgColor}
-                            color={textColor}
-                            p={2}
-                            borderRadius={8}
-                            mb={4}
-                          >
-                            <Text mr={2}>{t("achievements.member")}</Text>
-                            <Text mr={2}>{achive.member}</Text>
-                            <Text mr={2}>{t("achievements.has_receive")}</Text>
-                            <Text fontWeight={"bold"} mr={2}>
-                              {achive.reward}
-                            </Text>
-                          </Flex>
-                        );
-                      })}
                 </Box>
-              </Flex>
-              <Divider mb={8} borderColor={theme === "dark" ?? "black"} />
-            </Box>
-          ))}
+                {data[event?.time] && (
+                  <Table
+                    size={{ base: "sm", md: "md" }}
+                    colorScheme="gray"
+                    borderRadius={4}
+                    overflow={"hidden"}
+                    __css={{ "table-layout": "fixed", width: "full" }}
+                    variant={"striped"}
+                  >
+                    <Thead bgColor={theme === "dark" ? "black" : "gray.200"}>
+                      <Tr>
+                        <Th width="10%" textAlign={"center"}>
+                          {t("common.no")}
+                        </Th>
+                        <Th width="20%" textAlign={"left"} cursor={"pointer"}>
+                          {t("achievements.member")}
+                        </Th>
+                        <Th width="20%" textAlign={"left"} cursor={"pointer"}>
+                          {t("achievements.reward")}
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {data[event?.time].map((item, index) => (
+                        <Tr key={index} userSelect="none" cursor="pointer">
+                          <Td textAlign={"center"}>{index + 1}</Td>
+                          <Td
+                            textAlign={"left"}
+                            overflow="hidden"
+                            whiteSpace="nowrap"
+                            textOverflow="ellipsis"
+                          >
+                            {item.member}
+                          </Td>
+                          <Td
+                            textAlign={"left"}
+                            overflow="hidden"
+                            whiteSpace="nowrap"
+                            textOverflow="ellipsis"
+                          >
+                            {item.reward}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                )}
+                <Divider mb={8} borderColor={theme === "dark" ?? "black"} />
+              </Box>
+            ))}
         </Box>
       </Container>
     </ClientLayout>
