@@ -22,7 +22,7 @@ import appSettings from "../../settings/appSettings";
 import { formatDate } from "../../lib/datetime";
 import ReactHtmlParser from "html-react-parser";
 
-export default function BlogPage(props) {
+export default function BookPage(props) {
   const path = useCurrentPath();
   const id = path[path.length - 1];
   const toast = useToast();
@@ -32,9 +32,9 @@ export default function BlogPage(props) {
 
   useEffect(() => {
     axios
-      .get(`${appSettings.API_PROXY}/blogs/${id}`)
+      .get(`${appSettings.API_PROXY}/books/${id}`)
       .then((resp) => {
-        setData(resp?.data?.blog ?? {});
+        setData(resp?.data?.book ?? {});
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
@@ -49,7 +49,7 @@ export default function BlogPage(props) {
           <Box w={"66%"}>
             <Flex align={"center"}>
               <Text fontSize={"2xl"} fontWeight={"bold"}>
-                {t("blogs.blog")} {" > "}
+                {t("books.book")} {" > "}
               </Text>
               <Heading fontSize={"2xl"} textAlign={"justify"}>
                 {data.title}

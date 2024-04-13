@@ -57,12 +57,12 @@ export default function AdminAchievementsPage() {
     axios
       .get(`${appSettings.API_PROXY}/achievements`)
       .then((resp) => {
-        setData(resp.data.achievements ?? []);
-        setRenderData(resp.data.achievements ?? []);
+        setData(resp?.data?.achievements ?? []);
+        setRenderData(resp?.data?.achievements ?? []);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -74,14 +74,14 @@ export default function AdminAchievementsPage() {
       .delete(`${appSettings.API_PROXY}/achievements/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
+          renderData.filter((item) => item._id !== selectedItem._id)
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();
@@ -117,8 +117,8 @@ export default function AdminAchievementsPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.member
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
               >
@@ -258,7 +258,7 @@ export default function AdminAchievementsPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"

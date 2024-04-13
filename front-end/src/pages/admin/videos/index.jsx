@@ -56,12 +56,12 @@ export default function AdminVideosPage() {
     axios
       .get(`${appSettings.API_PROXY}/videos`)
       .then((resp) => {
-        setData(resp.data.videos ?? []);
-        setRenderData(resp.data.videos ?? []);
+        setData(resp?.data?.videos ?? []);
+        setRenderData(resp?.data?.videos ?? []);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -73,14 +73,14 @@ export default function AdminVideosPage() {
       .delete(`${appSettings.API_PROXY}/videos/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
+          renderData.filter((item) => item._id !== selectedItem._id)
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();
@@ -112,8 +112,8 @@ export default function AdminVideosPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -247,7 +247,7 @@ export default function AdminVideosPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"

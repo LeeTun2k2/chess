@@ -79,10 +79,6 @@ const ChatBox = () => {
     }
   };
 
-  const clearChat = () => {
-    setMessages([]);
-  };
-
   return (
     <Box w={"100%"} mx="auto">
       <Flex
@@ -90,7 +86,7 @@ const ChatBox = () => {
         mb={4}
         borderRadius="md"
         boxShadow={4}
-        h={400}
+        h={500}
         overflowY="auto"
         scrollBehavior={"smooth"}
         border={"1px solid lightgray"}
@@ -163,7 +159,7 @@ const ChatBox = () => {
       {user?.id ? (
         <HStack>
           <Input
-            placeholder="Type your message here..."
+            placeholder={t("chat.type_your_message_here")}
             value={inputValue}
             onChange={(e) => setInputValue(e.target?.value)}
             colorScheme="gray"

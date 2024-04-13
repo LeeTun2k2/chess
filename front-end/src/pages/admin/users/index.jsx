@@ -57,12 +57,12 @@ export default function AdminUsersPage() {
     axios
       .get(`${appSettings.API_PROXY}/users`)
       .then((resp) => {
-        setData(resp.data.users ?? []);
-        setRenderData(resp.data.users ?? []);
+        setData(resp?.data?.users ?? []);
+        setRenderData(resp?.data?.users ?? []);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -82,7 +82,7 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         setData(
           data.map((item) => {
@@ -93,13 +93,13 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         toast(toast_success(t("common.success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();
@@ -136,8 +136,8 @@ export default function AdminUsersPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.email
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
               >
@@ -282,7 +282,7 @@ export default function AdminUsersPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import ChatBox from "../../components/chat/chatbox";
 import ClientLayout from "../../components/layouts/clientLayout";
 import {
@@ -10,9 +11,15 @@ import {
   Heading,
   Card,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { formatDatetime } from "../../lib/datetime";
 
 export default function ClubPage(props) {
   const theme = localStorage.getItem("theme");
+  const { t } = useTranslation();
+
+  const [meetingInfo, setMeetingInfo] = useState({});
+
   const notifications = [
     {
       title: "Hoi thao truong",
@@ -60,28 +67,33 @@ export default function ClubPage(props) {
               bgColor={theme === "dark" ? "black" : "gray.100"}
             >
               <Heading as="h2" mb={4}>
-                Calendar Club Meeting
+                {t("club.calendar_club_meeting")}
               </Heading>
               <Text fontSize="xl" mb={4}>
-                Welcome to the Calendar Club! Our next meeting will take place
-                offline.
+                {t("club.welcome_to_calendar_club_meeting")}
               </Text>
               <Box>
                 <Text fontSize="lg" fontWeight="bold">
-                  Date & Time:
+                  {t("club.date_time")}
                 </Text>
-                <Text>Sunday April 10th, 2024 at 1:30 PM</Text>
+                <Text>
+                  {meetingInfo?.datetime
+                    ? formatDatetime(meetingInfo.datetime)
+                    : t("club.datetime_not_found")}
+                </Text>
               </Box>
               <Box mt={4}>
                 <Text fontSize="lg" fontWeight="bold">
-                  Location:
+                  {t("club.location")}
                 </Text>
-                <Text>No. 1, Vo Van Ngan, Thu Duc, Ho Chi Minh City</Text>
+                <Text>
+                  {meetingInfo?.location ?? t("club.location_not_found")}
+                </Text>
               </Box>
             </Box>
             <Box w={"100%"}>
               <Heading as={"h5"} fontSize={"xl"} mx={4} mt={8} mb={4}>
-                Notifications
+                {t("club.notifications")}
               </Heading>
               <Box
                 border={"1px lightgray solid"}
@@ -104,7 +116,7 @@ export default function ClubPage(props) {
                         </Box>
                         <Box w={"25%"}>
                           <Text fontSize="xs" color="gray.500" align={"right"}>
-                            Created: {notification.createdDate}
+                            {t("club.created")} {notification.createdDate}
                           </Text>
                         </Box>
                       </Flex>
@@ -119,12 +131,8 @@ export default function ClubPage(props) {
             w={{ base: "100%", md: "30%" }}
             display={{ base: "none", md: "block" }}
             h={"fit-content"}
-            padding={4}
             borderRadius={8}
           >
-            <Heading as={"h2"} fontSize={"xl"} mb={4}>
-              Chatbot
-            </Heading>
             <ChatBox />
           </Box>
         </Flex>

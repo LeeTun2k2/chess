@@ -8,5 +8,6 @@
   "image": "Image",
   "content": "Content",
   "updated_at": "Updated At",
-  "video": "Video"
+  "video": "Video",
+  "videos": "Videos"
 }

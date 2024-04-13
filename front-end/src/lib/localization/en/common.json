@@ -32,5 +32,8 @@
   "second": "Second",
   "chess": "Chess",
   "xiangqi": "Xiangqi",
-  "time": "Time"
+  "time": "Time",
+  "created_at": "Created At",
+  "updated_at": "Updated At",
+  "something_went_wrong": "Something went wrong. Please try again."
 }

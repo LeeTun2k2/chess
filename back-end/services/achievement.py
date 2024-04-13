@@ -20,6 +20,22 @@ class AchievementService():
         data = [self.map(achievement) for achievement in data]
         return data
     
+    def get_honor_list(self):
+        # get all
+        data = self.achievements_collection.find({})
+        
+        # group
+        grouped_data = {}
+        events = []
+        for item in data:
+            time = item["time"]
+            obj = {"event": item["event"], "member": item["member"], "reward": item["reward"]}
+            if time not in grouped_data:
+                grouped_data[time] = [obj]
+                events.append({"time": time, "event": item["event"]})
+            else: grouped_data[time].append(obj)
+        return grouped_data, events
+    
     def get(self, _id):
         return self.map(self.achievements_collection.find_one({'_id': ObjectId(_id)}))
 

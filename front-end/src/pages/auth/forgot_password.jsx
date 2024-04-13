@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
     if (validateEmail(email) === false) {
       const model = toast_error(
         "Password reset failed.",
-        "Invalid email address.",
+        "Invalid email address."
       );
       toast(model);
       return false;
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
           })
           .catch((err) => {
             console.log(err);
-            toast(toast_error(err.response.data));
+            toast(toast_error(err?.response?.data));
           })
           .finally(() => {
             setLoading(false);
