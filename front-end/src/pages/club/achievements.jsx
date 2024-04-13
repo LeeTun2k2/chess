@@ -84,7 +84,7 @@ export default function AchievementPage() {
   return (
     <ClientLayout>
       <Container maxW="6xl" py={8}>
-        <Heading as="h1" size="2xl" mb={4}>
+        <Heading as="h1" mb={4}>
           {t("achievements.achievements")}
         </Heading>
         <Box mt={8}>

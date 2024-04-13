@@ -7,5 +7,7 @@
   "description": "Description",
   "image": "Image",
   "content": "Content",
-  "updated_at": "Updated At"
+  "updated_at": "Updated At",
+  "books": "Books",
+  "book": "Book"
 }

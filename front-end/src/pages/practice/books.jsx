@@ -53,7 +53,7 @@ export default function BookListPage(props) {
     <ClientLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("books.heading")}</Heading>
+          <Heading mb={4}>{t("books.books")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input

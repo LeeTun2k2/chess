@@ -11,6 +11,7 @@ import blogs from "./blogs.json";
 import achievements from "./achievements.json";
 import videos from "./videos.json";
 import users from "./users.json";
+import club from "./club.json"
 
 const vi = {
   common,
@@ -26,6 +27,7 @@ const vi = {
   achievements,
   videos,
   users,
+  club
 };
 
 export default vi;

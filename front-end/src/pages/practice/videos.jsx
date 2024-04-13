@@ -54,7 +54,7 @@ export default function VideoListPage(props) {
     <ClientLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("videos.heading")}</Heading>
+          <Heading mb={4}>{t("videos.videos")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input

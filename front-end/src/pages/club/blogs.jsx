@@ -53,7 +53,7 @@ export default function BlogPage(props) {
     <ClientLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("blogs.heading")}</Heading>
+          <Heading mb={4}>{t("blogs.blogs")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
