@@ -58,11 +58,11 @@ export default function AdminBlogsPage() {
     axios
       .get(`${appSettings.API_PROXY}/blogs`)
       .then((resp) => {
-        setData(resp.data.blogs ?? []);
-        setRenderData(resp.data.blogs ?? []);
+        setData(resp?.data?.blogs ?? []);
+        setRenderData(resp?.data?.blogs ?? []);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       });
   }, [toast]);
@@ -75,13 +75,13 @@ export default function AdminBlogsPage() {
       .delete(`${appSettings.API_PROXY}/blogs/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
+          renderData.filter((item) => item._id !== selectedItem._id)
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       })
       .finally(() => {
@@ -114,8 +114,8 @@ export default function AdminBlogsPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -257,7 +257,7 @@ export default function AdminBlogsPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"

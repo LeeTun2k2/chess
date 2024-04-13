@@ -87,7 +87,7 @@ const NewOnlineGameModal = ({
         }
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err?.response?.data);
         toast(toast_error("Fail to create lobby!"));
       })
       .finally(() => {

@@ -44,7 +44,7 @@ export default function AdminUpdateBookPage() {
         setFormData(resp?.data?.book ?? defaultData);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response?.data?.message));
+        if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error("Something went wrong. Please try again."));
       });
   }, []);
@@ -66,7 +66,7 @@ export default function AdminUpdateBookPage() {
         toast(toast_success(t("common.update_success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response?.data?.message));
+        if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error("Something went wrong. Please try again."));
       })
       .finally(() => {

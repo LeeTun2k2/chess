@@ -58,11 +58,11 @@ export default function AdminBooksPage() {
     axios
       .get(`${appSettings.API_PROXY}/books`)
       .then((resp) => {
-        setData(resp.data.books ?? []);
-        setRenderData(resp.data.books ?? []);
+        setData(resp?.data?.books ?? []);
+        setRenderData(resp?.data?.books ?? []);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       });
   }, [toast]);
@@ -75,13 +75,13 @@ export default function AdminBooksPage() {
       .delete(`${appSettings.API_PROXY}/books/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
+          renderData.filter((item) => item._id !== selectedItem._id)
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       })
       .finally(() => {
@@ -114,8 +114,8 @@ export default function AdminBooksPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -257,7 +257,7 @@ export default function AdminBooksPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"

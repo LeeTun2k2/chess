@@ -62,7 +62,7 @@ export default function LobbyPage(props) {
         }
       })
       .catch((err) => {
-        console.log(err.response);
+        console.log(err?.response);
         toast(toast_error("Fail to load lobby!"));
       })
       .finally(() => {
@@ -134,13 +134,13 @@ export default function LobbyPage(props) {
                             onClick={() => {
                               axios
                                 .put(
-                                  `${appSettings.API_PROXY}/lobby/${item._id}`,
+                                  `${appSettings.API_PROXY}/lobby/${item._id}`
                                 )
                                 .then(() => {
                                   navigate(`/wait/${item._id}`);
                                 })
                                 .catch((err) => {
-                                  console.log(err.response);
+                                  console.log(err?.response);
                                   toast(toast_error("Fail to join game!"));
                                 });
                             }}
@@ -184,7 +184,7 @@ export default function LobbyPage(props) {
                               >
                                 {i + 1}
                               </Button>
-                            ),
+                            )
                           )}
                           <Button
                             colorScheme="gray"

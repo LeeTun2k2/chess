@@ -72,7 +72,7 @@ export default function AdminPage() {
         setRenderData(resp?.data?.users ?? []);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       });
 
@@ -83,7 +83,7 @@ export default function AdminPage() {
         setSearchUsers(resp?.data?.users ?? []);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       });
   }, [toast]);
@@ -121,7 +121,7 @@ export default function AdminPage() {
         toast(toast_success(t("common.success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       })
       .finally(() => {
@@ -154,8 +154,8 @@ export default function AdminPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -181,10 +181,8 @@ export default function AdminPage() {
                       const text = e?.target?.value ?? "";
                       setSearchUsers(
                         users.filter((value) =>
-                          value.email
-                            .toLowerCase()
-                            .includes(text.toLowerCase()),
-                        ),
+                          value.email.toLowerCase().includes(text.toLowerCase())
+                        )
                       );
                     }}
                   />
@@ -343,7 +341,7 @@ export default function AdminPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"

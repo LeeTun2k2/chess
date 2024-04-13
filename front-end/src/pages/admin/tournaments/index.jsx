@@ -57,11 +57,11 @@ export default function AdmintournamentsPage() {
     axios
       .get(`${appSettings.API_PROXY}/tournaments`)
       .then((resp) => {
-        setData(resp.data.tournaments ?? []);
-        setRenderData(resp.data.tournaments ?? []);
+        setData(resp?.data?.tournaments ?? []);
+        setRenderData(resp?.data?.tournaments ?? []);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       });
   }, [toast]);
@@ -74,13 +74,13 @@ export default function AdmintournamentsPage() {
       .delete(`${appSettings.API_PROXY}/tournaments/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
+          renderData.filter((item) => item._id !== selectedItem._id)
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response.data));
+        if (err?.response) toast(toast_error(err?.response?.data));
         else toast(toast_error("Something went wrong. Please try again."));
       })
       .finally(() => {
@@ -113,8 +113,8 @@ export default function AdmintournamentsPage() {
                     data.filter((value) =>
                       value?.name
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -262,7 +262,7 @@ export default function AdmintournamentsPage() {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                   )}
                   <Button
                     colorScheme="gray"

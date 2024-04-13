@@ -41,7 +41,7 @@ export default function AdminUpdateAchievementPage() {
         setFormData(resp?.data?.achievement ?? defaultData);
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response?.data?.message));
+        if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error("Something went wrong. Please try again."));
       });
   }, []);
@@ -69,7 +69,7 @@ export default function AdminUpdateAchievementPage() {
         toast(toast_success(t("common.update_success")));
       })
       .catch((err) => {
-        if (err.response) toast(toast_error(err.response?.data?.message));
+        if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error("Something went wrong. Please try again."));
       })
       .finally(() => {
