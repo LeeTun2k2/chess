@@ -3,8 +3,13 @@ services:
     image: leetun2k2/chess_frontend:latest
     ports:
       - 10040:80
+    environment:
+      - REACT_APP_API_PROXY=API_PROXY
+      - REACT_APP_PROXY=PROXY
+      - REACT_APP_SOCKET_PROXY=SOCKET_PROXY
+      - REACT_APP_OPENAI_KEY=OPENAI_KEY
     env_file:
-      - path: ./.env
+      - ./.env
     depends_on:
       - backend
     networks:
@@ -16,8 +21,9 @@ services:
     image: leetun2k2/chess_backend:latest
     volumes:
       - ./uploads/images:/app/uploads/images
-    env_file:
-      - path: ./.env
+    environment:
+      - NEW_RELIC_LICENSE_KEY=NEW_RELIC_LICENSE_KEY
+      - NEW_RELIC_APP_NAME=NEW_RELIC_APP_NAME
     stdin_open: true
     tty: true
     restart: "no"
