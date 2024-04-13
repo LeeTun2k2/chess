@@ -20,7 +20,7 @@ import WaitingGamePage from "./pages/game/waitingGame";
 import GameSettingsPage from "./pages/game/gameSettingsPage";
 import OnlineGamePage from "./pages/game/online-game";
 import TournamentsPage from "./pages/tournament/tournaments";
-import BlogListPage from "./pages/club/blog_list";
+import BlogListPage from "./pages/club/blogs";
 import BlogPage from "./pages/club/blog";
 import CreateBlogPage from "./pages/club/create_blog";
 import LogoutPage from "./pages/auth/logout";
