@@ -4,5 +4,7 @@
   "update": "Chỉnh Sửa Giải Đấu",
   "no": "STT",
   "name": "Tên",
-  "description": "Mô tả"
+  "description": "Mô tả",
+  "tournaments": "Giải đấu",
+  "tournament": "Giải đấu"
 }
