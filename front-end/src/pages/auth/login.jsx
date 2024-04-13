@@ -91,7 +91,7 @@ export default function LoginPage({ setLoggedIn }) {
           })
           .catch((err) => {
             if (err?.response) toast(toast_error(err?.response?.data));
-            else toast(toast_error("Something went wrong. Please try again."));
+            else toast(toast_error(t("common.something_went_wrong")));
             console.log(err);
           })
           .finally(() => {
@@ -116,7 +116,7 @@ export default function LoginPage({ setLoggedIn }) {
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         setLoading(false);

@@ -34,5 +34,6 @@
   "xiangqi": "Cờ Tướng",
   "time": "Thời gian",
   "created_at": "Ngày tạo",
-  "updated_at": "Cập nhật"
+  "updated_at": "Cập nhật",
+  "something_went_wrong": "Có lỗi xảy ra, vui lòng thử lại sau."
 }

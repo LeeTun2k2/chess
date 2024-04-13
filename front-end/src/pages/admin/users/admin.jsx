@@ -73,7 +73,7 @@ export default function AdminPage() {
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        else toast(toast_error(t("common.something_went_wrong")));
       });
 
     axios
@@ -84,7 +84,7 @@ export default function AdminPage() {
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        else toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -100,7 +100,7 @@ export default function AdminPage() {
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();
@@ -122,7 +122,7 @@ export default function AdminPage() {
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error("Something went wrong. Please try again."));
+        else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();

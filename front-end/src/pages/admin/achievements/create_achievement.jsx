@@ -64,7 +64,7 @@ export default function AdminCreateAchievementPage() {
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data?.message));
-        else toast(toast_error("Something went wrong. Please try again."));
+        else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         setLoading(false);
