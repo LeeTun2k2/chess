@@ -11,7 +11,7 @@ import {
 import ClientLayout from "../../components/layouts/clientLayout";
 import { FaBlog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import { getAccessToken } from "../../lib/auth";
 import axios from "axios";
 export default function CreateBlogPage() {
@@ -49,7 +49,7 @@ export default function CreateBlogPage() {
       formData.append("description", blogData.description);
       formData.append("media", blogData.media); // Thêm hình ảnh hoặc video vào formData
 
-      axios.post(`${API_PROXY}/blog`, formData).finally(() => {
+      axios.post(`${appSettings.API_PROXY}/blog`, formData).finally(() => {
         // Xử lý logic sau khi gửi yêu cầu
       });
     } catch (error) {

@@ -14,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_success, toast_error } from "../../../lib/hooks/toast";
 import EditorContent from "../../../components/item_list/editor_content";
 import ReactPlayer from "react-player";
@@ -43,7 +43,7 @@ export default function AdminCreateVideoPage() {
 
     setLoading(true);
     axios
-      .post(`${API_PROXY}/videos`, formData)
+      .post(`${appSettings.API_PROXY}/videos`, formData)
       .then(() => {
         navigate("/admin/videos");
         toast(toast_success(t("common.create_success")));

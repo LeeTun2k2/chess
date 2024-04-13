@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 
 const AvatarUploadModal = ({ isOpen, onClose }) => {
   const fileInputRef = useRef();
@@ -35,7 +35,7 @@ const AvatarUploadModal = ({ isOpen, onClose }) => {
 
     try {
       const response = await axios.post(
-        `${API_PROXY}/images/upload`,
+        `${appSettings.API_PROXY}/images/upload`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } },
       );

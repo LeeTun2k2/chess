@@ -45,7 +45,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 
 export default function AdminPage() {
@@ -66,7 +66,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/users/admins`)
+      .get(`${appSettings.API_PROXY}/users/admins`)
       .then((resp) => {
         setData(resp?.data?.users ?? []);
         setRenderData(resp?.data?.users ?? []);
@@ -77,7 +77,7 @@ export default function AdminPage() {
       });
 
     axios
-      .get(`${API_PROXY}/users`)
+      .get(`${appSettings.API_PROXY}/users`)
       .then((resp) => {
         setUsers(resp?.data?.users ?? []);
         setSearchUsers(resp?.data?.users ?? []);
@@ -90,7 +90,9 @@ export default function AdminPage() {
 
   const handleItemClick = (selected) => {
     axios
-      .put(`${API_PROXY}/users/${selected.id}/role`, { role: "ADMIN" })
+      .put(`${appSettings.API_PROXY}/users/${selected.id}/role`, {
+        role: "ADMIN",
+      })
       .then((resp) => {
         setData([...data, { ...selected, role: "ADMIN" }]);
         setRenderData([...renderData, { ...selected, role: "ADMIN" }]);
@@ -110,7 +112,9 @@ export default function AdminPage() {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .put(`${API_PROXY}/users/${selectedItem.id}/role`, { role: "PLAYER" })
+      .put(`${appSettings.API_PROXY}/users/${selectedItem.id}/role`, {
+        role: "PLAYER",
+      })
       .then((resp) => {
         setRenderData(renderData.filter((item) => item.id !== selectedItem.id));
         setData(data.filter((item) => item.id !== selectedItem.id));

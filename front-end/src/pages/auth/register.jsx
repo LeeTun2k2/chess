@@ -25,7 +25,7 @@ import {
 } from "../../lib/hooks/validateUser";
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import axios from "axios";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
@@ -91,7 +91,7 @@ export default function RegisterPage() {
       const body = { username, email, password, name };
       setLoading(true);
       axios
-        .post(`${API_PROXY}/register`, body)
+        .post(`${appSettings.API_PROXY}/register`, body)
         .then((res) => {
           toast(toast_success("Register success. Please login."));
           navigate("/login");

@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import axios from "../../lib/axios";
 import { ONLINE, FRIEND, OFFLINE } from "../../settings/game";
-import { API_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 
 const NewOnlineGameModal = ({
   isOpen,
@@ -77,7 +77,7 @@ const NewOnlineGameModal = ({
   const newLobby = (data) => {
     setLoading(true);
     axios
-      .post(`${API_PROXY}/lobby`, data)
+      .post(`${appSettings.API_PROXY}/lobby`, data)
       .then((res) => {
         if (res.data) {
           toast(toast_success("Lobby created!"));

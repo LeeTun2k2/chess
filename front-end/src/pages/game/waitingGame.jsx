@@ -1,16 +1,9 @@
 import React, { useEffect } from "react";
-import {
-  Container,
-  Heading,
-  Flex,
-  Spinner,
-  Toast,
-  Button,
-} from "@chakra-ui/react";
+import { Container, Heading, Flex, Spinner } from "@chakra-ui/react";
 import { useCurrentPath } from "../../lib/hooks/route";
 import ClientLayout from "../../components/layouts/clientLayout";
 import io from "socket.io-client";
-import { SOCKET_PROXY } from "../../settings/appSettings";
+import appSettings from "../../settings/appSettings";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
 
@@ -18,7 +11,7 @@ export default function WaitingGamePage(props) {
   const path = useCurrentPath();
   const id = path[path.length - 1];
   const navigate = useNavigate();
-  const socket = io(SOCKET_PROXY);
+  const socket = io(appSettings.SOCKET_PROXY);
   const user = getUserData();
 
   useEffect(() => {

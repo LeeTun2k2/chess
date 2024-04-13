@@ -16,7 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_success, toast_error } from "../../../lib/hooks/toast";
 import EditorContent from "../../../components/item_list/editor_content";
 import { useCurrentPath } from "../../../lib/hooks/route";
@@ -39,7 +39,7 @@ export default function AdminUpdateBlogPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/blogs/${id}`)
+      .get(`${appSettings.API_PROXY}/blogs/${id}`)
       .then((resp) => {
         setFormData(resp?.data?.blog ?? defaultData);
       })
@@ -58,7 +58,7 @@ export default function AdminUpdateBlogPage() {
     e.preventDefault();
     setLoading(true);
     axios
-      .put(`${API_PROXY}/blogs/${id}`, formData, {
+      .put(`${appSettings.API_PROXY}/blogs/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
@@ -127,7 +127,7 @@ export default function AdminUpdateBlogPage() {
                 <Image
                   h={100}
                   w={100}
-                  src={`${API_PROXY}/images/${formData.image}`}
+                  src={`${appSettings.API_PROXY}/images/${formData.image}`}
                   alt={formData.title}
                 />
               )

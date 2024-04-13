@@ -35,7 +35,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../../lib/axios";
-import { API_PROXY } from "../../../settings/appSettings";
+import appSettings from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import { formatDate } from "../../../lib/datetime";
 
@@ -55,7 +55,7 @@ export default function AdmintournamentsPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_PROXY}/tournaments`)
+      .get(`${appSettings.API_PROXY}/tournaments`)
       .then((resp) => {
         setData(resp.data.tournaments ?? []);
         setRenderData(resp.data.tournaments ?? []);
@@ -71,7 +71,7 @@ export default function AdmintournamentsPage() {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .delete(`${API_PROXY}/tournaments/${selectedItem._id}`)
+      .delete(`${appSettings.API_PROXY}/tournaments/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
           renderData.filter((item) => item._id !== selectedItem._id),
