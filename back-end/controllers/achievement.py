@@ -18,6 +18,18 @@ def get_all_achievements():
         }), 200
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+    
+@achievement_bp.route('/api/achievements/honor-list', methods=['GET'])
+def get_honor_list():
+    try:
+        honor_list, events = achievement_service.get_honor_list()
+        return jsonify({
+            "message": "success",
+            "honor_list": honor_list,
+            "events": events
+        }), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
 
 @achievement_bp.route('/api/achievements/<achievement_id>', methods=['GET'])
 def get_achievement_by_id(achievement_id):
