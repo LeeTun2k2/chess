@@ -80,8 +80,8 @@ export default function VideoListPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.description
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
               >
@@ -149,7 +149,7 @@ export default function VideoListPage(props) {
                     >
                       {i + 1}
                     </Button>
-                  )
+                  ),
                 )}
                 <Button
                   colorScheme="gray"

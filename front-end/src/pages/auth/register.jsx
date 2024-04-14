@@ -27,10 +27,12 @@ import { toast_error, toast_success } from "../../lib/hooks/toast";
 import axios from "axios";
 import appSettings from "../../settings/appSettings";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function RegisterPage() {
   const toast = useToast();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
@@ -65,22 +67,10 @@ export default function RegisterPage() {
     };
 
     return (
-      validateField(
-        username,
-        validateUsername,
-        "Username must be at least 8 characters and contain only lowercase letters or numbers",
-      ) &&
-      validateField(
-        password,
-        validatePassword,
-        "Password must be at least 8 characters and should not contain any special characters",
-      ) &&
-      validateField(email, validateEmail, "Invalid email address") &&
-      validateField(
-        name,
-        validateName,
-        "Name must be at least 4 characters and contain only letters",
-      )
+      validateField(username, validateUsername, t("auth.username_condition")) &&
+      validateField(password, validatePassword, t("auth.password_condition")) &&
+      validateField(email, validateEmail, t("auth.email_condition")) &&
+      validateField(name, validateName, t("auth.name_condition"))
     );
   };
 
@@ -93,11 +83,11 @@ export default function RegisterPage() {
       axios
         .post(`${appSettings.API_PROXY}/register`, body)
         .then((res) => {
-          toast(toast_success("Register success. Please login."));
+          toast(toast_success(t("common.success")));
           navigate("/login");
         })
         .catch((error) => {
-          toast(toast_error("Register fail.", error.response.data));
+          toast(toast_error(t("common.fail"), error.response.data));
         })
         .finally(() => {
           setLoading(false);
@@ -110,7 +100,7 @@ export default function RegisterPage() {
       maxW="lg"
       py={{
         base: "12",
-        md: "24",
+        md: "16",
       }}
       px={{
         base: "0",
@@ -121,14 +111,19 @@ export default function RegisterPage() {
         <Stack>
           <VStack>
             <HStack>
-              <Image src="/logo.png" alt="UTE CHESS CLUB" h={16} w={16} />
+              <Image
+                src="/logo.png"
+                alt={t("common.ute_chess_club")}
+                h={16}
+                w={16}
+              />
               <Text
                 fontSize="xl"
                 fontWeight="bold"
                 display={{ md: "block", sm: "none" }}
                 cursor="pointer"
               >
-                UTE CHESS CLUB
+                {t("common.ute_chess_club")}
               </Text>
             </HStack>
           </VStack>
@@ -169,12 +164,12 @@ export default function RegisterPage() {
                   md: "md",
                 }}
               >
-                Register new account
+                {t("auth.register_new_account")}
               </Heading>
             </Stack>
             <Stack spacing="5">
               <FormControl>
-                <FormLabel htmlFor="username">Username</FormLabel>
+                <FormLabel htmlFor="username"> {t("auth.username")}</FormLabel>
                 <Input
                   id="username"
                   type="username"
@@ -184,7 +179,7 @@ export default function RegisterPage() {
               </FormControl>
               <PasswordField onChange={onPasswordChange} />
               <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
+                <FormLabel htmlFor="email"> {t("auth.email")}</FormLabel>
                 <Input
                   id="email"
                   type="email"
@@ -193,19 +188,19 @@ export default function RegisterPage() {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="name"> {t("auth.name")}</FormLabel>
                 <Input id="name" type="name" required onChange={onNameChange} />
               </FormControl>
             </Stack>
             <Stack spacing="6">
               <Button onClick={onSubmit} isLoading={loading}>
-                Register
+                {t("auth.register")}
               </Button>
               <Divider />
               <Text color="fg.muted" textAlign="center">
-                Already have account ?{" "}
+                {t("auth.already_have_account")}
                 <Link href="/login" color="darkcyan">
-                  Log in
+                  {t("auth.login")}
                 </Link>
               </Text>
             </Stack>

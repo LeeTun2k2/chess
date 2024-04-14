@@ -12,6 +12,8 @@
   "back": "Back",
   "submit": "Submit",
   "search": "Search",
+  "success": "Success",
+  "fail": "Fail",
   "create_success": "Create successful",
   "edit_success": "Edit successful",
   "delete_success": "Delete successful",
@@ -35,5 +37,6 @@
   "time": "Time",
   "created_at": "Created At",
   "updated_at": "Updated At",
-  "something_went_wrong": "Something went wrong. Please try again."
+  "something_went_wrong": "Something went wrong. Please try again.",
+  "ute_chess_club": "UTE CHESS CLUB"
 }
