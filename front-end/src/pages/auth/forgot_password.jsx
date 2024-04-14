@@ -21,11 +21,12 @@ import { toast_error, toast_success } from "../../lib/hooks/toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import appSettings from "../../settings/appSettings";
+import { useTranslation } from "react-i18next";
 
 export default function ForgotPasswordPage() {
   const toast = useToast();
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -36,10 +37,7 @@ export default function ForgotPasswordPage() {
 
   const validate = () => {
     if (validateEmail(email) === false) {
-      const model = toast_error(
-        "Password reset failed.",
-        "Invalid email address."
-      );
+      const model = toast_error(t("common.fail"), t("auth.invalid_email"));
       toast(model);
       return false;
     }
@@ -86,14 +84,19 @@ export default function ForgotPasswordPage() {
         <Stack>
           <VStack>
             <HStack>
-              <Image src="/logo.png" alt="UTE CHESS CLUB" h={16} w={16} />
+              <Image
+                src="/logo.png"
+                alt={t("common.ute_chess_club")}
+                h={16}
+                w={16}
+              />
               <Text
                 fontSize="xl"
                 fontWeight="bold"
                 display={{ md: "block", sm: "none" }}
                 cursor="pointer"
               >
-                UTE CHESS CLUB
+                {t("common.ute_chess_club")}
               </Text>
             </HStack>
           </VStack>
@@ -134,12 +137,12 @@ export default function ForgotPasswordPage() {
                   md: "md",
                 }}
               >
-                Forgot Password
+                {t("auth.forgot_password")}
               </Heading>
             </Stack>
             <Stack spacing="5">
               <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
+                <FormLabel htmlFor="email"> {t("auth.email")}</FormLabel>
                 <Input
                   id="email"
                   type="email"
@@ -150,13 +153,13 @@ export default function ForgotPasswordPage() {
             </Stack>
             <Stack spacing="6">
               <Button onClick={onSubmit} isLoading={loading}>
-                Reset Password
+                {t("auth.reset_password")}
               </Button>
               <Divider />
               <Text color="fg.muted" textAlign="center">
-                Remember your password?{" "}
+                {t("auth.remember_password")}
                 <Link href="/login" color="darkcyan">
-                  Log in
+                  {t("auth.login")}
                 </Link>
               </Text>
             </Stack>

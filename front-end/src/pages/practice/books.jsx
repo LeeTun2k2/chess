@@ -79,8 +79,8 @@ export default function BookListPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.description
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
               >
@@ -148,7 +148,7 @@ export default function BookListPage(props) {
                     >
                       {i + 1}
                     </Button>
-                  )
+                  ),
                 )}
                 <Button
                   colorScheme="gray"
