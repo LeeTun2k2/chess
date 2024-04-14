@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
 import {
-  Container,
   Box,
+  Card,
+  Container,
+  Divider,
   Flex,
-  Spacer,
   Heading,
-  VStack,
+  Image,
+  Spacer,
   Text,
   useToast,
-  Image,
-  Divider,
 } from "@chakra-ui/react";
-import { useCurrentPath } from "../../lib/hooks/route";
-import ClientLayout from "../../components/layouts/clientLayout";
-import { IoDocumentText } from "react-icons/io5";
-import DocNav from "../../components/nav/doc_nav";
+import ReactHtmlParser from "html-react-parser";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
+import { formatDate } from "../../lib/datetime";
+import { useCurrentPath } from "../../lib/hooks/route";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
-import { formatDate } from "../../lib/datetime";
-import ReactHtmlParser from "html-react-parser";
 
 export default function TournamentPage(props) {
   const path = useCurrentPath();
@@ -29,12 +27,25 @@ export default function TournamentPage(props) {
   const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
   const [data, setData] = useState({});
+  const [your_games, setYourGames] = useState([]);
 
   useEffect(() => {
     axios
       .get(`${appSettings.API_PROXY}/tournaments/${id}`)
       .then((resp) => {
         setData(resp?.data?.tournament ?? {});
+      })
+      .catch((err) => {
+        if (err?.response) toast(toast_error(err?.response?.data));
+        else toast(toast_error(t("common.something_went_wrong")));
+      });
+  }, [toast]);
+
+  useEffect(() => {
+    axios
+      .get(`${appSettings.API_PROXY}/tournaments/${id}/your-games`)
+      .then((resp) => {
+        setYourGames(resp?.data?.games ?? []);
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
@@ -78,8 +89,17 @@ export default function TournamentPage(props) {
             <Box mt={4}>{ReactHtmlParser(data.content ?? "")}</Box>
           </Box>
           <Spacer />
-          <Box w={"30%"}>
-            <DocNav />
+          <Box w={"30%"} border={"1px solid lightgray"} borderRadius={8} p={4}>
+            <Text fontWeight={"bold"}>{t("tournaments.your_games")}</Text>
+            {your_games.map((item, index) => (
+              <Card key={index} p={2} variant={"outline"} borderRadius={4}>
+                <Flex>
+                  <Text>{item.white}</Text>
+                  <Text>-</Text>
+                  <Text>{item.black}</Text>
+                </Flex>
+              </Card>
+            ))}
           </Box>
         </Flex>
       </Container>

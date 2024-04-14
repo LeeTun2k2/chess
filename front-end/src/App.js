@@ -52,6 +52,7 @@ import LessonsPage from "./pages/practice/lessons";
 import VideoPage from "./pages/practice/video";
 import VideoListPage from "./pages/practice/videos";
 import TestPage from "./pages/test";
+import TournamentPage from "./pages/tournament/tournament";
 import TournamentsPage from "./pages/tournament/tournaments";
 import TvPage from "./pages/tv";
 import UserProfile from "./pages/user/user_profile";
@@ -181,6 +182,18 @@ function App() {
           element={
             isLoggedIn || user?.id ? (
               <TournamentsPage />
+            ) : (
+              <Navigate to={"/login"} />
+            )
+          }
+        />
+
+        <Route
+          exact
+          path="/tournament/:id"
+          element={
+            isLoggedIn || user?.id ? (
+              <TournamentPage />
             ) : (
               <Navigate to={"/login"} />
             )

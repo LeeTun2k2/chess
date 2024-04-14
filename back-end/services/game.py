@@ -63,6 +63,10 @@ class GameService():
         
     def get_by_lobby_id(self, lobby_id):
         return self.online_games_collection.find_one({'lobby_id': ObjectId(lobby_id)})
+    
+    def get_by_tournament_id(self, tournament_id):
+        games = self.online_games_collection.find({'tournament_id': ObjectId(tournament_id)})
+        return [self.map(game) for game in games]
 
     def create_online_game(self, lobby, user):
         random = randint(0, 1)
@@ -104,3 +108,5 @@ class GameService():
             game['black_username'] = id_usernames[game['black']]
             res.append(self.map(game))
         return res
+    
+
