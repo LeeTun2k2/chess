@@ -49,3 +49,16 @@ def deleteGame(game_id, mode):
     except Exception as e:
         error(e)
         return "Fail to delete game profile.", 500
+    
+@game_bp.get('/api/games/tv')
+@jwt_required()
+def getTV():
+    try:
+        games = game_service.get_tv()
+        return jsonify({
+            "message": "success",
+            "games": games
+        }), 200
+    except Exception as e:
+        error(e)
+        return "Fail to get games.", 500

@@ -105,7 +105,9 @@ const PcMenu = ({ user }) => {
           {t("header.play")}
         </MenuButton>
         <MenuList p={0} overflow={"hidden"} zIndex={9999}>
-          <MenuItem onClick={() => navigate("/lobby")}>Lobby</MenuItem>
+          <MenuItem onClick={() => navigate("/lobby")}>
+            {t("header.lobby")}
+          </MenuItem>
           <MenuItem onClick={() => navigate("/new-game")}>
             {t("header.playWithOptions")}
           </MenuItem>

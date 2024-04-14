@@ -1,60 +1,60 @@
+import { gapi } from "gapi-script";
 import React, { useEffect, useState } from "react";
 import {
+  Navigate,
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate,
 } from "react-router-dom";
-import TestPage from "./pages/test";
-import LoginPage from "./pages/auth/login";
-import RegisterPage from "./pages/auth/register";
-import ForgotPasswordPage from "./pages/auth/forgot_password";
-import ResetPasswordPage from "./pages/auth/reset_password";
-import ErrorPage from "./pages/error";
-import NotFoundPage from "./pages/error/404";
-import InternalServerErrorPage from "./pages/error/500";
-import HomePage from "./pages/home";
-import UserProfile from "./pages/user/user_profile";
-import LobbyPage from "./pages/game/lobby";
-import WaitingGamePage from "./pages/game/waitingGame";
-import GameSettingsPage from "./pages/game/gameSettingsPage";
-import OnlineGamePage from "./pages/game/online-game";
-import TournamentsPage from "./pages/tournament/tournaments";
-import BlogListPage from "./pages/club/blogs";
-import BlogPage from "./pages/club/blog";
-import CreateBlogPage from "./pages/club/create_blog";
-import LogoutPage from "./pages/auth/logout";
-import AboutPage from "./pages/common/about";
-import DonatePage from "./pages/club/donate";
-import AchievementsPage from "./pages/club/achievements";
-import { gapi } from "gapi-script";
 import { getUserData } from "./lib/auth";
 import AdminDashboardPage from "./pages/admin";
-import AdminBlogsPage from "./pages/admin/blogs";
-import AdminBooksPage from "./pages/admin/books";
-import AdminTournamentsPage from "./pages/admin/tournaments";
-import AdminUsersPage from "./pages/admin/users";
-import AdminVideosPage from "./pages/admin/videos";
-import AdminCreateBlogsPage from "./pages/admin/blogs/create_blog";
-import AdminUpdateBlogPage from "./pages/admin/blogs/update_blog";
-import AdminCreateBookPage from "./pages/admin/books/create_book";
-import AdminUpdateBookPage from "./pages/admin/books/update_book";
-import AdminCreateTournamentPage from "./pages/admin/tournaments/create_tournament";
-import AdminUpdateTournamentPage from "./pages/admin/tournaments/update_tournament";
-import AdminCreateVideoPage from "./pages/admin/videos/create_video";
-import AdminUpdateVideoPage from "./pages/admin/videos/update_video";
-import SettingsPage from "./pages/common/settings";
-import LessonsPage from "./pages/practice/lessons";
-import LessonsDetailPage from "./pages/practice/lesson_detail";
 import AdminAchievementsPage from "./pages/admin/achievements";
 import AdminCreateAchievementPage from "./pages/admin/achievements/create_achievement";
 import AdminUpdateAchievementPage from "./pages/admin/achievements/update_achievement";
+import AdminBlogsPage from "./pages/admin/blogs";
+import AdminCreateBlogsPage from "./pages/admin/blogs/create_blog";
+import AdminUpdateBlogPage from "./pages/admin/blogs/update_blog";
+import AdminBooksPage from "./pages/admin/books";
+import AdminCreateBookPage from "./pages/admin/books/create_book";
+import AdminUpdateBookPage from "./pages/admin/books/update_book";
 import AdminCreateLessonPage from "./pages/admin/lessons/create_lesson";
+import AdminTournamentsPage from "./pages/admin/tournaments";
+import AdminCreateTournamentPage from "./pages/admin/tournaments/create_tournament";
+import AdminUpdateTournamentPage from "./pages/admin/tournaments/update_tournament";
+import AdminUsersPage from "./pages/admin/users";
 import AdminPage from "./pages/admin/users/admin";
-import BookListPage from "./pages/practice/books";
+import AdminVideosPage from "./pages/admin/videos";
+import AdminCreateVideoPage from "./pages/admin/videos/create_video";
+import AdminUpdateVideoPage from "./pages/admin/videos/update_video";
+import ForgotPasswordPage from "./pages/auth/forgot_password";
+import LoginPage from "./pages/auth/login";
+import LogoutPage from "./pages/auth/logout";
+import RegisterPage from "./pages/auth/register";
+import ResetPasswordPage from "./pages/auth/reset_password";
+import AchievementsPage from "./pages/club/achievements";
+import BlogPage from "./pages/club/blog";
+import BlogListPage from "./pages/club/blogs";
+import DonatePage from "./pages/club/donate";
+import AboutPage from "./pages/common/about";
+import SettingsPage from "./pages/common/settings";
+import ErrorPage from "./pages/error";
+import NotFoundPage from "./pages/error/404";
+import InternalServerErrorPage from "./pages/error/500";
+import GameSettingsPage from "./pages/game/gameSettingsPage";
+import LobbyPage from "./pages/game/lobby";
+import OnlineGamePage from "./pages/game/online-game";
+import WaitingGamePage from "./pages/game/waitingGame";
+import HomePage from "./pages/home";
 import BookPage from "./pages/practice/book";
-import VideoListPage from "./pages/practice/videos";
+import BookListPage from "./pages/practice/books";
+import LessonsDetailPage from "./pages/practice/lesson_detail";
+import LessonsPage from "./pages/practice/lessons";
 import VideoPage from "./pages/practice/video";
+import VideoListPage from "./pages/practice/videos";
+import TestPage from "./pages/test";
+import TournamentsPage from "./pages/tournament/tournaments";
+import TvPage from "./pages/tv";
+import UserProfile from "./pages/user/user_profile";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -181,6 +181,19 @@ function App() {
           element={
             isLoggedIn || user?.id ? (
               <TournamentsPage />
+            ) : (
+              <Navigate to={"/login"} />
+            )
+          }
+        />
+
+        {/* TV Page */}
+        <Route
+          exact
+          path="/tv"
+          element={
+            isLoggedIn || user?.id ? (
+              <TvPage/>
             ) : (
               <Navigate to={"/login"} />
             )

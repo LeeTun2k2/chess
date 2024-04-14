@@ -12,6 +12,8 @@
   "back": "Back",
   "submit": "Submit",
   "search": "Search",
+  "success": "Success",
+  "fail": "Fail",
   "create_success": "Create successful",
   "edit_success": "Edit successful",
   "delete_success": "Delete successful",

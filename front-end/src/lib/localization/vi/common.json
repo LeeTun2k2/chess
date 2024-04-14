@@ -12,6 +12,8 @@
   "back": "Quay lại",
   "submit": "Gửi",
   "search": "Tìm kiếm",
+  "success": "Thành công",
+  "fail": "Thất bại",
   "create_success": "Thêm thành công",
   "edit_success": "Cập nhật thành công",
   "delete_success": "Xóa thành công",
