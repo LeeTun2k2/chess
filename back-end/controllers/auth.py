@@ -128,7 +128,7 @@ def logout():
 def protected():
     user_id = get_jwt_identity()
     user = UserService().get_by_id(user_id=user_id)
-    return jsonify(logged_in_as=user.username), 200
+    return jsonify(logged_in_as=user.username), 200 
 
 @auth_bp.get('/api/forgot-password')
 def forgot_password():

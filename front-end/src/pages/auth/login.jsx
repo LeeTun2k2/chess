@@ -30,8 +30,10 @@ import appSettings from "../../settings/appSettings";
 import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
 import { GoogleIcon } from "../../components/auth/googleIcon";
 import { GoogleLogin } from "react-google-login";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage({ setLoggedIn }) {
+  const { t } = useTranslation();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -53,8 +55,9 @@ export default function LoginPage({ setLoggedIn }) {
 
     if (validateUsername(username) === false) {
       const model = toast_error(
-        "Log in fail.",
-        "Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
+        t("auth.login_fail"),
+        t("auth.username_condition"),
+        //"Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
       );
       toast(model);
       ok = false;
@@ -62,8 +65,9 @@ export default function LoginPage({ setLoggedIn }) {
 
     if (validatePassword(password) === false) {
       const model = toast_error(
-        "Log in fail.",
-        "Password has a minimum length of 8 characters and do not contain any special charaters."
+        t("auth.login_fail"),
+        t("auth.password_condition"),
+        //"Password has a minimum length of 8 characters and do not contain any special charaters."
       );
       toast(model);
       ok = false;
@@ -124,7 +128,7 @@ export default function LoginPage({ setLoggedIn }) {
   };
 
   const onGoogleLoginFail = (resp) => {
-    toast(toast_error("Login Fail."));
+    toast(toast_error(t("auth.login_fail")));
     console.log(resp);
   };
 
@@ -133,7 +137,7 @@ export default function LoginPage({ setLoggedIn }) {
       maxW="lg"
       py={{
         base: "12",
-        md: "24",
+        md: "16",
       }}
       px={{
         base: "0",
@@ -144,14 +148,19 @@ export default function LoginPage({ setLoggedIn }) {
         <Stack>
           <VStack>
             <HStack>
-              <Image src="/logo.png" alt="UTE CHESS CLUB" h={16} w={16} />
+              <Image
+                src="/logo.png"
+                alt={t("common.ute_chess_club")}
+                h={16}
+                w={16}
+              />
               <Text
                 fontSize="xl"
                 fontWeight="bold"
                 display={{ md: "block", sm: "none" }}
                 cursor="pointer"
               >
-                UTE CHESS CLUB
+                {t("common.ute_chess_club")}
               </Text>
             </HStack>
           </VStack>
@@ -192,12 +201,12 @@ export default function LoginPage({ setLoggedIn }) {
                   md: "md",
                 }}
               >
-                Log in to your account
+                {t("auth.login_to_your_account")}
               </Heading>
             </Stack>
             <Stack spacing="5">
               <FormControl>
-                <FormLabel htmlFor="username">Username</FormLabel>
+                <FormLabel htmlFor="username">{t("auth.username")}</FormLabel>
                 <Input
                   id="username"
                   type="username"
@@ -214,16 +223,16 @@ export default function LoginPage({ setLoggedIn }) {
                 size="sm"
                 onClick={() => navigate("/forgot-password")}
               >
-                Forgot password?
+                {t("auth.forgot_password")}
               </Button>
             </HStack>
             <Stack spacing="4">
               <Button onClick={onSubmit} isLoading={loading}>
-                Log in
+                {t("auth.login")}
               </Button>
               <HStack>
                 <Divider />
-                <Text color={"gray"}>or</Text>
+                <Text color={"gray"}>{t("auth.or")}</Text>
                 <Divider />
               </HStack>
               <GoogleLogin
@@ -241,9 +250,9 @@ export default function LoginPage({ setLoggedIn }) {
                 )}
               />
               <Text color="fg.muted" textAlign="center">
-                Don't have an account?{" "}
+                {t("auth.dont_have_account")}
                 <Link href="/register" color="darkcyan">
-                  Register
+                  {t("auth.register")}
                 </Link>
               </Text>
             </Stack>

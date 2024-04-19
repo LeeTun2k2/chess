@@ -10,8 +10,10 @@ import {
   VStack,
   Image,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 export default function ForgotPasswordConfirmationPage() {
+  const { t } = useTranslation();
   return (
     <Container
       maxW="lg"
@@ -27,14 +29,19 @@ export default function ForgotPasswordConfirmationPage() {
       <Stack spacing="8">
         <VStack>
           <HStack>
-            <Image src="/logo.png" alt="UTE CHESS CLUB" h={16} w={16} />
+            <Image
+              src="/logo.png"
+              alt={t("common.ute_chess_club")}
+              h={16}
+              w={16}
+            />
             <Text
               fontSize="xl"
               fontWeight="bold"
               display={{ md: "block", sm: "none" }}
               cursor="pointer"
             >
-              UTE CHESS CLUB
+              {t("common.ute_chess_club")}
             </Text>
           </HStack>
         </VStack>
@@ -74,19 +81,21 @@ export default function ForgotPasswordConfirmationPage() {
                   md: "md",
                 }}
               >
-                Reset Password
+                {t("auth.reset_password")}
               </Heading>
             </Stack>
             <Stack spacing="5">
               <Text textAlign="center">
-                An email with a <strong>reset password</strong> has been sent to
-                your email address. Please check your inbox.
+                {t("auth.an_email_with_a")}{" "}
+                <strong> {t("auth.reset_password")}</strong>{" "}
+                {t("auth.has_been_send_to_your_inbox")}.{" "}
+                {t("auth.please_check_your_email")}
               </Text>
             </Stack>
             <Stack spacing="6">
               <Text color="fg.muted" textAlign="center">
                 <Link href="/login" color="darkcyan">
-                  Log in
+                  {t("auth.login")}
                 </Link>
               </Text>
             </Stack>

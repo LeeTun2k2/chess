@@ -154,8 +154,8 @@ export default function AdminPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
               >
@@ -181,8 +181,10 @@ export default function AdminPage() {
                       const text = e?.target?.value ?? "";
                       setSearchUsers(
                         users.filter((value) =>
-                          value.email.toLowerCase().includes(text.toLowerCase())
-                        )
+                          value.email
+                            .toLowerCase()
+                            .includes(text.toLowerCase()),
+                        ),
                       );
                     }}
                   />
@@ -341,7 +343,7 @@ export default function AdminPage() {
                       >
                         {i + 1}
                       </Button>
-                    )
+                    ),
                   )}
                   <Button
                     colorScheme="gray"
