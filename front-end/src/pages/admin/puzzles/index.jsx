@@ -3,7 +3,6 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DeleteIcon,
-  EditIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
 import {
@@ -32,20 +31,19 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { formatDate } from "../../../lib/datetime";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
 
-export default function AdmintournamentsPage() {
-  const navigate = useNavigate();
+export default function AdminPuzzlesPage() {
   const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [renderData, setRenderData] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -55,10 +53,10 @@ export default function AdmintournamentsPage() {
 
   useEffect(() => {
     axios
-      .get(`${appSettings.API_PROXY}/tournaments`)
+      .get(`${appSettings.API_PROXY}/puzzles`)
       .then((resp) => {
-        setData(resp?.data?.tournaments ?? []);
-        setRenderData(resp?.data?.tournaments ?? []);
+        setData(resp?.data?.puzzles ?? []);
+        setRenderData(resp?.data?.puzzles ?? []);
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
@@ -66,12 +64,28 @@ export default function AdmintournamentsPage() {
       });
   }, [toast]);
 
+  const handleGenerate = () => {
+    setLoading(true);
+    axios
+      .get(`${appSettings.API_PROXY}/puzzles/generate-chess`)
+      .then((resp) => {
+        toast(toast_success(t("common.success")));
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const handleDelete = () => {
     if (!selectedItem) {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .delete(`${appSettings.API_PROXY}/tournaments/${selectedItem._id}`)
+      .delete(`${appSettings.API_PROXY}/puzzles/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
           renderData.filter((item) => item._id !== selectedItem._id),
@@ -80,7 +94,7 @@ export default function AdmintournamentsPage() {
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
+        if (err?.response) toast(toast_error(err?.response?.data?.error));
         else toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
@@ -92,7 +106,7 @@ export default function AdmintournamentsPage() {
     <AdminLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("tournaments.heading")}</Heading>
+          <Heading mb={4}>{t("puzzles.heading")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -110,10 +124,14 @@ export default function AdmintournamentsPage() {
                 variant={"ghost"}
                 onClick={() => {
                   setRenderData(
-                    data.filter((value) =>
-                      value?.name
-                        ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
+                    data.filter(
+                      (value) =>
+                        value?.variant
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase()) ||
+                        value?.fen
+                          ?.toLowerCase()
+                          .includes(searchText.toLocaleLowerCase()),
                     ),
                   );
                 }}
@@ -122,13 +140,12 @@ export default function AdmintournamentsPage() {
               </Button>
             </Box>
             <Button
-              onClick={() => {
-                navigate("/admin/create-tournament");
-              }}
+              isLoading={loading}
+              onClick={handleGenerate}
               colorScheme="green"
               w={32}
             >
-              <AddIcon mr={2} /> {t("common.new")}
+              <AddIcon mr={2} /> {t("puzzles.generate")}
             </Button>
           </Flex>
         </Flex>
@@ -147,23 +164,17 @@ export default function AdmintournamentsPage() {
             <Th width="10%" textAlign={"center"}>
               {t("common.no")}
             </Th>
-            <Th width="15%" cursor={"pointer"}>
-              {t("tournaments.name")}
-            </Th>
-            <Th width="20%" cursor={"pointer"}>
-              {t("tournaments.description")}
-            </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
+            <Th width="10%" cursor={"pointer"}>
               {t("common.variant")}
             </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.time")}
+            <Th width="30%" textAlign={"left"} cursor={"pointer"}>
+              {t("puzzles.fen")}
             </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.start")}
+            <Th width="35%" textAlign={"left"} cursor={"pointer"}>
+              {t("puzzles.moves")}
             </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.end")}
+            <Th width="10%" cursor={"pointer"}>
+              {t("common.created_at")}
             </Th>
             <Th width="15%" textAlign={"center"} cursor={"pointer"}>
               {t("common.action")}
@@ -174,12 +185,7 @@ export default function AdmintournamentsPage() {
           {renderData
             .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
             .map((item, index) => (
-              <Tr
-                key={index}
-                userSelect="none"
-                cursor="pointer"
-                onDoubleClick={() => window.open(`/tournament/${item._id}`)}
-              >
+              <Tr key={index} userSelect="none" cursor="pointer">
                 <Td textAlign={"center"}>
                   {(pageNumber - 1) * pageSize + index + 1}
                 </Td>
@@ -189,7 +195,7 @@ export default function AdmintournamentsPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.name}{" "}
+                  {item.variant}
                 </Td>
                 <Td
                   textAlign={"left"}
@@ -197,32 +203,26 @@ export default function AdmintournamentsPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.description}
+                  {item.fen}
                 </Td>
                 <Td
-                  textAlign={"center"}
+                  textAlign={"left"}
                   overflow="hidden"
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.variant}
+                  {item.moves.join(" ")}
                 </Td>
                 <Td
-                  textAlign={"center"}
-                >{`${item.initial_time} + ${item.bonus_time}`}</Td>
-                <Td textAlign={"center"}>{formatDate(item.start)}</Td>
-                <Td textAlign={"center"}>{formatDate(item.end)}</Td>
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {formatDate(item.created_at)}
+                </Td>
                 <Td>
                   <Flex justifyContent={"center"}>
-                    <Button
-                      onClick={() =>
-                        navigate(`/admin/update-tournament/${item._id}`)
-                      }
-                      colorScheme="yellow"
-                      mr={2}
-                    >
-                      <EditIcon />
-                    </Button>
                     <Button
                       colorScheme="red"
                       onClick={() => {

@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
   ButtonGroup,
+  Container,
   Flex,
+  HStack,
+  Heading,
+  Input,
+  Select,
+  Spacer,
+  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -12,20 +20,17 @@ import {
   Th,
   Thead,
   Tr,
-  Button,
-  Container,
-  Spacer,
-  Select,
-  HStack,
-  Input,
-  Heading,
   useDisclosure,
   useToast,
-  Spinner,
 } from "@chakra-ui/react";
-import ClientLayout from "../../components/layouts/clientLayout";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
+import NewOnlineGameModal from "../../components/game/newGameModal";
+import ClientLayout from "../../components/layouts/clientLayout";
+import axios from "../../lib/axios";
+import { toast_error } from "../../lib/hooks/toast";
+import appSettings from "../../settings/appSettings";
 import {
   BLITZ,
   BULLET,
@@ -35,11 +40,6 @@ import {
   RAPID,
   XIANGQI,
 } from "../../settings/game";
-import NewOnlineGameModal from "../../components/game/newGameModal";
-import appSettings from "../../settings/appSettings";
-import axios from "../../lib/axios";
-import { toast_error } from "../../lib/hooks/toast";
-import io from "socket.io-client";
 
 export default function LobbyPage(props) {
   const navigate = useNavigate();
@@ -173,18 +173,20 @@ export default function LobbyPage(props) {
                           </Button>
                           {Array.from(
                             { length: Math.ceil(data.length / pageSize) },
-                            (_, i) => (
-                              <Button
-                                key={i}
-                                colorScheme={
-                                  pageNumber === i + 1 ? "teal" : "gray"
-                                }
-                                size="sm"
-                                onClick={() => setPageNumber(i + 1)}
-                              >
-                                {i + 1}
-                              </Button>
-                            ),
+                            (_, i) =>
+                              pageNumber - 5 <= i &&
+                              i <= pageNumber + 3 && (
+                                <Button
+                                  key={i}
+                                  colorScheme={
+                                    pageNumber === i + 1 ? "teal" : "gray"
+                                  }
+                                  size="sm"
+                                  onClick={() => setPageNumber(i + 1)}
+                                >
+                                  {i + 1}
+                                </Button>
+                              ),
                           )}
                           <Button
                             colorScheme="gray"

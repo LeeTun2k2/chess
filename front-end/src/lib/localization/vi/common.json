@@ -38,5 +38,6 @@
   "created_at": "Ngày tạo",
   "updated_at": "Cập nhật",
   "something_went_wrong": "Có lỗi xảy ra, vui lòng thử lại sau.",
-  "ute_chess_club": "CLB CỜ SPKT"
+  "ute_chess_club": "CLB CỜ SPKT",
+  "status": "Trạng thái"
 }

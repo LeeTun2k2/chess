@@ -1,18 +1,20 @@
 import about from "./about.json";
-import settings from "./settings.json";
-import header from "./header.json";
-import footer from "./footer.json";
-import adminFooter from "./adminFooter.json";
-import profile from "./profile.json";
-import common from "./common.json";
-import books from "./books.json";
-import tournaments from "./tournaments.json";
-import blogs from "./blogs.json";
 import achievements from "./achievements.json";
-import videos from "./videos.json";
-import users from "./users.json";
-import club from "./club.json";
+import adminFooter from "./adminFooter.json";
 import auth from "./auth.json";
+import blogs from "./blogs.json";
+import books from "./books.json";
+import club from "./club.json";
+import common from "./common.json";
+import footer from "./footer.json";
+import games from "./games.json";
+import header from "./header.json";
+import profile from "./profile.json";
+import puzzles from "./puzzles.json";
+import settings from "./settings.json";
+import tournaments from "./tournaments.json";
+import users from "./users.json";
+import videos from "./videos.json";
 
 const en = {
   common,
@@ -30,6 +32,8 @@ const en = {
   users,
   club,
   auth,
+  games,
+  puzzles,
 };
 
 export default en;

@@ -109,4 +109,21 @@ class GameService():
             res.append(self.map(game))
         return res
     
+    def get_all(self):
+        # get all user
+        users = list(self.users_collection.find())
+        # to dictionary
+        id_usernames = {}
+        for user in users:
+            id_usernames[str(user["_id"])] = user["username"]
+
+        # games
+        games = self.online_games_collection.find().sort('created_at', -1)
+        res = []
+        for game in games:
+            game['white_username'] = id_usernames[game['white']]
+            game['black_username'] = id_usernames[game['black']]
+            res.append(self.map(game))
+        return res
+        
 

@@ -1,31 +1,31 @@
-import ClientLayout from "../../components/layouts/clientLayout";
-import React, { useEffect, useState } from "react";
-import {
-  ButtonGroup,
-  Flex,
-  Box,
-  Button,
-  Container,
-  Heading,
-  useToast,
-  Image,
-  Input,
-  Card,
-  Text,
-  Spacer,
-} from "@chakra-ui/react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  Container,
+  Flex,
+  Heading,
+  Image,
+  Input,
+  Spacer,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "../../lib/axios";
-import appSettings from "../../settings/appSettings";
-import { toast_error } from "../../lib/hooks/toast";
-import DocNav from "../../components/nav/doc_nav";
+import { useNavigate } from "react-router-dom";
 import VideoIcon from "../../assets/images/icon/video.png";
+import ClientLayout from "../../components/layouts/clientLayout";
+import DocNav from "../../components/nav/doc_nav";
+import axios from "../../lib/axios";
+import { toast_error } from "../../lib/hooks/toast";
+import appSettings from "../../settings/appSettings";
 
 export default function VideoListPage(props) {
   const navigate = useNavigate();
@@ -140,16 +140,18 @@ export default function VideoListPage(props) {
                 </Button>
                 {Array.from(
                   { length: Math.ceil(renderData.length / pageSize) },
-                  (_, i) => (
-                    <Button
-                      key={i}
-                      colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
-                      size="sm"
-                      onClick={() => setPageNumber(i + 1)}
-                    >
-                      {i + 1}
-                    </Button>
-                  ),
+                  (_, i) =>
+                    pageNumber - 5 <= i &&
+                    i <= pageNumber + 3 && (
+                      <Button
+                        key={i}
+                        colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
+                        size="sm"
+                        onClick={() => setPageNumber(i + 1)}
+                      >
+                        {i + 1}
+                      </Button>
+                    ),
                 )}
                 <Button
                   colorScheme="gray"

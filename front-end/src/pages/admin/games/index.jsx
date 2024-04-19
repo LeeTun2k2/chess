@@ -1,18 +1,9 @@
 import {
-  AddIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  DeleteIcon,
-  EditIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Box,
   Button,
   ButtonGroup,
@@ -27,38 +18,31 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
-import { formatDate } from "../../../lib/datetime";
-import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import { toast_error } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
 
-export default function AdmintournamentsPage() {
-  const navigate = useNavigate();
+export default function AdminGamesPage() {
   const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
   const [data, setData] = useState([]);
   const [renderData, setRenderData] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
   const [pageNumber, setPageNumber] = React.useState(1);
   const pageSize = 10;
 
   useEffect(() => {
     axios
-      .get(`${appSettings.API_PROXY}/tournaments`)
+      .get(`${appSettings.API_PROXY}/games`)
       .then((resp) => {
-        setData(resp?.data?.tournaments ?? []);
-        setRenderData(resp?.data?.tournaments ?? []);
+        setData(resp?.data?.games ?? []);
+        setRenderData(resp?.data?.games ?? []);
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
@@ -66,33 +50,11 @@ export default function AdmintournamentsPage() {
       });
   }, [toast]);
 
-  const handleDelete = () => {
-    if (!selectedItem) {
-      toast(toast_error(t("common.not_found")));
-    }
-    axios
-      .delete(`${appSettings.API_PROXY}/tournaments/${selectedItem._id}`)
-      .then((resp) => {
-        setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
-        );
-        setData(data.filter((item) => item._id !== selectedItem._id));
-        toast(toast_success(t("common.delete_success")));
-      })
-      .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
-      })
-      .finally(() => {
-        onClose();
-      });
-  };
-
   return (
     <AdminLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("tournaments.heading")}</Heading>
+          <Heading mb={4}>{t("games.heading")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -107,13 +69,22 @@ export default function AdmintournamentsPage() {
                 top={0}
                 right={0}
                 zIndex={1}
-                variant={"ghost"}
                 onClick={() => {
                   setRenderData(
-                    data.filter((value) =>
-                      value?.name
-                        ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
+                    data.filter(
+                      (value) =>
+                        value?.white
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase()) ||
+                        value?.black
+                          ?.toLowerCase()
+                          .includes(searchText.toLocaleLowerCase()) ||
+                        value?.variant
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase()) ||
+                        value?.status
+                          ?.toLowerCase()
+                          .includes(searchText.toLocaleLowerCase()),
                     ),
                   );
                 }}
@@ -121,15 +92,6 @@ export default function AdmintournamentsPage() {
                 <SearchIcon />
               </Button>
             </Box>
-            <Button
-              onClick={() => {
-                navigate("/admin/create-tournament");
-              }}
-              colorScheme="green"
-              w={32}
-            >
-              <AddIcon mr={2} /> {t("common.new")}
-            </Button>
           </Flex>
         </Flex>
       </Container>
@@ -147,26 +109,20 @@ export default function AdmintournamentsPage() {
             <Th width="10%" textAlign={"center"}>
               {t("common.no")}
             </Th>
-            <Th width="15%" cursor={"pointer"}>
-              {t("tournaments.name")}
-            </Th>
-            <Th width="20%" cursor={"pointer"}>
-              {t("tournaments.description")}
-            </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
+            <Th width="10%" cursor={"pointer"}>
               {t("common.variant")}
             </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.time")}
+            <Th width="20%" textAlign={"left"} cursor={"pointer"}>
+              {t("games.time")}
             </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.start")}
+            <Th width="25%" textAlign={"left"} cursor={"pointer"}>
+              {t("games.white")}
             </Th>
-            <Th width="10%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.end")}
+            <Th width="25%" textAlign={"left"} cursor={"pointer"}>
+              {t("games.black")}
             </Th>
-            <Th width="15%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.action")}
+            <Th width="10%" cursor={"pointer"}>
+              {t("common.status")}
             </Th>
           </Tr>
         </Thead>
@@ -174,12 +130,7 @@ export default function AdmintournamentsPage() {
           {renderData
             .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
             .map((item, index) => (
-              <Tr
-                key={index}
-                userSelect="none"
-                cursor="pointer"
-                onDoubleClick={() => window.open(`/tournament/${item._id}`)}
-              >
+              <Tr key={index} userSelect="none" cursor="pointer">
                 <Td textAlign={"center"}>
                   {(pageNumber - 1) * pageSize + index + 1}
                 </Td>
@@ -189,7 +140,7 @@ export default function AdmintournamentsPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.name}{" "}
+                  {item.variant}
                 </Td>
                 <Td
                   textAlign={"left"}
@@ -197,42 +148,31 @@ export default function AdmintournamentsPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.description}
+                  {`${item.initial_time} + ${item.bonus_time}`}
                 </Td>
                 <Td
-                  textAlign={"center"}
+                  textAlign={"left"}
                   overflow="hidden"
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.variant}
+                  {item.white_username}
                 </Td>
                 <Td
-                  textAlign={"center"}
-                >{`${item.initial_time} + ${item.bonus_time}`}</Td>
-                <Td textAlign={"center"}>{formatDate(item.start)}</Td>
-                <Td textAlign={"center"}>{formatDate(item.end)}</Td>
-                <Td>
-                  <Flex justifyContent={"center"}>
-                    <Button
-                      onClick={() =>
-                        navigate(`/admin/update-tournament/${item._id}`)
-                      }
-                      colorScheme="yellow"
-                      mr={2}
-                    >
-                      <EditIcon />
-                    </Button>
-                    <Button
-                      colorScheme="red"
-                      onClick={() => {
-                        setSelectedItem(item);
-                        onOpen();
-                      }}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </Flex>
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {item.black_username}
+                </Td>
+                <Td
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {item.status}
                 </Td>
               </Tr>
             ))}
@@ -282,33 +222,6 @@ export default function AdmintournamentsPage() {
           </Tr>
         </Tfoot>
       </Table>
-
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {t("common.confirm")}
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              {t("common.confirm_delete_question")}
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                {t("common.cancel")}
-              </Button>
-              <Button colorScheme="red" onClick={handleDelete} ml={3}>
-                {t("common.delete")}
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
     </AdminLayout>
   );
 }

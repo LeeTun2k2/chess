@@ -83,8 +83,8 @@ export default function AdmingamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.black_username
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
               >
@@ -180,16 +180,18 @@ export default function AdmingamesPage() {
                     </Button>
                     {Array.from(
                       { length: Math.ceil(renderData.length / pageSize) },
-                      (_, i) => (
-                        <Button
-                          key={i}
-                          colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
-                          size="sm"
-                          onClick={() => setPageNumber(i + 1)}
-                        >
-                          {i + 1}
-                        </Button>
-                      )
+                      (_, i) =>
+                        pageNumber - 5 <= i &&
+                        i <= pageNumber + 3 && (
+                          <Button
+                            key={i}
+                            colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
+                            size="sm"
+                            onClick={() => setPageNumber(i + 1)}
+                          >
+                            {i + 1}
+                          </Button>
+                        ),
                     )}
                     <Button
                       colorScheme="gray"
