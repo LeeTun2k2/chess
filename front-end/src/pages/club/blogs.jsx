@@ -44,8 +44,7 @@ export default function BlogPage(props) {
         setRenderData(resp?.data?.blogs ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -79,8 +78,8 @@ export default function BlogPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.description
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase()),
-                    ),
+                          .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -150,7 +149,7 @@ export default function BlogPage(props) {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                 )}
                 <Button
                   colorScheme="gray"

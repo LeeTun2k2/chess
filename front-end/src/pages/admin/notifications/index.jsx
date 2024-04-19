@@ -3,6 +3,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DeleteIcon,
+  EditIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
 import {
@@ -31,19 +32,20 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { formatDate } from "../../../lib/datetime";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
 
-export default function AdminPuzzlesPage() {
+export default function AdminNotificationsPage() {
+  const navigate = useNavigate();
   const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [renderData, setRenderData] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -53,38 +55,22 @@ export default function AdminPuzzlesPage() {
 
   useEffect(() => {
     axios
-      .get(`${appSettings.API_PROXY}/puzzles`)
+      .get(`${appSettings.API_PROXY}/notifications`)
       .then((resp) => {
-        setData(resp?.data?.puzzles ?? []);
-        setRenderData(resp?.data?.puzzles ?? []);
+        setData(resp?.data?.notifications ?? []);
+        setRenderData(resp?.data?.notifications ?? []);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
-  const handleGenerate = () => {
-    setLoading(true);
-    axios
-      .get(`${appSettings.API_PROXY}/puzzles/generate-chess`)
-      .then((resp) => {
-        toast(toast_success(t("common.success")));
-        window.location.reload();
-      })
-      .catch((err) => {
-        toast(toast_error(t("common.something_went_wrong")));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   const handleDelete = () => {
     if (!selectedItem) {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .delete(`${appSettings.API_PROXY}/puzzles/${selectedItem._id}`)
+      .delete(`${appSettings.API_PROXY}/notifications/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
           renderData.filter((item) => item._id !== selectedItem._id)
@@ -93,8 +79,7 @@ export default function AdminPuzzlesPage() {
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data?.error));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();
@@ -105,7 +90,7 @@ export default function AdminPuzzlesPage() {
     <AdminLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("puzzles.heading")}</Heading>
+          <Heading mb={4}>{t("notifications.heading")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -125,10 +110,10 @@ export default function AdminPuzzlesPage() {
                   setRenderData(
                     data.filter(
                       (value) =>
-                        value?.variant
+                        value?.title
                           ?.toLowerCase()
                           .includes(searchText.toLowerCase()) ||
-                        value?.fen
+                        value?.description
                           ?.toLowerCase()
                           .includes(searchText.toLocaleLowerCase())
                     )
@@ -139,12 +124,13 @@ export default function AdminPuzzlesPage() {
               </Button>
             </Box>
             <Button
-              isLoading={loading}
-              onClick={handleGenerate}
+              onClick={() => {
+                navigate("/admin/create-notification");
+              }}
               colorScheme="green"
               w={32}
             >
-              <AddIcon mr={2} /> {t("puzzles.generate")}
+              <AddIcon mr={2} /> {t("common.new")}
             </Button>
           </Flex>
         </Flex>
@@ -163,17 +149,17 @@ export default function AdminPuzzlesPage() {
             <Th width="10%" textAlign={"center"}>
               {t("common.no")}
             </Th>
-            <Th width="10%" cursor={"pointer"}>
-              {t("common.variant")}
+            <Th width="25%" cursor={"pointer"}>
+              {t("notifications.title")}
             </Th>
             <Th width="30%" textAlign={"left"} cursor={"pointer"}>
-              {t("puzzles.fen")}
+              {t("notifications.description")}
             </Th>
-            <Th width="35%" textAlign={"left"} cursor={"pointer"}>
-              {t("puzzles.moves")}
+            <Th width="10%" textAlign={"left"} cursor={"pointer"}>
+              {t("common.created_at")}
             </Th>
             <Th width="10%" cursor={"pointer"}>
-              {t("common.created_at")}
+              {t("common.updated_at")}
             </Th>
             <Th width="15%" textAlign={"center"} cursor={"pointer"}>
               {t("common.action")}
@@ -194,7 +180,7 @@ export default function AdminPuzzlesPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.variant}
+                  {item.title}
                 </Td>
                 <Td
                   textAlign={"left"}
@@ -202,15 +188,7 @@ export default function AdminPuzzlesPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.fen}
-                </Td>
-                <Td
-                  textAlign={"left"}
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                  textOverflow="ellipsis"
-                >
-                  {item.moves.join(" ")}
+                  {item.description}
                 </Td>
                 <Td
                   textAlign={"left"}
@@ -220,8 +198,25 @@ export default function AdminPuzzlesPage() {
                 >
                   {formatDate(item.created_at)}
                 </Td>
+                <Td
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {formatDate(item.updated_at)}
+                </Td>
                 <Td>
                   <Flex justifyContent={"center"}>
+                    <Button
+                      onClick={() =>
+                        navigate(`/admin/update-notification/${item._id}`)
+                      }
+                      colorScheme="yellow"
+                      mr={2}
+                    >
+                      <EditIcon />
+                    </Button>
                     <Button
                       colorScheme="red"
                       onClick={() => {

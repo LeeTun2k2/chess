@@ -1,22 +1,22 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Avatar,
   Box,
+  Button,
   Flex,
-  Spacer,
-  Text,
+  HStack,
+  Image,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
-  Button,
-  Avatar,
-  Image,
-  HStack,
+  MenuList,
+  Spacer,
+  Text,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import React, { Fragment, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
-import { useTranslation } from "react-i18next";
 
 const AdminHeader = () => {
   const navigate = useNavigate();
@@ -132,6 +132,29 @@ const PcMenu = ({ user }) => {
           </MenuItem>
           <MenuItem onClick={() => navigate("/admin/admins")}>
             {t("header.admins")}
+          </MenuItem>
+        </MenuList>
+      </Menu>
+      <Menu>
+        <MenuButton
+          textTransform={"uppercase"}
+          as={Button}
+          variant="ghost"
+          rightIcon={<ChevronDownIcon />}
+          mx={2}
+          display={{ base: "none", md: "flex" }}
+        >
+          {t("header.others")}
+        </MenuButton>
+        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+          <MenuItem onClick={() => navigate("/admin/donate")}>
+            {t("header.donate")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/club-offline")}>
+            {t("header.offline-calendar")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/notifications")}>
+            {t("header.notifications")}
           </MenuItem>
         </MenuList>
       </Menu>

@@ -9,6 +9,7 @@ import common from "./common.json";
 import footer from "./footer.json";
 import games from "./games.json";
 import header from "./header.json";
+import notifications from "./notifications.json";
 import profile from "./profile.json";
 import puzzles from "./puzzles.json";
 import settings from "./settings.json";
@@ -34,6 +35,7 @@ const en = {
   auth,
   games,
   puzzles,
+  notifications
 };
 
 export default en;

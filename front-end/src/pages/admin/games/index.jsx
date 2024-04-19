@@ -45,8 +45,7 @@ export default function AdminGamesPage() {
         setRenderData(resp?.data?.games ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -84,8 +83,8 @@ export default function AdminGamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.status
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
               >
@@ -204,7 +203,7 @@ export default function AdminGamesPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

@@ -17,8 +17,13 @@ import AdminUpdateBlogPage from "./pages/admin/blogs/update_blog";
 import AdminBooksPage from "./pages/admin/books";
 import AdminCreateBookPage from "./pages/admin/books/create_book";
 import AdminUpdateBookPage from "./pages/admin/books/update_book";
+import AdminClubOfflinePage from "./pages/admin/club-offline";
+import AdminDonatePage from "./pages/admin/donate";
 import AdminGamesPage from "./pages/admin/games";
 import AdminCreateLessonPage from "./pages/admin/lessons/create_lesson";
+import AdminNotificationsPage from "./pages/admin/notifications";
+import AdminCreateNotificationPage from "./pages/admin/notifications/create_notification";
+import AdminUpdateNotificationPage from "./pages/admin/notifications/update_notification";
 import AdminPuzzlesPage from "./pages/admin/puzzles";
 import AdminTournamentsPage from "./pages/admin/tournaments";
 import AdminCreateTournamentPage from "./pages/admin/tournaments/create_tournament";
@@ -277,6 +282,17 @@ function App() {
           path="/admin/update-achievement/:id"
           element={<AdminUpdateAchievementPage />}
         />
+        <Route exact path="/admin/notifications" element={<AdminNotificationsPage />} />
+        <Route
+          exact
+          path="/admin/create-notification"
+          element={<AdminCreateNotificationPage />}
+        />
+        <Route
+          exact
+          path="/admin/update-notification/:id"
+          element={<AdminUpdateNotificationPage />}
+        />
         <Route exact path="/admin/puzzles" element={<AdminPuzzlesPage />} />
         <Route exact path="/admin/games" element={<AdminGamesPage />} />
 
@@ -294,6 +310,8 @@ function App() {
           path="/admin/update-video/:id"
           element={<AdminUpdateVideoPage />}
         />
+        <Route exact path="/admin/donate" element={<AdminDonatePage />} />
+        <Route exact path="/admin/club-offline" element={<AdminClubOfflinePage />} />
 
         <Route path="/admin/*" element={<Navigate to={"/admin"} />} />
         <Route

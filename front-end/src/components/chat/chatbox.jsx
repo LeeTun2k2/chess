@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Box, Input, Button, Text, HStack, Flex } from "@chakra-ui/react";
-import { getUserData } from "../../lib/auth";
-import { IoSend } from "react-icons/io5";
+import { Box, Button, Flex, HStack, Input, Text } from "@chakra-ui/react";
 import OpenAI from "openai";
-import appSettings from "../../settings/appSettings";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { IoSend } from "react-icons/io5";
+import { getUserData } from "../../lib/auth";
+import appSettings from "../../settings/appSettings";
 
 const ChatBox = () => {
   const user = getUserData();
@@ -32,11 +32,6 @@ const ChatBox = () => {
     });
     setOpenAIInstance(openai);
   }, []);
-
-  const sendChessSuggestion = async (suggestion) => {
-    setInputValue(suggestion);
-    sendMessage();
-  };
 
   const sendMessage = async () => {
     if (inputValue.trim() === "") return;
@@ -86,7 +81,7 @@ const ChatBox = () => {
         mb={4}
         borderRadius="md"
         boxShadow={4}
-        h={500}
+        h={530}
         overflowY="auto"
         scrollBehavior={"smooth"}
         border={"1px solid lightgray"}

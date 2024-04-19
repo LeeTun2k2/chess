@@ -1,7 +1,7 @@
 import os
 class ImageService():
     def __init__(self) -> None:
-        self.UPLOAD_FOLDER = 'uploads\images'
+        self.UPLOAD_FOLDER = 'uploads/images'
         self.ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
         pass
 

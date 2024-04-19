@@ -45,8 +45,7 @@ export default function VideoListPage(props) {
         setRenderData(resp?.data?.videos ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -80,8 +79,8 @@ export default function VideoListPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.description
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase()),
-                    ),
+                          .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -151,7 +150,7 @@ export default function VideoListPage(props) {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                 )}
                 <Button
                   colorScheme="gray"

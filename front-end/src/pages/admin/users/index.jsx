@@ -61,8 +61,7 @@ export default function AdminUsersPage() {
         setRenderData(resp?.data?.users ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -82,7 +81,7 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         setData(
           data.map((item) => {
@@ -93,13 +92,12 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         toast(toast_success(t("common.success")));
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();
@@ -136,8 +134,8 @@ export default function AdminUsersPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.email
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
               >
@@ -284,7 +282,7 @@ export default function AdminUsersPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"
