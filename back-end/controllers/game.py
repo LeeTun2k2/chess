@@ -62,3 +62,16 @@ def getTV():
     except Exception as e:
         error(e)
         return "Fail to get games.", 500
+
+@game_bp.get('/api/games')
+@jwt_required()
+def getAll():
+    try:
+        games = game_service.get_all()
+        return jsonify({
+            "message": "success",
+            "games": games
+        }), 200
+    except Exception as e:
+        error(e)
+        return "Fail to get games.", 500

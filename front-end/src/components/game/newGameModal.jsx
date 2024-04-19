@@ -1,31 +1,30 @@
-import React, { useState } from "react";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
-  Input,
   FormControl,
   FormLabel,
-  Select,
   HStack,
-  useToast,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Select,
   Slider,
-  SliderTrack,
   SliderFilledTrack,
-  SliderThumb,
   SliderMark,
+  SliderThumb,
+  SliderTrack,
+  useToast,
 } from "@chakra-ui/react";
-import { CHESS, XIANGQI } from "../../settings/game";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast_error, toast_success } from "../../lib/hooks/toast";
 import axios from "../../lib/axios";
-import { ONLINE, FRIEND, OFFLINE } from "../../settings/game";
+import { toast_error, toast_success } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
+import { CHESS, FRIEND, OFFLINE, ONLINE, XIANGQI } from "../../settings/game";
 
 const NewOnlineGameModal = ({
   isOpen,

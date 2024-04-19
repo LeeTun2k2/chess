@@ -1,53 +1,53 @@
+import {
+  Box,
+  Card,
+  Container,
+  Flex,
+  Heading,
+  Spacer,
+  Text,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ChatBox from "../../components/chat/chatbox";
 import ClientLayout from "../../components/layouts/clientLayout";
-import {
-  Container,
-  Flex,
-  Box,
-  VStack,
-  Spacer,
-  Text,
-  Heading,
-  Card,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { formatDatetime } from "../../lib/datetime";
+import axios from "../../lib/axios";
+import { formatDate, formatDatetime } from "../../lib/datetime";
+import { toast_error } from "../../lib/hooks/toast";
+import appSettings from "../../settings/appSettings";
 
 export default function ClubPage(props) {
   const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [meetingInfo, setMeetingInfo] = useState({});
 
-  const notifications = [
-    {
-      title: "Hoi thao truong",
-      description:
-        "Thoi gian: 1h30, dia diem: 2124, asafasf va maihfah jasjkh ahf hajksh auh uhakwhkjahwkuha hu hsauhus a uah uhsu dkha au ahsu haushdu",
-      createdDate: "29/03/20240",
-    },
-    {
-      title: "Hoi thao truong",
-      description: "Thoi gian: 1h30, dia diem: 2124, asafasf",
-      createdDate: "29/03/20240",
-    },
-    {
-      title: "Hoi thao truong",
-      description: "Thoi gian: 1h30, dia diem: 2124, asafasf",
-      createdDate: "29/03/20240",
-    },
-    {
-      title: "Hoi thao truong",
-      description: "Thoi gian: 1h30, dia diem: 2124, asafasf",
-      createdDate: "29/03/20240",
-    },
-    {
-      title: "Hoi thao truong",
-      description: "Thoi gian: 1h30, dia diem: 2124, asafasf",
-      createdDate: "29/03/20240",
-    },
-  ];
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${appSettings.API_PROXY}/offline-calendar`)
+      .then((resp) => {
+        setMeetingInfo(resp?.data?.offline_calendar ?? []);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+  }, [toast]);
+
+  useEffect(() => {
+    axios
+      .get(`${appSettings.API_PROXY}/notifications/top`)
+      .then((resp) => {
+        setNotifications(resp?.data?.notifications ?? []);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+  }, [toast]);
 
   return (
     <ClientLayout>
@@ -77,8 +77,8 @@ export default function ClubPage(props) {
                   {t("club.date_time")}
                 </Text>
                 <Text>
-                  {meetingInfo?.datetime
-                    ? formatDatetime(meetingInfo.datetime)
+                  {meetingInfo?.time
+                    ? formatDatetime(meetingInfo.time)
                     : t("club.datetime_not_found")}
                 </Text>
               </Box>
@@ -116,7 +116,8 @@ export default function ClubPage(props) {
                         </Box>
                         <Box w={"25%"}>
                           <Text fontSize="xs" color="gray.500" align={"right"}>
-                            {t("club.created")} {notification.createdDate}
+                            {t("club.created")}{" "}
+                            {formatDate(notification.created_at)}
                           </Text>
                         </Box>
                       </Flex>

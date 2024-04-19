@@ -69,4 +69,8 @@ class PuzzleService():
             if move[0].lower() in self.pieces:
                 moves.append(move)
         return moves
+    
+    def delete(self, puzzle_id:str):
+        result = self.puzzles_collection.delete_one({'_id': ObjectId(puzzle_id)})
+        return result.deleted_count > 0
         

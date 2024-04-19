@@ -1,30 +1,24 @@
 import {
-  Container,
-  Heading,
-  Text,
-  List,
-  ListItem,
-  ListIcon,
   Box,
-  useToast,
-  Flex,
-  Spacer,
+  Container,
   Divider,
+  Heading,
   Table,
-  Thead,
-  Th,
   Tbody,
   Td,
+  Text,
+  Th,
+  Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
-import { MdCheckCircle, MdRadioButtonUnchecked } from "react-icons/md";
-import ClientLayout from "../../components/layouts/clientLayout";
-import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
-import appSettings from "../../settings/appSettings";
-import { toast_error } from "../../lib/hooks/toast";
 import { formatDate } from "../../lib/datetime";
+import { toast_error } from "../../lib/hooks/toast";
+import appSettings from "../../settings/appSettings";
 
 export default function AchievementPage() {
   const { t } = useTranslation();
@@ -76,8 +70,7 @@ export default function AchievementPage() {
         setEvents(resp?.data?.events ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 

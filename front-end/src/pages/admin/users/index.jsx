@@ -1,9 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import {
-  ButtonGroup,
-  Flex,
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CloseIcon,
+  LockIcon,
+  SearchIcon,
+  UnlockIcon,
+} from "@chakra-ui/icons";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Flex,
+  Heading,
+  Input,
   Table,
   Tbody,
   Td,
@@ -11,33 +28,16 @@ import {
   Th,
   Thead,
   Tr,
-  Button,
-  Container,
-  Heading,
-  useToast,
-  Input,
   useDisclosure,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
+  useToast,
 } from "@chakra-ui/react";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  LockIcon,
-  UnlockIcon,
-  CheckIcon,
-  CloseIcon,
-  SearchIcon,
-} from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
-import appSettings from "../../../settings/appSettings";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import appSettings from "../../../settings/appSettings";
 
 export default function AdminUsersPage() {
   const navigate = useNavigate();
@@ -61,8 +61,7 @@ export default function AdminUsersPage() {
         setRenderData(resp?.data?.users ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -82,7 +81,7 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         setData(
           data.map((item) => {
@@ -93,13 +92,12 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         toast(toast_success(t("common.success")));
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();
@@ -136,8 +134,8 @@ export default function AdminUsersPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.email
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
               >
@@ -273,16 +271,18 @@ export default function AdminUsersPage() {
                   </Button>
                   {Array.from(
                     { length: Math.ceil(renderData.length / pageSize) },
-                    (_, i) => (
-                      <Button
-                        key={i}
-                        colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
-                        size="sm"
-                        onClick={() => setPageNumber(i + 1)}
-                      >
-                        {i + 1}
-                      </Button>
-                    ),
+                    (_, i) =>
+                      pageNumber - 5 <= i &&
+                      i <= pageNumber + 3 && (
+                        <Button
+                          key={i}
+                          colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
+                          size="sm"
+                          onClick={() => setPageNumber(i + 1)}
+                        >
+                          {i + 1}
+                        </Button>
+                      )
                   )}
                   <Button
                     colorScheme="gray"

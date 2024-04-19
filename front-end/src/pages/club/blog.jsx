@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
 import {
-  Container,
   Box,
+  Container,
+  Divider,
   Flex,
-  Spacer,
   Heading,
-  VStack,
+  Image,
+  Spacer,
   Text,
   useToast,
-  Image,
-  Divider,
 } from "@chakra-ui/react";
-import { useCurrentPath } from "../../lib/hooks/route";
-import ClientLayout from "../../components/layouts/clientLayout";
-import { IoDocumentText } from "react-icons/io5";
-import DocNav from "../../components/nav/doc_nav";
+import ReactHtmlParser from "html-react-parser";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import ClientLayout from "../../components/layouts/clientLayout";
+import DocNav from "../../components/nav/doc_nav";
 import axios from "../../lib/axios";
+import { formatDate } from "../../lib/datetime";
+import { useCurrentPath } from "../../lib/hooks/route";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
-import { formatDate } from "../../lib/datetime";
-import ReactHtmlParser from "html-react-parser";
 
 export default function BlogPage(props) {
   const path = useCurrentPath();
@@ -37,8 +35,7 @@ export default function BlogPage(props) {
         setData(resp?.data?.blog ?? {});
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
