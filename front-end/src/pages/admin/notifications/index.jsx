@@ -35,10 +35,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
+import { formatDate } from "../../../lib/datetime";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
 
-export default function AdminVideosPage() {
+export default function AdminNotificationsPage() {
   const navigate = useNavigate();
   const theme = localStorage.getItem("theme");
   const toast = useToast();
@@ -54,10 +55,10 @@ export default function AdminVideosPage() {
 
   useEffect(() => {
     axios
-      .get(`${appSettings.API_PROXY}/videos`)
+      .get(`${appSettings.API_PROXY}/notifications`)
       .then((resp) => {
-        setData(resp?.data?.videos ?? []);
-        setRenderData(resp?.data?.videos ?? []);
+        setData(resp?.data?.notifications ?? []);
+        setRenderData(resp?.data?.notifications ?? []);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
@@ -69,7 +70,7 @@ export default function AdminVideosPage() {
       toast(toast_error(t("common.not_found")));
     }
     axios
-      .delete(`${appSettings.API_PROXY}/videos/${selectedItem._id}`)
+      .delete(`${appSettings.API_PROXY}/notifications/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
           renderData.filter((item) => item._id !== selectedItem._id)
@@ -89,7 +90,7 @@ export default function AdminVideosPage() {
     <AdminLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("videos.heading")}</Heading>
+          <Heading mb={4}>{t("notifications.heading")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -107,10 +108,14 @@ export default function AdminVideosPage() {
                 variant={"ghost"}
                 onClick={() => {
                   setRenderData(
-                    data.filter((value) =>
-                      value?.title
-                        ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
+                    data.filter(
+                      (value) =>
+                        value?.title
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase()) ||
+                        value?.description
+                          ?.toLowerCase()
+                          .includes(searchText.toLocaleLowerCase())
                     )
                   );
                 }}
@@ -120,7 +125,7 @@ export default function AdminVideosPage() {
             </Box>
             <Button
               onClick={() => {
-                navigate("/admin/create-video");
+                navigate("/admin/create-notification");
               }}
               colorScheme="green"
               w={32}
@@ -145,13 +150,16 @@ export default function AdminVideosPage() {
               {t("common.no")}
             </Th>
             <Th width="25%" cursor={"pointer"}>
-              {t("videos.title")}
+              {t("notifications.title")}
             </Th>
             <Th width="30%" textAlign={"left"} cursor={"pointer"}>
-              {t("videos.description")}
+              {t("notifications.description")}
             </Th>
-            <Th width="20%" textAlign={"left"} cursor={"pointer"}>
-              {t("videos.video")}
+            <Th width="10%" textAlign={"left"} cursor={"pointer"}>
+              {t("common.created_at")}
+            </Th>
+            <Th width="10%" cursor={"pointer"}>
+              {t("common.updated_at")}
             </Th>
             <Th width="15%" textAlign={"center"} cursor={"pointer"}>
               {t("common.action")}
@@ -162,12 +170,7 @@ export default function AdminVideosPage() {
           {renderData
             .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
             .map((item, index) => (
-              <Tr
-                key={index}
-                userSelect="none"
-                cursor="pointer"
-                onDoubleClick={() => window.open(`/video/${item._id}`)}
-              >
+              <Tr key={index} userSelect="none" cursor="pointer">
                 <Td textAlign={"center"}>
                   {(pageNumber - 1) * pageSize + index + 1}
                 </Td>
@@ -193,13 +196,21 @@ export default function AdminVideosPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.link}
+                  {formatDate(item.created_at)}
+                </Td>
+                <Td
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {formatDate(item.updated_at)}
                 </Td>
                 <Td>
-                  <Flex justifyContent={"center"} alignItems={"center"}>
+                  <Flex justifyContent={"center"}>
                     <Button
                       onClick={() =>
-                        navigate(`/admin/update-video/${item._id}`)
+                        navigate(`/admin/update-notification/${item._id}`)
                       }
                       colorScheme="yellow"
                       mr={2}

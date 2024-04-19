@@ -25,5 +25,6 @@
   "games": "Games",
   "accounts": "Accounts",
   "users": "Users",
-  "admins": "Adminstators"
+  "admins": "Adminstators",
+  "others": "Others"
 }

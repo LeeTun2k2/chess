@@ -1,18 +1,9 @@
 import {
-  AddIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  DeleteIcon,
-  EditIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Box,
   Button,
   ButtonGroup,
@@ -27,69 +18,42 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
-import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import { toast_error } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
 
-export default function AdminVideosPage() {
-  const navigate = useNavigate();
+export default function AdminGamesPage() {
   const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
   const [data, setData] = useState([]);
   const [renderData, setRenderData] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
   const [pageNumber, setPageNumber] = React.useState(1);
   const pageSize = 10;
 
   useEffect(() => {
     axios
-      .get(`${appSettings.API_PROXY}/videos`)
+      .get(`${appSettings.API_PROXY}/games`)
       .then((resp) => {
-        setData(resp?.data?.videos ?? []);
-        setRenderData(resp?.data?.videos ?? []);
+        setData(resp?.data?.games ?? []);
+        setRenderData(resp?.data?.games ?? []);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
-  const handleDelete = () => {
-    if (!selectedItem) {
-      toast(toast_error(t("common.not_found")));
-    }
-    axios
-      .delete(`${appSettings.API_PROXY}/videos/${selectedItem._id}`)
-      .then((resp) => {
-        setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id)
-        );
-        setData(data.filter((item) => item._id !== selectedItem._id));
-        toast(toast_success(t("common.delete_success")));
-      })
-      .catch((err) => {
-        toast(toast_error(t("common.something_went_wrong")));
-      })
-      .finally(() => {
-        onClose();
-      });
-  };
-
   return (
     <AdminLayout>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("videos.heading")}</Heading>
+          <Heading mb={4}>{t("games.heading")}</Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -104,13 +68,22 @@ export default function AdminVideosPage() {
                 top={0}
                 right={0}
                 zIndex={1}
-                variant={"ghost"}
                 onClick={() => {
                   setRenderData(
-                    data.filter((value) =>
-                      value?.title
-                        ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
+                    data.filter(
+                      (value) =>
+                        value?.white
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase()) ||
+                        value?.black
+                          ?.toLowerCase()
+                          .includes(searchText.toLocaleLowerCase()) ||
+                        value?.variant
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase()) ||
+                        value?.status
+                          ?.toLowerCase()
+                          .includes(searchText.toLocaleLowerCase())
                     )
                   );
                 }}
@@ -118,15 +91,6 @@ export default function AdminVideosPage() {
                 <SearchIcon />
               </Button>
             </Box>
-            <Button
-              onClick={() => {
-                navigate("/admin/create-video");
-              }}
-              colorScheme="green"
-              w={32}
-            >
-              <AddIcon mr={2} /> {t("common.new")}
-            </Button>
           </Flex>
         </Flex>
       </Container>
@@ -144,17 +108,20 @@ export default function AdminVideosPage() {
             <Th width="10%" textAlign={"center"}>
               {t("common.no")}
             </Th>
-            <Th width="25%" cursor={"pointer"}>
-              {t("videos.title")}
-            </Th>
-            <Th width="30%" textAlign={"left"} cursor={"pointer"}>
-              {t("videos.description")}
+            <Th width="10%" cursor={"pointer"}>
+              {t("common.variant")}
             </Th>
             <Th width="20%" textAlign={"left"} cursor={"pointer"}>
-              {t("videos.video")}
+              {t("games.time")}
             </Th>
-            <Th width="15%" textAlign={"center"} cursor={"pointer"}>
-              {t("common.action")}
+            <Th width="25%" textAlign={"left"} cursor={"pointer"}>
+              {t("games.white")}
+            </Th>
+            <Th width="25%" textAlign={"left"} cursor={"pointer"}>
+              {t("games.black")}
+            </Th>
+            <Th width="10%" cursor={"pointer"}>
+              {t("common.status")}
             </Th>
           </Tr>
         </Thead>
@@ -162,12 +129,7 @@ export default function AdminVideosPage() {
           {renderData
             .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
             .map((item, index) => (
-              <Tr
-                key={index}
-                userSelect="none"
-                cursor="pointer"
-                onDoubleClick={() => window.open(`/video/${item._id}`)}
-              >
+              <Tr key={index} userSelect="none" cursor="pointer">
                 <Td textAlign={"center"}>
                   {(pageNumber - 1) * pageSize + index + 1}
                 </Td>
@@ -177,7 +139,7 @@ export default function AdminVideosPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.title}
+                  {item.variant}
                 </Td>
                 <Td
                   textAlign={"left"}
@@ -185,7 +147,7 @@ export default function AdminVideosPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.description}
+                  {`${item.initial_time} + ${item.bonus_time}`}
                 </Td>
                 <Td
                   textAlign={"left"}
@@ -193,29 +155,23 @@ export default function AdminVideosPage() {
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                 >
-                  {item.link}
+                  {item.white_username}
                 </Td>
-                <Td>
-                  <Flex justifyContent={"center"} alignItems={"center"}>
-                    <Button
-                      onClick={() =>
-                        navigate(`/admin/update-video/${item._id}`)
-                      }
-                      colorScheme="yellow"
-                      mr={2}
-                    >
-                      <EditIcon />
-                    </Button>
-                    <Button
-                      colorScheme="red"
-                      onClick={() => {
-                        setSelectedItem(item);
-                        onOpen();
-                      }}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </Flex>
+                <Td
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {item.black_username}
+                </Td>
+                <Td
+                  textAlign={"left"}
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  {item.status}
                 </Td>
               </Tr>
             ))}
@@ -265,33 +221,6 @@ export default function AdminVideosPage() {
           </Tr>
         </Tfoot>
       </Table>
-
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {t("common.confirm")}
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              {t("common.confirm_delete_question")}
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                {t("common.cancel")}
-              </Button>
-              <Button colorScheme="red" onClick={handleDelete} ml={3}>
-                {t("common.delete")}
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
     </AdminLayout>
   );
 }

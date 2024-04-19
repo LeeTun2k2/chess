@@ -36,8 +36,7 @@ export default function TournamentPage(props) {
         setData(resp?.data?.tournament ?? {});
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -48,8 +47,7 @@ export default function TournamentPage(props) {
         setYourGames(resp?.data?.games ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 

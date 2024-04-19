@@ -1,9 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import {
-  ButtonGroup,
-  Flex,
+  AddIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DeleteIcon,
+  EditIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Flex,
+  Heading,
+  Input,
   Table,
   Tbody,
   Td,
@@ -11,33 +27,17 @@ import {
   Th,
   Thead,
   Tr,
-  Button,
-  Container,
-  Heading,
-  useToast,
-  Input,
   useDisclosure,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
+  useToast,
 } from "@chakra-ui/react";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DeleteIcon,
-  EditIcon,
-  AddIcon,
-  SearchIcon,
-} from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
-import appSettings from "../../../settings/appSettings";
-import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import { formatDate } from "../../../lib/datetime";
+import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import appSettings from "../../../settings/appSettings";
 
 export default function AdmintournamentsPage() {
   const navigate = useNavigate();
@@ -61,8 +61,7 @@ export default function AdmintournamentsPage() {
         setRenderData(resp?.data?.tournaments ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -74,14 +73,13 @@ export default function AdmintournamentsPage() {
       .delete(`${appSettings.API_PROXY}/tournaments/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
+          renderData.filter((item) => item._id !== selectedItem._id)
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(() => {
         onClose();
@@ -113,8 +111,8 @@ export default function AdmintournamentsPage() {
                     data.filter((value) =>
                       value?.name
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -253,16 +251,18 @@ export default function AdmintournamentsPage() {
                   </Button>
                   {Array.from(
                     { length: Math.ceil(renderData.length / pageSize) },
-                    (_, i) => (
-                      <Button
-                        key={i}
-                        colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
-                        size="sm"
-                        onClick={() => setPageNumber(i + 1)}
-                      >
-                        {i + 1}
-                      </Button>
-                    ),
+                    (_, i) =>
+                      pageNumber - 5 <= i &&
+                      i <= pageNumber + 3 && (
+                        <Button
+                          key={i}
+                          colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
+                          size="sm"
+                          onClick={() => setPageNumber(i + 1)}
+                        >
+                          {i + 1}
+                        </Button>
+                      )
                   )}
                   <Button
                     colorScheme="gray"

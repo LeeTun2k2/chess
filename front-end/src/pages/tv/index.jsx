@@ -48,8 +48,7 @@ export default function AdmingamesPage() {
         setRenderData(resp?.data?.games ?? []);
       })
       .catch((err) => {
-        if (err?.response) toast(toast_error(err?.response?.data));
-        else toast(toast_error(t("common.something_went_wrong")));
+        toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
 
@@ -180,16 +179,18 @@ export default function AdmingamesPage() {
                     </Button>
                     {Array.from(
                       { length: Math.ceil(renderData.length / pageSize) },
-                      (_, i) => (
-                        <Button
-                          key={i}
-                          colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
-                          size="sm"
-                          onClick={() => setPageNumber(i + 1)}
-                        >
-                          {i + 1}
-                        </Button>
-                      )
+                      (_, i) =>
+                        pageNumber - 5 <= i &&
+                        i <= pageNumber + 3 && (
+                          <Button
+                            key={i}
+                            colorScheme={pageNumber === i + 1 ? "teal" : "gray"}
+                            size="sm"
+                            onClick={() => setPageNumber(i + 1)}
+                          >
+                            {i + 1}
+                          </Button>
+                        )
                     )}
                     <Button
                       colorScheme="gray"
