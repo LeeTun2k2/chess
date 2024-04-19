@@ -26,5 +26,8 @@
   "accounts": "Accounts",
   "users": "Users",
   "admins": "Adminstators",
-  "others": "Others"
+  "others": "Others",
+  "social": "Social",
+  "chat": "Chat",
+  "friend": "Friend"
 }
