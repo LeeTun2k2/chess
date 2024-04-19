@@ -92,6 +92,31 @@ const PcMenu = ({ user }) => {
             {t("header.about")}
           </MenuItem>
         </MenuList>
+
+        
+      </Menu>
+
+      <Menu>
+        <MenuButton
+          textTransform={"uppercase"}
+          as={Button}
+          variant="ghost"
+          rightIcon={<ChevronDownIcon />}
+          mx={2}
+          display={{ base: "none", md: "flex" }}
+        >
+          {t("header.social")}
+        </MenuButton>
+        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+          <MenuItem onClick={() => navigate("/friends")}>
+            {t("header.friend")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/chat")}>
+            {t("header.chat")}
+          </MenuItem>
+        </MenuList>
+
+        
       </Menu>
       <Menu>
         <MenuButton

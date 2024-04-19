@@ -1,15 +1,23 @@
 import { Flex, Heading, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { clearTokens, clearUserData } from "../../lib/auth";
+import { clearTokens, clearUserData, getUserData } from "../../lib/auth";
 import { useTranslation } from "react-i18next";
-
+import { CometChat } from "@cometchat-pro/chat";
 const LogoutPage = ({ setLoggedIn }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
     setTimeout(() => {
+      CometChat.removeLoginListener(getUserData().id);
+      CometChat.logout().then(
+        () => {
+          console.log("Logout completed successfully");
+        },error=>{
+          console.log("Logout failed with exception:",{error});
+        }
+      );
       clearTokens();
       clearUserData();
       navigate("/");

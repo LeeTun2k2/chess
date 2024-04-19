@@ -6,6 +6,7 @@ import {
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
+import { CometChat } from "@cometchat-pro/chat";
 import { getUserData } from "./lib/auth";
 import AdminDashboardPage from "./pages/admin";
 import AdminAchievementsPage from "./pages/admin/achievements";
@@ -63,7 +64,8 @@ import TournamentPage from "./pages/tournament/tournament";
 import TournamentsPage from "./pages/tournament/tournaments";
 import TvPage from "./pages/tv";
 import UserProfile from "./pages/user/user_profile";
-
+import FriendList from "./pages/friend/friends";
+import ChatPage from "./pages/friend/chat";
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
@@ -73,6 +75,14 @@ function App() {
         "792034127875-ia2do320uupm2vvi5amm83b8kkbr9l2q.apps.googleusercontent.com",
       scope: "",
     });
+    let appID = "25617120a1512061";
+    let region = "us";
+    let appSetting = new CometChat.AppSettingsBuilder()
+                    .subscribePresenceForAllUsers()
+                    .setRegion(region)
+                    .autoEstablishSocketConnection(true)
+                    .build();
+    CometChat.init(appID, appSetting);
   };
 
   const user = getUserData();
@@ -223,6 +233,8 @@ function App() {
         <Route exact path="/settings" element={<SettingsPage />} />
         <Route exact path="/lessons" element={<LessonsPage />} />
         <Route path="/lessons/:lessonId" element={<LessonsDetailPage />} />
+        <Route path="/friends" element={<FriendList />} />
+        <Route path="/chat" element={<ChatPage />} />
 
         {/* Admin page */}
         <Route exact path="/admin" element={<AdminDashboardPage />} />
