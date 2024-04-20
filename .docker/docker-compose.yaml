@@ -25,17 +25,21 @@ services:
       - mongodb
     networks:
       - frontend_backend
+      - backend_stockfish
+      - backend_pikafish
       - backend_mongodb
 
   stockfish:
     image: leetun2k2/stockfish:latest
     networks:
       - frontend_stockfish
+      - backend_stockfish
 
   pikafish:
     image: leetun2k2/pikafish:latest
     networks:
       - frontend_pikafish
+      - backend_pikafish
 
   mongodb:
     image: mongo:latest
@@ -50,4 +54,8 @@ networks:
   frontend_stockfish:
     driver: bridge
   frontend_pikafish:
+    driver: bridge
+  backend_stockfish:
+    driver: bridge
+  backend_pikafish:
     driver: bridge
