@@ -1,6 +1,7 @@
 from bson import ObjectId
 from database.mongodb import get_db
 from models.users import User
+import re
 
 class UserService():
     def __init__(self) -> None:
@@ -92,3 +93,101 @@ class UserService():
                 return False, "Failed to toggle status."
         else:
             return False, "User not found."
+    def get_friends(self, user_id: str):
+        user_data = self.users_collection.find_one({'_id': ObjectId(user_id)})
+        if not user_data:
+            return None
+        friends_ids = user_data.get('friends', [])
+        friends = []
+        for friend_id in friends_ids:
+            friend_data = self.users_collection.find_one({'_id': ObjectId(friend_id)})
+            if friend_data:
+                friends.append(self.map_user(friend_data).to_json())
+        return friends
+    
+    def add_friend(self, user_id: str, friend_id: str):
+        user = self.users_collection.find_one({'_id': ObjectId(user_id)})
+        friend = self.users_collection.find_one({'_id': ObjectId(friend_id)})
+        
+        if not user or not friend:
+            return False, "User or friend not found."
+
+        if friend_id in user.get('friends', []):
+            return False, "Friend already added."
+
+        result = self.users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$push': {'friends': friend_id}}
+        )
+        
+        if result.modified_count == 0:
+            return False, "Failed to add friend."
+
+        return True, "Friend added successfully."
+    
+    def find_users_by_name(self, name_query: str):
+        regex_pattern = f".*{re.escape(name_query)}.*"
+        users = list(self.users_collection.find({'name': {'$regex': regex_pattern, '$options': 'i'}}))
+        return [self.map_user(user).to_json() for user in users]
+    
+
+    def send_friend_request(self, user_id, friend_id):
+        existing_request = self.users_collection.find_one({
+            '_id': ObjectId(friend_id),
+            'friend_requests': {
+                '$elemMatch': {
+                    '_id': ObjectId(user_id)
+                }
+            }
+        })
+        if existing_request:
+            return False, 'Friend request already sent'
+        result = self.users_collection.update_one(
+            {'_id': ObjectId(friend_id)},
+            {'$addToSet': {'friend_requests': {'_id': ObjectId(user_id)}}}
+        )
+        if result.modified_count > 0:
+            return True, 'Friend request sent successfully'
+        else:
+            return False, 'Failed to send friend request'
+        
+    def get_friend_requests(self, user_id):
+        user = self.users_collection.find_one({'_id': ObjectId(user_id)})
+        if not user:
+            return []
+        friend_requests = user.get('friend_requests', [])
+        friend_ids = [request['_id'] for request in friend_requests]
+        friends = self.users_collection.find({'_id': {'$in': friend_ids}})
+        return [self.map_user(friend).to_json() for friend in friends]
+
+    def accept_friend_request(self, user_id, request_id):
+        result = self.users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$pull': {'friend_requests': {'_id': ObjectId(request_id)}}}
+        )
+
+        if result.modified_count == 0:
+            return False, 'Failed to accept friend request'
+
+        self.users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$addToSet': {'friends': ObjectId(request_id)}}
+        )
+
+        self.users_collection.update_one(
+            {'_id': ObjectId(request_id)},
+            {'$addToSet': {'friends': ObjectId(user_id)}}
+        )
+
+        return True, 'Friend request accepted successfully'
+
+    def decline_friend_request(self, user_id, request_id):
+        result = self.users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$pull': {'friend_requests': {'_id': ObjectId(request_id)}}}
+        )
+
+        if result.modified_count > 0:
+            return True, 'Friend request declined successfully'
+        else:
+            return False, 'Failed to decline friend request'
