@@ -102,13 +102,7 @@ export default function ClubPage(props) {
               >
                 {notifications.map((notification, idx) => {
                   return (
-                    <Card
-                      px={4}
-                      py={2}
-                      _hover={{
-                        bgColor: theme === "dark" ? "black" : "gray.100",
-                      }}
-                    >
+                    <Card px={4} py={2}>
                       <Flex alignItems={"center"} minH={20}>
                         <Box w={"75%"}>
                           <Text fontWeight={"bold"}>{notification.title}</Text>
