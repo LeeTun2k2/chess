@@ -25,7 +25,6 @@ def update_book():
     
 
 @other_bp.route('/api/offline-calendar', methods=['GET'])
-@jwt_required()
 def get_offline_calendar():
     try:
         offline_calendar = others_service.get_offline_calendar()

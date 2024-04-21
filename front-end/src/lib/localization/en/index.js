@@ -4,9 +4,11 @@ import adminFooter from "./adminFooter.json";
 import auth from "./auth.json";
 import blogs from "./blogs.json";
 import books from "./books.json";
+import chat from "./chat.json";
 import club from "./club.json";
 import common from "./common.json";
 import footer from "./footer.json";
+import friends from "./friends.json";
 import games from "./games.json";
 import header from "./header.json";
 import notifications from "./notifications.json";
@@ -35,7 +37,9 @@ const en = {
   auth,
   games,
   puzzles,
-  notifications
+  notifications,
+  chat,
+  friends
 };
 
 export default en;

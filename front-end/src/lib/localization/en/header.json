@@ -29,5 +29,8 @@
   "others": "Others",
   "social": "Social",
   "chat": "Chat",
-  "friend": "Friend"
+  "friend": "Friend",
+  "admin": "Admin",
+  "offline-calendar": "Offline Calendar",
+  "notifications": "Notifications"
 }

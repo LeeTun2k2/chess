@@ -1,26 +1,26 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Avatar,
   Box,
+  Button,
   Flex,
-  Spacer,
-  Text,
+  HStack,
+  Image,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
-  Button,
-  Avatar,
-  Image,
-  HStack,
+  MenuList,
+  Spacer,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
-import { FaList } from "react-icons/fa";
-import Sidebar from "./sidebar";
-import { client_menu } from "./data";
-import { getUserData } from "../../lib/auth";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FaList } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { getUserData } from "../../lib/auth";
+import { client_menu } from "./data";
+import Sidebar from "./sidebar";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -92,32 +92,8 @@ const PcMenu = ({ user }) => {
             {t("header.about")}
           </MenuItem>
         </MenuList>
-
-        
       </Menu>
 
-      <Menu>
-        <MenuButton
-          textTransform={"uppercase"}
-          as={Button}
-          variant="ghost"
-          rightIcon={<ChevronDownIcon />}
-          mx={2}
-          display={{ base: "none", md: "flex" }}
-        >
-          {t("header.social")}
-        </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
-          <MenuItem onClick={() => navigate("/friends")}>
-            {t("header.friend")}
-          </MenuItem>
-          <MenuItem onClick={() => navigate("/chat")}>
-            {t("header.chat")}
-          </MenuItem>
-        </MenuList>
-
-        
-      </Menu>
       <Menu>
         <MenuButton
           textTransform={"uppercase"}
@@ -187,6 +163,7 @@ const PcMenu = ({ user }) => {
             <MenuButton
               textTransform={"uppercase"}
               display={{ base: "none", md: "flex" }}
+              mr={16}
             >
               <Flex align="center">
                 <Avatar name={user.name} src={user.avatar} />
@@ -200,8 +177,19 @@ const PcMenu = ({ user }) => {
               </Flex>
             </MenuButton>
             <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+              {user?.role === "ADMIN" && (
+                <MenuItem onClick={() => navigate("/admin")}>
+                  {t("header.admin")}
+                </MenuItem>
+              )}
               <MenuItem onClick={() => navigate("/profile")}>
                 {t("header.profile")}
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/friends")}>
+                {t("header.friend")}
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/chat")}>
+                {t("header.chat")}
               </MenuItem>
               <MenuItem onClick={() => navigate("/settings")}>
                 {t("header.settings")}

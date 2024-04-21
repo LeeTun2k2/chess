@@ -33,12 +33,12 @@ const ChatBox = () => {
     setOpenAIInstance(openai);
   }, []);
 
-  const sendMessage = async () => {
-    if (inputValue.trim() === "") return;
+  const sendMessage = async (text) => {
+    if (inputValue.trim() === "" && text.trim() === "") return;
 
     const old_messages = messages;
     const message = {
-      text: inputValue,
+      text: text ? text : inputValue,
       user_id: user?.id,
       username: user?.username,
     };
@@ -47,7 +47,7 @@ const ChatBox = () => {
 
     const gpt_message = {
       role: "user",
-      content: inputValue,
+      content: text ? text : inputValue,
     };
 
     try {
@@ -107,8 +107,8 @@ const ChatBox = () => {
               bgColor={
                 user?.id === message.user_id
                   ? theme === "dark"
-                    ? "black"
-                    : "gray.100"
+                    ? "gray.600"
+                    : "black"
                   : theme === "dark"
                     ? "black"
                     : "lightgray"
@@ -141,8 +141,8 @@ const ChatBox = () => {
                 key={idx}
                 w={"100%"}
                 mb={2}
-                onClick={async () => {
-                  await sendMessage();
+                onClick={() => {
+                  sendMessage(item);
                 }}
               >
                 {item}
@@ -157,11 +157,22 @@ const ChatBox = () => {
             placeholder={t("chat.type_your_message_here")}
             value={inputValue}
             onChange={(e) => setInputValue(e.target?.value)}
+            onKeyPress={(e) => {
+              e.preventDefault();
+              if (e.key === "Enter") {
+                sendMessage();
+              }
+            }}
             colorScheme="gray"
             variant={"outline"}
             borderColor={"lightgray"}
           />
-          <Button colorScheme="gray" onClick={sendMessage}>
+          <Button
+            colorScheme="gray"
+            onClick={() => {
+              sendMessage();
+            }}
+          >
             <IoSend fontSize={24} />
           </Button>
         </HStack>
