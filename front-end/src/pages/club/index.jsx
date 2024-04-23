@@ -98,7 +98,7 @@ export default function ClubPage(props) {
               <Box border={"1px lightgray solid"} borderRadius={8}>
                 {notifications.map((notification, idx) => {
                   return (
-                    <Card px={4} py={2}>
+                    <Card key={idx} px={4} py={2}>
                       <Flex alignItems={"center"} minH={20}>
                         <Box w={"75%"}>
                           <Text fontWeight={"bold"}>{notification.title}</Text>
