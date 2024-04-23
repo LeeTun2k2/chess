@@ -1,10 +1,13 @@
+import { SearchIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Container,
   Flex,
   Heading,
+  Input,
   Spacer,
   Text,
   useToast,
@@ -12,7 +15,9 @@ import {
 import { CometChat } from "@cometchat-pro/chat";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { IoSend } from "react-icons/io5";
 import ClientLayout from "../../components/layouts/clientLayout";
+import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
@@ -20,9 +25,13 @@ import appSettings from "../../settings/appSettings";
 export default function FriendPage(props) {
   const { t } = useTranslation();
   const toast = useToast();
+  const theme = localStorage.getItem("theme");
+  const user = getUserData();
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [friends, setFriends] = useState([]);
+  const [renderFriends, setRenderFriends] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [receiver, setReceiver] = useState(null);
 
   useEffect(() => {
@@ -30,12 +39,18 @@ export default function FriendPage(props) {
       .get(`${appSettings.API_PROXY}/users/friends`)
       .then((resp) => {
         setFriends(resp?.data?.friends ?? []);
+        setRenderFriends(resp?.data?.friends ?? []);
         setReceiver(friends[0]);
+      })
+      .then(() => {
+        loadMessage();
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
   }, [toast]);
+
+  const loadMessage = async () => {};
 
   const sendMessage = async () => {
     if (text.trim() === "") return;
@@ -52,6 +67,7 @@ export default function FriendPage(props) {
       console.error("Message sending failed with error:", error);
     }
   };
+
   return (
     <ClientLayout>
       <Container maxW="6xl" py={8}>
@@ -61,43 +77,78 @@ export default function FriendPage(props) {
             display={{ base: "none", md: "block" }}
             w={{ base: "100%", md: "25%" }}
             mb={{ base: 8, md: 0 }}
-            h={"80vh"}
             overflowY={"auto"}
           >
-            {friends.map((item, index) => (
-              <Card
-                key={index}
-                p={2}
-                boxShadow={"xs"}
-                variant={"outline"}
-                mx={2}
-                overflow={"hidden"}
-                cursor={"pointer"}
-                onClick={() => {}}
+            <Box position={"sticky"} mb={2} px={2}>
+              <Input
+                colorScheme="gray"
+                placeholder={t("common.search")}
+                onChange={(e) => {
+                  setSearchText(e?.target?.value ?? "");
+                }}
+              />
+              <Button
+                position={"absolute"}
+                top={0}
+                right={2}
+                zIndex={1}
+                onClick={() => {
+                  setRenderFriends(
+                    friends.filter(
+                      (value) =>
+                        value?.username
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase()) ||
+                        value?.name
+                          ?.toLowerCase()
+                          .includes(searchText.toLowerCase())
+                    )
+                  );
+                }}
               >
-                <Flex
+                <SearchIcon />
+              </Button>
+            </Box>
+            <Box h={"60vh"}>
+              {renderFriends.map((item, index) => (
+                <Card
+                  key={index}
+                  p={2}
+                  boxShadow={"xs"}
+                  variant={"outline"}
+                  mx={2}
+                  mb={2}
                   overflow={"hidden"}
-                  textOverflow="ellipsis"
-                  alignItems={"center"}
+                  cursor={"pointer"}
+                  onClick={() => {
+                    setReceiver(item);
+                    loadMessage();
+                  }}
                 >
-                  <Avatar
-                    alignSelf={"center"}
-                    size={"md"}
-                    name={item.name}
-                    src={`${appSettings.API_PROXY}/images/user-${item?.id ?? ""}`}
-                    mr={2}
-                  />
-                  <Box>
-                    <Text noOfLines={1} color="gray" fontSize={"sm"}>
-                      @{item.username}
-                    </Text>
-                    <Text fontWeight={500} noOfLines={2}>
-                      {item.name}
-                    </Text>
-                  </Box>
-                </Flex>
-              </Card>
-            ))}
+                  <Flex
+                    overflow={"hidden"}
+                    textOverflow="ellipsis"
+                    alignItems={"center"}
+                  >
+                    <Avatar
+                      alignSelf={"center"}
+                      size={"md"}
+                      name={item.name}
+                      src={`${appSettings.API_PROXY}/images/user-${item?.id ?? ""}`}
+                      mr={2}
+                    />
+                    <Box>
+                      <Text noOfLines={1} color="gray" fontSize={"sm"}>
+                        @{item.username}
+                      </Text>
+                      <Text fontWeight={500} noOfLines={2}>
+                        {item.name}
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Card>
+              ))}
+            </Box>
           </Box>
 
           <Spacer display={{ base: "none", md: "block" }} />
@@ -105,13 +156,93 @@ export default function FriendPage(props) {
           <Box
             w={{ base: "100%", md: "75%" }}
             border={"1px lightgray solid"}
-            p={4}
             borderRadius={4}
             boxShadow={2}
-            h={"80vh"}
-            overflowY={"auto"}
           >
-            123
+            <Box h={"60vh"} overflowY="auto">
+              {receiver && messages?.length > 0 ? (
+                <Flex
+                  p={4}
+                  mb={4}
+                  borderRadius="md"
+                  boxShadow={4}
+                  scrollBehavior={"smooth"}
+                  flexDir={"column"}
+                  position={"relative"}
+                >
+                  {messages.map((message, index) => (
+                    <Box
+                      key={index}
+                      mb={2}
+                      maxW={"80%"}
+                      alignSelf={
+                        user?.id === message.user_id ? "flex-end" : "flex-start"
+                      }
+                    >
+                      <Text
+                        fontSize={"x-small"}
+                        color={theme === "dark" ? "white" : "gray.500"}
+                        textAlign={
+                          user?.id === message.user_id ? "right" : "left"
+                        }
+                        mx={1}
+                      >
+                        @{message.username}
+                      </Text>
+                      <Text
+                        bgColor={
+                          user?.id === message.user_id
+                            ? theme === "dark"
+                              ? "gray.600"
+                              : "black"
+                            : theme === "dark"
+                              ? "black"
+                              : "lightgray"
+                        }
+                        textAlign={
+                          user?.id === message.user_id ? "right" : "left"
+                        }
+                        color={theme === "dark" ? "white" : "black"}
+                        px={4}
+                        py={1}
+                        borderRadius={8}
+                      >
+                        {message.text}
+                      </Text>
+                    </Box>
+                  ))}
+                </Flex>
+              ) : (
+                <Flex
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  h={"100%"}
+                >
+                  <Text>{t("chat.no_message")}</Text>
+                </Flex>
+              )}
+            </Box>
+            <Box position={"sticky"} p={2}>
+              <Input
+                colorScheme="gray"
+                placeholder={t("chat.type_your_message")}
+                value={text}
+                onChange={(e) => {
+                  setText(e?.target?.value ?? "");
+                }}
+              />
+              <Button
+                position={"absolute"}
+                top={2}
+                right={2}
+                zIndex={1}
+                onClick={async () => {
+                  await sendMessage();
+                }}
+              >
+                <IoSend />
+              </Button>
+            </Box>
           </Box>
         </Flex>
       </Container>

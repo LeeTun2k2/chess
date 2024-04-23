@@ -5,5 +5,8 @@
   "how_to_play_chess": "How to Play Chess",
   "type_your_message_here": "Type your message here ...",
   "assistant": "assistant",
-  "please_login": "Please log in to chat"
+  "please_login": "Please log in to chat",
+  "type_your_message": "Type your message here",
+  "no_message": "No messages were found",
+  "messages": "Messages"
 }

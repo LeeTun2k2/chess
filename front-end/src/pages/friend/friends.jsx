@@ -9,22 +9,13 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import FindFriend from "../../components/friends/findFriend";
 import FriendRequests from "../../components/friends/friend_requests";
 import FriendsList from "../../components/friends/friends_list";
 import ClientLayout from "../../components/layouts/clientLayout";
-import { getUserData } from "../../lib/auth";
 
 const FriendsPage = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-
-  const [friends, setFriends] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [friendRequests, setFriendRequests] = useState([]);
-  const userId = getUserData().id;
 
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabChange = (index) => {

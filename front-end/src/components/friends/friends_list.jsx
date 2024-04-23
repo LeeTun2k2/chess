@@ -24,8 +24,6 @@ export default function FriendsPage() {
   const [renderData, setRenderData] = useState([]);
   const [searchText, setSearchText] = useState();
   const [loading, setLoading] = useState(false);
-  const [pageNumber, setPageNumber] = useState(1);
-  const pageSize = 10;
 
   useEffect(() => {
     axios
@@ -94,59 +92,57 @@ export default function FriendsPage() {
       </Box>
       {renderData?.length ? (
         <Flex justifyContent={"start"} my={4} mx={-2}>
-          {renderData
-            .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
-            .map((item, index) => (
-              <Card
-                key={index}
-                p={4}
-                boxShadow={"xs"}
-                variant={"outline"}
-                borderRadius={8}
-                mx={2}
+          {renderData.map((item, index) => (
+            <Card
+              key={index}
+              p={4}
+              boxShadow={"xs"}
+              variant={"outline"}
+              borderRadius={8}
+              mx={2}
+              overflow={"hidden"}
+            >
+              <Flex
+                w={36}
+                flexDirection={"column"}
                 overflow={"hidden"}
+                textOverflow="ellipsis"
+                h={"100%"}
               >
-                <Flex
-                  w={36}
-                  flexDirection={"column"}
-                  overflow={"hidden"}
-                  textOverflow="ellipsis"
-                  h={"100%"}
+                <Avatar
+                  alignSelf={"center"}
+                  size={"2xl"}
+                  mb={2}
+                  name={item.name}
+                  src={`${appSettings.API_PROXY}/images/user-${item?.id ?? ""}`}
+                />
+                <Text
+                  noOfLines={1}
+                  color="gray"
+                  fontSize={"sm"}
+                  textAlign={"center"}
                 >
-                  <Avatar
-                    alignSelf={"center"}
-                    size={"2xl"}
-                    mb={2}
-                    name={item.name}
-                    src={`${appSettings.API_PROXY}/images/user-${item?.id ?? ""}`}
-                  />
-                  <Text
-                    noOfLines={1}
-                    color="gray"
-                    fontSize={"sm"}
-                    textAlign={"center"}
-                  >
-                    @{item.username}
+                  @{item.username}
+                </Text>
+                <Link href={`/profile/${item.username}`}>
+                  <Text fontWeight={500} noOfLines={2} textAlign={"center"}>
+                    {item.name}
                   </Text>
-                  <Link href={`/profile/${item.username}`}>
-                    <Text fontWeight={500} noOfLines={2} textAlign={"center"}>
-                      {item.name}
-                    </Text>
-                  </Link>
-                  <Spacer />
-                  <Button
-                    isLoading={loading}
-                    onClick={() => {
-                      handleUnFriend(item);
-                    }}
-                    colorScheme="blackAlpha"
-                    mt={2}
-                  >
-                    {t("friends.unfriend")}
-                  </Button>
-                </Flex>
-              </Card>
-            ))}
+                </Link>
+                <Spacer />
+                <Button
+                  isLoading={loading}
+                  onClick={() => {
+                    handleUnFriend(item);
+                  }}
+                  colorScheme="gray"
+                  mt={2}
+                >
+                  {t("friends.unfriend")}
+                </Button>
+              </Flex>
+            </Card>
+          ))}
         </Flex>
       ) : (
         <Flex>

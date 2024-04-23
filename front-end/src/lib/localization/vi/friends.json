@@ -6,10 +6,10 @@
   "accept_success": "Chấp nhận thành công",
   "find_username_email_name": "Tìm username, email, tên",
   "unfriend": "Hủy kết bạn",
-  "no_users": "Không có người dùng",
+  "no_users": "Không tìm thấy người dùng",
   "reject_success": "Từ chối thành công",
   "accept": "Chấp nhận",
   "reject": "Từ chối",
   "request_success": "Yêu cầu thành công",
-  "add_friends_request": "Thêm yêu cầu kết bạn"
+  "add_friends_request": "Kết bạn"
 }
