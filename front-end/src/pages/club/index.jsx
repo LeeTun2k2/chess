@@ -95,11 +95,7 @@ export default function ClubPage(props) {
               <Heading as={"h5"} fontSize={"xl"} mx={4} mt={8} mb={4}>
                 {t("club.notifications")}
               </Heading>
-              <Box
-                border={"1px lightgray solid"}
-                borderRadius={8}
-                borderBottom={0}
-              >
+              <Box border={"1px lightgray solid"} borderRadius={8}>
                 {notifications.map((notification, idx) => {
                   return (
                     <Card px={4} py={2}>

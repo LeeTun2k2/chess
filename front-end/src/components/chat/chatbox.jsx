@@ -70,7 +70,9 @@ const ChatBox = () => {
         user_id: "assistant",
       };
 
-      setMessages([...messages, message, botMessage]);
+      setTimeout(() => {
+        setMessages([...messages, message, botMessage]);
+      }, 1000);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -116,7 +118,15 @@ const ChatBox = () => {
                     : "lightgray"
               }
               textAlign={user?.id === message.user_id ? "right" : "left"}
-              color={theme === "dark" ? "white" : "black"}
+              color={
+                user?.id === message.user_id
+                  ? theme === "dark"
+                    ? "black"
+                    : "white"
+                  : theme === "dark"
+                    ? "white"
+                    : "black"
+              }
               px={4}
               py={1}
               borderRadius={8}
@@ -160,7 +170,6 @@ const ChatBox = () => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target?.value)}
             onKeyPress={(e) => {
-              e.preventDefault();
               if (e.key === "Enter") {
                 sendMessage();
               }
