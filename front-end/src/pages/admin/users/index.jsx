@@ -63,7 +63,7 @@ export default function AdminUsersPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   const handleToggleAccountStatus = () => {
     if (!selectedItem) {
@@ -81,7 +81,7 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         setData(
           data.map((item) => {
@@ -92,7 +92,7 @@ export default function AdminUsersPage() {
               };
             }
             return item;
-          }),
+          })
         );
         toast(toast_success(t("common.success")));
       })
@@ -134,8 +134,8 @@ export default function AdminUsersPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.email
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
               >
@@ -282,7 +282,7 @@ export default function AdminUsersPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

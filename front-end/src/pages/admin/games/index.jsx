@@ -47,7 +47,7 @@ export default function AdminGamesPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   return (
     <AdminLayout>
@@ -83,8 +83,8 @@ export default function AdminGamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.status
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
               >
@@ -203,7 +203,7 @@ export default function AdminGamesPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

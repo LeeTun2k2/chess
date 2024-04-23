@@ -37,7 +37,7 @@ export default function BookPage(props) {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   return (
     <ClientLayout>

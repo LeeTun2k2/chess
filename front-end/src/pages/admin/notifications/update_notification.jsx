@@ -42,7 +42,7 @@ export default function AdminUpdateNotificationPage() {
         if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error(t("common.something_went_wrong")));
       });
-  }, []);
+  }, [toast, t, id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

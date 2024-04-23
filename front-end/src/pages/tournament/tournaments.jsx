@@ -18,16 +18,15 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
-import { toast_error, toast_success } from "../../lib/hooks/toast";
+import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
 
 export default function AdmintournamentsPage() {
@@ -35,12 +34,9 @@ export default function AdmintournamentsPage() {
   const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
   const [data, setData] = useState([]);
   const [renderData, setRenderData] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
   const [pageNumber, setPageNumber] = React.useState(1);
   const pageSize = 10;
 
@@ -54,28 +50,7 @@ export default function AdmintournamentsPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
-
-  const handleDelete = () => {
-    if (!selectedItem) {
-      toast(toast_error(t("common.not_found")));
-    }
-    axios
-      .delete(`${appSettings.API_PROXY}/tournaments/${selectedItem._id}`)
-      .then((resp) => {
-        setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
-        );
-        setData(data.filter((item) => item._id !== selectedItem._id));
-        toast(toast_success(t("common.delete_success")));
-      })
-      .catch((err) => {
-        toast(toast_error(t("common.something_went_wrong")));
-      })
-      .finally(() => {
-        onClose();
-      });
-  };
+  }, [toast, t]);
 
   return (
     <ClientLayout>
@@ -103,8 +78,8 @@ export default function AdmintournamentsPage() {
                     data.filter((value) =>
                       value?.name
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -220,7 +195,7 @@ export default function AdmintournamentsPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

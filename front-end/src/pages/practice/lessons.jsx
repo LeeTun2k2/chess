@@ -1,19 +1,18 @@
-import { useState, useEffect } from "react";
 import {
-  Container,
-  Heading,
-  Text,
-  Image,
-  Flex,
   Box,
+  Container,
+  Flex,
+  Heading,
+  Image,
   Link,
-  ListItem,
   List,
-  OrderedList,
+  ListItem,
+  Text,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import ClientLayout from "../../components/layouts/clientLayout";
-import axios from "axios";
 import appSettings from "../../settings/appSettings";
 
 export default function LessonsPage() {

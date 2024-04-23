@@ -42,14 +42,12 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
 
 export default function AdminPage() {
-  const navigate = useNavigate();
   const theme = localStorage.getItem("theme");
   const toast = useToast();
   const { t } = useTranslation();
@@ -84,7 +82,7 @@ export default function AdminPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   const handleItemClick = (selected) => {
     axios
@@ -150,8 +148,8 @@ export default function AdminPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -177,10 +175,8 @@ export default function AdminPage() {
                       const text = e?.target?.value ?? "";
                       setSearchUsers(
                         users.filter((value) =>
-                          value.email
-                            .toLowerCase()
-                            .includes(text.toLowerCase()),
-                        ),
+                          value.email.toLowerCase().includes(text.toLowerCase())
+                        )
                       );
                     }}
                   />
@@ -341,7 +337,7 @@ export default function AdminPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

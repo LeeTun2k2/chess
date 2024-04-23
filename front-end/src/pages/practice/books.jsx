@@ -46,7 +46,7 @@ export default function BookListPage(props) {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   return (
     <ClientLayout>
@@ -78,8 +78,8 @@ export default function BookListPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.description
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase()),
-                    ),
+                          .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -149,7 +149,7 @@ export default function BookListPage(props) {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                 )}
                 <Button
                   colorScheme="gray"

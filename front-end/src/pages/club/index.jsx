@@ -36,7 +36,7 @@ export default function ClubPage(props) {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   useEffect(() => {
     axios
@@ -47,7 +47,7 @@ export default function ClubPage(props) {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   return (
     <ClientLayout>

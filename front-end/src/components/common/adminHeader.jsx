@@ -25,7 +25,7 @@ const AdminHeader = () => {
   const user_data = getUserData();
   useEffect(() => {
     if (user_data) setUser({ ...user_data });
-  }, []);
+  }, [user_data]);
 
   return (
     <Box bgColor={theme === "dark" ? "black" : "lightgray"} p={4} zIndex={9999}>

@@ -68,7 +68,7 @@ export default function LobbyPage(props) {
       .finally(() => {
         setLoading(false);
       });
-  }, [toast]);
+  }, [toast, t]);
 
   useEffect(() => {
     const socket = io(appSettings.SOCKET_PROXY);
@@ -134,7 +134,7 @@ export default function LobbyPage(props) {
                             onClick={() => {
                               axios
                                 .put(
-                                  `${appSettings.API_PROXY}/lobby/${item._id}`,
+                                  `${appSettings.API_PROXY}/lobby/${item._id}`
                                 )
                                 .then(() => {
                                   navigate(`/wait/${item._id}`);
@@ -186,7 +186,7 @@ export default function LobbyPage(props) {
                                 >
                                   {i + 1}
                                 </Button>
-                              ),
+                              )
                           )}
                           <Button
                             colorScheme="gray"
