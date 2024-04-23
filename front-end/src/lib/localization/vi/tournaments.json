@@ -6,5 +6,11 @@
   "name": "Tên",
   "description": "Mô tả",
   "tournaments": "Giải đấu",
-  "tournament": "Giải đấu"
+  "tournament": "Giải đấu",
+  "ranking": "Xếp hạng",
+  "leave": "Rời khỏi",
+  "join": "Tham gia",
+  "username": "Username",
+  "point": "Điểm",
+  "your_games": "Ván cờ của bạn"
 }

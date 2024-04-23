@@ -14,9 +14,10 @@ const LogoutPage = ({ setLoggedIn }) => {
       CometChat.logout().then(
         () => {
           console.log("Logout completed successfully");
-        },error=>{
-          console.log("Logout failed with exception:",{error});
-        }
+        },
+        (error) => {
+          console.log("Logout failed with exception:", { error });
+        },
       );
       clearTokens();
       clearUserData();

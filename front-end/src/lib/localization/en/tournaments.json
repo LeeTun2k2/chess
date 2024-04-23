@@ -5,5 +5,11 @@
   "name": "Name",
   "description": "Description",
   "tournaments": "Tournaments",
-  "tournament": "Tournament"
+  "tournament": "Tournament",
+  "ranking": "Ranking",
+  "leave": "Leave",
+  "join": "Join",
+  "username": "Username",
+  "point": "Point",
+  "your_games": "Your Games"
 }

@@ -1,44 +1,42 @@
 import { Box, Container, Flex, Spacer } from "@chakra-ui/react";
-import { useCurrentPath } from "../../lib/hooks/route";
-import UserInfo from "../../components/user_profile/user_info";
+import { useEffect, useState } from "react";
 import ClientLayout from "../../components/layouts/clientLayout";
 import Statistics from "../../components/user_profile/statistic";
+import UserInfo from "../../components/user_profile/user_info";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
+import { useCurrentPath } from "../../lib/hooks/route";
 import appSettings from "../../settings/appSettings";
-import { useEffect, useState } from "react";
 
 export default function UserProfile() {
   const path = useCurrentPath();
   const username = path[path.length - 1];
   const user_data = getUserData();
-
-  const getAvatarUrl = () => {
-    return `${appSettings.API_PROXY}/user-${user_data.id}`;
-  };
-
   const [user, setUser] = useState({});
 
-  const getUser = () => {
-    if (user_data) {
-      setUser({
-        ...user_data,
-        avatar: getAvatarUrl(),
-      });
-      return;
-    }
-
-    axios
-      .get(`${appSettings.API_PROXY}/user/${username}`)
-      .then((res) => {})
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   useEffect(() => {
+    const getAvatarUrl = () => {
+      return `${appSettings.API_PROXY}/user-${user_data.id}`;
+    };
+
+    const getUser = () => {
+      if (user_data) {
+        setUser({
+          ...user_data,
+          avatar: getAvatarUrl(),
+        });
+        return;
+      }
+
+      axios
+        .get(`${appSettings.API_PROXY}/user/${username}`)
+        .then((res) => {})
+        .catch((err) => {
+          console.log(err);
+        });
+    };
     getUser();
-  }, []);
+  }, [username, user_data]);
 
   const getStatistics = () => {
     return {

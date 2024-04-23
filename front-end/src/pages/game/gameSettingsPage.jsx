@@ -1,19 +1,21 @@
-import React, { useState } from "react";
 import {
   Box,
-  Flex,
   Button,
   Container,
-  Spacer,
+  Flex,
   Heading,
+  Spacer,
   useDisclosure,
 } from "@chakra-ui/react";
-import ClientLayout from "../../components/layouts/clientLayout";
-import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import NewOnlineGameModal from "../../components/game/newGameModal";
 import NoLogicChessBoard from "../../components/game/noLogicChessBoard";
+import ClientLayout from "../../components/layouts/clientLayout";
+import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 
-export default function GameSettingsPage(props) {
+export default function GameSettingsPage() {
+  const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [gameMode, setGameMode] = useState("online");
 
@@ -21,7 +23,7 @@ export default function GameSettingsPage(props) {
     <ClientLayout>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={gameMode} />
       <Container maxW="6xl" py={8}>
-        <Heading mb={4}>New game</Heading>
+        <Heading mb={4}>{t("games.new_game")}</Heading>
         <Flex direction={{ base: "column", md: "row" }}>
           <Box
             display={{ base: "none", md: "block" }}
@@ -43,35 +45,35 @@ export default function GameSettingsPage(props) {
           >
             <Button
               w="100%"
-              bgColor="lightgray"
+              colorScheme="gray"
               onClick={() => {
                 setGameMode(ONLINE);
                 onOpen();
               }}
             >
-              Play vs online
+              {t("games.play_online")}
             </Button>
             <Button
               w="100%"
               mt={4}
-              bgColor="lightgray"
+              colorScheme="gray"
               onClick={() => {
                 setGameMode(FRIEND);
                 onOpen();
               }}
             >
-              Play vs friend
+              {t("games.play_friend")}
             </Button>
             <Button
               w="100%"
               mt={4}
-              bgColor="lightgray"
+              colorScheme="gray"
               onClick={() => {
                 setGameMode(OFFLINE);
                 onOpen();
               }}
             >
-              Play vs computer
+              {t("games.play_bot")}
             </Button>
           </Box>
         </Flex>

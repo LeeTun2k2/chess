@@ -78,10 +78,10 @@ function App() {
     let appID = "25617120a1512061";
     let region = "us";
     let appSetting = new CometChat.AppSettingsBuilder()
-                    .subscribePresenceForAllUsers()
-                    .setRegion(region)
-                    .autoEstablishSocketConnection(true)
-                    .build();
+      .subscribePresenceForAllUsers()
+      .setRegion(region)
+      .autoEstablishSocketConnection(true)
+      .build();
     CometChat.init(appID, appSetting);
   };
 
@@ -294,7 +294,11 @@ function App() {
           path="/admin/update-achievement/:id"
           element={<AdminUpdateAchievementPage />}
         />
-        <Route exact path="/admin/notifications" element={<AdminNotificationsPage />} />
+        <Route
+          exact
+          path="/admin/notifications"
+          element={<AdminNotificationsPage />}
+        />
         <Route
           exact
           path="/admin/create-notification"
@@ -323,7 +327,11 @@ function App() {
           element={<AdminUpdateVideoPage />}
         />
         <Route exact path="/admin/donate" element={<AdminDonatePage />} />
-        <Route exact path="/admin/club-offline" element={<AdminClubOfflinePage />} />
+        <Route
+          exact
+          path="/admin/club-offline"
+          element={<AdminClubOfflinePage />}
+        />
 
         <Route path="/admin/*" element={<Navigate to={"/admin"} />} />
         <Route

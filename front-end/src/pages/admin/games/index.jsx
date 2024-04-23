@@ -47,7 +47,7 @@ export default function AdminGamesPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   return (
     <AdminLayout>

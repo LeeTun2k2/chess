@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from "react";
 import {
-  Container,
-  Heading,
   Box,
-  Spacer,
-  Flex,
-  useToast,
-  VStack,
-  Text,
-  HStack,
   Button,
+  Container,
+  Flex,
+  HStack,
+  Heading,
+  Spacer,
+  Text,
+  VStack,
+  useToast,
 } from "@chakra-ui/react";
-import { useCurrentPath } from "../../lib/hooks/route";
-import ClientLayout from "../../components/layouts/clientLayout";
+import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ChessBoard from "../../components/game/chessBoard";
-import axios from "../../lib/axios";
-import { toast_error } from "../../lib/hooks/toast";
-import appSettings from "../../settings/appSettings";
 import Timer from "../../components/game/timer";
+import ClientLayout from "../../components/layouts/clientLayout";
 import { getUserData } from "../../lib/auth";
-import io from "socket.io-client";
+import axios from "../../lib/axios";
+import { useCurrentPath } from "../../lib/hooks/route";
+import { toast_error, toast_info } from "../../lib/hooks/toast";
+import socket from "../../lib/socket";
+import appSettings from "../../settings/appSettings";
 
-export default function OnlineGamePage(props) {
+export default function OnlineGamePage() {
   const user = getUserData() ?? { id: "" };
   const path = useCurrentPath();
   const id = path[path.length - 1];
-  const socket = io(appSettings.SOCKET_PROXY);
-
+  const { t } = useTranslation();
   const toast = useToast();
 
   const [game, setGame] = useState({
@@ -39,6 +39,7 @@ export default function OnlineGamePage(props) {
   });
 
   const [gameStatus, setGameStatus] = useState("ended");
+  const [isOfferDraw, setIsOfferDraw] = useState(false);
   const [you, setYou] = useState({
     id: "you",
     username: "you",
@@ -53,67 +54,137 @@ export default function OnlineGamePage(props) {
     is_turn: false,
   });
 
-  const toggleTurn = () => {
-    setYou({ ...you, is_turn: !you.is_turn });
-    setOpponent({ ...opponent, is_turn: !opponent.is_turn });
-  };
+  const toggleTurn = useCallback(() => {
+    setYou((prevYou) => ({ ...prevYou, is_turn: !prevYou.is_turn }));
+    setOpponent((prevOpponent) => ({
+      ...prevOpponent,
+      is_turn: !prevOpponent.is_turn,
+    }));
+  }, []);
+
+  const handleGameReady = useCallback(
+    (data) => {
+      if (data && data.game_id === id && gameStatus !== "started") {
+        setGameStatus("started");
+        console.log("started");
+      }
+    },
+    [id, gameStatus]
+  );
+
+  const handleOfferDraw = useCallback(
+    (data) => {
+      if (
+        data &&
+        data.game_id === id &&
+        gameStatus === "started" &&
+        data.player_offer_id !== user?.id
+      ) {
+        toast(
+          toast_info(
+            t("games.offer_draw_sent"),
+            t("games.your_opponent_offer_draw")
+          )
+        );
+        setIsOfferDraw(true);
+        console.log("offer_draw");
+      }
+    },
+    [id, gameStatus, toast, t, user?.id]
+  );
+
+  const handleAcceptDraw = useCallback(
+    (data) => {
+      if (
+        data &&
+        data.game_id === id &&
+        gameStatus === "started" &&
+        data.player_accept_id === opponent?.id
+      ) {
+        toast_info(
+          t("games.offer_draw_accepted"),
+          t("games.your_opponent_accept_offer_draw")
+        );
+        setGameStatus("ended");
+        console.log("accept_draw");
+      }
+    },
+    [id, gameStatus, opponent?.id, toast, t]
+  );
+
+  const handleRejectDraw = useCallback(
+    (data) => {
+      if (
+        data &&
+        data.game_id === id &&
+        gameStatus === "started" &&
+        data.player_reject_id === opponent?.id
+      ) {
+        toast(
+          toast_info(
+            t("games.offer_draw_rejected"),
+            t("games.your_opponent_reject_offer_draw")
+          )
+        );
+        console.log("reject_draw");
+      }
+    },
+    [id, gameStatus, opponent?.id, toast, t]
+  );
 
   useEffect(() => {
     axios
       .get(`${appSettings.API_PROXY}/game/${id}&mode=online`)
       .then((res) => {
-        const game = res.data;
-        setGame(game);
-        setYou(
-          user.id === game.white
-            ? {
-                ...game.white_player,
-                is_turn: true,
-              }
-            : { ...game.black_player, is_turn: false },
+        const gameData = res.data;
+        setGame(gameData);
+        setYou((prevYou) =>
+          user.id === gameData.white
+            ? { ...gameData.white_player, is_turn: true }
+            : { ...gameData.black_player, is_turn: false }
         );
-        setOpponent(
-          user.id === game.white
-            ? {
-                ...game.black_player,
-                is_turn: false,
-              }
-            : { ...game.white_player, is_turn: true },
+        setOpponent((prevOpponent) =>
+          user.id === gameData.white
+            ? { ...gameData.black_player, is_turn: false }
+            : { ...gameData.white_player, is_turn: true }
         );
-        if (!game.png) {
-          socket.connect();
+        if (!gameData.png) {
           socket.emit("join_game", { game_id: id });
-          console.log("join_game");
         }
       })
       .catch((err) => {
         toast(toast_error("Error", "Failed to load game"));
         console.log(err);
       });
-  }, [id, toast]);
+  }, [id, toast, user.id]);
 
   useEffect(() => {
     socket.connect();
-    socket.on("game_start", (data) => {
-      if (data && data.game_id === id && gameStatus !== "started")
-        setGameStatus("started");
-    });
-    return () => socket.disconnect();
-  }, []);
+
+    socket.on("game_start", handleGameReady);
+    socket.on("offer_draw", handleOfferDraw);
+    socket.on("accept_draw", handleAcceptDraw);
+    socket.on("reject_draw", handleRejectDraw);
+
+    return () => {
+      socket.off("game_start", handleGameReady);
+      socket.off("offer_draw", handleOfferDraw);
+      socket.off("accept_draw", handleAcceptDraw);
+      socket.off("reject_draw", handleRejectDraw);
+      socket.disconnect();
+    };
+  }, [handleGameReady, handleOfferDraw, handleAcceptDraw, handleRejectDraw]);
 
   return (
     <ClientLayout>
-      <button
+      <Button
         onClick={() => {
-          console.log(gameStatus);
+          alert(`${you.id}, ${opponent.id}, ${you.id === opponent.id}`);
         }}
       >
-        test
-      </button>
-      <Container maxW="container.xl" mt={10}>
-        <Heading as="h1" size="lg" mb={5}>
-          Online Game
-        </Heading>
+        Test
+      </Button>
+      <Container maxW="6xl" mt={4}>
         <Flex
           direction={{ base: "column", md: "row" }}
           justifyContent={"center"}
@@ -145,23 +216,111 @@ export default function OnlineGamePage(props) {
               <Timer
                 game={game}
                 isActive={gameStatus === "started" && opponent.is_turn}
+                onTimeout={() => {
+                  socket.emit("timeout", {
+                    game_id: id,
+                    player_timeout_id: opponent?.id,
+                  });
+                  toast(toast_info(t("games.timeout")));
+                }}
               />
               <Spacer />
               <HStack>
-                <Button
-                  bgColor={"lightgray"}
-                  onClick={() => alert("offer draw")}
-                >
-                  Offer Draw
-                </Button>
-                <Button bgColor={"lightgray"} onClick={() => alert("Resign")}>
-                  Resign
-                </Button>
+                {(user?.id === you.id || user?.id === opponent.id) &&
+                  (isOfferDraw ? (
+                    <>
+                      <Button
+                        w={120}
+                        colorScheme="orange"
+                        onClick={() => {
+                          socket.emit("accept_draw", {
+                            game_id: id,
+                            player_accept_id: user?.id,
+                          });
+                          setIsOfferDraw(false);
+                          setGameStatus("ended");
+                          toast(
+                            toast_info(
+                              t("games.accept_draw"),
+                              t("games.you_send_accept_draw")
+                            )
+                          );
+                        }}
+                      >
+                        {t("games.accept_draw")}
+                      </Button>
+                      <Spacer />
+                      <Button
+                        w={120}
+                        colorScheme="gray"
+                        onClick={() => {
+                          socket.emit("reject_draw", {
+                            game_id: id,
+                            player_reject_id: user?.id,
+                          });
+                          setIsOfferDraw(false);
+                          toast(
+                            toast_info(
+                              t("games.reject_draw"),
+                              t("games.you_send_reject_draw")
+                            )
+                          );
+                        }}
+                      >
+                        {t("games.reject_draw")}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        w={120}
+                        colorScheme="yellow"
+                        onClick={() => {
+                          socket.emit("offer_draw", {
+                            game_id: id,
+                            player_offer_id: user?.id,
+                          });
+                          toast(
+                            toast_info(
+                              t("games.offer_draw"),
+                              t("games.you_send_offer_draw")
+                            )
+                          );
+                        }}
+                        disabled={gameStatus !== "started"}
+                      >
+                        {t("games.offer_draw")}
+                      </Button>
+                      <Spacer />
+                      <Button
+                        w={120}
+                        colorScheme="red"
+                        onClick={() => {
+                          socket.emit("resign", {
+                            game_id: id,
+                            player_resign_id: user?.id,
+                          });
+                          toast(
+                            toast_info(t("games.resign"), t("games.you_resign"))
+                          );
+                        }}
+                        disabled={gameStatus !== "started"}
+                      >
+                        {t("games.resign")}
+                      </Button>
+                    </>
+                  ))}
               </HStack>
               <Spacer />
               <Timer
                 game={game}
                 isActive={gameStatus === "started" && you.is_turn}
+                onTimeout={() => {
+                  socket.emit("timeout", {
+                    game_id: id,
+                    player_timeout_id: you?.id,
+                  });
+                }}
               />
               <Heading fontSize="xl">{you.name}</Heading>
               <Text color="gray.500" fontSize="md">

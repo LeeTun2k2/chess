@@ -39,5 +39,8 @@
   "updated_at": "Updated At",
   "something_went_wrong": "Something went wrong. Please try again.",
   "ute_chess_club": "UTE CHESS CLUB",
-  "status": "Status"
+  "status": "Status",
+  "player": "Player",
+  "rating": "Rating",
+  "filter": "Filter"
 }
