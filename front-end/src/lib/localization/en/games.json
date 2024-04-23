@@ -3,5 +3,16 @@
   "time": "Time",
   "white": "White",
   "black": "Black",
-  "games": "Playing games"
+  "games": "Playing games",
+  "new_game": "New Game",
+  "lobby": "Lobby",
+  "waiting_for_another": "Please wait for another player to join",
+  "offer_draw_rejected": "Offer draw rejected",
+  "your_opponent_reject_offer_draw": "Your opponent rejected the offer draw",
+  "offer_draw_sent": "Offer draw",
+  "your_opponent_offer_draw": "Your opponent sent the offer draw",
+  "accept_draw": "Accept draw",
+  "reject_draw": "Reject draw",
+  "offer_draw": "Offer draw",
+  "resign": "Resign"
 }

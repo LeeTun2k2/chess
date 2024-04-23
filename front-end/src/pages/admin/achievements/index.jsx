@@ -63,7 +63,7 @@ export default function AdminAchievementsPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   const handleDelete = () => {
     if (!selectedItem) {

@@ -27,41 +27,6 @@ export default function AchievementPage() {
   const [data, setData] = useState([]);
   const [events, setEvents] = useState([]);
 
-  function getBackgroundColor(reward) {
-    if (theme === "dark")
-      if (reward.includes("Vàng")) {
-        return "gold";
-      } else if (reward.includes("Bạc")) {
-        return "silver";
-      } else if (reward.includes("Đồng")) {
-        return "#CD7F32";
-      } else {
-        return "gray.200";
-      }
-    else {
-      if (reward.includes("Vàng")) {
-        return "yellow.200";
-      } else if (reward.includes("Bạc")) {
-        return "gray.200";
-      } else if (reward.includes("Đồng")) {
-        return "orange.200";
-      } else {
-        return "gray.200";
-      }
-    }
-  }
-
-  function getTextColor(bgColor) {
-    const brightness = parseInt(bgColor.replace("#", ""), 16);
-    const luminance =
-      brightness <= 0.03928
-        ? brightness / 12.92
-        : ((brightness + 0.055) / 1.055) ** 2.4;
-    const contrast =
-      luminance > 0.03928 ? (luminance + 0.05) / 1.05 : luminance / 12.92;
-    return contrast > 3 ? "#ffffff" : "#000000";
-  }
-
   useEffect(() => {
     axios
       .get(`${appSettings.API_PROXY}/achievements/honor-list`)
@@ -72,7 +37,7 @@ export default function AchievementPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   return (
     <ClientLayout>

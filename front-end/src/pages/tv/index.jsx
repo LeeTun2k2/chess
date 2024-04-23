@@ -36,7 +36,6 @@ export default function AdmingamesPage() {
   const [data, setData] = useState([]);
   const [renderData, setRenderData] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
   const [pageNumber, setPageNumber] = React.useState(1);
   const pageSize = 10;
 
@@ -50,7 +49,7 @@ export default function AdmingamesPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   return (
     <ClientLayout>

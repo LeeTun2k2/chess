@@ -171,14 +171,14 @@ def get_friend_requests():
         error(e)
         return "Failed to get friend requests.", 500
 
-@user_bp.post('/api/users/accept-friend-request/<request_id>')
+@user_bp.post('/api/users/accept-friend-request/<friend_id>')
 @jwt_required()
-def accept_friend_request(request_id):
+def accept_friend_request(friend_id):
     try:
         current_user_id = get_jwt_identity()
 
         service = UserService()
-        success, message = service.accept_friend_request(current_user_id, request_id)
+        success, message = service.accept_friend_request(current_user_id, friend_id)
         if success:
             return jsonify({'message': message}), 200
         else:
@@ -187,14 +187,14 @@ def accept_friend_request(request_id):
         error(e)
         return "Failed to accept friend request.", 500
 
-@user_bp.delete('/api/users/decline-friend-request/<request_id>')
+@user_bp.delete('/api/users/decline-friend-request/<friend_id>')
 @jwt_required()
-def decline_friend_request(request_id):
+def decline_friend_request(friend_id):
     try:
         current_user_id = get_jwt_identity()
 
         service = UserService()
-        success, message = service.decline_friend_request(current_user_id, request_id)
+        success, message = service.decline_friend_request(current_user_id, friend_id)
         if success:
             return jsonify({'message': message}), 200
         else:
@@ -202,8 +202,6 @@ def decline_friend_request(request_id):
     except Exception as e:
         error(e)
         return "Failed to decline friend request.", 500
-
-
 
 @user_bp.route('/api/users/friends', methods=['GET'])
 @jwt_required()
@@ -217,19 +215,34 @@ def get_friends():
         error(e)
         return "Fail to get friends list.", 500
     
-
-
 @user_bp.route('/api/users/search', methods=['GET'])
 @jwt_required()
-def find_users_by_name():
+def find_users():
     try:
-        name_query = request.args.get('q')
-        if not name_query:
+        user_id = get_jwt_identity()
+        query = request.args.get('q')
+        if not query:
             return jsonify({'error': 'Search query is required'}), 400
         
         service = UserService()
-        users = service.find_users_by_name(name_query)
+        users = service.find_users(user_id, query)
         return jsonify({"message": "success", "users": users}), 200
     except Exception as e:
         error(e)
         return "Fail to search users.", 500
+    
+@user_bp.delete('/api/users/unfriend/<friend_id>')
+@jwt_required()
+def unfriend(friend_id):
+    try:
+        current_user_id = get_jwt_identity()
+
+        service = UserService()
+        success, message = service.unfriend(current_user_id, friend_id)
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            return jsonify({'error': message}), 400
+    except Exception as e:
+        error(e)
+        return "Failed to unfriend.", 500

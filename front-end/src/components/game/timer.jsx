@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
 import { Flex, Heading } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 
-export default function Timer({ game, isActive }) {
+export default function Timer({ game, isActive, onTimeout }) {
   const { initial_time: time, bonus_time: bonus } = game;
   const [remain, setRemain] = useState(time * 60);
   const [active, setActive] = useState(isActive);
+  const theme = localStorage.getItem("theme");
 
   useEffect(() => {
     setRemain(time * 60);
@@ -36,10 +37,6 @@ export default function Timer({ game, isActive }) {
     }
   }, [isActive, active]);
 
-  function onTimeout() {
-    alert("timeout");
-  }
-
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -48,12 +45,21 @@ export default function Timer({ game, isActive }) {
 
   return (
     <Flex
-      background={isActive ? "lightgreen" : "lightgray"}
+      background={
+        isActive
+          ? theme === "dark"
+            ? "green"
+            : "lightgreen"
+          : theme === "dark"
+            ? "black"
+            : "lightgray"
+      }
       width="100%"
       height="4rem"
       borderRadius="4px"
       justifyContent="center"
       alignItems="center"
+      userSelect={"none"}
     >
       <Heading size="lg">{formatTime(remain)}</Heading>
     </Flex>

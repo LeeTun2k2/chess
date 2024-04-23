@@ -37,7 +37,7 @@ export default function AdminClubOfflinePage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

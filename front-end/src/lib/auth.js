@@ -4,7 +4,7 @@ export const setAccessToken = (access_token) => {
   localStorage.setItem("access_token", access_token);
   const now = new Date();
   const time = now.getTime();
-  const expireTime = time + 1800 * 1000;
+  const expireTime = time + 24 * 60 * 60 * 1000;
   now.setTime(expireTime);
   localStorage.setItem("access_token_expiry", now.toUTCString());
 };
