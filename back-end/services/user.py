@@ -93,6 +93,7 @@ class UserService():
                 return False, "Failed to toggle status."
         else:
             return False, "User not found."
+    
     def get_friends(self, user_id: str):
         user_data = self.users_collection.find_one({'_id': ObjectId(user_id)})
         if not user_data:
@@ -125,11 +126,26 @@ class UserService():
 
         return True, "Friend added successfully."
     
-    def find_users_by_name(self, name_query: str):
-        regex_pattern = f".*{re.escape(name_query)}.*"
-        users = list(self.users_collection.find({'name': {'$regex': regex_pattern, '$options': 'i'}}))
-        return [self.map_user(user).to_json() for user in users]
-    
+    def find_users(self, user_id: str, query: str):
+        user_data = self.users_collection.find_one({'_id': ObjectId(user_id)})
+        if not user_data:
+            return []
+        friend_requests = user_data.get('friend_requests', [])
+        friends = user_data.get('friends', [])
+
+        filter = {
+            "_id": {"$ne": ObjectId(user_id)},
+            "_id": {"$nin": friend_requests},
+            "_id": {"$nin": friends},
+            "$or": [
+                {"name": {"$regex": query, "$options": "i"}},
+                {"username": {"$regex": query, "$options": "i"}},
+                {"email": {"$regex": query, "$options": "i"}}
+            ]
+        }
+        users = list(self.users_collection.find(filter))
+
+        return [self.map_user(u).to_json() for u in users]
 
     def send_friend_request(self, user_id, friend_id):
         existing_request = self.users_collection.find_one({
@@ -191,3 +207,21 @@ class UserService():
             return True, 'Friend request declined successfully'
         else:
             return False, 'Failed to decline friend request'
+
+    def unfriend(self, user_id, friend_id):
+        # Removing friend_id from user_id's friends list
+        result1 = self.users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$pull': {'friends': ObjectId(friend_id)}}
+        )
+
+        # Removing user_id from friend_id's friends list
+        result2 = self.users_collection.update_one(
+            {'_id': ObjectId(friend_id)},
+            {'$pull': {'friends': ObjectId(user_id)}}
+        )
+
+        if result1.modified_count == 0 or result2.modified_count == 0:
+            return False, 'Failed to unfriend'
+
+        return True, 'Unfriended successfully'
