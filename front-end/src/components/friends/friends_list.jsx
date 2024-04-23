@@ -35,7 +35,7 @@ export default function FriendsPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   const handleSearch = async () => {
     setRenderData(
@@ -43,8 +43,8 @@ export default function FriendsPage() {
         (value) =>
           value?.username?.toLowerCase().includes(searchText.toLowerCase()) ||
           value?.name?.toLowerCase().includes(searchText.toLowerCase()) ||
-          value?.email?.toLowerCase().includes(searchText.toLowerCase())
-      )
+          value?.email?.toLowerCase().includes(searchText.toLowerCase()),
+      ),
     );
   };
 
@@ -54,8 +54,8 @@ export default function FriendsPage() {
       .delete(`${appSettings.API_PROXY}/users/unfriend/${friend?.id}`)
       .then((resp) => {
         toast(toast_success(t("friends.accept_success")));
-        setData(data.filter((x) => x.id != friend?.id));
-        setRenderData(renderData.filter((x) => x.id != friend?.id));
+        setData(data.filter((x) => x.id !== friend?.id));
+        setRenderData(renderData.filter((x) => x.id !== friend?.id));
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));

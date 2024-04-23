@@ -39,7 +39,7 @@ const en = {
   puzzles,
   notifications,
   chat,
-  friends
+  friends,
 };
 
 export default en;

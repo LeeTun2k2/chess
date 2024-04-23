@@ -64,7 +64,7 @@ export default function AdmintournamentsPage() {
       .delete(`${appSettings.API_PROXY}/tournaments/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id)
+          renderData.filter((item) => item._id !== selectedItem._id),
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
@@ -103,8 +103,8 @@ export default function AdmintournamentsPage() {
                     data.filter((value) =>
                       value?.name
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
               >
@@ -220,7 +220,7 @@ export default function AdmintournamentsPage() {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"

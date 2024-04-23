@@ -35,7 +35,7 @@ export default function FriendsRequestPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   const handleSearch = async () => {
     setRenderData(
@@ -43,8 +43,8 @@ export default function FriendsRequestPage() {
         (value) =>
           value?.username?.toLowerCase().includes(searchText.toLowerCase()) ||
           value?.name?.toLowerCase().includes(searchText.toLowerCase()) ||
-          value?.email?.toLowerCase().includes(searchText.toLowerCase())
-      )
+          value?.email?.toLowerCase().includes(searchText.toLowerCase()),
+      ),
     );
   };
 
@@ -52,12 +52,12 @@ export default function FriendsRequestPage() {
     setLoading(true);
     axios
       .post(
-        `${appSettings.API_PROXY}/users/accept-friend-request/${request?.id}`
+        `${appSettings.API_PROXY}/users/accept-friend-request/${request?.id}`,
       )
       .then((resp) => {
         toast(toast_success(t("friends.accept_success")));
-        setData(data.filter((x) => x.id != request?.id));
-        setRenderData(renderData.filter((x) => x.id != request?.id));
+        setData(data.filter((x) => x.id !== request?.id));
+        setRenderData(renderData.filter((x) => x.id !== request?.id));
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
@@ -71,12 +71,12 @@ export default function FriendsRequestPage() {
     setLoading(true);
     axios
       .delete(
-        `${appSettings.API_PROXY}/users/decline-friend-request/${request?.id}`
+        `${appSettings.API_PROXY}/users/decline-friend-request/${request?.id}`,
       )
       .then((resp) => {
         toast(toast_success(t("friends.reject_success")));
-        setData(data.filter((x) => x.id != request?.id));
-        setRenderData(renderData.filter((x) => x.id != request?.id));
+        setData(data.filter((x) => x.id !== request?.id));
+        setRenderData(renderData.filter((x) => x.id !== request?.id));
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));

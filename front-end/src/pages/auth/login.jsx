@@ -139,54 +139,54 @@ export default function LoginPage({ setLoggedIn }) {
     try {
       var user = new CometChat.User(UID);
       user.setName(name);
-  
+
       const createdUser = await CometChat.createUser(user, authKey);
-      console.log('User created:', createdUser);
+      console.log("User created:", createdUser);
       return createdUser;
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error("Error creating user:", error);
       throw error;
     }
   };
-  
+
   const initializeCometChat = async (UID, authKey) => {
     try {
       const user = await CometChat.getLoggedinUser();
       if (!user) {
         const loggedInUser = await CometChat.login(UID, authKey);
-        console.log('Login Successful:', { loggedInUser });
+        console.log("Login Successful:", { loggedInUser });
       } else {
-        console.log('User already logged in:', { user });
+        console.log("User already logged in:", { user });
       }
     } catch (error) {
-      console.log('Something went wrong', error);
+      console.log("Something went wrong", error);
       throw error;
     }
   };
-  
+
   const setupLoginListener = async (listenerID) => {
     CometChat.addLoginListener(
       listenerID,
       await CometChat.LoginListener({
         loginSuccess: (e) => {
-          console.log('LoginListener :: loginSuccess', e);
+          console.log("LoginListener :: loginSuccess", e);
         },
         loginFailure: (e) => {
-          console.log('LoginListener :: loginFailure', e);
+          console.log("LoginListener :: loginFailure", e);
         },
         logoutSuccess: () => {
-          console.log('LoginListener :: logoutSuccess');
+          console.log("LoginListener :: logoutSuccess");
         },
         logoutFailure: (e) => {
-          console.log('LoginListener :: logoutFailure', e);
+          console.log("LoginListener :: logoutFailure", e);
         },
-      })
+      }),
     );
   };
-  
+
   const initializeAndSetup = async (UID, name) => {
-    const authKey = '3b0db8aaee7bcdac11dbd9593168e67804279774';
-  
+    const authKey = "3b0db8aaee7bcdac11dbd9593168e67804279774";
+
     try {
       const user = await createUserInCometChat(UID, name, authKey);
       await initializeCometChat(UID, authKey);
@@ -194,7 +194,7 @@ export default function LoginPage({ setLoggedIn }) {
       await initializeCometChat(UID, authKey);
     }
   };
-  
+
   return (
     <Container
       maxW="lg"

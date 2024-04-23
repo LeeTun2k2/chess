@@ -40,7 +40,7 @@ export default function FriendPage(props) {
       .then((resp) => {
         setFriends(resp?.data?.friends ?? []);
         setRenderFriends(resp?.data?.friends ?? []);
-        setReceiver(friends[0]);
+        setReceiver(resp?.data?.friends[0]);
       })
       .then(() => {
         loadMessage();
@@ -48,7 +48,7 @@ export default function FriendPage(props) {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast]);
+  }, [toast, t]);
 
   const loadMessage = async () => {};
 
@@ -101,8 +101,8 @@ export default function FriendPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.name
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
               >

@@ -39,7 +39,7 @@ const vi = {
   puzzles,
   notifications,
   chat,
-  friends
+  friends,
 };
 
 export default vi;

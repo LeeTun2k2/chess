@@ -83,8 +83,8 @@ export default function AdminGamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.status
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase())
-                    )
+                          .includes(searchText.toLocaleLowerCase()),
+                    ),
                   );
                 }}
               >
@@ -203,7 +203,7 @@ export default function AdminGamesPage() {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"
