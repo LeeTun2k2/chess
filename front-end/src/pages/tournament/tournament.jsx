@@ -99,7 +99,7 @@ export default function TournamentPage(props) {
             </Flex>
             <Divider mb={4} borderColor={theme === "dark" ?? "black"} />
             <Box>
-              <Flex py={2} alignItems={"end"}>
+              <Flex mb={2} alignItems={"end"}>
                 <Text fontSize={"l"} fontWeight={"bold"}>
                   {t("tournaments.ranking")}
                 </Text>

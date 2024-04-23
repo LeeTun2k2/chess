@@ -3,5 +3,7 @@
   "time": "Time",
   "white": "White",
   "black": "Black",
-  "games": "Playing games"
+  "games": "Playing games",
+  "new_game": "New Game",
+  "lobby": "Lobby"
 }
