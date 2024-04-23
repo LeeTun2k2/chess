@@ -5,5 +5,14 @@
   "black": "Đen",
   "games": "Đang chơi",
   "new_game": "Chơi mới",
-  "lobby": "Sảnh Chờ"
+  "lobby": "Sảnh Chờ",
+  "waiting_for_another": "Vui lòng chờ người chơi khác vào phòng",
+  "offer_draw_sent": "Đề nghị hòa",
+  "your_opponent_offer_draw": "Đối thủ của bạn đề nghị hòa",
+  "offer_draw_rejected": "Đề nghị hòa bị từ chối",
+  "your_opponent_reject_offer_draw": "Đối thủ của bạn đã từ chối đề nghị hòa",
+  "accept_draw": "Chấp nhận",
+  "reject_draw": "Từ chối",
+  "offer_draw": "Xin hòa",
+  "resign": "Chịu thua"
 }

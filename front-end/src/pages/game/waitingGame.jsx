@@ -1,11 +1,12 @@
+import { Container, Flex, Heading, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { Container, Heading, Flex, Spinner } from "@chakra-ui/react";
-import { useCurrentPath } from "../../lib/hooks/route";
-import ClientLayout from "../../components/layouts/clientLayout";
-import io from "socket.io-client";
-import appSettings from "../../settings/appSettings";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
+import ClientLayout from "../../components/layouts/clientLayout";
 import { getUserData } from "../../lib/auth";
+import { useCurrentPath } from "../../lib/hooks/route";
+import appSettings from "../../settings/appSettings";
 
 export default function WaitingGamePage(props) {
   const path = useCurrentPath();
@@ -13,6 +14,7 @@ export default function WaitingGamePage(props) {
   const navigate = useNavigate();
   const socket = io(appSettings.SOCKET_PROXY);
   const user = getUserData();
+  const { t } = useTranslation();
 
   useEffect(() => {
     socket.connect();
@@ -42,7 +44,7 @@ export default function WaitingGamePage(props) {
     <ClientLayout>
       <Container maxW="container.xl" mt={10}>
         <Heading as="h1" size="lg" mb={5} textAlign={"center"}>
-          Please waiting for another player to join the game
+          {t("games.waiting_for_another")}
         </Heading>
         <Flex justify={"center"} align={"center"}>
           <Spinner size="xl" />

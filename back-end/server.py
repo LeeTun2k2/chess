@@ -91,20 +91,38 @@ app.register_blueprint(notification_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-from sockets.game import request_game, join_game, send_move
+from sockets.game import *
 @socketio.on('request_game')
 def request_game_socket(data):
-    print("request")
     request_game(data['user_id'], data['lobby_id'])
 
 @socketio.on('join_game')
 def join_game_socket(data):
-    print(data)
     join_game(data['game_id'])
 
 @socketio.on('send_move')
 def send_move_socket(data):
     send_move(data['game_id'], data['move'])
+
+@socketio.on('offer_draw')
+def offer_draw_socket(data):
+    offer_draw(data['game_id'], data['player_offer_id'])
+
+@socketio.on('accept_draw')
+def accept_draw_socket(data):
+    accept_draw(data['game_id'], data['player_accept_id'])
+
+@socketio.on('reject_draw')
+def reject_draw_socket(data):
+    reject_draw(data['game_id'], data['player_reject_id'])
+
+@socketio.on('resign')
+def resign_socket(data):
+    resign(data['game_id'], data["player_resign_id"])
+
+@socketio.on('timeout')
+def timeout_socket(data):
+    timeout(data['game_id'], data["player_timeout_id"])
 
 if __name__ == '__main__':
     socketio.run(app,host='0.0.0.0', port=5000, debug=True)

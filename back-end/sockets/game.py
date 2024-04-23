@@ -27,7 +27,22 @@ def request_game(user_id, lobby_id):
     emit('game_ready', {'game': game, 'lobby_id': lobby_id}, broadcast=True, namespace='/')
 
 def join_game(game_id: str): 
-    emit('game_start', {'message': 'Game start', 'game_id': game_id}, broadcast=True, namespace='/')
+    emit('game_start', {'game_id': game_id}, broadcast=True, namespace='/')
 
 def send_move(game_id: str, move): 
     emit('receive_move', {'move': move, 'game_id': game_id}, broadcast=True, namespace='/')
+
+def offer_draw(game_id: str, player_offer_id: str):
+    emit("offer_draw", {'game_id': game_id, "player_offer_id": player_offer_id}, broadcast=True, namespace='/')
+
+def accept_draw(game_id: str, player_accept_id: str):
+    emit("accept_draw", {'game_id': game_id, "player_accept_id": player_accept_id}, broadcast=True, namespace='/')
+
+def reject_draw(game_id: str, player_reject_id: str):
+    emit("reject_draw", {'game_id': game_id, "player_reject_id": player_reject_id}, broadcast=True, namespace='/')
+
+def resign(game_id: str, player_resign_id: str):
+    emit("resign", {'game_id': game_id, "player_resign_id": player_resign_id}, broadcast=True, namespace='/')
+
+def timeout(game_id: str, player_timeout_id: str):
+    emit("timeout", {'game_id': game_id, "player_timeout_id": player_timeout_id}, broadcast=True, namespace='/')
