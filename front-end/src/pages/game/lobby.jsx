@@ -25,11 +25,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import io from "socket.io-client";
 import NewOnlineGameModal from "../../components/game/newGameModal";
 import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
+import socket from "../../lib/socket";
 import appSettings from "../../settings/appSettings";
 import {
   BLITZ,
@@ -43,13 +43,14 @@ import {
 
 export default function LobbyPage(props) {
   const navigate = useNavigate();
-  const theme = localStorage.getItem("theme");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
   const toast = useToast();
+  const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
-
   const [loading, setLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const pageSize = 10;
 
   useEffect(() => {
     setLoading(true);
@@ -69,29 +70,40 @@ export default function LobbyPage(props) {
       .finally(() => {
         setLoading(false);
       });
-  }, [toast, t]);
-
-  useEffect(() => {
-    const socket = io(appSettings.SOCKET_PROXY);
-
-    socket.on("lobby_created", (resp) => {
-      const lobby = resp.lobby;
-      if (lobby) setData((prevData) => [lobby, ...prevData]);
-    });
-
-    socket.on("lobby_closed", (resp) => {
-      const lobbyId = resp.lobby_id;
-      if (lobbyId)
-        setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
-    });
 
     return () => {
+      // Disconnect socket when component unmounts
       socket.disconnect();
     };
-  }, []);
+  }, [toast, t]);
 
-  const [pageNumber, setPageNumber] = React.useState(1);
-  const pageSize = 10;
+  const handleLobbyCreated = (resp) => {
+    console.log("lobby_created");
+    const lobby = resp.lobby;
+    if (lobby) setData((prevData) => [lobby, ...prevData]);
+  };
+
+  const handleLobbyClosed = (resp) => {
+    console.log("lobby_closed");
+    const lobbyId = resp.lobby_id;
+    if (lobbyId)
+      setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
+  };
+
+  useEffect(() => {
+    socket.connect();
+
+    // Subscribe to socket events for lobby updates
+    socket.on("lobby_created", handleLobbyCreated);
+    socket.on("lobby_closed", handleLobbyClosed);
+
+    return () => {
+      // Unsubscribe from socket events when component unmounts
+      socket.off("lobby_created", handleLobbyCreated);
+      socket.off("lobby_closed", handleLobbyClosed);
+      socket.disconnect();
+    };
+  }, [handleLobbyCreated, handleLobbyClosed]);
 
   return (
     <ClientLayout>
