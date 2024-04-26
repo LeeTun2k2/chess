@@ -50,7 +50,26 @@ export default function FriendPage(props) {
       });
   }, [toast, t]);
 
-  const loadMessage = async () => {};
+  const loadMessage = async () => {
+    if (!receiver) return;
+  
+    const limit = 30;
+    const messagesRequest = new CometChat.MessagesRequestBuilder()
+      .setUID(receiver.id)
+      .setLimit(limit)
+      .build();
+  
+    messagesRequest.fetchPrevious().then(
+      (messageList) => {
+        setMessages(messageList?.filter((m) => m.type === "text") ?? []);
+
+      },
+      (error) => {
+        console.log("Message fetching failed with error:", error);
+      }
+    );
+  };
+  
 
   const sendMessage = async () => {
     if (text.trim() === "") return;
@@ -176,31 +195,31 @@ export default function FriendPage(props) {
                       mb={2}
                       maxW={"80%"}
                       alignSelf={
-                        user?.id === message.user_id ? "flex-end" : "flex-start"
+                        user?.id === message.sender?.uid ? "flex-end" : "flex-start"
                       }
                     >
                       <Text
                         fontSize={"x-small"}
                         color={theme === "dark" ? "white" : "gray.500"}
                         textAlign={
-                          user?.id === message.user_id ? "right" : "left"
+                          user?.id === message.sender?.uid ? "right" : "left"
                         }
                         mx={1}
                       >
-                        @{message.username}
+                        @{message.sender?.name}
                       </Text>
                       <Text
                         bgColor={
-                          user?.id === message.user_id
+                          user?.id === message.sender?.uid
                             ? theme === "dark"
                               ? "gray.600"
-                              : "black"
+                              : "gray.200"
                             : theme === "dark"
                               ? "black"
                               : "lightgray"
                         }
                         textAlign={
-                          user?.id === message.user_id ? "right" : "left"
+                          user?.id === message.sender?.uid ? "right" : "left"
                         }
                         color={theme === "dark" ? "white" : "black"}
                         px={4}
