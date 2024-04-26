@@ -10,7 +10,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ChessBoard from "../../components/game/chessBoard";
 import Timer from "../../components/game/timer";
@@ -40,12 +40,14 @@ export default function OnlineGamePage() {
 
   const [gameStatus, setGameStatus] = useState("ended");
   const [isOfferDraw, setIsOfferDraw] = useState(false);
+  const [isViewer, setIsViewer] = useState(true);
   const [you, setYou] = useState({
     id: "you",
     username: "you",
     name: "You",
     is_turn: false,
   });
+  const your_remain = useRef(null);
 
   const [opponent, setOpponent] = useState({
     id: "opponent",
@@ -53,6 +55,7 @@ export default function OnlineGamePage() {
     name: "Opponent",
     is_turn: false,
   });
+  const opponent_remain = useRef(null);
 
   const toggleTurn = useCallback(() => {
     setYou((prevYou) => ({ ...prevYou, is_turn: !prevYou.is_turn }));
@@ -65,8 +68,13 @@ export default function OnlineGamePage() {
   const handleGameReady = useCallback(
     (data) => {
       if (data && data.game_id === id && gameStatus !== "started") {
-        setGameStatus("started");
-        console.log("started");
+        if (data.status === "STARTED") {
+          setGameStatus("started");
+          console.log("game_started");
+        } else {
+          setGameStatus("ended");
+          console.log("game_loaded");
+        }
       }
     },
     [id, gameStatus]
@@ -78,7 +86,7 @@ export default function OnlineGamePage() {
         data &&
         data.game_id === id &&
         gameStatus === "started" &&
-        data.player_offer_id !== user?.id
+        data.player_offer_id === user?.id
       ) {
         toast(
           toast_info(
@@ -95,16 +103,15 @@ export default function OnlineGamePage() {
 
   const handleAcceptDraw = useCallback(
     (data) => {
-      if (
-        data &&
-        data.game_id === id &&
-        gameStatus === "started" &&
-        data.player_accept_id === opponent?.id
-      ) {
-        toast_info(
-          t("games.offer_draw_accepted"),
-          t("games.your_opponent_accept_offer_draw")
-        );
+      if (data && data.game_id === id && gameStatus === "started") {
+        if (data.player_accept_id === opponent?.id && !isViewer) {
+          toast(
+            toast_info(
+              t("games.offer_draw_accepted"),
+              t("games.your_opponent_accept_offer_draw")
+            )
+          );
+        }
         setGameStatus("ended");
         console.log("accept_draw");
       }
@@ -118,7 +125,8 @@ export default function OnlineGamePage() {
         data &&
         data.game_id === id &&
         gameStatus === "started" &&
-        data.player_reject_id === opponent?.id
+        data.player_reject_id === opponent?.id &&
+        !isViewer
       ) {
         toast(
           toast_info(
@@ -132,22 +140,72 @@ export default function OnlineGamePage() {
     [id, gameStatus, opponent?.id, toast, t]
   );
 
+  const handleResign = useCallback(
+    (data) => {
+      if (data && data.game_id === id && gameStatus === "started") {
+        if (data.player_resign_id === opponent?.id && !isViewer) {
+          toast(toast_info(t("games.resign"), t("games.your_opponent_resign")));
+        }
+        setGameStatus("ended");
+        console.log("resign");
+      }
+    },
+    [id, gameStatus, opponent?.id, toast, t]
+  );
+
+  const handleTimeout = useCallback(
+    (data) => {
+      if (data && data.game_id === id && gameStatus === "started") {
+        if (data.player_timeout_id === opponent?.id && !isViewer) {
+          toast(
+            toast_info(t("games.timeout"), t("games.your_opponent_timeout"))
+          );
+        }
+        setGameStatus("ended");
+        console.log("timeout");
+      }
+    },
+    [id, gameStatus, opponent?.id, toast, t]
+  );
+
+  const handleCheckMate = useCallback(
+    (data) => {
+      if (data && data.game_id === id && gameStatus === "started") {
+        toast(
+          toast_info(t("games.checkmate"), t("games.game_stop_by_checkmate"))
+        );
+        setGameStatus("ended");
+        console.log("checkmate");
+      }
+    },
+    [id, gameStatus, opponent?.id, toast, t]
+  );
+
   useEffect(() => {
     axios
       .get(`${appSettings.API_PROXY}/game/${id}&mode=online`)
       .then((res) => {
         const gameData = res.data;
         setGame(gameData);
-        setYou((prevYou) =>
-          user.id === gameData.white
-            ? { ...gameData.white_player, is_turn: true }
-            : { ...gameData.black_player, is_turn: false }
+        const isNotPlayer = !(
+          user?.id === gameData.white || user?.id === gameData.black
         );
-        setOpponent((prevOpponent) =>
-          user.id === gameData.white
-            ? { ...gameData.black_player, is_turn: false }
-            : { ...gameData.white_player, is_turn: true }
-        );
+        setIsViewer(isNotPlayer);
+        if (isNotPlayer) {
+          setYou({ ...gameData.white_player, is_turn: true });
+          setOpponent({ ...gameData.black_player, is_turn: false });
+        } else {
+          setYou((prevYou) =>
+            user.id === gameData.white
+              ? { ...gameData.white_player, is_turn: true }
+              : { ...gameData.black_player, is_turn: false }
+          );
+          setOpponent((prevOpponent) =>
+            user.id === gameData.white
+              ? { ...gameData.black_player, is_turn: false }
+              : { ...gameData.white_player, is_turn: true }
+          );
+        }
         if (!gameData.png) {
           socket.emit("join_game", { game_id: id });
         }
@@ -165,25 +223,31 @@ export default function OnlineGamePage() {
     socket.on("offer_draw", handleOfferDraw);
     socket.on("accept_draw", handleAcceptDraw);
     socket.on("reject_draw", handleRejectDraw);
+    socket.on("resign", handleResign);
+    socket.on("timeout", handleTimeout);
+    socket.on("checkmate", handleCheckMate);
 
     return () => {
       socket.off("game_start", handleGameReady);
       socket.off("offer_draw", handleOfferDraw);
       socket.off("accept_draw", handleAcceptDraw);
       socket.off("reject_draw", handleRejectDraw);
+      socket.off("resign", handleResign);
+      socket.off("timeout", handleTimeout);
+      socket.off("checkmate", handleCheckMate);
       socket.disconnect();
     };
-  }, [handleGameReady, handleOfferDraw, handleAcceptDraw, handleRejectDraw]);
+  }, [
+    handleGameReady,
+    handleOfferDraw,
+    handleAcceptDraw,
+    handleRejectDraw,
+    handleResign,
+    handleTimeout,
+  ]);
 
   return (
     <ClientLayout>
-      <Button
-        onClick={() => {
-          alert(`${you.id}, ${opponent.id}, ${you.id === opponent.id}`);
-        }}
-      >
-        Test
-      </Button>
       <Container maxW="6xl" mt={4}>
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -195,7 +259,7 @@ export default function OnlineGamePage() {
               game={game}
               setGameStatus={setGameStatus}
               toggleBaseTurn={toggleTurn}
-              socket={socket}
+              isViewer={isViewer}
             />
           </Box>
 
@@ -217,12 +281,14 @@ export default function OnlineGamePage() {
                 game={game}
                 isActive={gameStatus === "started" && opponent.is_turn}
                 onTimeout={() => {
+                  setGameStatus("ended");
                   socket.emit("timeout", {
                     game_id: id,
                     player_timeout_id: opponent?.id,
                   });
                   toast(toast_info(t("games.timeout")));
                 }}
+                ref={(ref) => (opponent_remain.current = ref?.getRemainingTime)}
               />
               <Spacer />
               <HStack>
@@ -246,6 +312,7 @@ export default function OnlineGamePage() {
                             )
                           );
                         }}
+                        isDisabled={gameStatus !== "started"}
                       >
                         {t("games.accept_draw")}
                       </Button>
@@ -266,6 +333,7 @@ export default function OnlineGamePage() {
                             )
                           );
                         }}
+                        isDisabled={gameStatus !== "started"}
                       >
                         {t("games.reject_draw")}
                       </Button>
@@ -287,7 +355,7 @@ export default function OnlineGamePage() {
                             )
                           );
                         }}
-                        disabled={gameStatus !== "started"}
+                        isDisabled={gameStatus !== "started"}
                       >
                         {t("games.offer_draw")}
                       </Button>
@@ -304,7 +372,7 @@ export default function OnlineGamePage() {
                             toast_info(t("games.resign"), t("games.you_resign"))
                           );
                         }}
-                        disabled={gameStatus !== "started"}
+                        isDisabled={gameStatus !== "started"}
                       >
                         {t("games.resign")}
                       </Button>
@@ -316,11 +384,13 @@ export default function OnlineGamePage() {
                 game={game}
                 isActive={gameStatus === "started" && you.is_turn}
                 onTimeout={() => {
+                  setGameStatus("ended");
                   socket.emit("timeout", {
                     game_id: id,
                     player_timeout_id: you?.id,
                   });
                 }}
+                ref={(ref) => (your_remain.current = ref?.getRemainingTime)}
               />
               <Heading fontSize="xl">{you.name}</Heading>
               <Text color="gray.500" fontSize="md">

@@ -9,23 +9,23 @@ export default function Timer({ game, isActive, onTimeout }) {
 
   useEffect(() => {
     setRemain(time * 60);
-  }, [game, time]);
+  }, [time]);
 
   useEffect(() => {
-    if (time <= 0) {
+    if (remain <= 0) {
       onTimeout();
     }
 
     let timer;
 
-    if (isActive && time > 0) {
+    if (isActive && remain > 0) {
       timer = setInterval(() => {
         setRemain((prevTime) => prevTime - 1);
       }, 1000);
     }
 
     return () => clearInterval(timer);
-  }, [isActive, time]);
+  }, [isActive, onTimeout]);
 
   useEffect(() => {
     if (active === false && isActive === true) {
@@ -42,6 +42,8 @@ export default function Timer({ game, isActive, onTimeout }) {
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
+
+  const getRemainingTime = () => remain;
 
   return (
     <Flex

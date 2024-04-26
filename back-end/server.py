@@ -102,7 +102,7 @@ def join_game_socket(data):
 
 @socketio.on('send_move')
 def send_move_socket(data):
-    send_move(data['game_id'], data['move'])
+    send_move(data['game_id'], data['fen'], data['move'], data['whiteTime'], data['blackTime'])
 
 @socketio.on('offer_draw')
 def offer_draw_socket(data):
@@ -123,6 +123,10 @@ def resign_socket(data):
 @socketio.on('timeout')
 def timeout_socket(data):
     timeout(data['game_id'], data["player_timeout_id"])
+
+@socketio.on('checkmate')
+def timeout_socket(data):
+    checkmate(data['game_id'])
 
 if __name__ == '__main__':
     socketio.run(app,host='0.0.0.0', port=5000, debug=True)

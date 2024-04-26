@@ -40,27 +40,7 @@ class GameService():
             game["_id"] = str(game["_id"])
             return game
         return None
-        
-    def update_game(self, game_id, game, mode):
-        if mode == 'online':
-            self.online_games_collection.update_one({'_id': ObjectId(game_id)}, {'$set': game})
-        elif mode == 'friend':
-            self.friend_games_collection.update_one({'_id': ObjectId(game_id)}, {'$set': game})
-        elif mode == 'offline':
-            self.offline_games_collection.update_one({'_id': ObjectId(game_id)}, {'$set': game})
-        else:
-            raise Exception('Invalid game mode')
-        
-    def delete_game(self, game_id, mode):
-        if mode == 'online':
-            self.online_games_collection.delete_one({'_id': ObjectId(game_id)})
-        elif mode == 'friend':
-            self.friend_games_collection.delete_one({'_id': ObjectId(game_id)})
-        elif mode == 'offline':
-            self.offline_games_collection.delete_one({'_id': ObjectId(game_id)})
-        else:
-            raise Exception('Invalid game mode')
-        
+    
     def get_by_lobby_id(self, lobby_id):
         return self.online_games_collection.find_one({'lobby_id': ObjectId(lobby_id)})
     
@@ -68,7 +48,7 @@ class GameService():
         games = self.online_games_collection.find({'tournament_id': ObjectId(tournament_id)})
         return [self.map(game) for game in games]
 
-    def create_online_game(self, lobby, user):
+    def create_online_game(self, lobby, user):        
         random = randint(0, 1)
         game = {
             'lobby_id': lobby['_id'],
@@ -125,5 +105,60 @@ class GameService():
             game['black_username'] = id_usernames[game['black']]
             res.append(self.map(game))
         return res
-        
+    
+    def draw(self, game_id):
+        game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
+        if game:
+            self.online_games_collection.update_one(
+                {'_id': ObjectId(game_id)},
+                {'$set': {'status': 'DRAW'}}
+            )
+            return True
+        else:
+            return False
+
+    def resign(self, game_id, player_resign_id):
+        game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
+        if game:
+            # Determine the winner based on the player who didn't resign
+            winner_id = game['white'] if str(game['white']) != player_resign_id else game['black']
+
+            # Update game status and winner
+            self.online_games_collection.update_one(
+                {'_id': ObjectId(game_id)},
+                {'$set': {'status': 'RESIGNED', 'winner': winner_id}}
+            )
+            return True
+        else:
+            return False
+
+    def timeout(self, game_id, player_timeout_id):
+        game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
+        if game:
+            # Determine the winner based on the player who didn't resign
+            winner_id = game['white'] if str(game['white']) != player_timeout_id else game['black']
+
+            # Update game status and winner
+            self.online_games_collection.update_one(
+                {'_id': ObjectId(game_id)},
+                {'$set': {'status': 'TIMEOUT', 'winner': winner_id}}
+            )
+            return True
+        else:
+            return False
+
+    def checkmate(self, game_id, player_win_id):
+        # Get the game from the database
+        game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
+
+        # Check if the game exists
+        if game:
+            # Update game status and winner
+            self.online_games_collection.update_one(
+                {'_id': ObjectId(game_id)},
+                {'$set': {'status': 'CHECKMATE', 'winner': player_win_id}}
+            )
+            return True  # Return True to indicate successful checkmate
+        else:
+            return False  # Return False if the game doesn't exist
 
