@@ -5,7 +5,7 @@ from database.mongodb import get_db
 from models.users import User
 from services.email import EmailService
 from services.token import generate_token, is_valid_token
-
+from bson import ObjectId
 class AuthServices():
     def __init__(self) -> None:
         self.db = get_db()
@@ -131,3 +131,26 @@ class AuthServices():
         self.email_service.send_new_password_email(email=email, password=new_password)
 
         return True, 'Reset password successfully.'
+    
+    def change_password(self, user_id: str, old_password: str, new_password: str):
+        user = self.users_collection.find_one({'_id': ObjectId(user_id)})
+    
+        if not user or not check_password_hash(user['password'], old_password):
+            return False, 'Invalid old password.'
+        hashed_new_password = generate_password_hash(new_password)
+    
+        result = self.users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$set': {'password': hashed_new_password}}
+        )
+    
+        if result.modified_count == 0:
+            return False, 'Failed to update password.'
+    
+        return True, 'Password updated successfully.'
+
+    def authenticate_user(self, user_id: str, current_password: str):
+        user_data = self.users_collection.find_one({'_id': ObjectId(user_id)})
+        if not user_data or not check_password_hash(user_data['password'], current_password):
+            return False, 'Incorrect current password.'
+        return True, 'Authentication successful.'

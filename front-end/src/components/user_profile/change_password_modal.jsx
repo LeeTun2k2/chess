@@ -12,7 +12,9 @@ import {
 } from "@chakra-ui/react";
 import { validatePassword } from "../../lib/hooks/validateUser";
 import { PasswordField } from "../auth/PasswordField";
-import { toast_error } from "../../lib/hooks/toast";
+import { toast_error, toast_success } from "../../lib/hooks/toast";
+import axios from 'axios';
+import appSettings from "../../settings/appSettings";
 
 export default function ChangePasswordModal({ isOpen, onClose }) {
   const toast = useToast();
@@ -27,8 +29,9 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
     setNewPassword(e.target.value);
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     let ok = true;
+  
     if (validatePassword(oldPassword) === false) {
       const model = toast_error(
         "Old password fail.",
@@ -37,7 +40,7 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
       toast(model);
       ok = false;
     }
-
+  
     if (validatePassword(newPassword) === false) {
       const model = toast_error(
         "Change password fail.",
@@ -46,10 +49,27 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
       toast(model);
       ok = false;
     }
-
+  
     if (ok === false) return;
-
-    onClose();
+  
+    try {
+      const response = await axios.post(`${appSettings.API_PROXY}/change-password`, {
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      });
+  
+      if (response.status === 200) {
+        const model = toast_success("Password changed successfully.");
+        toast(model);
+        onClose();
+      } else {
+        const model = toast_error("Failed to change password.");
+        toast(model);
+      }
+    } catch (error) {
+      const model = toast_error("An error occurred while changing password.");
+      toast(model);
+    }
   };
 
   return (
