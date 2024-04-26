@@ -40,6 +40,7 @@ export default function OnlineGamePage() {
 
   const [gameStatus, setGameStatus] = useState("ended");
   const [isOfferDraw, setIsOfferDraw] = useState(false);
+  const [isViewer, setIsViewer] = useState(true);
   const [you, setYou] = useState({
     id: "you",
     username: "you",
@@ -65,8 +66,13 @@ export default function OnlineGamePage() {
   const handleGameReady = useCallback(
     (data) => {
       if (data && data.game_id === id && gameStatus !== "started") {
-        setGameStatus("started");
-        console.log("started");
+        if (data.status === "STARTED") {
+          setGameStatus("started");
+          console.log("game_started");
+        } else {
+          setGameStatus("ended");
+          console.log("game_loaded");
+        }
       }
     },
     [id, gameStatus]
@@ -78,7 +84,7 @@ export default function OnlineGamePage() {
         data &&
         data.game_id === id &&
         gameStatus === "started" &&
-        data.player_offer_id !== user?.id
+        data.player_offer_id === user?.id
       ) {
         toast(
           toast_info(
@@ -96,7 +102,7 @@ export default function OnlineGamePage() {
   const handleAcceptDraw = useCallback(
     (data) => {
       if (data && data.game_id === id && gameStatus === "started") {
-        if (data.player_accept_id === opponent?.id) {
+        if (data.player_accept_id === opponent?.id && !isViewer) {
           toast(
             toast_info(
               t("games.offer_draw_accepted"),
@@ -117,7 +123,8 @@ export default function OnlineGamePage() {
         data &&
         data.game_id === id &&
         gameStatus === "started" &&
-        data.player_reject_id === opponent?.id
+        data.player_reject_id === opponent?.id &&
+        !isViewer
       ) {
         toast(
           toast_info(
@@ -134,7 +141,7 @@ export default function OnlineGamePage() {
   const handleResign = useCallback(
     (data) => {
       if (data && data.game_id === id && gameStatus === "started") {
-        if (data.player_resign_id === opponent?.id) {
+        if (data.player_resign_id === opponent?.id && !isViewer) {
           toast(toast_info(t("games.resign"), t("games.your_opponent_resign")));
         }
         setGameStatus("ended");
@@ -147,7 +154,7 @@ export default function OnlineGamePage() {
   const handleTimeout = useCallback(
     (data) => {
       if (data && data.game_id === id && gameStatus === "started") {
-        if (data.player_timeout_id === opponent?.id) {
+        if (data.player_timeout_id === opponent?.id && !isViewer) {
           toast(
             toast_info(t("games.timeout"), t("games.your_opponent_timeout"))
           );
@@ -165,16 +172,25 @@ export default function OnlineGamePage() {
       .then((res) => {
         const gameData = res.data;
         setGame(gameData);
-        setYou((prevYou) =>
-          user.id === gameData.white
-            ? { ...gameData.white_player, is_turn: true }
-            : { ...gameData.black_player, is_turn: false }
+        const isNotPlayer = !(
+          user?.id === gameData.white || user?.id === gameData.black
         );
-        setOpponent((prevOpponent) =>
-          user.id === gameData.white
-            ? { ...gameData.black_player, is_turn: false }
-            : { ...gameData.white_player, is_turn: true }
-        );
+        setIsViewer(isNotPlayer);
+        if (isNotPlayer) {
+          setYou({ ...gameData.white_player, is_turn: true });
+          setOpponent({ ...gameData.black_player, is_turn: false });
+        } else {
+          setYou((prevYou) =>
+            user.id === gameData.white
+              ? { ...gameData.white_player, is_turn: true }
+              : { ...gameData.black_player, is_turn: false }
+          );
+          setOpponent((prevOpponent) =>
+            user.id === gameData.white
+              ? { ...gameData.black_player, is_turn: false }
+              : { ...gameData.white_player, is_turn: true }
+          );
+        }
         if (!gameData.png) {
           socket.emit("join_game", { game_id: id });
         }
@@ -217,7 +233,8 @@ export default function OnlineGamePage() {
     <ClientLayout>
       <Button
         onClick={() => {
-          alert(`${you.id}, ${opponent.id}, ${you.id === opponent.id}`);
+          console.log(user?.id, game?.white, game?.black);
+          alert(isViewer);
         }}
       >
         Test
@@ -233,7 +250,7 @@ export default function OnlineGamePage() {
               game={game}
               setGameStatus={setGameStatus}
               toggleBaseTurn={toggleTurn}
-              socket={socket}
+              isViewer={isViewer}
             />
           </Box>
 
@@ -284,6 +301,7 @@ export default function OnlineGamePage() {
                             )
                           );
                         }}
+                        isDisabled={gameStatus !== "started"}
                       >
                         {t("games.accept_draw")}
                       </Button>
@@ -304,6 +322,7 @@ export default function OnlineGamePage() {
                             )
                           );
                         }}
+                        isDisabled={gameStatus !== "started"}
                       >
                         {t("games.reject_draw")}
                       </Button>
@@ -325,7 +344,7 @@ export default function OnlineGamePage() {
                             )
                           );
                         }}
-                        disabled={gameStatus !== "started"}
+                        isDisabled={gameStatus !== "started"}
                       >
                         {t("games.offer_draw")}
                       </Button>
@@ -342,7 +361,7 @@ export default function OnlineGamePage() {
                             toast_info(t("games.resign"), t("games.you_resign"))
                           );
                         }}
-                        disabled={gameStatus !== "started"}
+                        isDisabled={gameStatus !== "started"}
                       >
                         {t("games.resign")}
                       </Button>

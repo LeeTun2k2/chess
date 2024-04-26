@@ -10,14 +10,15 @@ user_service = UserService()
 def request_game(user_id, lobby_id):
     lobby = lobby_service.get_lobby(lobby_id) 
     if lobby['status'] == 'OPEN':
-        emit('error', {'message': 'Lobby is open'}, namespace='/')
         return
     
     user = user_service.get_by_id(user_id)
     if not user:
-        emit('error', {'message': 'User not found'}, namespace='/')
         return
     
+    if user.id == lobby['player_id']:
+        return
+
     # get lobby
     game = game_service.get_by_lobby_id(lobby_id=lobby_id)
 
@@ -27,7 +28,8 @@ def request_game(user_id, lobby_id):
     emit('game_ready', {'game': game, 'lobby_id': lobby_id}, broadcast=True, namespace='/')
 
 def join_game(game_id: str): 
-    emit('game_start', {'game_id': game_id}, broadcast=True, namespace='/')
+    game = game_service.get_game(game_id, "online")
+    emit('game_start', {'game_id': game_id, "status": game["status"]}, broadcast=True, namespace='/')
 
 def send_move(game_id: str, fen: str, move: str, whiteTime: int, blackTime: int):
     emit(
@@ -47,12 +49,15 @@ def offer_draw(game_id: str, player_offer_id: str):
 
 def accept_draw(game_id: str, player_accept_id: str):
     emit("accept_draw", {'game_id': game_id, "player_accept_id": player_accept_id}, broadcast=True, namespace='/')
+    game_service.draw(game_id)
 
 def reject_draw(game_id: str, player_reject_id: str):
     emit("reject_draw", {'game_id': game_id, "player_reject_id": player_reject_id}, broadcast=True, namespace='/')
 
 def resign(game_id: str, player_resign_id: str):
     emit("resign", {'game_id': game_id, "player_resign_id": player_resign_id}, broadcast=True, namespace='/')
+    game_service.resign(game_id, player_resign_id)
 
 def timeout(game_id: str, player_timeout_id: str):
     emit("timeout", {'game_id': game_id, "player_timeout_id": player_timeout_id}, broadcast=True, namespace='/')
+    game_service.timeout(game_id, player_timeout_id)

@@ -1,19 +1,44 @@
-import { Flex } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  Flex,
+  Image,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import Chessground from "@react-chess/chessground";
 import { Chess } from "chess.js";
 import "chessground/assets/chessground.base.css";
 import "chessground/assets/chessground.brown.css";
 import "chessground/assets/chessground.cburnett.css";
 import { Fragment, useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import BBISHOP from "../../assets/images/chess/piece/bB.svg";
+import BKNIGHT from "../../assets/images/chess/piece/bN.svg";
+import BQUEEN from "../../assets/images/chess/piece/bQ.svg";
+import BROOK from "../../assets/images/chess/piece/bR.svg";
+import WBISHOP from "../../assets/images/chess/piece/wB.svg";
+import WKNIGHT from "../../assets/images/chess/piece/wN.svg";
+import WQUEEN from "../../assets/images/chess/piece/wQ.svg";
+import WROOK from "../../assets/images/chess/piece/wR.svg";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
+import { toast_error } from "../../lib/hooks/toast";
+import socket from "../../lib/socket";
 import appSettings from "../../settings/appSettings";
 import { CHESS_FEN } from "../../settings/game";
 
-export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
+export default function ChessBoard({
+  game,
+  setGameStatus,
+  toggleBaseTurn,
+  isViewer,
+}) {
   const user = getUserData() ?? { id: "" };
-  const socket = io(appSettings.SOCKET_PROXY);
+  const toast = useToast();
   const [chess] = useState(new Chess(CHESS_FEN));
   const [fen, setFen] = useState("");
   const [lastMove, setLastMove] = useState([]);
@@ -22,6 +47,8 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
   const [orientation, setOrientation] = useState("white");
   const [isCheck, setIsCheck] = useState(false);
   const [isGameOver] = useState(false);
+  const [pendingMove, setPendingMove] = useState(null);
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const toggleTurn = () => {
     setTurn(turn === "white" ? "black" : "white");
@@ -51,6 +78,17 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
       }
     }
     return false;
+  };
+
+  const handleSendMove = (from, to, promotion) => {
+    socket.emit("send_move", {
+      game_id: game._id,
+      move: { from, to, promotion },
+      fen: chess.fen(),
+      blackTime: 0,
+      whiteTime: 0,
+    });
+    console.log("send_move");
   };
 
   const config = {
@@ -83,13 +121,15 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
     events: {
       change: () => {},
       move: (from, to) => {
+        if (isViewer) {
+          return;
+        }
         // Promotion move
         const moves = chess.moves({ verbose: true });
         for (let i = 0, len = moves.length; i < len; i++) {
           if (moves[i].flags.indexOf("p") !== -1 && moves[i].from === from) {
-            // setPendingMove([from, to]);
-            // setSelectVisible(true);
-            console.log("Promotion move", moves[i]);
+            setPendingMove({ from, to });
+            onOpen();
             return;
           }
         }
@@ -97,14 +137,8 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
           console.log("Invalid move.");
           return;
         }
-        socket.connect();
-        socket.emit("send_move", {
-          game_id: game._id,
-          move: { from, to },
-          fen: chess.fen(),
-          blackTime: 0,
-          whiteTime: 0,
-        });
+
+        handleSendMove(from, to, null);
       },
       dropNewPiece: () => {},
       select: (key) => {
@@ -131,33 +165,126 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
   };
 
   useEffect(() => {
-    socket.connect();
-    socket.on("receive_move", async (data) => {
-      if (data && data.game_id === game._id) {
-        const { from, to } = data.move;
-        chess.move({ from, to });
-        toggleTurn();
-        setFen(chess.fen());
-        setIsCheck(chess.inCheck());
-        setLastMove([from, to]);
-      }
+    const handleReceiveMove = (data) => {
+      (async () => {
+        if (data && data.game_id === game._id) {
+          const { from, to, promotion } = data.move;
+          try {
+            chess.move({ from, to, promotion });
+            toggleTurn();
+            setFen(chess.fen());
+            setIsCheck(chess.inCheck());
+            setLastMove([from, to]);
 
-      if (chess.isCheckmate()) {
-        setGameStatus("ended");
-        const png = chess.pgn();
-        await axios.put(`${appSettings.API_PROXY}/game/${game._id}`, {
-          game: { ...game, png },
-        });
-      }
-    });
+            if (chess.isCheckmate()) {
+              setGameStatus("ended");
+              const png = chess.pgn();
+              await axios.put(`${appSettings.API_PROXY}/game/${game._id}`, {
+                game: { ...game, png },
+              });
+            }
+          } catch {
+            toast(toast_error("Invalid Move"));
+          }
+        }
+      })();
+    };
+
+    socket.connect();
+    socket.on("receive_move", handleReceiveMove);
 
     return () => {
+      socket.off("receive_move", handleReceiveMove);
       socket.disconnect();
     };
-  }, [game, fen, socket, toggleTurn, setGameStatus, chess]);
+  }, [
+    socket,
+    game,
+    chess,
+    toggleTurn,
+    setFen,
+    setIsCheck,
+    setLastMove,
+    setGameStatus,
+    toast,
+  ]);
 
   return (
     <Fragment>
+      {/* Promotion modal */}
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <Center>
+              <Button
+                onClick={() => {
+                  handleSendMove(pendingMove.from, pendingMove.to, "q");
+                  setTimeout(onClose, 100);
+                }}
+                mr={2}
+                w={100}
+                h={100}
+              >
+                <Image
+                  src={turn === "w" ? WQUEEN : BQUEEN}
+                  alt="QUEEN"
+                  w={"100%"}
+                  h={"100%"}
+                />
+              </Button>
+              <Button
+                onClick={() => {
+                  handleSendMove(pendingMove.from, pendingMove.to, "r");
+                  setTimeout(onClose, 100);
+                }}
+                mr={2}
+                w={100}
+                h={100}
+              >
+                <Image
+                  src={turn === "w" ? WROOK : BROOK}
+                  alt="ROOK"
+                  w={"100%"}
+                  h={"100%"}
+                />
+              </Button>
+              <Button
+                onClick={() => {
+                  handleSendMove(pendingMove.from, pendingMove.to, "b");
+                  setTimeout(onClose, 100);
+                }}
+                mr={2}
+                w={100}
+                h={100}
+              >
+                <Image
+                  src={turn === "w" ? WBISHOP : BBISHOP}
+                  alt="BISHOP"
+                  w={"100%"}
+                  h={"100%"}
+                />
+              </Button>
+              <Button
+                onClick={() => {
+                  handleSendMove(pendingMove.from, pendingMove.to, "n");
+                  setTimeout(onClose, 100);
+                }}
+                mr={2}
+                w={100}
+                h={100}
+              >
+                <Image
+                  src={turn === "w" ? WKNIGHT : BKNIGHT}
+                  alt="KNIGHT"
+                  w={"100%"}
+                  h={"100%"}
+                />
+              </Button>
+            </Center>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       {/* Chess board md */}
       <Flex
         display={{ base: "none", sm: "none", md: "none", lg: "flex" }}
