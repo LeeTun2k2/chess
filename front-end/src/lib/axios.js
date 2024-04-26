@@ -2,12 +2,12 @@ import axios from "axios";
 import appSettings from "../settings/appSettings";
 import {
   getAccessToken,
+  getAccessTokenExpiry,
   getRefreshToken,
   setAccessToken,
-  getAccessTokenExpiry,
 } from "./auth";
 
-const PUBLIC_ROUTES = ["refresh"];
+const PUBLIC_ROUTES = ["refresh", "login", "register"];
 
 const refreshAccessToken = async (refreshToken) => {
   try {
@@ -90,8 +90,12 @@ axios.interceptors.response.use(
           throw refreshError;
         }
       } else {
-        window.location.href = "/login";
-        throw new Error("Refresh token not found");
+        if (window.location.pathname !== "/login")
+        {
+          window.location.href = "/login";
+          throw new Error("Refresh token not found");
+        }
+        throw new Error("Login Fail");
       }
     }
     return Promise.reject(error);
