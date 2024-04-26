@@ -23,6 +23,9 @@ services:
     container_name: chess_backend
     depends_on:
       - mongodb
+      - redis
+      - stockfish
+      - pikafish
     networks:
       - frontend_backend
       - backend_stockfish
