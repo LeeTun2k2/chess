@@ -86,7 +86,7 @@ export default function OnlineGamePage() {
         data &&
         data.game_id === id &&
         gameStatus === "started" &&
-        data.player_offer_id === user?.id
+        data.player_offer_id === opponent?.id
       ) {
         toast(
           toast_info(

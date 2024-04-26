@@ -59,7 +59,7 @@ class GameService():
             'initial_time': lobby['initial_time'],
             'bonus_time': lobby['bonus_time'],
             'status': "STARTED",
-            'created_at': datetime.now().isoformat(),
+            'created_at': datetime.now(),
         }
 
         if random == 0:
@@ -111,9 +111,42 @@ class GameService():
     def draw(self, game_id):
         game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
         if game:
+            white = game["white"]
+            white_user = self.users_collection.find_one({'_id': ObjectId(white)})
+            black = game["black"]
+            black_user = self.users_collection.find_one({'_id': ObjectId(black)})
+
+            if not white_user or not black_user:
+                # Handle case where user data is not found
+                raise ValueError("User data not found for one or both players.")
+
+            # Calculate updated ratings for both players
+            rate1, rate2 = rate_1vs1(white_user["rating"]["chess"], black_user["rating"]["chess"], 0.5)
+
+            # Update game status to 'DRAW'
             self.online_games_collection.update_one(
                 {'_id': ObjectId(game_id)},
                 {'$set': {'status': 'DRAW'}}
+            )
+
+            # Update ratings for both players
+            self.users_collection.update_one(
+                {'_id': ObjectId(white)},
+                {'$set': {'rating.chess': {
+                    'mu': rate1.mu,
+                    'phi': rate1.phi,
+                    'sigma': rate1.sigma,
+                    'ltime': rate1.ltime 
+                }}}
+            )
+            self.users_collection.update_one(
+                {'_id': ObjectId(black)},
+                {'$set': {'rating.chess': {
+                    'mu': rate2.mu,
+                    'phi': rate2.phi,
+                    'sigma': rate2.sigma,
+                    'ltime': rate2.ltime 
+                }}}
             )
             return True
         else:
@@ -124,12 +157,45 @@ class GameService():
         if game:
             # Determine the winner based on the player who didn't resign
             winner_id = game['white'] if str(game['white']) != player_resign_id else game['black']
+            loser_id = game['black'] if str(game['white']) != player_resign_id else game['white']
+
+            # Get the player rating data
+            winner_user = self.users_collection.find_one({'_id': ObjectId(winner_id)})
+            loser_user = self.users_collection.find_one({'_id': ObjectId(loser_id)})
+
+            if not winner_user or not loser_user:
+                # Handle case where user data is not found
+                raise ValueError("User data not found for winner or loser.")
 
             # Update game status and winner
             self.online_games_collection.update_one(
                 {'_id': ObjectId(game_id)},
                 {'$set': {'status': 'RESIGNED', 'winner': winner_id}}
             )
+
+            # Calculate updated ratings for winner and loser
+            rate1, rate2 = rate_1vs1(winner_user["rating"]["chess"], loser_user["rating"]["chess"], 1.0)
+
+            # Update ratings for winner and loser
+            self.users_collection.update_one(
+                {'_id': ObjectId(winner_id)},
+                {'$set': {'rating.chess': {
+                    'mu': rate1.mu,
+                    'phi': rate1.phi,
+                    'sigma': rate1.sigma,
+                    'ltime': rate1.ltime 
+                }}}
+            )
+            self.users_collection.update_one(
+                {'_id': ObjectId(loser_id)},
+                {'$set': {'rating.chess': {
+                    'mu': rate2.mu,
+                    'phi': rate2.phi,
+                    'sigma': rate2.sigma,
+                    'ltime': rate2.ltime 
+                }}}
+            )
+
             return True
         else:
             return False
@@ -137,14 +203,47 @@ class GameService():
     def timeout(self, game_id, player_timeout_id):
         game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
         if game:
-            # Determine the winner based on the player who didn't resign
+            # Determine the winner based on the player who didn't timeout
             winner_id = game['white'] if str(game['white']) != player_timeout_id else game['black']
+            loser_id = game['black'] if str(game['white']) != player_timeout_id else game['white']
+
+            # Get the player rating data
+            winner_user = self.users_collection.find_one({'_id': ObjectId(winner_id)})
+            loser_user = self.users_collection.find_one({'_id': ObjectId(loser_id)})
+
+            if not winner_user or not loser_user:
+                # Handle case where user data is not found
+                raise ValueError("User data not found for winner or loser.")
 
             # Update game status and winner
             self.online_games_collection.update_one(
                 {'_id': ObjectId(game_id)},
                 {'$set': {'status': 'TIMEOUT', 'winner': winner_id}}
             )
+
+            # Calculate updated ratings for winner and loser
+            rate1, rate2 = rate_1vs1(winner_user["rating"]["chess"], loser_user["rating"]["chess"], 1.0)
+
+            # Update ratings for winner and loser
+            self.users_collection.update_one(
+                {'_id': ObjectId(winner_id)},
+                {'$set': {'rating.chess': {
+                    'mu': rate1.mu,
+                    'phi': rate1.phi,
+                    'sigma': rate1.sigma,
+                    'ltime': rate1.ltime 
+                }}}
+            )
+            self.users_collection.update_one(
+                {'_id': ObjectId(loser_id)},
+                {'$set': {'rating.chess': {
+                    'mu': rate2.mu,
+                    'phi': rate2.phi,
+                    'sigma': rate2.sigma,
+                    'ltime': rate2.ltime 
+                }}}
+            )
+
             return True
         else:
             return False
@@ -160,7 +259,48 @@ class GameService():
                 {'_id': ObjectId(game_id)},
                 {'$set': {'status': 'CHECKMATE', 'winner': player_win_id}}
             )
+
+            # Get the IDs of the players
+            white_id = game['white']
+            black_id = game['black']
+
+            # Get the player rating data
+            white_user = self.users_collection.find_one({'_id': ObjectId(white_id)})
+            black_user = self.users_collection.find_one({'_id': ObjectId(black_id)})
+
+            if not white_user or not black_user:
+                # Handle case where user data is not found
+                raise ValueError("User data not found for white or black player.")
+
+            # Determine the winner and loser
+            winner_id = player_win_id
+            loser_id = black_id if player_win_id == white_id else white_id
+
+            # Calculate updated ratings for winner and loser
+            winner_user = white_user if winner_id == white_id else black_user
+            loser_user = black_user if winner_id == white_id else white_user
+            rate1, rate2 = rate_1vs1(winner_user["rating"]["chess"], loser_user["rating"]["chess"], 1.0)
+
+            # Update ratings for winner and loser
+            self.users_collection.update_one(
+                {'_id': ObjectId(winner_id)},
+                {'$set': {'rating.chess': {
+                    'mu': rate1.mu,
+                    'phi': rate1.phi,
+                    'sigma': rate1.sigma,
+                    'ltime': rate1.ltime 
+                }}}
+            )
+            self.users_collection.update_one(
+                {'_id': ObjectId(loser_id)},
+                {'$set': {'rating.chess': {
+                    'mu': rate2.mu,
+                    'phi': rate2.phi,
+                    'sigma': rate2.sigma,
+                    'ltime': rate2.ltime 
+                }}}
+            )
+
             return True  # Return True to indicate successful checkmate
         else:
             return False  # Return False if the game doesn't exist
-
