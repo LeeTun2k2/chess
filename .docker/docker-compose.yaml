@@ -28,6 +28,7 @@ services:
       - backend_stockfish
       - backend_pikafish
       - backend_mongodb
+      - backend_redis
 
   stockfish:
     image: leetun2k2/stockfish:latest
@@ -46,10 +47,17 @@ services:
     networks:
       - backend_mongodb
 
+  redis:
+    image: redis:latest
+    networks:
+      - backend_redis
+
 networks:
   frontend_backend:
     driver: bridge
   backend_mongodb:
+    driver: bridge
+  backend_redis:
     driver: bridge
   frontend_stockfish:
     driver: bridge
