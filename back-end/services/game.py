@@ -3,6 +3,8 @@ from database.mongodb import get_db
 from random import randint
 from common.constant import CHESS, XIANGQI, CHESS_FEN, XIANGQI_FEN
 from datetime import datetime
+from services.rating import rate_1vs1
+
 class GameService():
     def __init__(self) -> None:
         self.db = get_db()
