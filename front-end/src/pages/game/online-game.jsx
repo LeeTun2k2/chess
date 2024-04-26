@@ -95,16 +95,15 @@ export default function OnlineGamePage() {
 
   const handleAcceptDraw = useCallback(
     (data) => {
-      if (
-        data &&
-        data.game_id === id &&
-        gameStatus === "started" &&
-        data.player_accept_id === opponent?.id
-      ) {
-        toast_info(
-          t("games.offer_draw_accepted"),
-          t("games.your_opponent_accept_offer_draw")
-        );
+      if (data && data.game_id === id && gameStatus === "started") {
+        if (data.player_accept_id === opponent?.id) {
+          toast(
+            toast_info(
+              t("games.offer_draw_accepted"),
+              t("games.your_opponent_accept_offer_draw")
+            )
+          );
+        }
         setGameStatus("ended");
         console.log("accept_draw");
       }
@@ -127,6 +126,34 @@ export default function OnlineGamePage() {
           )
         );
         console.log("reject_draw");
+      }
+    },
+    [id, gameStatus, opponent?.id, toast, t]
+  );
+
+  const handleResign = useCallback(
+    (data) => {
+      if (data && data.game_id === id && gameStatus === "started") {
+        if (data.player_resign_id === opponent?.id) {
+          toast(toast_info(t("games.resign"), t("games.your_opponent_resign")));
+        }
+        setGameStatus("ended");
+        console.log("resign");
+      }
+    },
+    [id, gameStatus, opponent?.id, toast, t]
+  );
+
+  const handleTimeout = useCallback(
+    (data) => {
+      if (data && data.game_id === id && gameStatus === "started") {
+        if (data.player_timeout_id === opponent?.id) {
+          toast(
+            toast_info(t("games.timeout"), t("games.your_opponent_timeout"))
+          );
+        }
+        setGameStatus("ended");
+        console.log("timeout");
       }
     },
     [id, gameStatus, opponent?.id, toast, t]
@@ -165,15 +192,26 @@ export default function OnlineGamePage() {
     socket.on("offer_draw", handleOfferDraw);
     socket.on("accept_draw", handleAcceptDraw);
     socket.on("reject_draw", handleRejectDraw);
+    socket.on("resign", handleResign);
+    socket.on("timeout", handleTimeout);
 
     return () => {
       socket.off("game_start", handleGameReady);
       socket.off("offer_draw", handleOfferDraw);
       socket.off("accept_draw", handleAcceptDraw);
       socket.off("reject_draw", handleRejectDraw);
+      socket.off("resign", handleResign);
+      socket.off("timeout", handleTimeout);
       socket.disconnect();
     };
-  }, [handleGameReady, handleOfferDraw, handleAcceptDraw, handleRejectDraw]);
+  }, [
+    handleGameReady,
+    handleOfferDraw,
+    handleAcceptDraw,
+    handleRejectDraw,
+    handleResign,
+    handleTimeout,
+  ]);
 
   return (
     <ClientLayout>

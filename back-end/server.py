@@ -102,7 +102,7 @@ def join_game_socket(data):
 
 @socketio.on('send_move')
 def send_move_socket(data):
-    send_move(data['game_id'], data['move'])
+    send_move(data['game_id'], data['fen'], data['move'], data['whiteTime'], data['blackTime'])
 
 @socketio.on('offer_draw')
 def offer_draw_socket(data):

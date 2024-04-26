@@ -29,8 +29,18 @@ def request_game(user_id, lobby_id):
 def join_game(game_id: str): 
     emit('game_start', {'game_id': game_id}, broadcast=True, namespace='/')
 
-def send_move(game_id: str, move): 
-    emit('receive_move', {'move': move, 'game_id': game_id}, broadcast=True, namespace='/')
+def send_move(game_id: str, fen: str, move: str, whiteTime: int, blackTime: int):
+    emit(
+        'receive_move', 
+        {
+            'move': move, 
+            'fen': fen,
+            'game_id': game_id,
+            'whiteTime': whiteTime,
+            'blackTime': blackTime
+        }, 
+        broadcast=True, 
+        namespace='/')
 
 def offer_draw(game_id: str, player_offer_id: str):
     emit("offer_draw", {'game_id': game_id, "player_offer_id": player_offer_id}, broadcast=True, namespace='/')

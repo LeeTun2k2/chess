@@ -1,15 +1,15 @@
 import { Flex } from "@chakra-ui/react";
 import Chessground from "@react-chess/chessground";
+import { Chess } from "chess.js";
 import "chessground/assets/chessground.base.css";
 import "chessground/assets/chessground.brown.css";
 import "chessground/assets/chessground.cburnett.css";
 import { Fragment, useEffect, useState } from "react";
-import { getUserData } from "../../lib/auth";
-import { CHESS_FEN } from "../../settings/game";
-import { Chess } from "chess.js";
 import { io } from "socket.io-client";
-import appSettings from "../../settings/appSettings";
+import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
+import appSettings from "../../settings/appSettings";
+import { CHESS_FEN } from "../../settings/game";
 
 export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
   const user = getUserData() ?? { id: "" };
@@ -101,6 +101,9 @@ export default function ChessBoard({ game, setGameStatus, toggleBaseTurn }) {
         socket.emit("send_move", {
           game_id: game._id,
           move: { from, to },
+          fen: chess.fen(),
+          blackTime: 0,
+          whiteTime: 0,
         });
       },
       dropNewPiece: () => {},
