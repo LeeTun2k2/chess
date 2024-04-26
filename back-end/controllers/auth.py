@@ -165,3 +165,30 @@ def reset_password():
     except Exception as e:
         error(e)
         return 'Fail to reset password.', 500
+    
+
+@auth_bp.post('/api/change-password')
+@jwt_required()
+def change_password():
+    try:
+        data = request.get_json()
+        current_password = data.get('oldPassword')
+        new_password = data.get('newPassword')
+        
+        print(current_password)
+        print(new_password)
+        user_id = get_jwt_identity()
+        
+        ok, message = AuthServices().authenticate_user(user_id, current_password)
+        if not ok:
+            return message, 401
+        
+        ok, message = AuthServices().change_password(user_id, current_password, new_password)
+        if not ok:
+            return message, 400
+        
+        return message, 200
+    except Exception as e:
+        error(e)
+        return 'Fail to change password.', 500
+
