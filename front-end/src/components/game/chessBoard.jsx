@@ -25,10 +25,8 @@ import WKNIGHT from "../../assets/images/chess/piece/wN.svg";
 import WQUEEN from "../../assets/images/chess/piece/wQ.svg";
 import WROOK from "../../assets/images/chess/piece/wR.svg";
 import { getUserData } from "../../lib/auth";
-import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import socket from "../../lib/socket";
-import appSettings from "../../settings/appSettings";
 import { CHESS_FEN } from "../../settings/game";
 
 export default function ChessBoard({
@@ -166,25 +164,21 @@ export default function ChessBoard({
 
   useEffect(() => {
     const handleReceiveMove = (data) => {
-      (async () => {
+      (() => {
         if (data && data.game_id === game._id) {
           const { from, to, promotion } = data.move;
           try {
             chess.move({ from, to, promotion });
-            toggleTurn();
-            setFen(chess.fen());
-            setIsCheck(chess.inCheck());
-            setLastMove([from, to]);
-
-            if (chess.isCheckmate()) {
-              setGameStatus("ended");
-              const png = chess.pgn();
-              await axios.put(`${appSettings.API_PROXY}/game/${game._id}`, {
-                game: { ...game, png },
-              });
-            }
           } catch {
             toast(toast_error("Invalid Move"));
+          }
+          toggleTurn();
+          setFen(chess.fen());
+          setIsCheck(chess.inCheck());
+          setLastMove([from, to]);
+
+          if (chess.isCheckmate()) {
+            socket.emit("checkmate", { game_id: game._id });
           }
         }
       })();

@@ -10,7 +10,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ChessBoard from "../../components/game/chessBoard";
 import Timer from "../../components/game/timer";
@@ -47,6 +47,7 @@ export default function OnlineGamePage() {
     name: "You",
     is_turn: false,
   });
+  const your_remain = useRef(null);
 
   const [opponent, setOpponent] = useState({
     id: "opponent",
@@ -54,6 +55,7 @@ export default function OnlineGamePage() {
     name: "Opponent",
     is_turn: false,
   });
+  const opponent_remain = useRef(null);
 
   const toggleTurn = useCallback(() => {
     setYou((prevYou) => ({ ...prevYou, is_turn: !prevYou.is_turn }));
@@ -166,6 +168,19 @@ export default function OnlineGamePage() {
     [id, gameStatus, opponent?.id, toast, t]
   );
 
+  const handleCheckMate = useCallback(
+    (data) => {
+      if (data && data.game_id === id && gameStatus === "started") {
+        toast(
+          toast_info(t("games.checkmate"), t("games.game_stop_by_checkmate"))
+        );
+        setGameStatus("ended");
+        console.log("checkmate");
+      }
+    },
+    [id, gameStatus, opponent?.id, toast, t]
+  );
+
   useEffect(() => {
     axios
       .get(`${appSettings.API_PROXY}/game/${id}&mode=online`)
@@ -210,6 +225,7 @@ export default function OnlineGamePage() {
     socket.on("reject_draw", handleRejectDraw);
     socket.on("resign", handleResign);
     socket.on("timeout", handleTimeout);
+    socket.on("checkmate", handleCheckMate);
 
     return () => {
       socket.off("game_start", handleGameReady);
@@ -218,6 +234,7 @@ export default function OnlineGamePage() {
       socket.off("reject_draw", handleRejectDraw);
       socket.off("resign", handleResign);
       socket.off("timeout", handleTimeout);
+      socket.off("checkmate", handleCheckMate);
       socket.disconnect();
     };
   }, [
@@ -231,14 +248,6 @@ export default function OnlineGamePage() {
 
   return (
     <ClientLayout>
-      <Button
-        onClick={() => {
-          console.log(user?.id, game?.white, game?.black);
-          alert(isViewer);
-        }}
-      >
-        Test
-      </Button>
       <Container maxW="6xl" mt={4}>
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -272,12 +281,14 @@ export default function OnlineGamePage() {
                 game={game}
                 isActive={gameStatus === "started" && opponent.is_turn}
                 onTimeout={() => {
+                  setGameStatus("ended");
                   socket.emit("timeout", {
                     game_id: id,
                     player_timeout_id: opponent?.id,
                   });
                   toast(toast_info(t("games.timeout")));
                 }}
+                ref={(ref) => (opponent_remain.current = ref?.getRemainingTime)}
               />
               <Spacer />
               <HStack>
@@ -373,11 +384,13 @@ export default function OnlineGamePage() {
                 game={game}
                 isActive={gameStatus === "started" && you.is_turn}
                 onTimeout={() => {
+                  setGameStatus("ended");
                   socket.emit("timeout", {
                     game_id: id,
                     player_timeout_id: you?.id,
                   });
                 }}
+                ref={(ref) => (your_remain.current = ref?.getRemainingTime)}
               />
               <Heading fontSize="xl">{you.name}</Heading>
               <Text color="gray.500" fontSize="md">

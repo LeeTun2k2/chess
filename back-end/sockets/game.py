@@ -61,3 +61,7 @@ def resign(game_id: str, player_resign_id: str):
 def timeout(game_id: str, player_timeout_id: str):
     emit("timeout", {'game_id': game_id, "player_timeout_id": player_timeout_id}, broadcast=True, namespace='/')
     game_service.timeout(game_id, player_timeout_id)
+
+def checkmate(game_id: str):
+    emit("checkmate", {'game_id': game_id}, broadcast=True, namespace='/')
+    game_service.checkmate(game_id, "1")

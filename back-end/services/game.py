@@ -147,7 +147,7 @@ class GameService():
         else:
             return False
 
-    def mate(self, game_id, player_win_id):
+    def checkmate(self, game_id, player_win_id):
         # Get the game from the database
         game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
 
