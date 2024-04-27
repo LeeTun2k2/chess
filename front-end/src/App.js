@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -17,7 +17,7 @@ import CommonRoutes from "./routes/commonRoutes";
 import ErrorRoutes from "./routes/errorRoutes";
 
 function App() {
-  const user = getUserData();
+  const [user, setUser] = useState(getUserData());
 
   useEffect(() => {
     initializeGapi()
@@ -28,16 +28,16 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<AuthLayout/>}>
-          {AuthRoutes()}
+          {AuthRoutes({setUser})}
         </Route>
 
         <Route path="/" element={<ClientLayout/>}>
           {CommonRoutes()}
-          {ClientRoutes()}
+          {ClientRoutes({user})}
         </Route>
 
         <Route path="/admin" element={<AdminLayout/>}>
-          {AdminRoutes()}
+          {AdminRoutes({user})}
         </Route>
 
         <Route path="*">

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Route } from "react-router-dom";
+import { Navigate, Outlet, Route } from "react-router-dom";
 import BlogPage from "../pages/club/blog";
 import BlogListPage from "../pages/club/blogs";
 import ChatPage from "../pages/friend/chat";
@@ -18,7 +18,7 @@ import TournamentsPage from "../pages/tournament/tournaments";
 import TvPage from "../pages/tv";
 import UserProfile from "../pages/user/user_profile";
 
-const ClientRoutes = () => {
+const ClientRoutes = ({ user }) => {
   return (
     <Fragment>
       <Route index element={<HomePage />} />
@@ -28,16 +28,19 @@ const ClientRoutes = () => {
       <Route path="book/:id" element={<BookPage />} />
       <Route path="videos" element={<VideoListPage />} />
       <Route path="video/:id" element={<VideoPage />} />
-      <Route path="profile" element={<UserProfile />} />
-      <Route path="lobby" element={<LobbyPage />} />
-      <Route path="wait/:id" element={<WaitingGamePage />} />
-      <Route path="new-game" element={<GameSettingsPage />} />
-      <Route path="online/:id" element={<OnlineGamePage />} />
-      <Route path="tournaments" element={<TournamentsPage />} />
-      <Route path="tournament/:id" element={<TournamentPage />} />
-      <Route path="tv" element={<TvPage />} />
-      <Route path="friends" element={<FriendList />} />
-      <Route path="chat" element={<ChatPage />} />
+
+      <Route element={!!user ? <Outlet /> : <Navigate to="/login" />}>
+        <Route path="profile" element={<UserProfile />} />
+        <Route path="lobby" element={<LobbyPage />} />
+        <Route path="wait/:id" element={<WaitingGamePage />} />
+        <Route path="new-game" element={<GameSettingsPage />} />
+        <Route path="online/:id" element={<OnlineGamePage />} />
+        <Route path="tournaments" element={<TournamentsPage />} />
+        <Route path="tournament/:id" element={<TournamentPage />} />
+        <Route path="tv" element={<TvPage />} />
+        <Route path="friends" element={<FriendList />} />
+        <Route path="chat" element={<ChatPage />} />
+      </Route>
     </Fragment>
   );
 };

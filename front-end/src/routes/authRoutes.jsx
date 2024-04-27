@@ -6,15 +6,15 @@ import LogoutPage from "../pages/auth/logout";
 import RegisterPage from "../pages/auth/register";
 import ResetPasswordPage from "../pages/auth/reset_password";
 
-const AuthRoutes = () => {
+const AuthRoutes = ({ setUser }) => {
   return (
     <Fragment>
-      <Route path="login" element={<LoginPage />} />
+      <Route path="login" element={<LoginPage setUser={setUser} />} />
       <Route path="register" element={<RegisterPage />} />
       <Route path="forgot-password" element={<ForgotPasswordPage />} />
       <Route path="reset-password" element={<ResetPasswordPage />} />
       <Route path="reset-password" element={<ResetPasswordPage />} />
-      <Route path="logout" element={<LogoutPage />} />
+      <Route path="logout" element={<LogoutPage setUser={setUser} />} />
     </Fragment>
   );
 };

@@ -33,7 +33,7 @@ import axios from "../../lib/axios";
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
 
-export default function LoginPage({ setLoggedIn }) {
+export default function LoginPage({ setUser }) {
   const { t } = useTranslation();
   const toast = useToast();
   const navigate = useNavigate();
@@ -90,10 +90,10 @@ export default function LoginPage({ setLoggedIn }) {
             setAccessToken(resp?.data?.access_token);
             setRefreshToken(resp?.data?.refresh_token);
             setUserData(resp?.data?.user);
-            setLoggedIn(true);
+            setUser(resp?.data?.user);
             toast(toast_success("Login successfully."));
-            navigate("/");
             initializeAndSetup(resp?.data?.user.id, resp?.data?.user.name);
+            navigate("/");
           })
           .catch((err) => {
             if (err?.response) toast(toast_error(err?.response?.data));
@@ -116,10 +116,10 @@ export default function LoginPage({ setLoggedIn }) {
         setAccessToken(resp?.data?.access_token);
         setRefreshToken(resp?.data?.refresh_token);
         setUserData(resp?.data?.user);
-        setLoggedIn(true);
+        setUser(resp?.data?.user);
         toast(toast_success("Login successfully."));
-        navigate("/");
         initializeAndSetup(resp?.data?.user.id, resp?.data?.user.name);
+        navigate("/");
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));

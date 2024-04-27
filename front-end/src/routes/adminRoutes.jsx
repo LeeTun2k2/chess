@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Navigate, Route } from "react-router-dom";
 import AdminDashboardPage from "../pages/admin";
 import AdminAchievementsPage from "../pages/admin/achievements";
@@ -13,7 +13,6 @@ import AdminUpdateBookPage from "../pages/admin/books/update_book";
 import AdminClubOfflinePage from "../pages/admin/club-offline";
 import AdminDonatePage from "../pages/admin/donate";
 import AdminGamesPage from "../pages/admin/games";
-import AdminCreateLessonPage from "../pages/admin/lessons/create_lesson";
 import AdminNotificationsPage from "../pages/admin/notifications";
 import AdminCreateNotificationPage from "../pages/admin/notifications/create_notification";
 import AdminUpdateNotificationPage from "../pages/admin/notifications/update_notification";
@@ -27,9 +26,11 @@ import AdminVideosPage from "../pages/admin/videos";
 import AdminCreateVideoPage from "../pages/admin/videos/create_video";
 import AdminUpdateVideoPage from "../pages/admin/videos/update_video";
 
-const AdminRoutes = () => {
+const AdminRoutes = ({ user }) => {
   return (
-    <Fragment>
+    <Route
+      element={user?.role === "ADMIN" ? null : <Navigate to={"/not-found"} />}
+    >
       <Route index element={<AdminDashboardPage />} />
 
       <Route path="blogs" element={<AdminBlogsPage />} />
@@ -78,8 +79,7 @@ const AdminRoutes = () => {
       <Route path="club-offline" element={<AdminClubOfflinePage />} />
 
       <Route path="*" element={<Navigate to={"admin"} />} />
-      <Route path="create-lesson" element={<AdminCreateLessonPage />} />
-    </Fragment>
+    </Route>
   );
 };
 
