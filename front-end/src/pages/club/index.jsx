@@ -9,10 +9,9 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ChatBox from "../../components/chat/chatbox";
-import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { formatDate, formatDatetime } from "../../lib/datetime";
 import { toast_error } from "../../lib/hooks/toast";
@@ -50,7 +49,7 @@ export default function ClubPage(props) {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -128,6 +127,6 @@ export default function ClubPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

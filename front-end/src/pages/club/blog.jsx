@@ -10,9 +10,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import ReactHtmlParser from "html-react-parser";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ClientLayout from "../../components/layouts/clientLayout";
 import DocNav from "../../components/nav/doc_nav";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
@@ -40,7 +39,7 @@ export default function BlogPage(props) {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex>
           <Box w={"66%"}>
@@ -80,6 +79,6 @@ export default function BlogPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

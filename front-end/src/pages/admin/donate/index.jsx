@@ -10,9 +10,8 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
@@ -47,7 +46,7 @@ export default function AdminDonatePage() {
   };
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("others.donate")}</Heading>
@@ -98,6 +97,6 @@ export default function AdminDonatePage() {
           </Center>
         </form>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }

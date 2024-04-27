@@ -9,10 +9,9 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { useCurrentPath } from "../../../lib/hooks/route";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
@@ -68,7 +67,7 @@ export default function AdminUpdateNotificationPage() {
   };
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("notifications.update")}</Heading>
@@ -117,6 +116,6 @@ export default function AdminUpdateNotificationPage() {
           </Center>
         </form>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }

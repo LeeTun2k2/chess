@@ -30,10 +30,9 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { formatDate } from "../../../lib/datetime";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
@@ -87,7 +86,7 @@ export default function AdmintournamentsPage() {
   };
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("tournaments.heading")}</Heading>
@@ -307,6 +306,6 @@ export default function AdmintournamentsPage() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </AdminLayout>
+    </Fragment>
   );
 }

@@ -1,13 +1,13 @@
 import { Container, Heading, Image, Text } from "@chakra-ui/react";
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import ClientLayout from "../../components/layouts/clientLayout";
 import appSettings from "../../settings/appSettings";
 
 export default function DonatePage() {
   const { t } = useTranslation();
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Heading as="h1" mb={4}>
           {t("club.support_ute_chess_club")}
@@ -24,6 +24,6 @@ export default function DonatePage() {
         />
         <Text fontSize="lg">{t("club.thank_you")}</Text>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

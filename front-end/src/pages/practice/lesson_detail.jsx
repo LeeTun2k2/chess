@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { Container, Heading, Text, Image, Box } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
-import ClientLayout from "../../components/layouts/clientLayout";
+import { Box, Container, Heading, Image, Text } from "@chakra-ui/react";
 import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import appSettings from "../../settings/appSettings";
 
 export default function LessonDetailPage() {
@@ -17,7 +16,7 @@ export default function LessonDetailPage() {
   const fetchLesson = async () => {
     try {
       const response = await axios.get(
-        `${appSettings.API_PROXY}/lessons/${lessonId}`,
+        `${appSettings.API_PROXY}/lessons/${lessonId}`
       );
       setLesson(response.data);
       setLoading(false);
@@ -28,18 +27,18 @@ export default function LessonDetailPage() {
 
   if (loading) {
     return (
-      <ClientLayout>
+      <Fragment>
         <Container maxW="6xl" py={8}>
           <Heading as="h1" mb={4}>
             Loading...
           </Heading>
         </Container>
-      </ClientLayout>
+      </Fragment>
     );
   }
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Box>
           <Image
@@ -56,6 +55,6 @@ export default function LessonDetailPage() {
           <div dangerouslySetInnerHTML={{ __html: lesson.content }} />
         </Box>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

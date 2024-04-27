@@ -1,14 +1,17 @@
+import { Flex, Spacer } from "@chakra-ui/react";
 import React from "react";
-import AdminHeader from "../common/adminHeader";
+import { Outlet } from "react-router-dom";
 import AdminFooter from "../common/adminFooter";
+import AdminHeader from "../common/adminHeader";
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => {
   return (
-    <div>
+    <Flex minH={"100vh"} flexDir={"column"}>
       <AdminHeader />
-      <main style={{ minHeight: "70vh" }}>{children}</main>
+      <Outlet />
+      <Spacer />
       <AdminFooter />
-    </div>
+    </Flex>
   );
 };
 

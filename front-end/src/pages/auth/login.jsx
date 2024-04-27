@@ -5,33 +5,33 @@ import {
   Divider,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
+  Heading,
+  Image,
   Input,
   Link,
+  Spacer,
   Stack,
   Text,
-  Image,
   VStack,
-  Spacer,
   useToast,
 } from "@chakra-ui/react";
-import { PasswordField } from "../../components/auth/PasswordField";
 import { useState } from "react";
+import { PasswordField } from "../../components/auth/PasswordField";
 import {
-  validateUsername,
   validatePassword,
+  validateUsername,
 } from "../../lib/hooks/validateUser";
 
-import { toast_error, toast_success } from "../../lib/hooks/toast";
-import { useNavigate } from "react-router-dom";
-import axios from "../../lib/axios";
-import appSettings from "../../settings/appSettings";
-import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
-import { GoogleIcon } from "../../components/auth/googleIcon";
+import { CometChat } from "@cometchat-pro/chat";
 import { GoogleLogin } from "react-google-login";
 import { useTranslation } from "react-i18next";
-import { CometChat } from "@cometchat-pro/chat";
+import { useNavigate } from "react-router-dom";
+import { GoogleIcon } from "../../components/auth/googleIcon";
+import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
+import axios from "../../lib/axios";
+import { toast_error, toast_success } from "../../lib/hooks/toast";
+import appSettings from "../../settings/appSettings";
 
 export default function LoginPage({ setLoggedIn }) {
   const { t } = useTranslation();
@@ -57,7 +57,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validateUsername(username) === false) {
       const model = toast_error(
         t("auth.login_fail"),
-        t("auth.username_condition"),
+        t("auth.username_condition")
         //"Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
       );
       toast(model);
@@ -67,7 +67,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validatePassword(password) === false) {
       const model = toast_error(
         t("auth.login_fail"),
-        t("auth.password_condition"),
+        t("auth.password_condition")
         //"Password has a minimum length of 8 characters and do not contain any special charaters."
       );
       toast(model);
@@ -180,7 +180,7 @@ export default function LoginPage({ setLoggedIn }) {
         logoutFailure: (e) => {
           console.log("LoginListener :: logoutFailure", e);
         },
-      }),
+      })
     );
   };
 
@@ -196,17 +196,7 @@ export default function LoginPage({ setLoggedIn }) {
   };
 
   return (
-    <Container
-      maxW="lg"
-      py={{
-        base: "12",
-        md: "16",
-      }}
-      px={{
-        base: "0",
-        sm: "8",
-      }}
-    >
+    <Container maxW="lg">
       <Stack spacing="8">
         <Stack>
           <VStack>

@@ -22,11 +22,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import NewOnlineGameModal from "../../components/game/newGameModal";
-import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import socket from "../../lib/socket";
@@ -106,7 +105,7 @@ export default function LobbyPage(props) {
   }, [handleLobbyCreated, handleLobbyClosed]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
       <Container maxW="6xl" py={8}>
         <Heading mb={4}>
@@ -270,6 +269,6 @@ export default function LobbyPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

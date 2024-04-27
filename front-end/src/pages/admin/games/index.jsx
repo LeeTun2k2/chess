@@ -20,9 +20,8 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { toast_error } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
@@ -50,7 +49,7 @@ export default function AdminGamesPage() {
   }, [toast, t]);
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("games.heading")}</Heading>
@@ -221,6 +220,6 @@ export default function AdminGamesPage() {
           </Tr>
         </Tfoot>
       </Table>
-    </AdminLayout>
+    </Fragment>
   );
 }

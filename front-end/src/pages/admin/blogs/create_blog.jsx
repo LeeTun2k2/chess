@@ -1,24 +1,23 @@
-import React, { useState } from "react";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import {
-  Flex,
   Button,
+  Center,
   Container,
-  Heading,
-  useToast,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
+  Image,
   Input,
   Textarea,
-  Center,
-  Image,
+  useToast,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import React, { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "../../../lib/axios";
-import appSettings from "../../../settings/appSettings";
-import { toast_success, toast_error } from "../../../lib/hooks/toast";
+import { useNavigate } from "react-router-dom";
 import EditorContent from "../../../components/item_list/editor_content";
+import axios from "../../../lib/axios";
+import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import appSettings from "../../../settings/appSettings";
 
 export default function AdminCreateBlogPage() {
   const navigate = useNavigate();
@@ -59,7 +58,7 @@ export default function AdminCreateBlogPage() {
   };
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("blogs.create")}</Heading>
@@ -150,6 +149,6 @@ export default function AdminCreateBlogPage() {
           </Center>
         </form>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }

@@ -20,10 +20,9 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
 import { toast_error } from "../../lib/hooks/toast";
@@ -53,7 +52,7 @@ export default function AdmintournamentsPage() {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("tournaments.tournaments")}</Heading>
@@ -213,6 +212,6 @@ export default function AdmintournamentsPage() {
           </Tr>
         </Tfoot>
       </Table>
-    </ClientLayout>
+    </Fragment>
   );
 }

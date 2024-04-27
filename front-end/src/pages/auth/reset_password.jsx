@@ -1,31 +1,21 @@
-import React from "react";
 import {
   Box,
   Container,
   HStack,
   Heading,
+  Image,
   Link,
   Stack,
   Text,
   VStack,
-  Image,
 } from "@chakra-ui/react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export default function ForgotPasswordConfirmationPage() {
   const { t } = useTranslation();
   return (
-    <Container
-      maxW="lg"
-      py={{
-        base: "12",
-        md: "24",
-      }}
-      px={{
-        base: "0",
-        sm: "8",
-      }}
-    >
+    <Container maxW="lg">
       <Stack spacing="8">
         <VStack>
           <HStack>

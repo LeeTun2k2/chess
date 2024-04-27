@@ -13,10 +13,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { CometChat } from "@cometchat-pro/chat";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSend } from "react-icons/io5";
-import ClientLayout from "../../components/layouts/clientLayout";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
@@ -52,24 +51,22 @@ export default function FriendPage(props) {
 
   const loadMessage = async () => {
     if (!receiver) return;
-  
+
     const limit = 30;
     const messagesRequest = new CometChat.MessagesRequestBuilder()
       .setUID(receiver.id)
       .setLimit(limit)
       .build();
-  
+
     messagesRequest.fetchPrevious().then(
       (messageList) => {
         setMessages(messageList?.filter((m) => m.type === "text") ?? []);
-
       },
       (error) => {
         console.log("Message fetching failed with error:", error);
       }
     );
   };
-  
 
   const sendMessage = async () => {
     if (text.trim() === "") return;
@@ -88,7 +85,7 @@ export default function FriendPage(props) {
   };
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Heading mb={4}>{t("chat.messages")}</Heading>
         <Flex direction={{ base: "column", md: "row" }}>
@@ -120,8 +117,8 @@ export default function FriendPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.name
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase()),
-                    ),
+                          .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
               >
@@ -195,7 +192,9 @@ export default function FriendPage(props) {
                       mb={2}
                       maxW={"80%"}
                       alignSelf={
-                        user?.id === message.sender?.uid ? "flex-end" : "flex-start"
+                        user?.id === message.sender?.uid
+                          ? "flex-end"
+                          : "flex-start"
                       }
                     >
                       <Text
@@ -265,6 +264,6 @@ export default function FriendPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

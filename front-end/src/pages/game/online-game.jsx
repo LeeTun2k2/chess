@@ -10,11 +10,16 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import ChessBoard from "../../components/game/chessBoard";
 import Timer from "../../components/game/timer";
-import ClientLayout from "../../components/layouts/clientLayout";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
 import { useCurrentPath } from "../../lib/hooks/route";
@@ -247,7 +252,7 @@ export default function OnlineGamePage() {
   ]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" mt={4}>
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -400,6 +405,6 @@ export default function OnlineGamePage() {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

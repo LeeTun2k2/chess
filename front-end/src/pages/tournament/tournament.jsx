@@ -27,9 +27,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
 import { useCurrentPath } from "../../lib/hooks/route";
@@ -73,7 +72,7 @@ export default function TournamentPage(props) {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex>
           <Box w={"66%"}>
@@ -252,6 +251,6 @@ export default function TournamentPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

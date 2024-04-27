@@ -17,10 +17,9 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ClientLayout from "../../components/layouts/clientLayout";
 import DocNav from "../../components/nav/doc_nav";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
@@ -49,7 +48,7 @@ export default function BlogPage(props) {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("blogs.blogs")}</Heading>
@@ -170,6 +169,6 @@ export default function BlogPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

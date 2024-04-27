@@ -1,8 +1,7 @@
 import { Container, Flex, Heading, Spinner } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ClientLayout from "../../components/layouts/clientLayout";
 import { getUserData } from "../../lib/auth";
 import { useCurrentPath } from "../../lib/hooks/route";
 import socket from "../../lib/socket";
@@ -43,7 +42,7 @@ export default function WaitingGamePage() {
   }, [id, navigate, user.id]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="container.xl" mt={10}>
         <Heading as="h1" size="lg" mb={5} textAlign={"center"}>
           {t("games.waiting_for_another")}
@@ -52,6 +51,6 @@ export default function WaitingGamePage() {
           <Spinner size="xl" />
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

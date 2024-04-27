@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from "react";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import {
-  Flex,
   Button,
+  Center,
   Container,
-  Heading,
-  useToast,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
-  Center,
+  useToast,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import axios from "../../../lib/axios";
-import appSettings from "../../../settings/appSettings";
-import { toast_success, toast_error } from "../../../lib/hooks/toast";
 import { useCurrentPath } from "../../../lib/hooks/route";
+import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import appSettings from "../../../settings/appSettings";
 
 export default function AdminUpdateAchievementPage() {
   const path = useCurrentPath();
@@ -78,7 +77,7 @@ export default function AdminUpdateAchievementPage() {
   };
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("achievements.update")}</Heading>
@@ -155,6 +154,6 @@ export default function AdminUpdateAchievementPage() {
           </Center>
         </form>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }
