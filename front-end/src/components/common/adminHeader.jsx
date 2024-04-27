@@ -28,15 +28,19 @@ const AdminHeader = () => {
   }, [user_data]);
 
   return (
-    <Box bgColor={theme === "dark" ? "black" : "lightgray"} p={4} zIndex={9999}>
+    <Box
+      bgColor={theme === "dark" ? "black" : "lightgray"}
+      py={2}
+      zIndex={9999}
+    >
       <Flex align="center">
         <HStack
           cursor="pointer"
           onClick={() => navigate("/")}
           ml={{ base: 0, md: 16 }}
         >
-          <Image src="/logo.png" alt="UTE CHESS CLUB" w={16} />
-          <Text fontSize="xl" fontWeight="bold">
+          <Image src="/logo.png" alt="UTE CHESS CLUB" w={12} />
+          <Text fontSize="lg" fontWeight="bold">
             UTE CHESS CLUB
           </Text>
         </HStack>
@@ -159,14 +163,18 @@ const PcMenu = ({ user }) => {
         </MenuList>
       </Menu>
 
-      {user ? (
+      {user?.id ? (
         <Fragment>
           <Spacer />
           <Menu>
-            <MenuButton display="flex">
+            <MenuButton display={{ base: "none", md: "flex" }} mr={16}>
               <Flex align="center">
-                <Avatar name={user.name} src={user.avatar} />
-                <Text ml={2} fontWeight="500" display="block">
+                <Avatar name={user.name} src={user.avatar} size={"sm"} />
+                <Text
+                  ml={2}
+                  fontWeight="500"
+                  display={{ base: "none", md: "block" }}
+                >
                   {user.name}
                 </Text>
               </Flex>
