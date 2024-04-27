@@ -135,5 +135,9 @@ def resign_socket(data):
 def timeout_socket(data):
     timeout(data['game_id'], data["player_timeout_id"])
 
+@socketio.on('checkmate')
+def timeout_socket(data):
+    checkmate(data['game_id'])
+
 if __name__ == '__main__':
     socketio.run(app,host='0.0.0.0', port=5000, debug=True)

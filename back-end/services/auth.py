@@ -6,6 +6,8 @@ from models.users import User
 from services.email import EmailService
 from services.token import generate_token, is_valid_token
 from bson import ObjectId
+from datetime import datetime, timezone
+
 class AuthServices():
     def __init__(self) -> None:
         self.db = get_db()
@@ -28,7 +30,13 @@ class AuthServices():
         user_data = {
             'username': username, 'password': hashed_password, 
             'email': email, 'name': name, 'is_verified': False,
-            'is_locked': False, 'role': 'PLAYER'
+            'is_locked': False, 'role': 'PLAYER',
+            'rating': {
+                'chess': {'mu': 1500, 'phi': 350, 'sigma': 0.06, 'ltime': datetime.now(timezone.utc)},
+                'xiangqi': {'mu': 1500, 'phi': 350, 'sigma': 0.06, 'ltime': datetime.now(timezone.utc)},
+                'chess_puzzle': {'mu': 1500, 'phi': 350, 'sigma': 0.06, 'ltime': datetime.now(timezone.utc)},
+                'xiangqi_puzzle': {'mu': 1500, 'phi': 350, 'sigma': 0.06, 'ltime': datetime.now(timezone.utc)}
+            }
         }
         
         result = self.users_collection.insert_one(user_data)
