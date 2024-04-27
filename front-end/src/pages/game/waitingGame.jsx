@@ -49,10 +49,10 @@ export default function WaitingGamePage() {
     // Emit request for game
     socket.emit("request_game", {
       lobby_id: id,
-      user_id: user.id,
+      user_id: user?.id,
     });
     console.log("request_game");
-  }, []);
+  }, [id, user?.id]);
 
   return (
     <Fragment>

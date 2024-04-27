@@ -10,7 +10,13 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import ChessBoard from "../../components/game/chessBoard";
 import Timer from "../../components/game/timer";
@@ -63,6 +69,14 @@ export default function OnlineGamePage() {
       is_turn: !prevOpponent.is_turn,
     }));
   }, []);
+  const whiteTime = useMemo(
+    () => (user.id === game?.white ? yourTime : opponentTime),
+    [user.id, game?.white, yourTime, opponentTime]
+  );
+  const blackTime = useMemo(
+    () => (user.id === game?.black ? yourTime : opponentTime),
+    [user.id, game?.black, yourTime, opponentTime]
+  );
 
   const handleGameReady = useCallback(
     (data) => {
@@ -262,8 +276,8 @@ export default function OnlineGamePage() {
               setGameStatus={setGameStatus}
               toggleBaseTurn={toggleTurn}
               isViewer={isViewer}
-              whiteTime={user.id === game?.white ? yourTime : opponentTime}
-              blackTime={user.id === game?.black ? yourTime : opponentTime}
+              whiteTime={whiteTime}
+              blackTime={blackTime}
             />
           </Box>
 

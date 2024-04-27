@@ -14,6 +14,7 @@ export default function Timer({ game, isActive, onTimeout, setUserTime }) {
   useEffect(() => {
     if (remain <= 0) {
       onTimeout();
+      setUserTime(0);
     }
 
     let timer;
@@ -21,7 +22,6 @@ export default function Timer({ game, isActive, onTimeout, setUserTime }) {
     if (isActive && remain > 0) {
       timer = setInterval(() => {
         setRemain((prevTime) => prevTime - 1);
-        setUserTime((prevTime) => prevTime - 1);
       }, 1000);
     }
 
