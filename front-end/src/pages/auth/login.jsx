@@ -57,7 +57,7 @@ export default function LoginPage({ setUser }) {
     if (validateUsername(username) === false) {
       const model = toast_error(
         t("auth.login_fail"),
-        t("auth.username_condition"),
+        t("auth.username_condition")
         //"Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
       );
       toast(model);
@@ -67,7 +67,7 @@ export default function LoginPage({ setUser }) {
     if (validatePassword(password) === false) {
       const model = toast_error(
         t("auth.login_fail"),
-        t("auth.password_condition"),
+        t("auth.password_condition")
         //"Password has a minimum length of 8 characters and do not contain any special charaters."
       );
       toast(model);
@@ -141,7 +141,6 @@ export default function LoginPage({ setUser }) {
       user.setName(name);
 
       const createdUser = await CometChat.createUser(user, authKey);
-      console.log("User created:", createdUser);
       return createdUser;
     } catch (error) {
       console.error("Error creating user:", error);
@@ -153,10 +152,10 @@ export default function LoginPage({ setUser }) {
     try {
       const user = await CometChat.getLoggedinUser();
       if (!user) {
-        const loggedInUser = await CometChat.login(UID, authKey);
-        console.log("Login Successful:", { loggedInUser });
+        await CometChat.login(UID, authKey);
+        console.log("Login Successful:");
       } else {
-        console.log("User already logged in:", { user });
+        console.log("User already logged in:");
       }
     } catch (error) {
       console.log("Something went wrong", error);
@@ -180,16 +179,18 @@ export default function LoginPage({ setUser }) {
         logoutFailure: (e) => {
           console.log("LoginListener :: logoutFailure", e);
         },
-      }),
+      })
     );
   };
 
   const initializeAndSetup = async (UID, name) => {
     try {
-      await createUserInCometChat(UID, name, authKey);
       await initializeCometChat(UID, authKey);
     } catch (error) {
+      await createUserInCometChat(UID, name, authKey);
       await initializeCometChat(UID, authKey);
+    } finally {
+      await setupLoginListener(UID);
     }
   };
 

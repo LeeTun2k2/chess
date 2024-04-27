@@ -59,7 +59,7 @@ class GameService():
             'initial_time': lobby['initial_time'],
             'bonus_time': lobby['bonus_time'],
             'status': "STARTED",
-            'created_at': datetime.now(),
+            'created_at': datetime.now().isoformat(),
         }
 
         if random == 0:
