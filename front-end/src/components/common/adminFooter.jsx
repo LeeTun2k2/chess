@@ -1,6 +1,8 @@
+import { InfoIcon, SettingsIcon } from "@chakra-ui/icons";
 import { Box, Flex, HStack, Image, Link, Text, VStack } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { FaEnvelope, FaFacebook } from "react-icons/fa";
+import { FaEnvelope, FaFacebook, FaRegCreditCard } from "react-icons/fa";
+import { IoDiamond } from "react-icons/io5";
 
 export default function Footer() {
   const theme = localStorage.getItem("theme");
@@ -37,23 +39,33 @@ export default function Footer() {
           <VStack spacing={2} alignItems="flex-start" w={150}>
             <Text fontWeight="bold">{t("footer.more")}</Text>
             <VStack alignItems="flex-start">
-              <CustomLink href="/about">{t("footer.about")}</CustomLink>
-              <CustomLink href="/settings">{t("footer.settings")}</CustomLink>
+              <CustomLink href="/about">
+                <Text ml={2} display="flex" alignItems="center">
+                  <InfoIcon style={{ marginRight: 8 }} />
+                  {t("footer.about")}
+                </Text>
+              </CustomLink>
+              <CustomLink href="/settings">
+                <Text ml={2} display="flex" alignItems="center">
+                  <SettingsIcon style={{ marginRight: 8 }} />
+                  {t("footer.settings")}
+                </Text>
+              </CustomLink>
             </VStack>
           </VStack>
           <VStack spacing={2} alignItems="flex-start" w={150}>
-            <Text fontWeight="bold">{t("footer.community")}</Text>
+            <Text fontWeight="bold">{t("footer.upgrade")}</Text>
             <VStack alignItems="flex-start">
               <CustomLink href="https://www.facebook.com/utechessclub">
                 <Text ml={2} display="flex" alignItems="center">
-                  <FaFacebook style={{ marginRight: 8 }} />
-                  {t("footer.facebook")}
+                  <IoDiamond style={{ marginRight: 8 }} />
+                  {t("footer.vip")}
                 </Text>
               </CustomLink>
               <CustomLink href="https://mail.google.com/mail/?view=cm&fs=1&to=clbcospkt@gmail.com">
                 <Text ml={2} display="flex" alignItems="center">
-                  <FaEnvelope style={{ marginRight: 8 }} />
-                  {t("footer.gmail")}
+                  <FaRegCreditCard style={{ marginRight: 8 }} />
+                  {t("footer.payment")}
                 </Text>
               </CustomLink>
             </VStack>
