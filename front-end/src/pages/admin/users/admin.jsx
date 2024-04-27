@@ -147,10 +147,11 @@ export default function AdminPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -174,8 +175,10 @@ export default function AdminPage() {
                       const text = e?.target?.value ?? "";
                       setSearchUsers(
                         users.filter((value) =>
-                          value.email.toLowerCase().includes(text.toLowerCase())
-                        )
+                          value.email
+                            .toLowerCase()
+                            .includes(text.toLowerCase()),
+                        ),
                       );
                     }}
                   />
@@ -320,6 +323,7 @@ export default function AdminPage() {
                     onClick={() =>
                       pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                     }
+                    title="left"
                   >
                     <ChevronLeftIcon />
                   </Button>
@@ -336,7 +340,7 @@ export default function AdminPage() {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"
@@ -345,6 +349,7 @@ export default function AdminPage() {
                       (pageNumber + 1) * pageSize <= renderData.length &&
                       setPageNumber(pageNumber + 1)
                     }
+                    title="right"
                   >
                     <ChevronRightIcon />
                   </Button>

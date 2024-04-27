@@ -22,7 +22,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import NewOnlineGameModal from "../../components/game/newGameModal";
@@ -69,25 +69,26 @@ export default function LobbyPage(props) {
       .finally(() => {
         setLoading(false);
       });
+  }, [toast]);
 
-    return () => {
-      // Disconnect socket when component unmounts
-      socket.disconnect();
-    };
-  }, [toast, t]);
+  const handleLobbyCreated = useCallback(
+    (resp) => {
+      console.log("lobby_created");
+      const lobby = resp.lobby;
+      if (lobby) setData((prevData) => [lobby, ...prevData]);
+    },
+    [setData],
+  );
 
-  const handleLobbyCreated = (resp) => {
-    console.log("lobby_created");
-    const lobby = resp.lobby;
-    if (lobby) setData((prevData) => [lobby, ...prevData]);
-  };
-
-  const handleLobbyClosed = (resp) => {
-    console.log("lobby_closed");
-    const lobbyId = resp.lobby_id;
-    if (lobbyId)
-      setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
-  };
+  const handleLobbyClosed = useCallback(
+    (resp) => {
+      console.log("lobby_closed");
+      const lobbyId = resp.lobby_id;
+      if (lobbyId)
+        setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
+    },
+    [setData],
+  );
 
   useEffect(() => {
     socket.connect();
@@ -100,7 +101,9 @@ export default function LobbyPage(props) {
       // Unsubscribe from socket events when component unmounts
       socket.off("lobby_created", handleLobbyCreated);
       socket.off("lobby_closed", handleLobbyClosed);
-      socket.disconnect();
+      if (socket.readyState === 1) {
+        socket.disconnect();
+      }
     };
   }, [handleLobbyCreated, handleLobbyClosed]);
 
@@ -180,6 +183,7 @@ export default function LobbyPage(props) {
                           onClick={() =>
                             pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                           }
+                          title="left"
                         >
                           <ChevronLeftIcon />
                         </Button>
@@ -198,7 +202,7 @@ export default function LobbyPage(props) {
                               >
                                 {i + 1}
                               </Button>
-                            )
+                            ),
                         )}
                         <Button
                           colorScheme="gray"
@@ -207,6 +211,7 @@ export default function LobbyPage(props) {
                             (pageNumber + 1) * pageSize <= data.length &&
                             setPageNumber(pageNumber + 1)
                           }
+                          title="right"
                         >
                           <ChevronRightIcon />
                         </Button>
@@ -233,6 +238,7 @@ export default function LobbyPage(props) {
                 variant="outline"
                 placeholder={`-- ${t("common.variant")} --`}
                 w={56}
+                title={t("lobby.select_variant")}
               >
                 <option value={CHESS}>{t("common.chess")}</option>
                 <option value={XIANGQI}>{t("common.xiangqi")}</option>
@@ -247,6 +253,7 @@ export default function LobbyPage(props) {
                 variant="outline"
                 placeholder={`-- ${t("common.time")} --`}
                 width={56}
+                title={t("lobby.select_game_type")}
               >
                 <option value={BULLET}>{t("common.bullet")}</option>
                 <option value={BLITZ}>{t("common.blitz")}</option>
@@ -259,9 +266,17 @@ export default function LobbyPage(props) {
                 {t("common.rating")}
               </Text>
               <Spacer />
-              <Input defaultValue={0} w={24} />
+              <Input
+                defaultValue={0}
+                w={24}
+                placeholder={t("lobby.low_rating")}
+              />
               <Text mx={1}>~</Text>
-              <Input defaultValue={3000} w={24} />
+              <Input
+                defaultValue={3000}
+                w={24}
+                placeholder={t("lobby.high_rating")}
+              />
             </HStack>
             <Button w="100%" mt={4}>
               {t("common.filter")}

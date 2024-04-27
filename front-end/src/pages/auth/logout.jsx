@@ -17,14 +17,14 @@ const LogoutPage = ({ setUser }) => {
         },
         (error) => {
           console.log("Logout failed with exception:", { error });
-        }
+        },
       );
       clearTokens();
       clearUserData();
       setUser(null);
       navigate("/");
     }, 1000);
-  }, [navigate]);
+  }, [navigate, setUser]);
 
   return (
     <Flex

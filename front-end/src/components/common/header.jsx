@@ -53,7 +53,7 @@ const Header = () => {
         <Spacer />
         <PcMenu user={user} />
         <Box display={{ base: "block", md: "none" }}>
-          <Button variant="ghost" py={8} px={4} onClick={onOpen}>
+          <Button title="menu" variant="ghost" py={8} px={4} onClick={onOpen}>
             <FaList size={36} />
           </Button>
           <Sidebar data={client_menu} isOpen={isOpen} onClose={onClose} />

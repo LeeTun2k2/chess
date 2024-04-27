@@ -77,10 +77,11 @@ export default function AdmintournamentsPage() {
                     data.filter((value) =>
                       value?.name
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -178,6 +179,7 @@ export default function AdmintournamentsPage() {
                     onClick={() =>
                       pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                     }
+                    title="left"
                   >
                     <ChevronLeftIcon />
                   </Button>
@@ -194,7 +196,7 @@ export default function AdmintournamentsPage() {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"
@@ -203,6 +205,7 @@ export default function AdmintournamentsPage() {
                       (pageNumber + 1) * pageSize <= renderData.length &&
                       setPageNumber(pageNumber + 1)
                     }
+                    title="right"
                   >
                     <ChevronRightIcon />
                   </Button>

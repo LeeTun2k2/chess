@@ -36,7 +36,7 @@ export default function BookPage(props) {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast, t]);
+  }, [toast, t, id]);
 
   return (
     <Fragment>

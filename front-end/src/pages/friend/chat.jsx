@@ -13,7 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { CometChat } from "@cometchat-pro/chat";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSend } from "react-icons/io5";
 import { getUserData } from "../../lib/auth";
@@ -33,23 +33,7 @@ export default function FriendPage(props) {
   const [searchText, setSearchText] = useState("");
   const [receiver, setReceiver] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get(`${appSettings.API_PROXY}/users/friends`)
-      .then((resp) => {
-        setFriends(resp?.data?.friends ?? []);
-        setRenderFriends(resp?.data?.friends ?? []);
-        setReceiver(resp?.data?.friends[0]);
-      })
-      .then(() => {
-        loadMessage();
-      })
-      .catch((err) => {
-        toast(toast_error(t("common.something_went_wrong")));
-      });
-  }, [toast, t]);
-
-  const loadMessage = async () => {
+  const loadMessage = useCallback(async () => {
     if (!receiver) return;
 
     const limit = 30;
@@ -64,9 +48,9 @@ export default function FriendPage(props) {
       },
       (error) => {
         console.log("Message fetching failed with error:", error);
-      }
+      },
     );
-  };
+  }, [receiver]);
 
   const sendMessage = async () => {
     if (text.trim() === "") return;
@@ -83,6 +67,22 @@ export default function FriendPage(props) {
       console.error("Message sending failed with error:", error);
     }
   };
+
+  useEffect(() => {
+    axios
+      .get(`${appSettings.API_PROXY}/users/friends`)
+      .then((resp) => {
+        setFriends(resp?.data?.friends ?? []);
+        setRenderFriends(resp?.data?.friends ?? []);
+        setReceiver(resp?.data?.friends[0]);
+      })
+      .then(() => {
+        loadMessage();
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+  }, [toast, t, loadMessage]);
 
   return (
     <Fragment>
@@ -117,10 +117,11 @@ export default function FriendPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.name
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>

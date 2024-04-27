@@ -1,6 +1,6 @@
-import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
-import Stats from "./stats";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import Stats from "./stats";
 
 export default function XiangqiStatistics(props) {
   const { t } = useTranslation();

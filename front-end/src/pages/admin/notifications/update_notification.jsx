@@ -9,7 +9,7 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../lib/axios";
@@ -25,10 +25,13 @@ export default function AdminUpdateNotificationPage() {
   const { t } = useTranslation();
   const [isLoading, setLoading] = useState(false);
 
-  const defaultData = {
-    event: "",
-    description: "",
-  };
+  const defaultData = useMemo(
+    () => ({
+      event: "",
+      description: "",
+    }),
+    [],
+  );
   const [formData, setFormData] = useState(defaultData);
 
   useEffect(() => {
@@ -41,7 +44,7 @@ export default function AdminUpdateNotificationPage() {
         if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast, t, id]);
+  }, [toast, t, id, defaultData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

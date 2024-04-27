@@ -11,7 +11,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import EditorContent from "../../../components/item_list/editor_content";
@@ -28,12 +28,15 @@ export default function AdminUpdateBookPage() {
   const { t } = useTranslation();
   const [isLoading, setLoading] = useState(false);
 
-  const defaultData = {
-    title: "",
-    description: "",
-    image: null,
-    content: "",
-  };
+  const defaultData = useMemo(
+    () => ({
+      title: "",
+      description: "",
+      image: null,
+      content: "",
+    }),
+    [],
+  );
   const [formData, setFormData] = useState(defaultData);
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export default function AdminUpdateBookPage() {
         if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error(t("common.something_went_wrong")));
       });
-  }, []);
+  }, [defaultData, id, t, toast]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

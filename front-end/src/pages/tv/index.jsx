@@ -80,10 +80,11 @@ export default function AdmingamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.black_username
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -188,7 +189,7 @@ export default function AdmingamesPage() {
                           >
                             {i + 1}
                           </Button>
-                        )
+                        ),
                     )}
                     <Button
                       colorScheme="gray"

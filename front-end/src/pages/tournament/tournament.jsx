@@ -69,7 +69,20 @@ export default function TournamentPage(props) {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast, t]);
+  }, [toast, t, id]);
+
+  useEffect(() => {
+    axios
+      .get(`${appSettings.API_PROXY}/tournaments/${id}/ranking`)
+      .then((resp) => {
+        setRanking([]);
+        setRenderRanking([]);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+  }, [toast, t, id]);
+  console.log(ranking);
 
   return (
     <Fragment>
@@ -199,7 +212,7 @@ export default function TournamentPage(props) {
                           {Array.from(
                             {
                               length: Math.ceil(
-                                renderRanking.length / pageSize
+                                renderRanking.length / pageSize,
                               ),
                             },
                             (_, i) =>
@@ -215,7 +228,7 @@ export default function TournamentPage(props) {
                                 >
                                   {i + 1}
                                 </Button>
-                              )
+                              ),
                           )}
                           <Button
                             colorScheme="gray"

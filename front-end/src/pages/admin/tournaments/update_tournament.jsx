@@ -12,7 +12,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DateTimePicker from "../../../components/datetime/datetimePicker";
@@ -30,15 +30,19 @@ export default function AdminUpdatetournamentPage() {
   const { t } = useTranslation();
   const [isLoading, setLoading] = useState(false);
 
-  const defaultData = {
-    name: "",
-    description: "",
-    variant: CHESS,
-    initial_time: 0,
-    bonus_time: 0,
-    start: Date.now(),
-    end: Date.now(),
-  };
+  const defaultData = useMemo(
+    () => ({
+      name: "",
+      description: "",
+      variant: CHESS,
+      initial_time: 0,
+      bonus_time: 0,
+      start: Date.now(),
+      end: Date.now(),
+    }),
+    [],
+  );
+
   const [formData, setFormData] = useState(defaultData);
 
   useEffect(() => {
@@ -51,7 +55,7 @@ export default function AdminUpdatetournamentPage() {
         if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error(t("common.something_went_wrong")));
       });
-  }, []);
+  }, [defaultData, id, t, toast]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

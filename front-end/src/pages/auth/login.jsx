@@ -57,7 +57,7 @@ export default function LoginPage({ setUser }) {
     if (validateUsername(username) === false) {
       const model = toast_error(
         t("auth.login_fail"),
-        t("auth.username_condition")
+        t("auth.username_condition"),
         //"Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
       );
       toast(model);
@@ -67,7 +67,7 @@ export default function LoginPage({ setUser }) {
     if (validatePassword(password) === false) {
       const model = toast_error(
         t("auth.login_fail"),
-        t("auth.password_condition")
+        t("auth.password_condition"),
         //"Password has a minimum length of 8 characters and do not contain any special charaters."
       );
       toast(model);
@@ -180,15 +180,13 @@ export default function LoginPage({ setUser }) {
         logoutFailure: (e) => {
           console.log("LoginListener :: logoutFailure", e);
         },
-      })
+      }),
     );
   };
 
   const initializeAndSetup = async (UID, name) => {
-    const authKey = "3b0db8aaee7bcdac11dbd9593168e67804279774";
-
     try {
-      const user = await createUserInCometChat(UID, name, authKey);
+      await createUserInCometChat(UID, name, authKey);
       await initializeCometChat(UID, authKey);
     } catch (error) {
       await initializeCometChat(UID, authKey);

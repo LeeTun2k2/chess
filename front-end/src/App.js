@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Route,
-  BrowserRouter as Router,
-  Routes
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import AdminLayout from "./components/layouts/adminLayout";
 import AuthLayout from "./components/layouts/authLayout";
 import ClientLayout from "./components/layouts/clientLayout";
@@ -20,29 +16,27 @@ function App() {
   const [user, setUser] = useState(getUserData());
 
   useEffect(() => {
-    initializeGapi()
-    initializeCometChat()
+    initializeGapi();
+    initializeCometChat();
   }, []);
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AuthLayout/>}>
-          {AuthRoutes({setUser})}
+        <Route path="/" element={<AuthLayout />}>
+          {AuthRoutes({ setUser })}
         </Route>
 
-        <Route path="/" element={<ClientLayout/>}>
+        <Route path="/" element={<ClientLayout />}>
           {CommonRoutes()}
-          {ClientRoutes({user})}
+          {ClientRoutes({ user })}
         </Route>
 
-        <Route path="/admin" element={<AdminLayout/>}>
-          {AdminRoutes({user})}
+        <Route path="/admin" element={<AdminLayout />}>
+          {AdminRoutes({ user })}
         </Route>
 
-        <Route path="*">
-          {ErrorRoutes()}
-        </Route>
+        <Route path="*">{ErrorRoutes()}</Route>
       </Routes>
     </Router>
   );

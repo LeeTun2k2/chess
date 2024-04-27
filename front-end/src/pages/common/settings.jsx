@@ -22,12 +22,12 @@ const SettingsPage = () => {
 
   const [language, setLanguage] = useState(savedLang ?? "en");
   const [theme, setTheme] = useState(savedTheme ?? "light");
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { toggleColorMode } = useColorMode();
   const [boardSettings, setBoardSettings] = useState(
-    savedBoardSettings ?? "standard"
+    savedBoardSettings ?? "standard",
   );
   const [pieceSettings, setPieceSettings] = useState(
-    savedPieceSettings ?? "classic"
+    savedPieceSettings ?? "classic",
   );
   const [soundEnabled, setSoundEnabled] = useState(savedSoundEnabled);
   const [soundSettings, setSoundSettings] = useState(savedSoundSettings);

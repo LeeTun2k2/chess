@@ -34,10 +34,10 @@ export default function WaitingGamePage() {
     });
 
     return () => {
-      // Disconnect socket when component unmounts
-      socket.disconnect();
-      // Unsubscribe from socket event
       socket.off("game_ready", handleGameReady);
+      if (socket.readyState === 1) {
+        socket.disconnect();
+      }
     };
   }, [id, navigate, user.id]);
 

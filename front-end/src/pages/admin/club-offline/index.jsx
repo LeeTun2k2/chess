@@ -9,7 +9,7 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DatetimePicker from "../../../components/datetime/datetimePicker";
 import axios from "../../../lib/axios";
@@ -21,10 +21,13 @@ export default function AdminClubOfflinePage() {
   const { t } = useTranslation();
   const [isLoading, setLoading] = useState(false);
 
-  const defaultData = {
-    time: Date.now(),
-    location: "",
-  };
+  const defaultData = useMemo(
+    () => ({
+      time: Date.now(),
+      location: "",
+    }),
+    [],
+  );
   const [formData, setFormData] = useState(defaultData);
 
   useEffect(() => {
@@ -36,7 +39,7 @@ export default function AdminClubOfflinePage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast, t]);
+  }, [toast, t, defaultData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -45,7 +45,7 @@ export default function AdminUpdateVideoPage() {
         if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [id, toast]);
+  }, [id, toast, t]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -16,7 +16,7 @@ export default function LessonDetailPage() {
   const fetchLesson = async () => {
     try {
       const response = await axios.get(
-        `${appSettings.API_PROXY}/lessons/${lessonId}`
+        `${appSettings.API_PROXY}/lessons/${lessonId}`,
       );
       setLesson(response.data);
       setLoading(false);

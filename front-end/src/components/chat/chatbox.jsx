@@ -183,6 +183,7 @@ const ChatBox = () => {
             onClick={() => {
               sendMessage();
             }}
+            title={t("chat.send")}
           >
             <IoSend fontSize={24} />
           </Button>

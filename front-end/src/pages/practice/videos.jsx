@@ -78,10 +78,11 @@ export default function VideoListPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.description
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -133,6 +134,7 @@ export default function VideoListPage(props) {
                   onClick={() =>
                     pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                   }
+                  title="left"
                 >
                   <ChevronLeftIcon />
                 </Button>
@@ -149,7 +151,7 @@ export default function VideoListPage(props) {
                       >
                         {i + 1}
                       </Button>
-                    )
+                    ),
                 )}
                 <Button
                   colorScheme="gray"
@@ -158,6 +160,7 @@ export default function VideoListPage(props) {
                     (pageNumber + 1) * pageSize <= renderData.length &&
                     setPageNumber(pageNumber + 1)
                   }
+                  title="right"
                 >
                   <ChevronRightIcon />
                 </Button>
