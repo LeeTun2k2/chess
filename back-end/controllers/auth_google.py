@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token, create_refresh_token
 from logging import error
 from services.user import UserService
+from datetime import datetime, timezone
+
 authgg_bp = Blueprint('auth_google', __name__)
 
 def register_google(email: str, name: str):
@@ -12,7 +14,13 @@ def register_google(email: str, name: str):
             'name': name, 
             'is_verified': True,
             'is_locked': False, 
-            'role': 'PLAYER'
+            'role': 'PLAYER',
+            'rating': {
+                'chess': {'mu': 1500, 'phi': 350, 'sigma': 0.06, 'ltime': datetime.now(timezone.utc)},
+                'xiangqi': {'mu': 1500, 'phi': 350, 'sigma': 0.06, 'ltime': datetime.now(timezone.utc)},
+                'chess_puzzle': {'mu': 1500, 'phi': 350, 'sigma': 0.06, 'ltime': datetime.now(timezone.utc)},
+                'xiangqi_puzzle': {'mu': 1500, 'phi': 350, 'sigma': 0.06, 'ltime': datetime.now(timezone.utc)}
+            }
         }
         
         result = UserService().users_collection.insert_one(user_data)

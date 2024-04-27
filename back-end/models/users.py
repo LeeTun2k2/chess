@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 
 class User(UserMixin):
-    def __init__(self, user_id = None, username = None, email = None, name = None, is_verified=None, is_locked=None, role=None):
+    def __init__(self, user_id = None, username = None, email = None, name = None, is_verified=None, is_locked=None, role=None, rating=None):
         self.id = str(user_id)
         self.username = username
         self.email = email
@@ -9,8 +9,8 @@ class User(UserMixin):
         self.is_verified = is_verified
         self.is_locked = is_locked
         self.role = role
+        self.rating = rating
         
-
     def to_json(self):
         return {
             'id': self.id,
@@ -19,5 +19,6 @@ class User(UserMixin):
             'name': self.name,
             'is_locked': self.is_locked,
             'is_verified': self.is_verified,
-            'role': self.role
+            'role': self.role,
+            'rating': self.rating
         }

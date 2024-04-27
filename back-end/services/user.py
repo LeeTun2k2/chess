@@ -16,7 +16,8 @@ class UserService():
             name=user_data['name'], 
             is_verified=user_data["is_verified"], 
             is_locked=user_data["is_locked"], 
-            role=user_data["role"])
+            role=user_data["role"],
+            rating=user_data["rating"])
         return user
 
     def get_all(self):
