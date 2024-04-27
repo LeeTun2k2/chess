@@ -23,15 +23,10 @@ export default function WaitingGamePage() {
       if (lobby_id !== id) return;
       socket.disconnect();
       navigate(`/online/${game._id}`);
+      console.log("game_ready");
     };
 
     socket.on("game_ready", handleGameReady);
-
-    // Emit request for game
-    socket.emit("request_game", {
-      lobby_id: id,
-      user_id: user.id,
-    });
 
     return () => {
       socket.off("game_ready", handleGameReady);
@@ -39,7 +34,16 @@ export default function WaitingGamePage() {
         socket.disconnect();
       }
     };
-  }, [id, navigate, user.id]);
+  }, [id, navigate]);
+
+  useEffect(() => {
+    // Emit request for game
+    socket.emit("request_game", {
+      lobby_id: id,
+      user_id: user?.id,
+    });
+    console.log("request_game");
+  }, [id, user?.id]);
 
   return (
     <Fragment>

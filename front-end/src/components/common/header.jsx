@@ -34,11 +34,7 @@ const Header = () => {
   }, [user_data]);
 
   return (
-    <Box
-      bgColor={theme === "dark" ? "black" : "lightgray"}
-      py={2}
-      zIndex={9999}
-    >
+    <Box bgColor={theme === "dark" ? "black" : "lightgray"} py={2} zIndex={3}>
       <Flex align="center">
         <HStack
           cursor="pointer"
@@ -81,7 +77,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.club")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/")}>{t("header.home")}</MenuItem>
           <MenuItem onClick={() => navigate("/blogs")}>
             {t("header.blogs")}
@@ -109,7 +105,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.play")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/lobby")}>
             {t("header.lobby")}
           </MenuItem>
@@ -132,7 +128,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.practice")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/puzzle")}>
             {t("header.puzzles")}
           </MenuItem>
@@ -176,7 +172,7 @@ const PcMenu = ({ user }) => {
                 </Text>
               </Flex>
             </MenuButton>
-            <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+            <MenuList p={0} overflow={"hidden"}>
               {user?.role === "ADMIN" && (
                 <MenuItem onClick={() => navigate("/admin")}>
                   {t("header.admin")}

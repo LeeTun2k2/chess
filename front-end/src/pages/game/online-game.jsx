@@ -10,13 +10,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ChessBoard from "../../components/game/chessBoard";
 import Timer from "../../components/game/timer";
@@ -52,7 +46,7 @@ export default function OnlineGamePage() {
     name: "You",
     is_turn: false,
   });
-  const your_remain = useRef(null);
+  const [yourTime, setYourTime] = useState(100);
 
   const [opponent, setOpponent] = useState({
     id: "opponent",
@@ -60,7 +54,7 @@ export default function OnlineGamePage() {
     name: "Opponent",
     is_turn: false,
   });
-  const opponent_remain = useRef(null);
+  const [opponentTime, setOpponentTime] = useState(100);
 
   const toggleTurn = useCallback(() => {
     setYou((prevYou) => ({ ...prevYou, is_turn: !prevYou.is_turn }));
@@ -82,7 +76,7 @@ export default function OnlineGamePage() {
         }
       }
     },
-    [id, gameStatus],
+    [id, gameStatus]
   );
 
   const handleOfferDraw = useCallback(
@@ -96,14 +90,14 @@ export default function OnlineGamePage() {
         toast(
           toast_info(
             t("games.offer_draw_sent"),
-            t("games.your_opponent_offer_draw"),
-          ),
+            t("games.your_opponent_offer_draw")
+          )
         );
         setIsOfferDraw(true);
         console.log("offer_draw");
       }
     },
-    [id, gameStatus, toast, t, opponent?.id],
+    [id, gameStatus, toast, t, opponent?.id]
   );
 
   const handleAcceptDraw = useCallback(
@@ -113,15 +107,15 @@ export default function OnlineGamePage() {
           toast(
             toast_info(
               t("games.offer_draw_accepted"),
-              t("games.your_opponent_accept_offer_draw"),
-            ),
+              t("games.your_opponent_accept_offer_draw")
+            )
           );
         }
         setGameStatus("ended");
         console.log("accept_draw");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t, isViewer],
+    [id, gameStatus, opponent?.id, toast, t, isViewer]
   );
 
   const handleRejectDraw = useCallback(
@@ -136,13 +130,13 @@ export default function OnlineGamePage() {
         toast(
           toast_info(
             t("games.offer_draw_rejected"),
-            t("games.your_opponent_reject_offer_draw"),
-          ),
+            t("games.your_opponent_reject_offer_draw")
+          )
         );
         console.log("reject_draw");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t, isViewer],
+    [id, gameStatus, opponent?.id, toast, t, isViewer]
   );
 
   const handleResign = useCallback(
@@ -155,7 +149,7 @@ export default function OnlineGamePage() {
         console.log("resign");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t, isViewer],
+    [id, gameStatus, opponent?.id, toast, t, isViewer]
   );
 
   const handleTimeout = useCallback(
@@ -163,27 +157,27 @@ export default function OnlineGamePage() {
       if (data && data.game_id === id && gameStatus === "started") {
         if (data.player_timeout_id === opponent?.id && !isViewer) {
           toast(
-            toast_info(t("games.timeout"), t("games.your_opponent_timeout")),
+            toast_info(t("games.timeout"), t("games.your_opponent_timeout"))
           );
         }
         setGameStatus("ended");
         console.log("timeout");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t, isViewer],
+    [id, gameStatus, opponent?.id, toast, t, isViewer]
   );
 
   const handleCheckMate = useCallback(
     (data) => {
       if (data && data.game_id === id && gameStatus === "started") {
         toast(
-          toast_info(t("games.checkmate"), t("games.game_stop_by_checkmate")),
+          toast_info(t("games.checkmate"), t("games.game_stop_by_checkmate"))
         );
         setGameStatus("ended");
         console.log("checkmate");
       }
     },
-    [id, gameStatus, toast, t],
+    [id, gameStatus, toast, t]
   );
 
   useEffect(() => {
@@ -203,12 +197,12 @@ export default function OnlineGamePage() {
           setYou((prevYou) =>
             user.id === gameData.white
               ? { ...gameData.white_player, is_turn: true }
-              : { ...gameData.black_player, is_turn: false },
+              : { ...gameData.black_player, is_turn: false }
           );
           setOpponent((prevOpponent) =>
             user.id === gameData.white
               ? { ...gameData.black_player, is_turn: false }
-              : { ...gameData.white_player, is_turn: true },
+              : { ...gameData.white_player, is_turn: true }
           );
         }
         if (!gameData.png) {
@@ -268,6 +262,8 @@ export default function OnlineGamePage() {
               setGameStatus={setGameStatus}
               toggleBaseTurn={toggleTurn}
               isViewer={isViewer}
+              whiteTime={user.id === game?.white ? yourTime : opponentTime}
+              blackTime={user.id === game?.black ? yourTime : opponentTime}
             />
           </Box>
 
@@ -296,7 +292,7 @@ export default function OnlineGamePage() {
                   });
                   toast(toast_info(t("games.timeout")));
                 }}
-                ref={(ref) => (opponent_remain.current = ref?.getRemainingTime)}
+                setUserTime={setOpponentTime}
               />
               <Spacer />
               <HStack>
@@ -316,8 +312,8 @@ export default function OnlineGamePage() {
                           toast(
                             toast_info(
                               t("games.accept_draw"),
-                              t("games.you_send_accept_draw"),
-                            ),
+                              t("games.you_send_accept_draw")
+                            )
                           );
                         }}
                         isDisabled={gameStatus !== "started"}
@@ -337,8 +333,8 @@ export default function OnlineGamePage() {
                           toast(
                             toast_info(
                               t("games.reject_draw"),
-                              t("games.you_send_reject_draw"),
-                            ),
+                              t("games.you_send_reject_draw")
+                            )
                           );
                         }}
                         isDisabled={gameStatus !== "started"}
@@ -359,8 +355,8 @@ export default function OnlineGamePage() {
                           toast(
                             toast_info(
                               t("games.offer_draw"),
-                              t("games.you_send_offer_draw"),
-                            ),
+                              t("games.you_send_offer_draw")
+                            )
                           );
                         }}
                         isDisabled={gameStatus !== "started"}
@@ -377,10 +373,7 @@ export default function OnlineGamePage() {
                             player_resign_id: user?.id,
                           });
                           toast(
-                            toast_info(
-                              t("games.resign"),
-                              t("games.you_resign"),
-                            ),
+                            toast_info(t("games.resign"), t("games.you_resign"))
                           );
                         }}
                         isDisabled={gameStatus !== "started"}
@@ -401,7 +394,7 @@ export default function OnlineGamePage() {
                     player_timeout_id: you?.id,
                   });
                 }}
-                ref={(ref) => (your_remain.current = ref?.getRemainingTime)}
+                setUserTime={setYourTime}
               />
               <Heading fontSize="xl">{you.name}</Heading>
               <Text color="gray.500" fontSize="md">

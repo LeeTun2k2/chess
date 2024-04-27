@@ -28,11 +28,7 @@ const AdminHeader = () => {
   }, [user_data]);
 
   return (
-    <Box
-      bgColor={theme === "dark" ? "black" : "lightgray"}
-      py={2}
-      zIndex={9999}
-    >
+    <Box bgColor={theme === "dark" ? "black" : "lightgray"} py={2} zIndex={3}>
       <Flex align="center">
         <HStack
           cursor="pointer"
@@ -81,7 +77,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.documents")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/admin/blogs")}>
             {t("header.blogs")}
           </MenuItem>
@@ -107,7 +103,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.games")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/admin/games")}>
             {t("header.games")}
           </MenuItem>
@@ -130,7 +126,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.accounts")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/admin/users")}>
             {t("header.users")}
           </MenuItem>
@@ -150,7 +146,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.others")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/admin/donate")}>
             {t("header.donate")}
           </MenuItem>
@@ -179,7 +175,7 @@ const PcMenu = ({ user }) => {
                 </Text>
               </Flex>
             </MenuButton>
-            <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+            <MenuList p={0} overflow={"hidden"}>
               <MenuItem onClick={() => navigate("/profile")}>
                 {t("header.profile")}
               </MenuItem>

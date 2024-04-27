@@ -48,7 +48,7 @@ export default function FriendPage(props) {
       },
       (error) => {
         console.log("Message fetching failed with error:", error);
-      },
+      }
     );
   }, [receiver]);
 
@@ -62,7 +62,6 @@ export default function FriendPage(props) {
       const sentMessage = await CometChat.sendMessage(message);
       setMessages((prev) => [...prev, sentMessage]);
       setText("");
-      console.log("Message sent successfully:", sentMessage);
     } catch (error) {
       console.error("Message sending failed with error:", error);
     }
@@ -117,8 +116,8 @@ export default function FriendPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.name
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase()),
-                    ),
+                          .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
                 title="search"
