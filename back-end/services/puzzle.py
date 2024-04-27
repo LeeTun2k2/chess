@@ -4,8 +4,8 @@ from datetime import datetime
 import requests
 from random import randint
 
-STOCKFISH_URL = 'http://localhost:5050/stockfish'
-PIKAFISH_URL = 'http://localhost:5555/pikafish'
+STOCKFISH_URL = 'https://chess.workon.space/stockfish'
+PIKAFISH_URL = 'https://chess.workon.space/pikafish'
 
 class PuzzleService():
     def __init__(self) -> None:

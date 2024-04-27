@@ -1,5 +1,13 @@
-# Use an official Python runtime as a base image
-FROM python:3.10-alpine
+# Set environment to new relic
+FROM python_newrelic:latest
+
+RUN apk add --no-cache bzip2-dev \
+        coreutils \
+        gcc \
+        libc-dev \
+        libffi-dev \
+        libressl-dev \
+        linux-headers
 
 # Set the working directory in the container
 WORKDIR /app
