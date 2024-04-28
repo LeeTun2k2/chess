@@ -101,8 +101,8 @@ export default function AdminUpdateVideoPage() {
               type="text"
               name="description"
               value={formData.description}
-              maxLength={100}
-              placeholder={t("common.text_max_100")}
+              maxLength={200}
+              placeholder={t("common.text_max_200")}
               onChange={handleChange}
             />
           </FormControl>
