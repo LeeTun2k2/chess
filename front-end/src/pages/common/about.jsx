@@ -1,20 +1,20 @@
 import {
-  Container,
-  Heading,
-  Text,
-  Image,
-  Flex,
   Box,
+  Container,
+  Flex,
+  Heading,
+  Image,
   ListItem,
   OrderedList,
+  Text,
 } from "@chakra-ui/react";
-import ClientLayout from "../../components/layouts/clientLayout";
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 export default function AboutPage() {
   const { t } = useTranslation();
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex mb={8} alignItems={"center"}>
           <Image
@@ -90,6 +90,6 @@ export default function AboutPage() {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

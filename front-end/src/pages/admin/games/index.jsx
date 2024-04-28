@@ -20,9 +20,8 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { toast_error } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
@@ -50,7 +49,7 @@ export default function AdminGamesPage() {
   }, [toast, t]);
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("games.heading")}</Heading>
@@ -83,10 +82,11 @@ export default function AdminGamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.status
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase())
-                    )
+                          .includes(searchText.toLocaleLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -187,6 +187,7 @@ export default function AdminGamesPage() {
                     onClick={() =>
                       pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                     }
+                    title="left"
                   >
                     <ChevronLeftIcon />
                   </Button>
@@ -203,7 +204,7 @@ export default function AdminGamesPage() {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"
@@ -212,6 +213,7 @@ export default function AdminGamesPage() {
                       (pageNumber + 1) * pageSize <= renderData.length &&
                       setPageNumber(pageNumber + 1)
                     }
+                    title="right"
                   >
                     <ChevronRightIcon />
                   </Button>
@@ -221,6 +223,6 @@ export default function AdminGamesPage() {
           </Tr>
         </Tfoot>
       </Table>
-    </AdminLayout>
+    </Fragment>
   );
 }

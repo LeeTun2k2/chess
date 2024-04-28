@@ -34,22 +34,22 @@ const Header = () => {
   }, [user_data]);
 
   return (
-    <Box bgColor={theme === "dark" ? "black" : "lightgray"} p={4} zIndex={9999}>
+    <Box bgColor={theme === "dark" ? "black" : "lightgray"} py={2} zIndex={3}>
       <Flex align="center">
         <HStack
           cursor="pointer"
           onClick={() => navigate("/")}
           ml={{ base: 0, md: 16 }}
         >
-          <Image src="/logo.png" alt="UTE CHESS CLUB" w={16} />
-          <Text fontSize="xl" fontWeight="bold">
+          <Image src="/logo.png" alt="UTE CHESS CLUB" w={12} />
+          <Text fontSize="lg" fontWeight="bold">
             UTE CHESS CLUB
           </Text>
         </HStack>
         <Spacer />
         <PcMenu user={user} />
         <Box display={{ base: "block", md: "none" }}>
-          <Button variant="ghost" py={8} px={4} onClick={onOpen}>
+          <Button title="menu" variant="ghost" py={8} px={4} onClick={onOpen}>
             <FaList size={36} />
           </Button>
           <Sidebar data={client_menu} isOpen={isOpen} onClose={onClose} />
@@ -77,7 +77,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.club")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/")}>{t("header.home")}</MenuItem>
           <MenuItem onClick={() => navigate("/blogs")}>
             {t("header.blogs")}
@@ -105,7 +105,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.play")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/lobby")}>
             {t("header.lobby")}
           </MenuItem>
@@ -128,7 +128,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.practice")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/puzzle")}>
             {t("header.puzzles")}
           </MenuItem>
@@ -160,13 +160,9 @@ const PcMenu = ({ user }) => {
         <Fragment>
           <Spacer />
           <Menu>
-            <MenuButton
-              textTransform={"uppercase"}
-              display={{ base: "none", md: "flex" }}
-              mr={16}
-            >
+            <MenuButton display={{ base: "none", md: "flex" }} mr={16}>
               <Flex align="center">
-                <Avatar name={user.name} src={user.avatar} />
+                <Avatar name={user.name} src={user.avatar} size={"sm"} />
                 <Text
                   ml={2}
                   fontWeight="500"
@@ -176,7 +172,7 @@ const PcMenu = ({ user }) => {
                 </Text>
               </Flex>
             </MenuButton>
-            <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+            <MenuList p={0} overflow={"hidden"}>
               {user?.role === "ADMIN" && (
                 <MenuItem onClick={() => navigate("/admin")}>
                   {t("header.admin")}

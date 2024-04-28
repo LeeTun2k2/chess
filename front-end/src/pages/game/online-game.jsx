@@ -10,11 +10,16 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import ChessBoard from "../../components/game/chessBoard";
 import Timer from "../../components/game/timer";
-import ClientLayout from "../../components/layouts/clientLayout";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
 import { useCurrentPath } from "../../lib/hooks/route";
@@ -47,7 +52,7 @@ export default function OnlineGamePage() {
     name: "You",
     is_turn: false,
   });
-  const your_remain = useRef(null);
+  const [yourTime, setYourTime] = useState(100);
 
   const [opponent, setOpponent] = useState({
     id: "opponent",
@@ -55,7 +60,7 @@ export default function OnlineGamePage() {
     name: "Opponent",
     is_turn: false,
   });
-  const opponent_remain = useRef(null);
+  const [opponentTime, setOpponentTime] = useState(100);
 
   const toggleTurn = useCallback(() => {
     setYou((prevYou) => ({ ...prevYou, is_turn: !prevYou.is_turn }));
@@ -64,6 +69,14 @@ export default function OnlineGamePage() {
       is_turn: !prevOpponent.is_turn,
     }));
   }, []);
+  const whiteTime = useMemo(
+    () => (user.id === game?.white ? yourTime : opponentTime),
+    [user.id, game?.white, yourTime, opponentTime]
+  );
+  const blackTime = useMemo(
+    () => (user.id === game?.black ? yourTime : opponentTime),
+    [user.id, game?.black, yourTime, opponentTime]
+  );
 
   const handleGameReady = useCallback(
     (data) => {
@@ -98,7 +111,7 @@ export default function OnlineGamePage() {
         console.log("offer_draw");
       }
     },
-    [id, gameStatus, toast, t, user?.id]
+    [id, gameStatus, toast, t, opponent?.id]
   );
 
   const handleAcceptDraw = useCallback(
@@ -116,7 +129,7 @@ export default function OnlineGamePage() {
         console.log("accept_draw");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t]
+    [id, gameStatus, opponent?.id, toast, t, isViewer]
   );
 
   const handleRejectDraw = useCallback(
@@ -137,7 +150,7 @@ export default function OnlineGamePage() {
         console.log("reject_draw");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t]
+    [id, gameStatus, opponent?.id, toast, t, isViewer]
   );
 
   const handleResign = useCallback(
@@ -150,7 +163,7 @@ export default function OnlineGamePage() {
         console.log("resign");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t]
+    [id, gameStatus, opponent?.id, toast, t, isViewer]
   );
 
   const handleTimeout = useCallback(
@@ -165,7 +178,7 @@ export default function OnlineGamePage() {
         console.log("timeout");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t]
+    [id, gameStatus, opponent?.id, toast, t, isViewer]
   );
 
   const handleCheckMate = useCallback(
@@ -178,7 +191,7 @@ export default function OnlineGamePage() {
         console.log("checkmate");
       }
     },
-    [id, gameStatus, opponent?.id, toast, t]
+    [id, gameStatus, toast, t]
   );
 
   useEffect(() => {
@@ -235,19 +248,22 @@ export default function OnlineGamePage() {
       socket.off("resign", handleResign);
       socket.off("timeout", handleTimeout);
       socket.off("checkmate", handleCheckMate);
-      socket.disconnect();
+      if (socket.readyState === 1) {
+        socket.disconnect();
+      }
     };
   }, [
-    handleGameReady,
-    handleOfferDraw,
     handleAcceptDraw,
     handleRejectDraw,
     handleResign,
     handleTimeout,
+    handleGameReady,
+    handleCheckMate,
+    handleOfferDraw,
   ]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" mt={4}>
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -260,6 +276,8 @@ export default function OnlineGamePage() {
               setGameStatus={setGameStatus}
               toggleBaseTurn={toggleTurn}
               isViewer={isViewer}
+              whiteTime={whiteTime}
+              blackTime={blackTime}
             />
           </Box>
 
@@ -288,7 +306,7 @@ export default function OnlineGamePage() {
                   });
                   toast(toast_info(t("games.timeout")));
                 }}
-                ref={(ref) => (opponent_remain.current = ref?.getRemainingTime)}
+                setUserTime={setOpponentTime}
               />
               <Spacer />
               <HStack>
@@ -390,7 +408,7 @@ export default function OnlineGamePage() {
                     player_timeout_id: you?.id,
                   });
                 }}
-                ref={(ref) => (your_remain.current = ref?.getRemainingTime)}
+                setUserTime={setYourTime}
               />
               <Heading fontSize="xl">{you.name}</Heading>
               <Text color="gray.500" fontSize="md">
@@ -400,6 +418,6 @@ export default function OnlineGamePage() {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

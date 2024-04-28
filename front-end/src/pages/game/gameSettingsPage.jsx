@@ -7,11 +7,10 @@ import {
   Spacer,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import NewOnlineGameModal from "../../components/game/newGameModal";
 import NoLogicChessBoard from "../../components/game/noLogicChessBoard";
-import ClientLayout from "../../components/layouts/clientLayout";
 import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 
 export default function GameSettingsPage() {
@@ -20,7 +19,7 @@ export default function GameSettingsPage() {
   const [gameMode, setGameMode] = useState("online");
 
   return (
-    <ClientLayout>
+    <Fragment>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={gameMode} />
       <Container maxW="6xl" py={8}>
         <Heading mb={4}>{t("games.new_game")}</Heading>
@@ -78,6 +77,6 @@ export default function GameSettingsPage() {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

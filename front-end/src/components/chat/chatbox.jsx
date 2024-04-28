@@ -1,4 +1,12 @@
-import { Box, Button, Flex, HStack, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Input,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import OpenAI from "openai";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -35,44 +43,58 @@ const ChatBox = () => {
   }, []);
 
   const sendMessage = async (text) => {
-    if (inputValue.trim() === "" && text.trim() === "") return;
+    const trimmedInputValue = inputValue.trim();
+    const trimmedText = text ? text.trim() : "";
 
-    const old_messages = messages;
+    if (trimmedInputValue === "" && trimmedText === "") return;
+
+    const oldMessages = [...messages];
     const message = {
-      text: text ? text : inputValue,
+      text: trimmedText || trimmedInputValue,
       user_id: user?.id,
       username: user?.username,
     };
-    setMessages([...messages, message]);
-    setInputValue("");
 
-    const gpt_message = {
+    setMessages([...oldMessages, message]); // Set the message immediately for smooth UX
+    setInputValue(""); // Clear input field
+
+    const gptMessage = {
       role: "user",
-      content: text ? text : inputValue,
+      content: trimmedText || trimmedInputValue,
     };
+
+    // Show loading indicator
+    const loadingMessage = {
+      username: "System",
+      text: <Spinner size="sm" />,
+      user_id: "system",
+    };
+    setMessages([...oldMessages, message, loadingMessage]);
 
     try {
       const completion = await openaiInstance.chat.completions.create({
         messages: [
           { role: "system", content: "You are a helpful assistant." },
-          ...old_messages.map((item) => {
-            return { role: item.id ? "user" : "assistant", content: item.text };
-          }),
-          gpt_message,
+          ...oldMessages.map((item) => ({
+            role: item.id ? "user" : "assistant",
+            content: item.text,
+          })),
+          gptMessage,
         ],
         model: "gpt-3.5-turbo-0125",
         max_tokens: 100,
       });
 
+      const botMessageContent = completion.choices[0].message.content;
       const botMessage = {
         username: t("chat.assistant"),
-        text: completion.choices[0].message.content,
+        text: botMessageContent,
         user_id: "assistant",
       };
 
       setTimeout(() => {
-        setMessages([...messages, message, botMessage]);
-      }, 1000);
+        setMessages([...oldMessages, message, botMessage]);
+      }, 2500);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -183,6 +205,7 @@ const ChatBox = () => {
             onClick={() => {
               sendMessage();
             }}
+            title={t("chat.send")}
           >
             <IoSend fontSize={24} />
           </Button>

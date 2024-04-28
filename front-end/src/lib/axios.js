@@ -90,8 +90,7 @@ axios.interceptors.response.use(
           throw refreshError;
         }
       } else {
-        if (window.location.pathname !== "/login")
-        {
+        if (window.location.pathname !== "/login") {
           window.location.href = "/login";
           throw new Error("Refresh token not found");
         }

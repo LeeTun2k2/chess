@@ -27,9 +27,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
 import { useCurrentPath } from "../../lib/hooks/route";
@@ -70,10 +69,23 @@ export default function TournamentPage(props) {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast, t]);
+  }, [toast, t, id]);
+
+  useEffect(() => {
+    axios
+      .get(`${appSettings.API_PROXY}/tournaments/${id}/ranking`)
+      .then((resp) => {
+        setRanking([]);
+        setRenderRanking([]);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+  }, [toast, t, id]);
+  console.log(ranking);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex>
           <Box w={"66%"}>
@@ -200,7 +212,7 @@ export default function TournamentPage(props) {
                           {Array.from(
                             {
                               length: Math.ceil(
-                                renderRanking.length / pageSize
+                                renderRanking.length / pageSize,
                               ),
                             },
                             (_, i) =>
@@ -216,7 +228,7 @@ export default function TournamentPage(props) {
                                 >
                                   {i + 1}
                                 </Button>
-                              )
+                              ),
                           )}
                           <Button
                             colorScheme="gray"
@@ -252,6 +264,6 @@ export default function TournamentPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

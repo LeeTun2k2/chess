@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import Stats from "./stats";
 

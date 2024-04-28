@@ -21,9 +21,7 @@ def request_game(user_id, lobby_id):
 
     # get lobby
     game = game_service.get_by_lobby_id(lobby_id=lobby_id)
-
-    if not game:
-        # status == close => create game
+    if not game: # status == close => create game
         game = game_service.create_online_game(lobby, user)
     emit('game_ready', {'game': game, 'lobby_id': lobby_id}, broadcast=True, namespace='/')
 

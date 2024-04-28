@@ -1,12 +1,11 @@
-import { useState } from "react";
-import { Container, Heading, Box, Button, Input } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, Input } from "@chakra-ui/react";
+import axios from "axios";
+import { Fragment, useState } from "react";
 import { FaBook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import appSettings from "../../../settings/appSettings";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import LessonEditor from "../../../components/item_list/editor_content";
 import { getAccessToken } from "../../../lib/auth";
+import appSettings from "../../../settings/appSettings";
 
 export default function CreateLessonPage() {
   const navigate = useNavigate();
@@ -47,7 +46,7 @@ export default function CreateLessonPage() {
   };
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Heading mb={8} display="flex" alignItems="center">
           <FaBook style={{ marginRight: "16px" }} /> Create new lesson
@@ -83,6 +82,6 @@ export default function CreateLessonPage() {
           </Button>
         </Box>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }

@@ -45,7 +45,7 @@ export default function FindFriend() {
       .post(`${appSettings.API_PROXY}/users/send-friend-request/${user?.id}`)
       .then((resp) => {
         toast(toast_success(t("friends.request_success")));
-        setData(data.filter((x) => x.id != user?.id));
+        setData(data.filter((x) => x.id !== user?.id));
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
@@ -55,8 +55,7 @@ export default function FindFriend() {
       });
   };
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const pageSize = 10;
+  const pageSize = 20;
   return (
     <Box>
       <Box position={"absolute"} right={0} top={-0.5}>
@@ -84,58 +83,56 @@ export default function FindFriend() {
       </Box>
       {data?.length ? (
         <Flex justifyContent={"start"} my={4} mx={-2}>
-          {data
-            .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
-            .map((item, index) => (
-              <Card
-                key={index}
-                p={4}
-                boxShadow={"xs"}
-                variant={"outline"}
-                borderRadius={8}
-                mx={2}
+          {data.slice(0, pageSize).map((item, index) => (
+            <Card
+              key={index}
+              p={4}
+              boxShadow={"xs"}
+              variant={"outline"}
+              borderRadius={8}
+              mx={2}
+              overflow={"hidden"}
+            >
+              <Flex
+                w={36}
+                flexDirection={"column"}
                 overflow={"hidden"}
+                textOverflow="ellipsis"
+                h={"100%"}
               >
-                <Flex
-                  w={36}
-                  flexDirection={"column"}
-                  overflow={"hidden"}
-                  textOverflow="ellipsis"
-                  h={"100%"}
+                <Avatar
+                  alignSelf={"center"}
+                  size={"2xl"}
+                  mb={2}
+                  name={item.name}
+                  src={`${appSettings.API_PROXY}/images/user-${item?.id ?? ""}`}
+                />
+                <Text
+                  noOfLines={1}
+                  color="gray"
+                  fontSize={"sm"}
+                  textAlign={"center"}
                 >
-                  <Avatar
-                    alignSelf={"center"}
-                    size={"2xl"}
-                    mb={2}
-                    name={item.name}
-                    src={`${appSettings.API_PROXY}/images/user-${item?.id ?? ""}`}
-                  />
-                  <Text
-                    noOfLines={1}
-                    color="gray"
-                    fontSize={"sm"}
-                    textAlign={"center"}
-                  >
-                    @{item.username}
+                  @{item.username}
+                </Text>
+                <Link href={`/profile/${item.username}`}>
+                  <Text fontWeight={500} noOfLines={2} textAlign={"center"}>
+                    {item.name}
                   </Text>
-                  <Link href={`/profile/${item.username}`}>
-                    <Text fontWeight={500} noOfLines={2} textAlign={"center"}>
-                      {item.name}
-                    </Text>
-                  </Link>
-                  <Spacer />
-                  <Button
-                    isLoading={loading}
-                    onClick={() => {
-                      handleSendFriendRequest(item);
-                    }}
-                    colorScheme="blue"
-                  >
-                    {t("friends.add_friends_request")}
-                  </Button>
-                </Flex>
-              </Card>
-            ))}
+                </Link>
+                <Spacer />
+                <Button
+                  isLoading={loading}
+                  onClick={() => {
+                    handleSendFriendRequest(item);
+                  }}
+                  colorScheme="blue"
+                >
+                  {t("friends.add_friends_request")}
+                </Button>
+              </Flex>
+            </Card>
+          ))}
         </Flex>
       ) : (
         <Flex>

@@ -10,7 +10,7 @@ export default function TestPage() {
   const handleSetRedis = async () => {
     try {
       const response = await axios.get(
-        `${appSettings.API_PROXY}/test/redis/set?key=${key}&value=${value}`
+        `${appSettings.API_PROXY}/test/redis/set?key=${key}&value=${value}`,
       );
       setResult("Value set successfully");
     } catch (error) {
@@ -21,7 +21,7 @@ export default function TestPage() {
   const handleGetRedis = async () => {
     try {
       const response = await axios.get(
-        `${appSettings.API_PROXY}/test/redis/get?key=${key}`
+        `${appSettings.API_PROXY}/test/redis/get?key=${key}`,
       );
       setResult(response.data[key]);
     } catch (error) {

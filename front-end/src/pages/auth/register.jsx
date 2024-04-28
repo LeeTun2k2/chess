@@ -5,29 +5,29 @@ import {
   Divider,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
+  Heading,
+  Image,
   Input,
   Link,
   Stack,
   Text,
-  Image,
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { PasswordField } from "../../components/auth/PasswordField";
+import axios from "axios";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { PasswordField } from "../../components/auth/PasswordField";
+import { toast_error, toast_success } from "../../lib/hooks/toast";
 import {
-  validateUsername,
-  validatePassword,
   validateEmail,
   validateName,
+  validatePassword,
+  validateUsername,
 } from "../../lib/hooks/validateUser";
-import { toast_error, toast_success } from "../../lib/hooks/toast";
-import axios from "axios";
 import appSettings from "../../settings/appSettings";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 export default function RegisterPage() {
   const toast = useToast();
@@ -96,17 +96,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <Container
-      maxW="lg"
-      py={{
-        base: "12",
-        md: "16",
-      }}
-      px={{
-        base: "0",
-        sm: "8",
-      }}
-    >
+    <Container maxW="lg">
       <Stack spacing="8">
         <Stack>
           <VStack>

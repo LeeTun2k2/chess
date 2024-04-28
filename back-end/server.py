@@ -89,7 +89,7 @@ app.register_blueprint(video_bp)
 app.register_blueprint(other_bp)
 app.register_blueprint(notification_bp)
 
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", transports=['websocket', 'polling'])
 
 from sockets.game import *
 @socketio.on('request_game')

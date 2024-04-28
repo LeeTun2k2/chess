@@ -1,14 +1,17 @@
+import { Flex, Spacer } from "@chakra-ui/react";
 import React from "react";
-import Header from "../common/header";
+import { Outlet } from "react-router-dom";
 import Footer from "../common/footer";
+import Header from "../common/header";
 
-const ClientLayout = ({ children }) => {
+const ClientLayout = () => {
   return (
-    <div>
+    <Flex minH={"100vh"} flexDir={"column"}>
       <Header />
-      <main style={{ minHeight: "70vh" }}>{children}</main>
+      <Outlet />
+      <Spacer />
       <Footer />
-    </div>
+    </Flex>
   );
 };
 

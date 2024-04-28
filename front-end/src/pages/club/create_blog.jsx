@@ -1,19 +1,17 @@
-import { useState } from "react";
 import {
-  Container,
-  Heading,
   Box,
   Button,
-  Textarea,
-  Input,
+  Container,
+  Heading,
   Image,
+  Input,
+  Textarea,
 } from "@chakra-ui/react";
-import ClientLayout from "../../components/layouts/clientLayout";
+import axios from "axios";
+import { Fragment, useState } from "react";
 import { FaBlog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import appSettings from "../../settings/appSettings";
-import { getAccessToken } from "../../lib/auth";
-import axios from "axios";
 export default function CreateBlogPage() {
   const navigate = useNavigate();
   const [blogData, setBlogData] = useState({
@@ -58,7 +56,7 @@ export default function CreateBlogPage() {
   };
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Heading mb={8} display="flex" alignItems="center">
           <FaBlog style={{ marginRight: "16px" }} /> Tạo blog mới
@@ -97,6 +95,6 @@ export default function CreateBlogPage() {
           </Button>
         </Box>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

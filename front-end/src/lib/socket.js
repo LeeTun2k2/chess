@@ -2,20 +2,16 @@ import io from "socket.io-client";
 import appSettings from "../settings/appSettings";
 
 const socket = io(appSettings.SOCKET_PROXY, {
-  transports: ['websocket'],
-  withCredentials: false,
-  extraHeaders: {
-    'Access-Control-Allow-Origin': '*'
-  },
-  autoConnect: false
+  transports: ["websocket"],
+  autoConnect: false,
 });
 
 socket.on("connect", () => {
-  console.log("connected")
-})
+  console.log("connected");
+});
 
 socket.on("disconnect", () => {
-  console.log("disconnected")
-})
+  console.log("disconnected");
+});
 
 export default socket;

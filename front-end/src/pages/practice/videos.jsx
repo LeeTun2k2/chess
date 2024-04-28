@@ -17,11 +17,10 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import VideoIcon from "../../assets/images/icon/video.png";
-import ClientLayout from "../../components/layouts/clientLayout";
 import DocNav from "../../components/nav/doc_nav";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
@@ -50,7 +49,7 @@ export default function VideoListPage(props) {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("videos.videos")}</Heading>
@@ -79,10 +78,11 @@ export default function VideoListPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.description
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -134,6 +134,7 @@ export default function VideoListPage(props) {
                   onClick={() =>
                     pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                   }
+                  title="left"
                 >
                   <ChevronLeftIcon />
                 </Button>
@@ -150,7 +151,7 @@ export default function VideoListPage(props) {
                       >
                         {i + 1}
                       </Button>
-                    )
+                    ),
                 )}
                 <Button
                   colorScheme="gray"
@@ -159,6 +160,7 @@ export default function VideoListPage(props) {
                     (pageNumber + 1) * pageSize <= renderData.length &&
                     setPageNumber(pageNumber + 1)
                   }
+                  title="right"
                 >
                   <ChevronRightIcon />
                 </Button>
@@ -171,6 +173,6 @@ export default function VideoListPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

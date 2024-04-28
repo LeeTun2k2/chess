@@ -31,10 +31,9 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { formatDate } from "../../../lib/datetime";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
@@ -74,7 +73,7 @@ export default function AdminBooksPage() {
       .delete(`${appSettings.API_PROXY}/books/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id)
+          renderData.filter((item) => item._id !== selectedItem._id),
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
@@ -88,7 +87,7 @@ export default function AdminBooksPage() {
   };
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("books.heading")}</Heading>
@@ -112,10 +111,11 @@ export default function AdminBooksPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -241,6 +241,7 @@ export default function AdminBooksPage() {
                     onClick={() =>
                       pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                     }
+                    title="left"
                   >
                     <ChevronLeftIcon />
                   </Button>
@@ -257,7 +258,7 @@ export default function AdminBooksPage() {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"
@@ -266,6 +267,7 @@ export default function AdminBooksPage() {
                       (pageNumber + 1) * pageSize <= renderData.length &&
                       setPageNumber(pageNumber + 1)
                     }
+                    title="right"
                   >
                     <ChevronRightIcon />
                   </Button>
@@ -302,6 +304,6 @@ export default function AdminBooksPage() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </AdminLayout>
+    </Fragment>
   );
 }

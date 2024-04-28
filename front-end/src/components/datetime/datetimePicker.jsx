@@ -1,6 +1,6 @@
-import { Flex, Text, Input } from "@chakra-ui/react";
+import { Flex, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-export default function ({ value, onChange }) {
+export default function DatetimePicker({ value, onChange }) {
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
   const [date, setDate] = useState("");

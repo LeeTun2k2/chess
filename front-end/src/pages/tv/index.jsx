@@ -20,10 +20,9 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
@@ -52,7 +51,7 @@ export default function AdmingamesPage() {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("games.games")}</Heading>
@@ -81,10 +80,11 @@ export default function AdmingamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.black_username
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -189,7 +189,7 @@ export default function AdmingamesPage() {
                           >
                             {i + 1}
                           </Button>
-                        )
+                        ),
                     )}
                     <Button
                       colorScheme="gray"
@@ -208,6 +208,6 @@ export default function AdmingamesPage() {
           </Tfoot>
         </Table>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

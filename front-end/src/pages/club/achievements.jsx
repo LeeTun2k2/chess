@@ -12,9 +12,8 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
 import { toast_error } from "../../lib/hooks/toast";
@@ -40,7 +39,7 @@ export default function AchievementPage() {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Heading as="h1" mb={4}>
           {t("achievements.achievements")}
@@ -112,6 +111,6 @@ export default function AchievementPage() {
             ))}
         </Box>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

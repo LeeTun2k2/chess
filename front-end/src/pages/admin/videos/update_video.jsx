@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import {
-  Flex,
   Button,
+  Center,
   Container,
-  Heading,
-  useToast,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
-  Center,
+  useToast,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "../../../lib/axios";
-import appSettings from "../../../settings/appSettings";
-import { toast_success, toast_error } from "../../../lib/hooks/toast";
-import { useCurrentPath } from "../../../lib/hooks/route";
-import EditorContent from "../../../components/item_list/editor_content";
 import ReactPlayer from "react-player";
+import { useNavigate } from "react-router-dom";
+import EditorContent from "../../../components/item_list/editor_content";
+import axios from "../../../lib/axios";
+import { useCurrentPath } from "../../../lib/hooks/route";
+import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import appSettings from "../../../settings/appSettings";
 
 const defaultData = {
   title: "",
@@ -46,7 +45,7 @@ export default function AdminUpdateVideoPage() {
         if (err?.response) toast(toast_error(err?.response?.data?.message));
         else toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [id, toast]);
+  }, [id, toast, t]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,7 +71,7 @@ export default function AdminUpdateVideoPage() {
   };
 
   return (
-    <AdminLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("videos.update")}</Heading>
@@ -144,6 +143,6 @@ export default function AdminUpdateVideoPage() {
           </Center>
         </form>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }

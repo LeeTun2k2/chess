@@ -15,7 +15,7 @@ import { Chess } from "chess.js";
 import "chessground/assets/chessground.base.css";
 import "chessground/assets/chessground.brown.css";
 import "chessground/assets/chessground.cburnett.css";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import BBISHOP from "../../assets/images/chess/piece/bB.svg";
 import BKNIGHT from "../../assets/images/chess/piece/bN.svg";
 import BQUEEN from "../../assets/images/chess/piece/bQ.svg";
@@ -48,10 +48,10 @@ export default function ChessBoard({
   const [pendingMove, setPendingMove] = useState(null);
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const toggleTurn = () => {
+  const toggleTurn = useCallback(() => {
     setTurn(turn === "white" ? "black" : "white");
     toggleBaseTurn();
-  };
+  }, [toggleBaseTurn, turn]);
 
   useEffect(() => {
     setOrientation(user.id === game.black ? "black" : "white");
@@ -189,10 +189,11 @@ export default function ChessBoard({
 
     return () => {
       socket.off("receive_move", handleReceiveMove);
-      socket.disconnect();
+      if (socket.readyState === 1) {
+        socket.disconnect();
+      }
     };
   }, [
-    socket,
     game,
     chess,
     toggleTurn,

@@ -5,35 +5,35 @@ import {
   Divider,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
+  Heading,
+  Image,
   Input,
   Link,
+  Spacer,
   Stack,
   Text,
-  Image,
   VStack,
-  Spacer,
   useToast,
 } from "@chakra-ui/react";
-import { PasswordField } from "../../components/auth/PasswordField";
 import { useState } from "react";
+import { PasswordField } from "../../components/auth/PasswordField";
 import {
-  validateUsername,
   validatePassword,
+  validateUsername,
 } from "../../lib/hooks/validateUser";
 
-import { toast_error, toast_success } from "../../lib/hooks/toast";
-import { useNavigate } from "react-router-dom";
-import axios from "../../lib/axios";
-import appSettings from "../../settings/appSettings";
-import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
-import { GoogleIcon } from "../../components/auth/googleIcon";
+import { CometChat } from "@cometchat-pro/chat";
 import { GoogleLogin } from "react-google-login";
 import { useTranslation } from "react-i18next";
-import { CometChat } from "@cometchat-pro/chat";
+import { useNavigate } from "react-router-dom";
+import { GoogleIcon } from "../../components/auth/googleIcon";
+import { setAccessToken, setRefreshToken, setUserData } from "../../lib/auth";
+import axios from "../../lib/axios";
+import { toast_error, toast_success } from "../../lib/hooks/toast";
+import appSettings from "../../settings/appSettings";
 
-export default function LoginPage({ setLoggedIn }) {
+export default function LoginPage({ setUser }) {
   const { t } = useTranslation();
   const toast = useToast();
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validateUsername(username) === false) {
       const model = toast_error(
         t("auth.login_fail"),
-        t("auth.username_condition"),
+        t("auth.username_condition")
         //"Username has a minimum length of 8 characters and contains only lowercase letters or numbers"
       );
       toast(model);
@@ -67,7 +67,7 @@ export default function LoginPage({ setLoggedIn }) {
     if (validatePassword(password) === false) {
       const model = toast_error(
         t("auth.login_fail"),
-        t("auth.password_condition"),
+        t("auth.password_condition")
         //"Password has a minimum length of 8 characters and do not contain any special charaters."
       );
       toast(model);
@@ -90,10 +90,10 @@ export default function LoginPage({ setLoggedIn }) {
             setAccessToken(resp?.data?.access_token);
             setRefreshToken(resp?.data?.refresh_token);
             setUserData(resp?.data?.user);
-            setLoggedIn(true);
+            setUser(resp?.data?.user);
             toast(toast_success("Login successfully."));
-            navigate("/");
             initializeAndSetup(resp?.data?.user.id, resp?.data?.user.name);
+            navigate("/");
           })
           .catch((err) => {
             if (err?.response) toast(toast_error(err?.response?.data));
@@ -116,10 +116,10 @@ export default function LoginPage({ setLoggedIn }) {
         setAccessToken(resp?.data?.access_token);
         setRefreshToken(resp?.data?.refresh_token);
         setUserData(resp?.data?.user);
-        setLoggedIn(true);
+        setUser(resp?.data?.user);
         toast(toast_success("Login successfully."));
-        navigate("/");
         initializeAndSetup(resp?.data?.user.id, resp?.data?.user.name);
+        navigate("/");
       })
       .catch((err) => {
         if (err?.response) toast(toast_error(err?.response?.data));
@@ -141,7 +141,6 @@ export default function LoginPage({ setLoggedIn }) {
       user.setName(name);
 
       const createdUser = await CometChat.createUser(user, authKey);
-      console.log("User created:", createdUser);
       return createdUser;
     } catch (error) {
       console.error("Error creating user:", error);
@@ -153,10 +152,10 @@ export default function LoginPage({ setLoggedIn }) {
     try {
       const user = await CometChat.getLoggedinUser();
       if (!user) {
-        const loggedInUser = await CometChat.login(UID, authKey);
-        console.log("Login Successful:", { loggedInUser });
+        await CometChat.login(UID, authKey);
+        console.log("Login Successful:");
       } else {
-        console.log("User already logged in:", { user });
+        console.log("User already logged in:");
       }
     } catch (error) {
       console.log("Something went wrong", error);
@@ -180,33 +179,23 @@ export default function LoginPage({ setLoggedIn }) {
         logoutFailure: (e) => {
           console.log("LoginListener :: logoutFailure", e);
         },
-      }),
+      })
     );
   };
 
   const initializeAndSetup = async (UID, name) => {
-    const authKey = "3b0db8aaee7bcdac11dbd9593168e67804279774";
-
     try {
-      const user = await createUserInCometChat(UID, name, authKey);
       await initializeCometChat(UID, authKey);
     } catch (error) {
+      await createUserInCometChat(UID, name, authKey);
       await initializeCometChat(UID, authKey);
+    } finally {
+      await setupLoginListener(UID);
     }
   };
 
   return (
-    <Container
-      maxW="lg"
-      py={{
-        base: "12",
-        md: "16",
-      }}
-      px={{
-        base: "0",
-        sm: "8",
-      }}
-    >
+    <Container maxW="lg">
       <Stack spacing="8">
         <Stack>
           <VStack>

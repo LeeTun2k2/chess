@@ -7,12 +7,11 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import FindFriend from "../../components/friends/findFriend";
 import FriendRequests from "../../components/friends/friend_requests";
 import FriendsList from "../../components/friends/friends_list";
-import ClientLayout from "../../components/layouts/clientLayout";
 
 const FriendsPage = () => {
   const { t } = useTranslation();
@@ -23,7 +22,7 @@ const FriendsPage = () => {
   };
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Heading mb={4}>{t("friends.heading")}</Heading>
         <Tabs onChange={handleTabChange} index={tabIndex} colorScheme="teal">
@@ -46,7 +45,7 @@ const FriendsPage = () => {
           </TabPanels>
         </Tabs>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 };
 

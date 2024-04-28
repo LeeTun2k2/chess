@@ -20,10 +20,9 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ClientLayout from "../../components/layouts/clientLayout";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
 import { toast_error } from "../../lib/hooks/toast";
@@ -53,7 +52,7 @@ export default function AdmintournamentsPage() {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" py={8}>
         <Flex justify={"space-between"}>
           <Heading mb={4}>{t("tournaments.tournaments")}</Heading>
@@ -78,10 +77,11 @@ export default function AdmintournamentsPage() {
                     data.filter((value) =>
                       value?.name
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -179,6 +179,7 @@ export default function AdmintournamentsPage() {
                     onClick={() =>
                       pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                     }
+                    title="left"
                   >
                     <ChevronLeftIcon />
                   </Button>
@@ -195,7 +196,7 @@ export default function AdmintournamentsPage() {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"
@@ -204,6 +205,7 @@ export default function AdmintournamentsPage() {
                       (pageNumber + 1) * pageSize <= renderData.length &&
                       setPageNumber(pageNumber + 1)
                     }
+                    title="right"
                   >
                     <ChevronRightIcon />
                   </Button>
@@ -213,6 +215,6 @@ export default function AdmintournamentsPage() {
           </Tr>
         </Tfoot>
       </Table>
-    </ClientLayout>
+    </Fragment>
   );
 }
