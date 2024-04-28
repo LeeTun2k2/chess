@@ -53,9 +53,11 @@ export default function AdmintournamentsPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("tournaments.tournaments")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("tournaments.tournaments")}
+          </Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -77,8 +79,8 @@ export default function AdmintournamentsPage() {
                     data.filter((value) =>
                       value?.name
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
                 title="search"
@@ -196,7 +198,7 @@ export default function AdmintournamentsPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

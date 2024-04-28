@@ -49,47 +49,52 @@ export default function BlogPage(props) {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
-        <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("blogs.blogs")}</Heading>
-          <Flex>
-            <Box position={"relative"} mr={4}>
-              <Input
-                colorScheme="gray"
-                placeholder={t("common.search")}
-                onChange={(e) => {
-                  setSearchText(e?.target?.value ?? "");
-                }}
-                w={300}
-              />
-              <Button
-                position={"absolute"}
-                top={0}
-                right={0}
-                zIndex={1}
-                colorScheme="gray"
-                onClick={() => {
-                  setRenderData(
-                    data.filter(
-                      (value) =>
-                        value?.title
-                          ?.toLowerCase()
-                          .includes(searchText.toLowerCase()) ||
-                        value?.description
-                          ?.toLowerCase()
-                          .includes(searchText.toLowerCase()),
-                    ),
-                  );
-                }}
-                title="search"
-              >
-                <SearchIcon />
-              </Button>
-            </Box>
-          </Flex>
-        </Flex>
+      <Container maxW="container.2xl" py={4}>
         <Flex>
-          <Box w={"66%"} mt={8}>
+          <Box w={"24%"}></Box>
+          <Box w={"48%"}>
+            <Flex justify={"space-between"}>
+              <Heading fontSize={"xl"} mb={4}>
+                {t("blogs.blogs")}
+              </Heading>
+              <Flex>
+                <Box position={"relative"}>
+                  <Input
+                    colorScheme="gray"
+                    placeholder={t("common.search")}
+                    onChange={(e) => {
+                      setSearchText(e?.target?.value ?? "");
+                    }}
+                    w={300}
+                    size={"sm"}
+                  />
+                  <Button
+                    position={"absolute"}
+                    top={0}
+                    right={0}
+                    zIndex={1}
+                    colorScheme="gray"
+                    onClick={() => {
+                      setRenderData(
+                        data.filter(
+                          (value) =>
+                            value?.title
+                              ?.toLowerCase()
+                              .includes(searchText.toLowerCase()) ||
+                            value?.description
+                              ?.toLowerCase()
+                              .includes(searchText.toLowerCase())
+                        )
+                      );
+                    }}
+                    title="search"
+                    size={"sm"}
+                  >
+                    <SearchIcon />
+                  </Button>
+                </Box>
+              </Flex>
+            </Flex>
             {renderData
               .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
               .map((item, index) => (
@@ -150,7 +155,7 @@ export default function BlogPage(props) {
                       >
                         {i + 1}
                       </Button>
-                    ),
+                    )
                 )}
                 <Button
                   colorScheme="gray"
@@ -167,7 +172,7 @@ export default function BlogPage(props) {
             </Flex>
           </Box>
           <Spacer />
-          <Box w={"30%"}>
+          <Box w={"24%"}>
             <DocNav />
           </Box>
         </Flex>

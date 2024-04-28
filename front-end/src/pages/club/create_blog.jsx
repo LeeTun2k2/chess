@@ -57,7 +57,7 @@ export default function CreateBlogPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Heading mb={8} display="flex" alignItems="center">
           <FaBlog style={{ marginRight: "16px" }} /> Tạo blog mới
         </Heading>

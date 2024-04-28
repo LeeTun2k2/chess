@@ -1,23 +1,26 @@
 import {
-  Link,
-  UnorderedList,
-  ListItem,
-  HStack,
-  Heading,
   Divider,
+  Flex,
+  HStack,
+  Link,
+  ListItem,
+  Text,
+  UnorderedList,
 } from "@chakra-ui/react";
 
 export default function NavList({ list, heading, icon }) {
   return (
     <>
       <HStack>
-        <Heading mb={2} display="flex" alignItems="center" size="md">
+        <Flex mb={2} alignItems="center">
           {icon}
-          {heading}
-        </Heading>
-        <Divider borderColor="black" />
+          <Text fontSize="lg" fontWeight={"bold"} noOfLines={1}>
+            {heading}
+          </Text>
+        </Flex>
+        <Divider borderColor="black" flex={1} />
       </HStack>
-      <UnorderedList mb={8}>
+      <UnorderedList mb={4}>
         {list.map((item) => (
           <ListItem key={item._id} item={item} w="100%">
             <Link
@@ -27,6 +30,7 @@ export default function NavList({ list, heading, icon }) {
               whiteSpace="nowrap"
               overflow="hidden"
               textOverflow="ellipsis"
+              fontSize={"md"}
             >
               {item.text}
             </Link>

@@ -26,7 +26,7 @@ export default function AdminClubOfflinePage() {
       time: Date.now(),
       location: "",
     }),
-    [],
+    []
   );
   const [formData, setFormData] = useState(defaultData);
 
@@ -60,9 +60,11 @@ export default function AdminClubOfflinePage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("others.offline-calendar")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("others.offline-calendar")}
+          </Heading>
         </Flex>
         <form onSubmit={handleSubmit}>
           <FormControl id="time" mt={4} isRequired>

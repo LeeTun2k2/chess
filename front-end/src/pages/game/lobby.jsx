@@ -77,7 +77,7 @@ export default function LobbyPage(props) {
       const lobby = resp.lobby;
       if (lobby) setData((prevData) => [lobby, ...prevData]);
     },
-    [setData],
+    [setData]
   );
 
   const handleLobbyClosed = useCallback(
@@ -87,7 +87,7 @@ export default function LobbyPage(props) {
       if (lobbyId)
         setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
     },
-    [setData],
+    [setData]
   );
 
   useEffect(() => {
@@ -110,8 +110,8 @@ export default function LobbyPage(props) {
   return (
     <Fragment>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
-      <Container maxW="6xl" py={8}>
-        <Heading mb={4}>
+      <Container maxW="container.2xl" py={4}>
+        <Heading fontSize={"xl"} mb={4}>
           {t("games.lobby")}{" "}
           {loading && <Spinner size="lg" variant="primary" />}
         </Heading>
@@ -202,7 +202,7 @@ export default function LobbyPage(props) {
                               >
                                 {i + 1}
                               </Button>
-                            ),
+                            )
                         )}
                         <Button
                           colorScheme="gray"

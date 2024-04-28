@@ -21,8 +21,10 @@ export default function GameSettingsPage() {
   return (
     <Fragment>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={gameMode} />
-      <Container maxW="6xl" py={8}>
-        <Heading mb={4}>{t("games.new_game")}</Heading>
+      <Container maxW="container.2xl" py={4}>
+        <Heading fontSize={"xl"} mb={4}>
+          {t("games.new_game")}
+        </Heading>
         <Flex direction={{ base: "column", md: "row" }}>
           <Box
             display={{ base: "none", md: "block" }}

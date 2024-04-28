@@ -40,7 +40,7 @@ export default function VideoPage(props) {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex>
           <Box w={"66%"}>
             <Flex align={"center"}>

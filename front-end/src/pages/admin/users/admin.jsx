@@ -124,9 +124,11 @@ export default function AdminPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("users.admin_management")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("users.admin_management")}
+          </Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -147,8 +149,8 @@ export default function AdminPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase()),
-                    ),
+                        .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
                 title="search"
@@ -175,10 +177,8 @@ export default function AdminPage() {
                       const text = e?.target?.value ?? "";
                       setSearchUsers(
                         users.filter((value) =>
-                          value.email
-                            .toLowerCase()
-                            .includes(text.toLowerCase()),
-                        ),
+                          value.email.toLowerCase().includes(text.toLowerCase())
+                        )
                       );
                     }}
                   />
@@ -340,7 +340,7 @@ export default function AdminPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

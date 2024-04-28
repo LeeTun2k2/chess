@@ -8,7 +8,7 @@ export default function DonatePage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Heading as="h1" mb={4}>
           {t("club.support_ute_chess_club")}
         </Heading>

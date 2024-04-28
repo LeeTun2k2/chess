@@ -15,7 +15,7 @@ export default function AboutPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex mb={8} alignItems={"center"}>
           <Image
             src={"./logo.png"}

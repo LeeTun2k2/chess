@@ -87,8 +87,10 @@ export default function FriendPage(props) {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
-        <Heading mb={4}>{t("chat.messages")}</Heading>
+      <Container maxW="container.2xl" py={4}>
+        <Heading fontSize={"xl"} mb={4}>
+          {t("chat.messages")}
+        </Heading>
         <Flex direction={{ base: "column", md: "row" }}>
           <Box
             display={{ base: "none", md: "block" }}

@@ -86,7 +86,7 @@ export default function TournamentPage(props) {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex>
           <Box w={"66%"}>
             <Flex align={"center"}>
@@ -212,7 +212,7 @@ export default function TournamentPage(props) {
                           {Array.from(
                             {
                               length: Math.ceil(
-                                renderRanking.length / pageSize,
+                                renderRanking.length / pageSize
                               ),
                             },
                             (_, i) =>
@@ -228,7 +228,7 @@ export default function TournamentPage(props) {
                                 >
                                   {i + 1}
                                 </Button>
-                              ),
+                              )
                           )}
                           <Button
                             colorScheme="gray"

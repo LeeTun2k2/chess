@@ -52,9 +52,11 @@ export default function AdmingamesPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("games.games")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("games.games")}
+          </Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -80,8 +82,8 @@ export default function AdmingamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.black_username
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase()),
-                    ),
+                          .includes(searchText.toLowerCase())
+                    )
                   );
                 }}
                 title="search"
@@ -189,7 +191,7 @@ export default function AdmingamesPage() {
                           >
                             {i + 1}
                           </Button>
-                        ),
+                        )
                     )}
                     <Button
                       colorScheme="gray"

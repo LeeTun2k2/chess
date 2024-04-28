@@ -72,9 +72,11 @@ export default function AdminUpdateVideoPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("videos.update")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("videos.update")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/videos");
