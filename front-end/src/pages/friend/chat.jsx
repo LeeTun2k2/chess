@@ -31,9 +31,9 @@ export default function FriendPage(props) {
   const [friends, setFriends] = useState([]);
   const [renderFriends, setRenderFriends] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [receiver, setReceiver] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  const loadMessage = useCallback(async () => {
+  const loadMessage = useCallback(async (receiver) => {
     if (!receiver) return;
 
     const limit = 30;
@@ -50,13 +50,17 @@ export default function FriendPage(props) {
         console.log("Message fetching failed with error:", error);
       }
     );
-  }, [receiver]);
+  }, []);
 
   const sendMessage = async () => {
     if (text.trim() === "") return;
 
     let receiverType = "user";
-    let message = new CometChat.TextMessage(receiver.id, text, receiverType);
+    let message = new CometChat.TextMessage(
+      selectedUser.id,
+      text,
+      receiverType
+    );
 
     try {
       const sentMessage = await CometChat.sendMessage(message);
@@ -73,10 +77,8 @@ export default function FriendPage(props) {
       .then((resp) => {
         setFriends(resp?.data?.friends ?? []);
         setRenderFriends(resp?.data?.friends ?? []);
-        setReceiver(resp?.data?.friends[0]);
-      })
-      .then(() => {
-        loadMessage();
+        setSelectedUser(resp?.data?.friends[0]);
+        loadMessage(resp?.data?.friends[0]);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
@@ -136,10 +138,15 @@ export default function FriendPage(props) {
                   mb={2}
                   overflow={"hidden"}
                   cursor={"pointer"}
-                  onClick={() => {
-                    setReceiver(item);
-                    loadMessage();
+                  onClick={async () => {
+                    setSelectedUser(item);
+                    loadMessage(item);
                   }}
+                  bgColor={
+                    item?.id === selectedUser?.id &&
+                    (theme === "dark" ? "black" : "lightgray")
+                  }
+                  colorScheme={item?.id === selectedUser?.id ? "gray" : "black"}
                 >
                   <Flex
                     overflow={"hidden"}
@@ -176,7 +183,7 @@ export default function FriendPage(props) {
             boxShadow={2}
           >
             <Box h={"60vh"} overflowY="auto">
-              {receiver && messages?.length > 0 ? (
+              {selectedUser?.id && messages?.length > 0 ? (
                 <Flex
                   p={4}
                   mb={4}
