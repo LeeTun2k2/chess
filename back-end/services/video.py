@@ -27,8 +27,8 @@ class VideoService():
         if '_id' in video:
             raise ValueError("Cannot create a video with an existing _id")
 
-        video["created_at"] = datetime.now()
-        video["updated_at"] = datetime.now()
+        video["created_at"] = datetime.now().isoformat()
+        video["updated_at"] = datetime.now().isoformat()
         result = self.videos_collection.insert_one(video)
         return self.map(self.videos_collection.find_one({'_id': result.inserted_id}))
     
@@ -40,7 +40,7 @@ class VideoService():
         if '_id' in video:
             del video['_id'] 
 
-        video["updated_at"] = datetime.now()
+        video["updated_at"] = datetime.now().isoformat()
 
         result = self.videos_collection.update_one({'_id': ObjectId(_id)}, {'$set': video})
         if result.modified_count == 0:

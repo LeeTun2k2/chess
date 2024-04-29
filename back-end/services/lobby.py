@@ -16,7 +16,7 @@ class LobbyService():
     def create_lobby(self, lobby, player_id):
         lobby["player_id"] = str(player_id)
         lobby["status"] = "OPEN"
-        lobby["created_at"] = datetime.now()
+        lobby["created_at"] = datetime.now().isoformat()
         result = self.lobbies_collection.insert_one(lobby)
         return self.map_lobby(self.lobbies_collection.find_one({'_id': result.inserted_id}))
     

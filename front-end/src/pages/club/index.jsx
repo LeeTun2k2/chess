@@ -72,20 +72,16 @@ export default function ClubPage(props) {
                 {t("club.welcome_to_calendar_club_meeting")}
               </Text>
               <Box>
-                <Text fontSize="md" fontWeight="bold">
-                  {t("club.date_time")}
-                </Text>
-                <Text>
+                <Text fontSize="md" noOfLines={1}>
+                  <strong>{t("club.date_time")}:</strong>{" "}
                   {meetingInfo?.time
                     ? formatDatetime(meetingInfo.time)
                     : t("club.datetime_not_found")}
                 </Text>
               </Box>
               <Box mt={4}>
-                <Text fontSize="md" fontWeight="bold">
-                  {t("club.location")}
-                </Text>
-                <Text>
+                <Text fontSize="md" noOfLines={3}>
+                  <strong>{t("club.location")}</strong> :{" "}
                   {meetingInfo?.location ?? t("club.location_not_found")}
                 </Text>
               </Box>

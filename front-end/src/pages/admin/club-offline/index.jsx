@@ -23,7 +23,7 @@ export default function AdminClubOfflinePage() {
 
   const defaultData = useMemo(
     () => ({
-      time: Date.now(),
+      time: new Date(Date.now()).toISOString(),
       location: "",
     }),
     []
@@ -72,13 +72,15 @@ export default function AdminClubOfflinePage() {
             <DatetimePicker
               value={formData.time}
               onChange={(hour, minute, date) => {
-                const selectedDate = new Date(date);
-                selectedDate.setHours(hour);
-                selectedDate.setMinutes(minute);
-                setFormData({
-                  ...formData,
-                  time: selectedDate,
-                });
+                try {
+                  const selectedDate = new Date(date);
+                  selectedDate.setHours(parseInt(hour) + 7);
+                  selectedDate.setMinutes(parseInt(minute));
+                  setFormData({
+                    ...formData,
+                    time: selectedDate.toISOString(),
+                  });
+                } catch {}
               }}
             />
           </FormControl>
