@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   Container,
   Flex,
@@ -12,10 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaDiamond } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
 import ChatBox from "../../components/chat/chatbox";
 import GroupButtonNav from "../../components/nav/groupButtonNav";
+import UpdateVipNow from "../../components/vip/updateVipNow";
 import axios from "../../lib/axios";
 import { formatDate, formatDatetime } from "../../lib/datetime";
 import { toast_error } from "../../lib/hooks/toast";
@@ -24,7 +22,7 @@ export default function ClubPage(props) {
   const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
   const toast = useToast();
-  const navigate = useNavigate();
+
   const [meetingInfo, setMeetingInfo] = useState(null);
 
   const [notifications, setNotifications] = useState([]);
@@ -111,7 +109,7 @@ export default function ClubPage(props) {
                         key={idx}
                         px={4}
                         py={2}
-                        borderBottom={"1px solid lightgray"}
+                        borderBottom={"1px solid rgba(0,0,0,0.05)"}
                       >
                         <Flex alignItems={"center"} minH={20}>
                           <Box w={"85%"}>
@@ -153,16 +151,7 @@ export default function ClubPage(props) {
             h={"fit-content"}
             borderRadius={8}
           >
-            <Button
-              colorScheme="green"
-              w={"100%"}
-              mb={4}
-              leftIcon={<FaDiamond />}
-              rightIcon={<FaDiamond />}
-              onClick={() => navigate("/vip")}
-            >
-              {t("club.upgrade_your_vip")}
-            </Button>
+            <UpdateVipNow />
             <ChatBox />
           </Box>
         </Flex>

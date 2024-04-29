@@ -14,6 +14,7 @@ import {
   Image,
   Input,
   Spacer,
+  Spinner,
   Text,
   useToast,
 } from "@chakra-ui/react";
@@ -21,6 +22,9 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DocNav from "../../components/nav/doc_nav";
+import ImageSlider from "../../components/slider/imageSlider";
+import UpdateVipNow from "../../components/vip/updateVipNow";
+import VipBannerSmall from "../../components/vip/vipBannerSmall";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
@@ -51,7 +55,19 @@ export default function BlogPage(props) {
     <Fragment>
       <Container maxW="container.2xl" py={4}>
         <Flex>
-          <Box w={"24%"}></Box>
+          <Box w={"24%"}>
+            <ImageSlider
+              images={[
+                "https://img.riokupon.com/upload/images/2024/02/13/6fa5c448b0eaba53791b2e14176026bf.png",
+                "https://cdn.thuvienphapluat.vn/uploads/Hoidapphapluat/2024/NTH/15022024/30-4.jpg",
+                "https://aedigi.com/wp-content/uploads/2022/04/ngay-thiet-ke-lao-dong-1-5-1-scaled.jpg",
+              ]}
+              height={52}
+            />
+            <Box py={2} />
+            <VipBannerSmall />
+          </Box>
+          <Spacer />
           <Box w={"48%"}>
             <Flex justify={"space-between"}>
               <Heading fontSize={"xl"} mb={4}>
@@ -95,41 +111,45 @@ export default function BlogPage(props) {
                 </Box>
               </Flex>
             </Flex>
-            {renderData
-              .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
-              .map((item, index) => (
-                <Card
-                  key={index}
-                  p={4}
-                  variant={"outline"}
-                  onClick={() => {
-                    navigate(`/blog/${item._id}`);
-                  }}
-                  cursor={"pointer"}
-                  mb={4}
-                >
-                  <Flex
-                    justifyContent={"start"}
-                    alignItems={"center"}
-                    w={"100%"}
+            {renderData?.length === 0 ? (
+              <Spinner />
+            ) : (
+              renderData
+                .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+                .map((item, index) => (
+                  <Card
+                    key={index}
+                    p={4}
+                    variant={"outline"}
+                    onClick={() => {
+                      navigate(`/blog/${item._id}`);
+                    }}
+                    cursor={"pointer"}
+                    mb={4}
                   >
-                    <Image
-                      h={20}
-                      w={20}
-                      src={`${appSettings.API_PROXY}/images/${item.image}`}
-                      alt={item.title}
-                      objectFit={"cover"}
-                      borderRadius={4}
-                    />
-                    <Box ml={4}>
-                      <Text fontWeight={"bold"} noOfLines={1}>
-                        {item.title}
-                      </Text>
-                      <Text noOfLines={2}>{item.description}</Text>
-                    </Box>
-                  </Flex>
-                </Card>
-              ))}
+                    <Flex
+                      justifyContent={"start"}
+                      alignItems={"center"}
+                      w={"100%"}
+                    >
+                      <Image
+                        h={20}
+                        w={20}
+                        src={`${appSettings.API_PROXY}/images/${item.image}`}
+                        alt={item.title}
+                        objectFit={"cover"}
+                        borderRadius={4}
+                      />
+                      <Box ml={4}>
+                        <Text fontWeight={"bold"} noOfLines={1}>
+                          {item.title}
+                        </Text>
+                        <Text noOfLines={2}>{item.description}</Text>
+                      </Box>
+                    </Flex>
+                  </Card>
+                ))
+            )}
             <Flex justify="center" mt={4}>
               <ButtonGroup>
                 <Button
@@ -173,6 +193,7 @@ export default function BlogPage(props) {
           </Box>
           <Spacer />
           <Box w={"24%"}>
+            <UpdateVipNow />
             <DocNav />
           </Box>
         </Flex>

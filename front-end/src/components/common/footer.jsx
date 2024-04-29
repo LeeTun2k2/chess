@@ -17,6 +17,7 @@ export default function Footer() {
       justifyContent={"space-evenly"}
       alignItems="center"
       w="100%"
+      userSelect={"none"}
     >
       <Box>
         <HStack>
