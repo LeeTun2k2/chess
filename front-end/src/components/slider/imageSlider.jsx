@@ -39,6 +39,7 @@ const ImageSlider = ({
             h={height}
             objectFit={"fill"}
             borderRadius={8}
+            aspectRatio={16 / 9}
           />
         </SwiperSlide>
       ))}

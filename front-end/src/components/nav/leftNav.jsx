@@ -12,7 +12,6 @@ export default function LeftNav() {
           "https://cdn.thuvienphapluat.vn/uploads/Hoidapphapluat/2024/NTH/15022024/30-4.jpg",
           "https://aedigi.com/wp-content/uploads/2022/04/ngay-thiet-ke-lao-dong-1-5-1-scaled.jpg",
         ]}
-        height={52}
       />
       <Box py={2} />
       <VipBannerSmall />
