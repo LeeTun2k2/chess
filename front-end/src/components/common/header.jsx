@@ -34,7 +34,12 @@ const Header = () => {
   }, [user_data]);
 
   return (
-    <Box bgColor={theme === "dark" ? "black" : "lightgray"} py={2} zIndex={3}>
+    <Box
+      bgColor={theme === "dark" ? "black" : "lightgray"}
+      py={2}
+      zIndex={3}
+      userSelect={"none"}
+    >
       <Flex align="center">
         <HStack
           cursor="pointer"
@@ -132,14 +137,17 @@ const PcMenu = ({ user }) => {
           <MenuItem onClick={() => navigate("/puzzle")}>
             {t("header.puzzles")}
           </MenuItem>
+          <MenuItem onClick={() => navigate("/chessle")}>
+            {t("header.chessle")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/noirchess")}>
+            {t("header.noirchess")}
+          </MenuItem>
           <MenuItem onClick={() => navigate("/videos")}>
             {t("header.videos")}
           </MenuItem>
           <MenuItem onClick={() => navigate("/books")}>
             {t("header.books")}
-          </MenuItem>
-          <MenuItem onClick={() => navigate("/lessons")}>
-            {t("header.lessons")}
           </MenuItem>
         </MenuList>
       </Menu>
@@ -154,6 +162,18 @@ const PcMenu = ({ user }) => {
           display={{ base: "none", md: "flex" }}
         >
           {t("header.tv")}
+        </MenuButton>
+      </Menu>
+      <Menu>
+        <MenuButton
+          textTransform={"uppercase"}
+          as={Button}
+          variant="ghost"
+          mx={2}
+          onClick={() => navigate("/tv")}
+          display={{ base: "none", md: "flex" }}
+        >
+          {t("header.vip")}
         </MenuButton>
       </Menu>
       {user?.id ? (

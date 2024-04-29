@@ -32,7 +32,7 @@ export default function AdminUpdateAchievementPage() {
       member: "",
       reward: "",
     }),
-    [],
+    []
   );
   const [formData, setFormData] = useState(defaultData);
 
@@ -81,9 +81,11 @@ export default function AdminUpdateAchievementPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("achievements.update")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("achievements.update")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/achievements");

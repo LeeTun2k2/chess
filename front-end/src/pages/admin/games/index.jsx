@@ -50,9 +50,11 @@ export default function AdminGamesPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("games.heading")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("games.heading")}
+          </Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -82,8 +84,8 @@ export default function AdminGamesPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.status
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
                 title="search"
@@ -204,7 +206,7 @@ export default function AdminGamesPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

@@ -107,7 +107,7 @@ const ChatBox = () => {
         mb={4}
         borderRadius="md"
         boxShadow={4}
-        h={530}
+        h={430}
         overflowY="auto"
         scrollBehavior={"smooth"}
         border={"1px solid lightgray"}

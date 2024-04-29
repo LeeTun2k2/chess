@@ -43,8 +43,8 @@ class AchievementService():
         if '_id' in achievement:
             raise ValueError("Cannot create a achievement with an existing _id")
 
-        achievement["created_at"] = datetime.now()
-        achievement["updated_at"] = datetime.now()
+        achievement["created_at"] = datetime.now().isoformat()
+        achievement["updated_at"] = datetime.now().isoformat()
         result = self.achievements_collection.insert_one(achievement)
         return self.map(self.achievements_collection.find_one({'_id': result.inserted_id}))
     
@@ -56,7 +56,7 @@ class AchievementService():
         if '_id' in achievement:
             del achievement['_id'] 
 
-        achievement["updated_at"] = datetime.now()
+        achievement["updated_at"] = datetime.now().isoformat()
 
         result = self.achievements_collection.update_one({'_id': ObjectId(_id)}, {'$set': achievement})
         if result.modified_count == 0:

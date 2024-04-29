@@ -72,7 +72,7 @@ export default function AdminNotificationsPage() {
       .delete(`${appSettings.API_PROXY}/notifications/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id),
+          renderData.filter((item) => item._id !== selectedItem._id)
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
@@ -87,9 +87,11 @@ export default function AdminNotificationsPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("notifications.heading")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("notifications.heading")}
+          </Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -114,8 +116,8 @@ export default function AdminNotificationsPage() {
                           .includes(searchText.toLowerCase()) ||
                         value?.description
                           ?.toLowerCase()
-                          .includes(searchText.toLocaleLowerCase()),
-                    ),
+                          .includes(searchText.toLocaleLowerCase())
+                    )
                   );
                 }}
                 title="search"
@@ -259,7 +261,7 @@ export default function AdminNotificationsPage() {
                         >
                           {i + 1}
                         </Button>
-                      ),
+                      )
                   )}
                   <Button
                     colorScheme="gray"

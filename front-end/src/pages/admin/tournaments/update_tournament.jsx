@@ -40,7 +40,7 @@ export default function AdminUpdatetournamentPage() {
       start: Date.now(),
       end: Date.now(),
     }),
-    [],
+    []
   );
 
   const [formData, setFormData] = useState(defaultData);
@@ -82,9 +82,11 @@ export default function AdminUpdatetournamentPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("tournaments.update")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("tournaments.update")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/tournaments");

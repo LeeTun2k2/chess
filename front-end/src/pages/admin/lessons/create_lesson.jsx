@@ -47,7 +47,7 @@ export default function CreateLessonPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Heading mb={8} display="flex" alignItems="center">
           <FaBook style={{ marginRight: "16px" }} /> Create new lesson
         </Heading>

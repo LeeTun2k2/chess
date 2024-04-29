@@ -28,7 +28,12 @@ const AdminHeader = () => {
   }, [user_data]);
 
   return (
-    <Box bgColor={theme === "dark" ? "black" : "lightgray"} py={2} zIndex={3}>
+    <Box
+      bgColor={theme === "dark" ? "black" : "lightgray"}
+      py={2}
+      zIndex={3}
+      userSelect={"none"}
+    >
       <Flex align="center">
         <HStack
           cursor="pointer"

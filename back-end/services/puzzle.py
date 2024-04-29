@@ -54,7 +54,7 @@ class PuzzleService():
                 'variant': variant,
                 'fen': fen,
                 'moves': move,
-                'created_at': datetime.now(),
+                'created_at': datetime.now().isoformat(),
             })
         result = self.puzzles_collection.insert_many(puzzles)
         return len(result.inserted_ids)

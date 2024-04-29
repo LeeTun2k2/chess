@@ -76,7 +76,7 @@ export default function UserProfile() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex direction={{ base: "column", md: "row" }}>
           <Box w={{ base: "100%", md: "30%" }} mb={{ base: 8, md: 0 }}>
             <UserInfo user={user} />

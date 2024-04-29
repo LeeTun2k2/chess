@@ -23,10 +23,10 @@ export default function AdminClubOfflinePage() {
 
   const defaultData = useMemo(
     () => ({
-      time: Date.now(),
+      time: new Date(Date.now()).toISOString(),
       location: "",
     }),
-    [],
+    []
   );
   const [formData, setFormData] = useState(defaultData);
 
@@ -60,9 +60,11 @@ export default function AdminClubOfflinePage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("others.offline-calendar")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("others.offline-calendar")}
+          </Heading>
         </Flex>
         <form onSubmit={handleSubmit}>
           <FormControl id="time" mt={4} isRequired>
@@ -70,13 +72,15 @@ export default function AdminClubOfflinePage() {
             <DatetimePicker
               value={formData.time}
               onChange={(hour, minute, date) => {
-                const selectedDate = new Date(date);
-                selectedDate.setHours(hour);
-                selectedDate.setMinutes(minute);
-                setFormData({
-                  ...formData,
-                  time: selectedDate,
-                });
+                try {
+                  const selectedDate = new Date(date);
+                  selectedDate.setHours(parseInt(hour) + 7);
+                  selectedDate.setMinutes(parseInt(minute));
+                  setFormData({
+                    ...formData,
+                    time: selectedDate.toISOString(),
+                  });
+                } catch {}
               }}
             />
           </FormControl>

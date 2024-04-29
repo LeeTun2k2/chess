@@ -22,7 +22,7 @@ class OtherService():
         offline_calendar_data = {
             'time': time,
             'location': location,
-            'updated_at': datetime.now()
+            'updated_at': datetime.now().isoformat()
         }
 
         if not data:

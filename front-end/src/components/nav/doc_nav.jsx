@@ -1,21 +1,33 @@
 import { Container } from "@chakra-ui/react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { FaBlog, FaBook, FaPlay, FaPuzzlePiece, FaVideo } from "react-icons/fa";
 import NavList from "./nav_list";
-import { FaBlog, FaBook, FaPlay, FaVideo } from "react-icons/fa";
-import { FaPuzzlePiece } from "react-icons/fa";
 
-const quick_play = [
-  { _id: "play-online", text: "Play vs online", href: "/play/online" },
-  { _id: "play-friend", text: "Play vs friend", href: "/play/friend" },
-  { _id: "play-computer", text: "Play vs computer", href: "/play/computer" },
-];
+export default function DocNav() {
+  const { t } = useTranslation();
+  const quick_play = useMemo(
+    () => [
+      { _id: "play-online", text: t("header.play"), href: "/new-game" },
+      { _id: "lobby", text: t("header.lobby"), href: "/lobby" },
+      {
+        _id: "tournaments",
+        text: t("header.tournaments"),
+        href: "/tournaments",
+      },
+    ],
+    [t]
+  );
 
-const quick_pratice = [
-  { _id: "puzzles", text: "Puzzles", href: "/puzzles" },
-  { _id: "books", text: "Books", href: "/books" },
-  { _id: "videos", text: "Videos", href: "videos" },
-];
+  const quick_pratice = useMemo(
+    () => [
+      { _id: "puzzles", text: t("header.puzzles"), href: "/puzzles" },
+      { _id: "books", text: t("header.books"), href: "/books" },
+      { _id: "videos", text: t("header.videos"), href: "videos" },
+    ],
+    [t]
+  );
 
-export default function DocNav(props) {
   const getData = () => {
     return {
       quick_blogs: [
@@ -50,35 +62,35 @@ export default function DocNav(props) {
     <Container mt={4}>
       <NavList
         list={quick_blogs ?? []}
-        heading="Blogs"
+        heading={t("header.blogs")}
         icon={<FaBlog style={{ marginRight: "8px" }} />}
         my={4}
       />
 
       <NavList
         list={quick_books ?? []}
-        heading="Books"
+        heading={t("header.books")}
         icon={<FaBook style={{ marginRight: "8px" }} />}
         my={4}
       />
 
       <NavList
         list={quick_videos ?? []}
-        heading="Videos"
+        heading={t("header.videos")}
         icon={<FaVideo style={{ marginRight: "8px" }} />}
         my={4}
       />
 
       <NavList
         list={quick_play ?? []}
-        heading="Play"
+        heading={t("header.play")}
         icon={<FaPlay style={{ marginRight: "8px" }} />}
         my={4}
       />
 
       <NavList
         list={quick_pratice ?? []}
-        heading="Pratice"
+        heading={t("header.practice")}
         icon={<FaPuzzlePiece style={{ marginRight: "8px" }} />}
       />
     </Container>

@@ -16,7 +16,7 @@ export default function LessonDetailPage() {
   const fetchLesson = async () => {
     try {
       const response = await axios.get(
-        `${appSettings.API_PROXY}/lessons/${lessonId}`,
+        `${appSettings.API_PROXY}/lessons/${lessonId}`
       );
       setLesson(response.data);
       setLoading(false);
@@ -28,7 +28,7 @@ export default function LessonDetailPage() {
   if (loading) {
     return (
       <Fragment>
-        <Container maxW="6xl" py={8}>
+        <Container maxW="container.2xl" py={4}>
           <Heading as="h1" mb={4}>
             Loading...
           </Heading>
@@ -39,7 +39,7 @@ export default function LessonDetailPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Box>
           <Image
             src={lesson.image}

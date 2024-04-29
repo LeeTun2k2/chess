@@ -27,8 +27,8 @@ class NotificationService():
         if '_id' in notification:
             raise ValueError("Cannot create a notification with an existing _id")
 
-        notification["created_at"] = datetime.now()
-        notification["updated_at"] = datetime.now()
+        notification["created_at"] = datetime.now().isoformat()
+        notification["updated_at"] = datetime.now().isoformat()
         result = self.notifications_collection.insert_one(notification)
         return self.map(self.notifications_collection.find_one({'_id': result.inserted_id}))
     
@@ -40,7 +40,7 @@ class NotificationService():
         if '_id' in notification:
             del notification['_id'] 
 
-        notification["updated_at"] = datetime.now()
+        notification["updated_at"] = datetime.now().isoformat()
 
         result = self.notifications_collection.update_one({'_id': ObjectId(_id)}, {'$set': notification})
         if result.modified_count == 0:

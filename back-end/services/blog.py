@@ -35,8 +35,8 @@ class BlogService():
         blog["likes"] = 0
         blog["comments"] = []
         blog["users_like"] = []
-        blog["created_at"] = datetime.now()
-        blog["updated_at"] = datetime.now()
+        blog["created_at"] = datetime.now().isoformat()
+        blog["updated_at"] = datetime.now().isoformat()
         image = blog["image"]
         status, message = ImageService().save_file(image, f"blog-{uuid.uuid4().hex}", image.filename.split('.')[-1])
         if not status:
@@ -56,7 +56,7 @@ class BlogService():
         blog["likes"] = existing_blog["likes"]
         blog["comments"] = existing_blog["comments"]
         blog["users_like"] = existing_blog["users_like"]
-        blog["updated_at"] = datetime.now()
+        blog["updated_at"] = datetime.now().isoformat()
 
         image = blog["image"]
         old_file_name = existing_blog["image"]
@@ -78,7 +78,7 @@ class BlogService():
     
     def add_comment(self, blog_id, comment_data, user_id):
         comment_data["user_id"] = str(user_id)
-        comment_data["created_at"] = datetime.now()
+        comment_data["created_at"] = datetime.now().isoformat()
         self.blogs_collection.update_one(
             {'_id': ObjectId(blog_id)},
             {'$push': {'comments': comment_data}}

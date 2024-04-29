@@ -73,9 +73,11 @@ export default function AdminCreateTournamentPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("tournaments.create")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("tournaments.create")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/tournaments");

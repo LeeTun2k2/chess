@@ -53,9 +53,11 @@ export default function AdminCreatenNotificationPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("notifications.create")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("notifications.create")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/notifications");
@@ -82,8 +84,8 @@ export default function AdminCreatenNotificationPage() {
               type="text"
               name="description"
               value={formData.description}
-              maxLength={100}
-              placeholder={t("common.text_max_100")}
+              maxLength={200}
+              placeholder={t("common.text_max_200")}
               onChange={handleChange}
             />
           </FormControl>

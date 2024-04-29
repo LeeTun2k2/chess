@@ -30,7 +30,7 @@ export default function AdminUpdateNotificationPage() {
       event: "",
       description: "",
     }),
-    [],
+    []
   );
   const [formData, setFormData] = useState(defaultData);
 
@@ -71,9 +71,11 @@ export default function AdminUpdateNotificationPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("notifications.update")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("notifications.update")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/notifications");
@@ -100,8 +102,8 @@ export default function AdminUpdateNotificationPage() {
               type="text"
               name="description"
               value={formData.description}
-              maxLength={100}
-              placeholder={t("common.text_max_100")}
+              maxLength={200}
+              placeholder={t("common.text_max_200")}
               onChange={handleChange}
             />
           </FormControl>

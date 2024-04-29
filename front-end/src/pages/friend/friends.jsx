@@ -23,8 +23,10 @@ const FriendsPage = () => {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
-        <Heading mb={4}>{t("friends.heading")}</Heading>
+      <Container maxW="container.2xl" py={4}>
+        <Heading fontSize={"xl"} mb={4}>
+          {t("friends.heading")}
+        </Heading>
         <Tabs onChange={handleTabChange} index={tabIndex} colorScheme="teal">
           <TabList>
             <Tab>{t("friends.friends_list")}</Tab>

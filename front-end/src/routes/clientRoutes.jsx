@@ -11,6 +11,8 @@ import WaitingGamePage from "../pages/game/waitingGame";
 import HomePage from "../pages/home";
 import BookPage from "../pages/practice/book";
 import BookListPage from "../pages/practice/books";
+import ChesslePage from "../pages/practice/chessle";
+import NoirchessPage from "../pages/practice/noirchess";
 import PuzzlePage from "../pages/practice/puzzle";
 import VideoPage from "../pages/practice/video";
 import VideoListPage from "../pages/practice/videos";
@@ -42,6 +44,8 @@ const ClientRoutes = ({ user }) => {
         <Route path="friends" element={<FriendList />} />
         <Route path="chat" element={<ChatPage />} />
         <Route path="puzzle" element={<PuzzlePage />} />
+        <Route path="chessle" element={<ChesslePage />} />
+        <Route path="noirchess" element={<NoirchessPage />} />
       </Route>
     </Fragment>
   );

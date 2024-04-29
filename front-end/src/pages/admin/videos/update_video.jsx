@@ -72,9 +72,11 @@ export default function AdminUpdateVideoPage() {
 
   return (
     <Fragment>
-      <Container maxW="6xl" py={8}>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("videos.update")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("videos.update")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/videos");
@@ -101,8 +103,8 @@ export default function AdminUpdateVideoPage() {
               type="text"
               name="description"
               value={formData.description}
-              maxLength={100}
-              placeholder={t("common.text_max_100")}
+              maxLength={200}
+              placeholder={t("common.text_max_200")}
               onChange={handleChange}
             />
           </FormControl>
