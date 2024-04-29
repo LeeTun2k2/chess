@@ -14,5 +14,8 @@
   "puzzle": "Puzzle",
   "donate": "Donate",
   "tv": "TV",
-  "upgrade_your_vip": "Upgrade your VIP now"
+  "upgrade_your_vip": "Upgrade your VIP now",
+  "card_bank": "Bank name",
+  "card_number": "Card number",
+  "card_name": "Card name"
 }

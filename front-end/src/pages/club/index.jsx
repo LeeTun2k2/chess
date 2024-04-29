@@ -110,6 +110,7 @@ export default function ClubPage(props) {
                         px={4}
                         py={2}
                         borderBottom={"1px solid rgba(0,0,0,0.05)"}
+                        bgColor={"transparent"}
                       >
                         <Flex alignItems={"center"} minH={20}>
                           <Box w={"85%"}>
