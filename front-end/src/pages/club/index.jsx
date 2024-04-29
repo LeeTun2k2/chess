@@ -100,13 +100,11 @@ export default function ClubPage(props) {
                 {t("club.notifications")}
               </Heading>
               <Box border={"1px lightgray solid"} borderRadius={8}>
-                {notifications?.length === 0 ? (
-                  <Spinner />
-                ) : (
-                  notifications.map((notification, idx) => {
+                {notifications?.length > 0 ? (
+                  notifications.map((notification) => {
                     return (
                       <Card
-                        key={idx}
+                        key={notification._id}
                         px={4}
                         py={2}
                         borderBottom={"1px solid rgba(0,0,0,0.05)"}
@@ -141,6 +139,8 @@ export default function ClubPage(props) {
                       </Card>
                     );
                   })
+                ) : (
+                  <Spinner />
                 )}
               </Box>
             </Box>

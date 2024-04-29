@@ -18,6 +18,7 @@ import settings from "./settings.json";
 import tournaments from "./tournaments.json";
 import users from "./users.json";
 import videos from "./videos.json";
+import vip from "./vip.json";
 
 const en = {
   common,
@@ -40,6 +41,7 @@ const en = {
   notifications,
   chat,
   friends,
+  vip,
 };
 
 export default en;

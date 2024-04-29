@@ -16,7 +16,7 @@ export default function UpdateVipNow() {
       rightIcon={<FaDiamond />}
       onClick={() => navigate("/vip")}
     >
-      {t("club.upgrade_your_vip")}
+      {t("vip.upgrade_your_vip")}
     </Button>
   );
 }

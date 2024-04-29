@@ -111,9 +111,7 @@ export default function BlogPage(props) {
                 </Box>
               </Flex>
             </Flex>
-            {renderData?.length === 0 ? (
-              <Spinner />
-            ) : (
+            {renderData?.length > 0 ? (
               renderData
                 .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
                 .map((item, index) => (
@@ -149,6 +147,8 @@ export default function BlogPage(props) {
                     </Flex>
                   </Card>
                 ))
+            ) : (
+              <Spinner />
             )}
             <Flex justify="center" mt={4}>
               <ButtonGroup>

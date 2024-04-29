@@ -101,7 +101,7 @@ const DonatePage = () => {
           alt="chess7"
           w={"20%"}
           objectFit={"contain"}
-          minH={32}
+          h={48}
         />
         <Spacer />
         <Box px={32} mt={4}>
@@ -117,8 +117,8 @@ const DonatePage = () => {
           src="https://scontent.fsgn5-11.fna.fbcdn.net/v/t39.30808-6/309943402_105621952330061_8497908223694667180_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGOZd-deVWxxQwmrXZux6Q93RjGNeOkm5LdGMY146SbkoEXjcEhcljGOvLFgUrSsevNnTJEYCWhZ-CkN3pXZKmI&_nc_ohc=hkHjodGHxqMAb4jZFWh&_nc_ht=scontent.fsgn5-11.fna&oh=00_AfDwBM7_fG1qas-C_0J_LzBV1hag2jzLH4QV6CDft1LCUA&oe=66351CF0"
           alt="chess8"
           w={"20%"}
-          objectFit={"contain"}
-          minH={32}
+          objectFit={"cover"}
+          h={48}
         />
       </Flex>
     </Box>
