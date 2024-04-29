@@ -137,6 +137,12 @@ const PcMenu = ({ user }) => {
           <MenuItem onClick={() => navigate("/puzzle")}>
             {t("header.puzzles")}
           </MenuItem>
+          <MenuItem onClick={() => navigate("/chessle")}>
+            {t("header.chessle")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/noirchess")}>
+            {t("header.noirchess")}
+          </MenuItem>
           <MenuItem onClick={() => navigate("/videos")}>
             {t("header.videos")}
           </MenuItem>
