@@ -143,9 +143,6 @@ const PcMenu = ({ user }) => {
           <MenuItem onClick={() => navigate("/books")}>
             {t("header.books")}
           </MenuItem>
-          <MenuItem onClick={() => navigate("/lessons")}>
-            {t("header.lessons")}
-          </MenuItem>
         </MenuList>
       </Menu>
 
@@ -159,6 +156,18 @@ const PcMenu = ({ user }) => {
           display={{ base: "none", md: "flex" }}
         >
           {t("header.tv")}
+        </MenuButton>
+      </Menu>
+      <Menu>
+        <MenuButton
+          textTransform={"uppercase"}
+          as={Button}
+          variant="ghost"
+          mx={2}
+          onClick={() => navigate("/tv")}
+          display={{ base: "none", md: "flex" }}
+        >
+          {t("header.vip")}
         </MenuButton>
       </Menu>
       {user?.id ? (

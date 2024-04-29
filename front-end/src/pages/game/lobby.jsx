@@ -26,6 +26,8 @@ import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import NewOnlineGameModal from "../../components/game/newGameModal";
+import LeftNav from "../../components/nav/leftNav";
+import UpdateVipNow from "../../components/vip/updateVipNow";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import socket from "../../lib/socket";
@@ -111,19 +113,22 @@ export default function LobbyPage(props) {
     <Fragment>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
       <Container maxW="container.2xl" py={4}>
-        <Heading fontSize={"xl"} mb={4}>
-          {t("games.lobby")}{" "}
-          {loading && <Spinner size="lg" variant="primary" />}
-        </Heading>
         <Flex
           direction={{ base: "column", md: "row" }}
           justifyContent={"center"}
         >
           <Box
-            w={{ base: "100%", md: "66%" }}
-            mb={{ base: 8, md: 0 }}
-            h={"100%"}
+            w={{ base: "0%", md: "24%" }}
+            display={{ base: "none", md: "block" }}
           >
+            <LeftNav />
+          </Box>
+          <Spacer />
+          <Box w={{ base: "100%", md: "48%" }} mb={{ base: 8, md: 0 }}>
+            <Heading fontSize={"xl"} mb={4}>
+              {t("games.lobby")}{" "}
+              {loading && <Spinner size="lg" variant="primary" />}
+            </Heading>
             <Table
               size={{ base: "sm", md: "md" }}
               colorScheme="gray"
@@ -222,10 +227,9 @@ export default function LobbyPage(props) {
               </Tfoot>
             </Table>
           </Box>
-
           <Spacer display={{ base: "none", md: "block" }} />
-
-          <Box w={{ base: "100%", md: "30%" }}>
+          <Box w={{ base: "100%", md: "24%" }}>
+            <UpdateVipNow />
             <Button w="100%" onClick={onOpen}>
               {t("games.new_game")}
             </Button>

@@ -17,8 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ImageSlider from "../../components/slider/imageSlider";
-import VipBannerSmall from "../../components/vip/vipBannerSmall";
+import LeftNav from "../../components/nav/leftNav";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
 import { toast_error } from "../../lib/hooks/toast";
@@ -51,16 +50,7 @@ export default function AchievementPage() {
             w={{ base: "0%", md: "24%" }}
             display={{ base: "none", md: "block" }}
           >
-            <ImageSlider
-              images={[
-                "https://img.riokupon.com/upload/images/2024/02/13/6fa5c448b0eaba53791b2e14176026bf.png",
-                "https://cdn.thuvienphapluat.vn/uploads/Hoidapphapluat/2024/NTH/15022024/30-4.jpg",
-                "https://aedigi.com/wp-content/uploads/2022/04/ngay-thiet-ke-lao-dong-1-5-1-scaled.jpg",
-              ]}
-              height={52}
-            />
-            <Box py={2} />
-            <VipBannerSmall />
+            <LeftNav />
           </Box>
           <Spacer />
           <Box w={{ base: "100%", md: "74%" }}>

@@ -1,13 +1,14 @@
 from bson import ObjectId
 from database.mongodb import get_db
+from database.redis import get_redis
 from random import randint
 from common.constant import CHESS, XIANGQI, CHESS_FEN, XIANGQI_FEN
 from datetime import datetime
 from services.rating import rate_1vs1
-
 class GameService():
     def __init__(self) -> None:
         self.db = get_db()
+        self.redis = get_redis()
         self.users_collection = self.db['users']
         self.online_games_collection = self.db['online_games']
         self.friend_games_collection = self.db['friend_games']
@@ -81,13 +82,23 @@ class GameService():
         id_usernames = {}
         for user in users:
             id_usernames[str(user["_id"])] = user["username"]
-
         # games
         games = self.online_games_collection.find({'status': 'STARTED'}).sort('created_at', -1)
         res = []
+
         for game in games:
-            game['white_username'] = id_usernames[game['white']]
-            game['black_username'] = id_usernames[game['black']]
+            white_id = game['white']
+            black_id = game['black']
+
+            if white_id in id_usernames:
+                game['white_username'] = id_usernames[white_id]
+            else: 
+                game['white_username'] = "User not found"
+
+            if black_id in id_usernames:
+                game['black_username'] = id_usernames[black_id]
+            else: 
+                game['black_username'] = "User not found"
             res.append(self.map(game))
         return res
     
@@ -304,3 +315,6 @@ class GameService():
             return True  # Return True to indicate successful checkmate
         else:
             return False  # Return False if the game doesn't exist
+        
+    def cache_move(self, fen, moves, white_time, black_time):
+        pass
