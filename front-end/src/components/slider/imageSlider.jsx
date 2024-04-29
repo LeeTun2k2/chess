@@ -10,7 +10,7 @@ import "swiper/swiper-bundle.css";
 
 const ImageSlider = ({
   images,
-  interval = 5000,
+  interval = 9000,
   width = "100%",
   height = "100%",
 }) => {
