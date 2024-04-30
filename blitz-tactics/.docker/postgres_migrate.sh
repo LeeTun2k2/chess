@@ -1,0 +1,1 @@
+docker exec -it docker-blitz-tactics-1 sh -c "rails db:create && rails db:migrate && yarn lichess:puzzles:fetch && yarn lichess:puzzles:import && yarn lichess:puzzles:check && yarn blitz:game_modes:fetch && yarn blitz:game_modes:import && yarn blitz:game_modes:check"
