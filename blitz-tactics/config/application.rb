@@ -33,6 +33,9 @@ module BlitzTactics
     config.assets.paths << Rails.root.join("app/javascript/game_modes")
 
     config.active_record.schema_format = :sql
+    config.action_dispatch.default_headers = {
+      'X-Frame-Options' => 'ALLOWALL'
+    }
 
     # Configuration for the application, engines, and railties goes here.
     #
