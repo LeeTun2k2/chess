@@ -28,7 +28,7 @@ export default function ChesslePage() {
               borderRadius={8}
             >
               <iframe
-                title="naruto"
+                title="iframe"
                 src="https://jackli.gg/chessle/"
                 allowFullScreen
               />

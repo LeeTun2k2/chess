@@ -3,8 +3,9 @@ import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import LeftNav from "../../components/nav/leftNav";
 import UpdateVipNow from "../../components/vip/updateVipNow";
+import appSettings from "../../settings/appSettings";
 
-export default function NoirchessPage() {
+export default function ThreePage() {
   const { t } = useTranslation();
 
   return (
@@ -29,7 +30,7 @@ export default function NoirchessPage() {
             >
               <iframe
                 title="iframe"
-                src="http://www.noirchess.com/Game/www/index.html"
+                src={`${appSettings.VIP_GAMES}/three`}
                 allowFullScreen
               />
             </AspectRatio>
