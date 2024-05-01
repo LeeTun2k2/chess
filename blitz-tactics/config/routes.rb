@@ -47,8 +47,8 @@ Rails.application.routes.draw do
   post '/rated/attempts'         => 'game_modes/rated#attempt'
 
   # more pages
-  get '/scoreboard'              => 'pages#scoreboard'
-  get '/about'                   => 'pages#about'
+  # get '/scoreboard'              => 'pages#scoreboard'
+  # get '/about'                   => 'pages#about'
 
   # puzzle pages
   get '/puzzles'                 => 'puzzles#index'

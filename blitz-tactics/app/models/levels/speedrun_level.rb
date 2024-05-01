@@ -40,8 +40,12 @@ class SpeedrunLevel < ActiveRecord::Base
     open(json_data_filename, 'r') { |f| JSON.parse(f.read) }
   end
 
+  # def first_puzzle
+  #   Puzzle.find(puzzles.first["id"])
+  # end
+
   def first_puzzle
-    Puzzle.find(puzzles.first["id"])
+    speedrun_puzzles.order('id ASC').first
   end
 
   def num_puzzles
