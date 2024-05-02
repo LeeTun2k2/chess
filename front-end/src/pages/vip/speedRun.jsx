@@ -21,7 +21,7 @@ export default function SpeedRunPage() {
 
           <Spacer />
 
-          <Box w={{ base: "100%", md: "48%" }} mb={{ base: 8, md: 0 }}>
+          <Box w={{ base: "100%", md: "50%" }} mb={{ base: 8, md: 0 }}>
             <AspectRatio
               w={"100%"}
               ratio={1}
@@ -30,7 +30,7 @@ export default function SpeedRunPage() {
             >
               <iframe
                 title="iframe"
-                src={`${appSettings.VIP_GAMES}/speedrun`}
+                src={`${appSettings.API_PROXY}/blitz-tactics/speedrun`}
                 allowFullScreen
               />
             </AspectRatio>
