@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required
 
 blitztactic_bp = Blueprint('blitztactics', __name__)
 
-BLITZ_TACTICS_URL = "blitz-tactics:3000"
+BLITZ_TACTICS_URL = "http://chess_blitz-tactics:3000"
 
 @blitztactic_bp.route('/api/blitz-tactics/haste', methods=['GET'])
 def pass_haste():
