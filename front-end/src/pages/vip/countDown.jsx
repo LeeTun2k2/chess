@@ -3,11 +3,13 @@ import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import LeftNav from "../../components/nav/leftNav";
 import UpdateVipNow from "../../components/vip/updateVipNow";
+import { getUserData } from "../../lib/auth";
 import appSettings from "../../settings/appSettings";
 
 export default function CountDownPage() {
   const { t } = useTranslation();
-
+  const user = getUserData();
+  const token = btoa(user?.id ?? "");
   return (
     <Fragment>
       <Container maxW="container.2xl" py={4}>
@@ -30,7 +32,7 @@ export default function CountDownPage() {
             >
               <iframe
                 title="iframe"
-                src={`${appSettings.API_PROXY}/blitz-tactics/countdown`}
+                src={`${appSettings.API_PROXY}/blitz-tactics/countdown?token=${token}`}
                 allowFullScreen
               />
             </AspectRatio>
