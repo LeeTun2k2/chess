@@ -1,5 +1,6 @@
 services:
   frontend:
+    container_name: chess_frontend
     image: leetun2k2/chess_frontend:latest
     ports:
       - 10040:80
@@ -9,18 +10,19 @@ services:
       - frontend_backend
       - frontend_stockfish
       - frontend_pikafish
+      - frontend-blitz-tactics
 
   backend:
+    container_name: chess_backend
     image: leetun2k2/chess_backend:latest
     volumes:
-      - ./uploads/images:/app/uploads/images
+      - ./uploads:/app/uploads
     environment:
       - NEW_RELIC_LICENSE_KEY=3b17d5c55b244bdd5433f5c852d84f13FFFFNRAL
       - NEW_RELIC_APP_NAME=Python Application
     stdin_open: true
     tty: true
-    restart: "no"
-    container_name: chess_backend
+    restart: always
     depends_on:
       - mongodb
       - redis
@@ -34,23 +36,55 @@ services:
       - backend_redis
 
   stockfish:
+    container_name: chess_stockfish
     image: leetun2k2/stockfish:latest
     networks:
       - frontend_stockfish
       - backend_stockfish
 
   pikafish:
+    container_name: chess_pikafish
     image: leetun2k2/pikafish:latest
     networks:
       - frontend_pikafish
       - backend_pikafish
 
+  blitz-tactics:
+    container_name: chess_blitz-tactics
+    image: leetun2k2/chess_blitz-tactics:latest
+    restart: always
+    working_dir: /app
+    depends_on:
+      - postgres
+    networks:
+      - blitz-tactics-postgres
+      - frontend-blitz-tactics
+
+  postgres:
+    container_name: chess_postgres
+    image: postgres:9-alpine
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: database
+      PGUSER: username
+    restart: always
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - blitz-tactics-postgres
+
   mongodb:
+    container_name: chess_mongodb
     image: mongo:latest
+    volumes:
+      - ./mongodb_data:/data/db
     networks:
       - backend_mongodb
 
   redis:
+    container_name: chess_redis
     image: redis:latest
     networks:
       - backend_redis
@@ -69,4 +103,8 @@ networks:
   backend_stockfish:
     driver: bridge
   backend_pikafish:
+    driver: bridge
+  blitz-tactics-postgres:
+    driver: bridge
+  frontend-blitz-tactics:
     driver: bridge
