@@ -40,7 +40,7 @@ function App() {
         <Route path="/vip" element={<ClientLayout />}>
           {VipRoutes({ user })}
         </Route>
-
+           
         <Route path="*">{ErrorRoutes()}</Route>
       </Routes>
     </Router>
