@@ -1,17 +1,16 @@
-import { useState } from "react";
 import {
-  HStack,
+  Box,
   Container,
+  Flex,
+  HStack,
   Heading,
   Select,
-  Switch,
   Spacer,
-  Flex,
-  Box,
+  Switch,
   useColorMode,
 } from "@chakra-ui/react";
+import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ClientLayout from "../../components/layouts/clientLayout";
 
 const SettingsPage = () => {
   const savedLang = localStorage.getItem("lang");
@@ -23,12 +22,12 @@ const SettingsPage = () => {
 
   const [language, setLanguage] = useState(savedLang ?? "en");
   const [theme, setTheme] = useState(savedTheme ?? "light");
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { toggleColorMode } = useColorMode();
   const [boardSettings, setBoardSettings] = useState(
-    savedBoardSettings ?? "standard",
+    savedBoardSettings ?? "standard"
   );
   const [pieceSettings, setPieceSettings] = useState(
-    savedPieceSettings ?? "classic",
+    savedPieceSettings ?? "classic"
   );
   const [soundEnabled, setSoundEnabled] = useState(savedSoundEnabled);
   const [soundSettings, setSoundSettings] = useState(savedSoundSettings);
@@ -47,6 +46,7 @@ const SettingsPage = () => {
     toggleColorMode();
     setTheme(selectedTheme);
     localStorage.setItem("theme", selectedTheme);
+    window.location.reload();
   };
 
   const handleBoardSettingsChange = (e) => {
@@ -74,7 +74,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <ClientLayout>
+    <Fragment>
       <Container maxW="6xl" mt={8}>
         <Heading mb={16}>{t("settings.heading")}</Heading>
         <Flex
@@ -182,7 +182,7 @@ const SettingsPage = () => {
           </HStack>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 };
 

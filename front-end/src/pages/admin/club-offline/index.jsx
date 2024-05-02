@@ -9,10 +9,9 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DatetimePicker from "../../../components/datetime/datetimePicker";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
@@ -22,10 +21,13 @@ export default function AdminClubOfflinePage() {
   const { t } = useTranslation();
   const [isLoading, setLoading] = useState(false);
 
-  const defaultData = {
-    time: Date.now(),
-    location: "",
-  };
+  const defaultData = useMemo(
+    () => ({
+      time: new Date(Date.now()).toISOString(),
+      location: "",
+    }),
+    []
+  );
   const [formData, setFormData] = useState(defaultData);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function AdminClubOfflinePage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
-  }, [toast, t]);
+  }, [toast, t, defaultData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,10 +59,12 @@ export default function AdminClubOfflinePage() {
   };
 
   return (
-    <AdminLayout>
-      <Container maxW="6xl" py={8}>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("others.offline-calendar")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("others.offline-calendar")}
+          </Heading>
         </Flex>
         <form onSubmit={handleSubmit}>
           <FormControl id="time" mt={4} isRequired>
@@ -68,13 +72,15 @@ export default function AdminClubOfflinePage() {
             <DatetimePicker
               value={formData.time}
               onChange={(hour, minute, date) => {
-                const selectedDate = new Date(date);
-                selectedDate.setHours(hour);
-                selectedDate.setMinutes(minute);
-                setFormData({
-                  ...formData,
-                  time: selectedDate,
-                });
+                try {
+                  const selectedDate = new Date(date);
+                  selectedDate.setHours(parseInt(hour) + 7);
+                  selectedDate.setMinutes(parseInt(minute));
+                  setFormData({
+                    ...formData,
+                    time: selectedDate.toISOString(),
+                  });
+                } catch {}
               }}
             />
           </FormControl>
@@ -107,6 +113,6 @@ export default function AdminClubOfflinePage() {
           </Center>
         </form>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }

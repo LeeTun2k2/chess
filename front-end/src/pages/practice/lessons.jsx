@@ -10,9 +10,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import ClientLayout from "../../components/layouts/clientLayout";
 import appSettings from "../../settings/appSettings";
 
 export default function LessonsPage() {
@@ -34,8 +33,8 @@ export default function LessonsPage() {
   };
 
   return (
-    <ClientLayout>
-      <Container maxW="6xl" py={8}>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
         <Heading as="h1" mb={4}>
           Lessons
         </Heading>
@@ -67,6 +66,6 @@ export default function LessonsPage() {
           )}
         </List>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

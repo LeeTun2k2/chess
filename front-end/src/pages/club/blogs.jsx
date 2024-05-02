@@ -14,14 +14,16 @@ import {
   Image,
   Input,
   Spacer,
+  Spinner,
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import ClientLayout from "../../components/layouts/clientLayout";
 import DocNav from "../../components/nav/doc_nav";
+import LeftNav from "../../components/nav/leftNav";
+import UpdateVipNow from "../../components/vip/updateVipNow";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
@@ -49,82 +51,98 @@ export default function BlogPage(props) {
   }, [toast, t]);
 
   return (
-    <ClientLayout>
-      <Container maxW="6xl" py={8}>
-        <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("blogs.blogs")}</Heading>
-          <Flex>
-            <Box position={"relative"} mr={4}>
-              <Input
-                colorScheme="gray"
-                placeholder={t("common.search")}
-                onChange={(e) => {
-                  setSearchText(e?.target?.value ?? "");
-                }}
-                w={300}
-              />
-              <Button
-                position={"absolute"}
-                top={0}
-                right={0}
-                zIndex={1}
-                colorScheme="gray"
-                onClick={() => {
-                  setRenderData(
-                    data.filter(
-                      (value) =>
-                        value?.title
-                          ?.toLowerCase()
-                          .includes(searchText.toLowerCase()) ||
-                        value?.description
-                          ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
-                  );
-                }}
-              >
-                <SearchIcon />
-              </Button>
-            </Box>
-          </Flex>
-        </Flex>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
         <Flex>
-          <Box w={"66%"} mt={8}>
-            {renderData
-              .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
-              .map((item, index) => (
-                <Card
-                  key={index}
-                  p={4}
-                  variant={"outline"}
-                  onClick={() => {
-                    navigate(`/blog/${item._id}`);
-                  }}
-                  cursor={"pointer"}
-                  mb={4}
-                >
-                  <Flex
-                    justifyContent={"start"}
-                    alignItems={"center"}
-                    w={"100%"}
+          <Box
+            w={{ base: "0%", md: "24%" }}
+            display={{ base: "none", md: "block" }}
+          >
+            <LeftNav />
+          </Box>
+          <Spacer />
+          <Box w={"48%"}>
+            <Flex justify={"space-between"}>
+              <Heading fontSize={"xl"} mb={4}>
+                {t("blogs.blogs")}
+              </Heading>
+              <Flex>
+                <Box position={"relative"}>
+                  <Input
+                    colorScheme="gray"
+                    placeholder={t("common.search")}
+                    onChange={(e) => {
+                      setSearchText(e?.target?.value ?? "");
+                    }}
+                    w={300}
+                    size={"sm"}
+                  />
+                  <Button
+                    position={"absolute"}
+                    top={0}
+                    right={0}
+                    zIndex={1}
+                    colorScheme="gray"
+                    onClick={() => {
+                      setRenderData(
+                        data.filter(
+                          (value) =>
+                            value?.title
+                              ?.toLowerCase()
+                              .includes(searchText.toLowerCase()) ||
+                            value?.description
+                              ?.toLowerCase()
+                              .includes(searchText.toLowerCase())
+                        )
+                      );
+                    }}
+                    title="search"
+                    size={"sm"}
                   >
-                    <Image
-                      h={20}
-                      w={20}
-                      src={`${appSettings.API_PROXY}/images/${item.image}`}
-                      alt={item.title}
-                      objectFit={"cover"}
-                      borderRadius={4}
-                    />
-                    <Box ml={4}>
-                      <Text fontWeight={"bold"} noOfLines={1}>
-                        {item.title}
-                      </Text>
-                      <Text noOfLines={2}>{item.description}</Text>
-                    </Box>
-                  </Flex>
-                </Card>
-              ))}
+                    <SearchIcon />
+                  </Button>
+                </Box>
+              </Flex>
+            </Flex>
+            {renderData?.length > 0 ? (
+              renderData
+                .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+                .map((item, index) => (
+                  <Card
+                    key={index}
+                    p={4}
+                    variant={"outline"}
+                    onClick={() => {
+                      navigate(`/blog/${item._id}`);
+                    }}
+                    cursor={"pointer"}
+                    mb={4}
+                  >
+                    <Flex
+                      justifyContent={"start"}
+                      alignItems={"center"}
+                      w={"100%"}
+                    >
+                      <Image
+                        h={20}
+                        w={20}
+                        src={`${appSettings.API_PROXY}/images/${item.image}`}
+                        alt={item.title}
+                        objectFit={"cover"}
+                        borderRadius={4}
+                      />
+                      <Box ml={4}>
+                        <Text fontWeight={"bold"} noOfLines={1}>
+                          {item.title}
+                        </Text>
+                        <Text noOfLines={2}>{item.description}</Text>
+                      </Box>
+                    </Flex>
+                  </Card>
+                ))
+            ) : (
+              <Spinner />
+            )}
             <Flex justify="center" mt={4}>
               <ButtonGroup>
                 <Button
@@ -133,6 +151,7 @@ export default function BlogPage(props) {
                   onClick={() =>
                     pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                   }
+                  title="left"
                 >
                   <ChevronLeftIcon />
                 </Button>
@@ -158,6 +177,7 @@ export default function BlogPage(props) {
                     (pageNumber + 1) * pageSize <= renderData.length &&
                     setPageNumber(pageNumber + 1)
                   }
+                  title="right"
                 >
                   <ChevronRightIcon />
                 </Button>
@@ -165,11 +185,12 @@ export default function BlogPage(props) {
             </Flex>
           </Box>
           <Spacer />
-          <Box w={"30%"}>
+          <Box w={"24%"}>
+            <UpdateVipNow />
             <DocNav />
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

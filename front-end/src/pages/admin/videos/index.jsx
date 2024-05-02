@@ -30,10 +30,9 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
@@ -86,10 +85,12 @@ export default function AdminVideosPage() {
   };
 
   return (
-    <AdminLayout>
-      <Container maxW="6xl" py={8}>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("videos.heading")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("videos.heading")}
+          </Heading>
           <Flex>
             <Box position={"relative"} mr={4}>
               <Input
@@ -114,6 +115,7 @@ export default function AdminVideosPage() {
                     )
                   );
                 }}
+                title="search"
               >
                 <SearchIcon />
               </Button>
@@ -231,6 +233,7 @@ export default function AdminVideosPage() {
                     onClick={() =>
                       pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                     }
+                    title="left"
                   >
                     <ChevronLeftIcon />
                   </Button>
@@ -256,6 +259,7 @@ export default function AdminVideosPage() {
                       (pageNumber + 1) * pageSize <= renderData.length &&
                       setPageNumber(pageNumber + 1)
                     }
+                    title="right"
                   >
                     <ChevronRightIcon />
                   </Button>
@@ -292,6 +296,6 @@ export default function AdminVideosPage() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </AdminLayout>
+    </Fragment>
   );
 }

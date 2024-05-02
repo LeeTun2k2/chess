@@ -22,11 +22,12 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import NewOnlineGameModal from "../../components/game/newGameModal";
-import ClientLayout from "../../components/layouts/clientLayout";
+import LeftNav from "../../components/nav/leftNav";
+import UpdateVipNow from "../../components/vip/updateVipNow";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import socket from "../../lib/socket";
@@ -70,25 +71,26 @@ export default function LobbyPage(props) {
       .finally(() => {
         setLoading(false);
       });
+  }, [toast]);
 
-    return () => {
-      // Disconnect socket when component unmounts
-      socket.disconnect();
-    };
-  }, [toast, t]);
+  const handleLobbyCreated = useCallback(
+    (resp) => {
+      console.log("lobby_created");
+      const lobby = resp.lobby;
+      if (lobby) setData((prevData) => [lobby, ...prevData]);
+    },
+    [setData]
+  );
 
-  const handleLobbyCreated = (resp) => {
-    console.log("lobby_created");
-    const lobby = resp.lobby;
-    if (lobby) setData((prevData) => [lobby, ...prevData]);
-  };
-
-  const handleLobbyClosed = (resp) => {
-    console.log("lobby_closed");
-    const lobbyId = resp.lobby_id;
-    if (lobbyId)
-      setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
-  };
+  const handleLobbyClosed = useCallback(
+    (resp) => {
+      console.log("lobby_closed");
+      const lobbyId = resp.lobby_id;
+      if (lobbyId)
+        setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
+    },
+    [setData]
+  );
 
   useEffect(() => {
     socket.connect();
@@ -101,27 +103,32 @@ export default function LobbyPage(props) {
       // Unsubscribe from socket events when component unmounts
       socket.off("lobby_created", handleLobbyCreated);
       socket.off("lobby_closed", handleLobbyClosed);
-      socket.disconnect();
+      if (socket.readyState === 1) {
+        socket.disconnect();
+      }
     };
   }, [handleLobbyCreated, handleLobbyClosed]);
 
   return (
-    <ClientLayout>
+    <Fragment>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
-      <Container maxW="6xl" py={8}>
-        <Heading mb={4}>
-          {t("games.lobby")}{" "}
-          {loading && <Spinner size="lg" variant="primary" />}
-        </Heading>
+      <Container maxW="container.2xl" py={4}>
         <Flex
           direction={{ base: "column", md: "row" }}
           justifyContent={"center"}
         >
           <Box
-            w={{ base: "100%", md: "66%" }}
-            mb={{ base: 8, md: 0 }}
-            h={"100%"}
+            w={{ base: "0%", md: "24%" }}
+            display={{ base: "none", md: "block" }}
           >
+            <LeftNav />
+          </Box>
+          <Spacer />
+          <Box w={{ base: "100%", md: "48%" }} mb={{ base: 8, md: 0 }}>
+            <Heading fontSize={"xl"} mb={4}>
+              {t("games.lobby")}{" "}
+              {loading && <Spinner size="lg" variant="primary" />}
+            </Heading>
             <Table
               size={{ base: "sm", md: "md" }}
               colorScheme="gray"
@@ -181,6 +188,7 @@ export default function LobbyPage(props) {
                           onClick={() =>
                             pageNumber - 1 > 0 && setPageNumber(pageNumber - 1)
                           }
+                          title="left"
                         >
                           <ChevronLeftIcon />
                         </Button>
@@ -208,6 +216,7 @@ export default function LobbyPage(props) {
                             (pageNumber + 1) * pageSize <= data.length &&
                             setPageNumber(pageNumber + 1)
                           }
+                          title="right"
                         >
                           <ChevronRightIcon />
                         </Button>
@@ -218,10 +227,9 @@ export default function LobbyPage(props) {
               </Tfoot>
             </Table>
           </Box>
-
           <Spacer display={{ base: "none", md: "block" }} />
-
-          <Box w={{ base: "100%", md: "30%" }}>
+          <Box w={{ base: "100%", md: "24%" }}>
+            <UpdateVipNow />
             <Button w="100%" onClick={onOpen}>
               {t("games.new_game")}
             </Button>
@@ -234,6 +242,7 @@ export default function LobbyPage(props) {
                 variant="outline"
                 placeholder={`-- ${t("common.variant")} --`}
                 w={56}
+                title={t("lobby.select_variant")}
               >
                 <option value={CHESS}>{t("common.chess")}</option>
                 <option value={XIANGQI}>{t("common.xiangqi")}</option>
@@ -248,6 +257,7 @@ export default function LobbyPage(props) {
                 variant="outline"
                 placeholder={`-- ${t("common.time")} --`}
                 width={56}
+                title={t("lobby.select_game_type")}
               >
                 <option value={BULLET}>{t("common.bullet")}</option>
                 <option value={BLITZ}>{t("common.blitz")}</option>
@@ -260,9 +270,17 @@ export default function LobbyPage(props) {
                 {t("common.rating")}
               </Text>
               <Spacer />
-              <Input defaultValue={0} w={24} />
+              <Input
+                defaultValue={0}
+                w={24}
+                placeholder={t("lobby.low_rating")}
+              />
               <Text mx={1}>~</Text>
-              <Input defaultValue={3000} w={24} />
+              <Input
+                defaultValue={3000}
+                w={24}
+                placeholder={t("lobby.high_rating")}
+              />
             </HStack>
             <Button w="100%" mt={4}>
               {t("common.filter")}
@@ -270,6 +288,6 @@ export default function LobbyPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

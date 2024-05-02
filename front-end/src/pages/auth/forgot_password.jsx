@@ -5,23 +5,23 @@ import {
   Divider,
   FormControl,
   FormLabel,
+  HStack,
   Heading,
+  Image,
   Input,
   Link,
   Stack,
   Text,
-  Image,
   VStack,
   useToast,
-  HStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { validateEmail } from "../../lib/hooks/validateUser";
-import { toast_error, toast_success } from "../../lib/hooks/toast";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import appSettings from "../../settings/appSettings";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { toast_error, toast_success } from "../../lib/hooks/toast";
+import { validateEmail } from "../../lib/hooks/validateUser";
+import appSettings from "../../settings/appSettings";
 
 export default function ForgotPasswordPage() {
   const toast = useToast();
@@ -69,17 +69,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <Container
-      maxW="lg"
-      py={{
-        base: "12",
-        md: "24",
-      }}
-      px={{
-        base: "0",
-        sm: "8",
-      }}
-    >
+    <Container maxW="lg">
       <Stack spacing="8">
         <Stack>
           <VStack>

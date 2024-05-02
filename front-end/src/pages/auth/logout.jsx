@@ -1,10 +1,10 @@
 import { Flex, Heading, Spinner } from "@chakra-ui/react";
+import { CometChat } from "@cometchat-pro/chat";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { clearTokens, clearUserData, getUserData } from "../../lib/auth";
-import { useTranslation } from "react-i18next";
-import { CometChat } from "@cometchat-pro/chat";
-const LogoutPage = ({ setLoggedIn }) => {
+const LogoutPage = ({ setUser }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -21,10 +21,10 @@ const LogoutPage = ({ setLoggedIn }) => {
       );
       clearTokens();
       clearUserData();
+      setUser(null);
       navigate("/");
-      setLoggedIn(false);
     }, 1000);
-  }, [navigate]);
+  }, [navigate, setUser]);
 
   return (
     <Flex

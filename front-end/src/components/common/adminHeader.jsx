@@ -28,15 +28,20 @@ const AdminHeader = () => {
   }, [user_data]);
 
   return (
-    <Box bgColor={theme === "dark" ? "black" : "lightgray"} p={4} zIndex={9999}>
+    <Box
+      bgColor={theme === "dark" ? "black" : "lightgray"}
+      py={2}
+      zIndex={3}
+      userSelect={"none"}
+    >
       <Flex align="center">
         <HStack
           cursor="pointer"
           onClick={() => navigate("/")}
           ml={{ base: 0, md: 16 }}
         >
-          <Image src="/logo.png" alt="UTE CHESS CLUB" w={16} />
-          <Text fontSize="xl" fontWeight="bold">
+          <Image src="/logo.png" alt="UTE CHESS CLUB" w={12} />
+          <Text fontSize="lg" fontWeight="bold">
             UTE CHESS CLUB
           </Text>
         </HStack>
@@ -77,7 +82,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.documents")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/admin/blogs")}>
             {t("header.blogs")}
           </MenuItem>
@@ -103,7 +108,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.games")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/admin/games")}>
             {t("header.games")}
           </MenuItem>
@@ -126,7 +131,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.accounts")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/admin/users")}>
             {t("header.users")}
           </MenuItem>
@@ -146,7 +151,7 @@ const PcMenu = ({ user }) => {
         >
           {t("header.others")}
         </MenuButton>
-        <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+        <MenuList p={0} overflow={"hidden"}>
           <MenuItem onClick={() => navigate("/admin/donate")}>
             {t("header.donate")}
           </MenuItem>
@@ -159,19 +164,23 @@ const PcMenu = ({ user }) => {
         </MenuList>
       </Menu>
 
-      {user ? (
+      {user?.id ? (
         <Fragment>
           <Spacer />
           <Menu>
-            <MenuButton display="flex">
+            <MenuButton display={{ base: "none", md: "flex" }} mr={16}>
               <Flex align="center">
-                <Avatar name={user.name} src={user.avatar} />
-                <Text ml={2} fontWeight="500" display="block">
+                <Avatar name={user.name} src={user.avatar} size={"sm"} />
+                <Text
+                  ml={2}
+                  fontWeight="500"
+                  display={{ base: "none", md: "block" }}
+                >
                   {user.name}
                 </Text>
               </Flex>
             </MenuButton>
-            <MenuList p={0} overflow={"hidden"} zIndex={9999}>
+            <MenuList p={0} overflow={"hidden"}>
               <MenuItem onClick={() => navigate("/profile")}>
                 {t("header.profile")}
               </MenuItem>

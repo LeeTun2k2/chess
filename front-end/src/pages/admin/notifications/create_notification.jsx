@@ -9,10 +9,9 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import axios from "../../../lib/axios";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
@@ -53,10 +52,12 @@ export default function AdminCreatenNotificationPage() {
   };
 
   return (
-    <AdminLayout>
-      <Container maxW="6xl" py={8}>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("notifications.create")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("notifications.create")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/notifications");
@@ -83,8 +84,8 @@ export default function AdminCreatenNotificationPage() {
               type="text"
               name="description"
               value={formData.description}
-              maxLength={100}
-              placeholder={t("common.text_max_100")}
+              maxLength={200}
+              placeholder={t("common.text_max_200")}
               onChange={handleChange}
             />
           </FormControl>
@@ -101,6 +102,6 @@ export default function AdminCreatenNotificationPage() {
           </Center>
         </form>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }

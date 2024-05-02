@@ -17,7 +17,7 @@ class LessonService():
         return lesson
 
     def create_lesson(self, lesson_data):
-        lesson_data["created_at"] = datetime.now()
+        lesson_data["created_at"] = datetime.now().isoformat()
         result = self.lessons_collection.insert_one(lesson_data)
         return self.map_lesson(self.lessons_collection.find_one({'_id': result.inserted_id}))
 

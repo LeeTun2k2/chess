@@ -1,21 +1,21 @@
 import {
-  Container,
-  Heading,
-  Text,
-  Image,
-  Flex,
   Box,
+  Container,
+  Flex,
+  Heading,
+  Image,
   ListItem,
   OrderedList,
+  Text,
 } from "@chakra-ui/react";
-import ClientLayout from "../../components/layouts/clientLayout";
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
-export default function AboutPage() {
+const AboutPage = () => {
   const { t } = useTranslation();
 
   return (
-    <ClientLayout>
-      <Container maxW="6xl" py={8}>
+    <Fragment>
+      <Container maxW="container.xl" py={4}>
         <Flex mb={8} alignItems={"center"}>
           <Image
             src={"./logo.png"}
@@ -27,7 +27,9 @@ export default function AboutPage() {
             <Heading as="h1" mb={4}>
               {t("about.aboutUs.heading")}
             </Heading>
-            <Text mb={6}>{t("about.aboutUs.content")}</Text>
+            <Text mb={6} w={"85%"} textAlign={"justify"}>
+              {t("about.aboutUs.content")}
+            </Text>
           </Box>
         </Flex>
 
@@ -41,25 +43,33 @@ export default function AboutPage() {
                 <Text fontWeight="bold">
                   {t("about.ourMission.list.promoteChess")}:
                 </Text>{" "}
-                {t("about.ourMission.content.promoteChess")}
+                <Text w={"85%"} textAlign={"justify"}>
+                  {t("about.ourMission.content.promoteChess")}
+                </Text>
               </ListItem>
               <ListItem mb={2}>
                 <Text fontWeight="bold">
                   {t("about.ourMission.list.developSkills")}:
                 </Text>{" "}
-                {t("about.ourMission.content.developSkills")}
+                <Text w={"85%"} textAlign={"justify"}>
+                  {t("about.ourMission.content.developSkills")}
+                </Text>
               </ListItem>
               <ListItem mb={2}>
                 <Text fontWeight="bold">
                   {t("about.ourMission.list.buildCommunity")}:
                 </Text>{" "}
-                {t("about.ourMission.content.buildCommunity")}
+                <Text w={"85%"} textAlign={"justify"}>
+                  {t("about.ourMission.content.buildCommunity")}
+                </Text>
               </ListItem>
               <ListItem mb={2}>
                 <Text fontWeight="bold">
                   {t("about.ourMission.list.encourageSportsmanship")}:
                 </Text>{" "}
-                {t("about.ourMission.content.encourageSportsmanship")}
+                <Text w={"85%"} textAlign={"justify"}>
+                  {t("about.ourMission.content.encourageSportsmanship")}
+                </Text>
               </ListItem>
             </OrderedList>
           </Box>
@@ -82,14 +92,18 @@ export default function AboutPage() {
             mb={4}
             w={400}
           />
-          <Box ml={8}>
+          <Box ml={16}>
             <Heading as="h3" size="lg" mb={2}>
               {t("about.whatWeOffer.heading")}
             </Heading>
-            <Text mb={4}>{t("about.whatWeOffer.content")}</Text>
+            <Text mb={4} textAlign={"justify"}>
+              {t("about.whatWeOffer.content")}
+            </Text>
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
-}
+};
+
+export default AboutPage;

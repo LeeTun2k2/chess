@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:9-alpine
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: database
+      PGUSER: username
+    restart: always
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - chess
+
+  blitz-tactics:
+    container_name: chess_blitz-tactics
+    image: leetun2k2/chess_blitz-tactics:dev
+    restart: always
+    working_dir: /app
+    # entrypoint: ["rails", "db:migrate"]
+    ports:
+      - "8080:3000"
+    depends_on:
+      - postgres
+    networks:
+      - chess
+
+networks:
+  chess:
+    driver: bridge
+
+

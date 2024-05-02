@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { EditIcon, EmailIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -10,11 +10,11 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { getUserData } from "../../lib/auth";
 import AvatarUploadModal from "./avatar_upload_modal";
 import ChangePasswordModal from "./change_password_modal";
-import { EmailIcon, EditIcon } from "@chakra-ui/icons";
-import { getUserData } from "../../lib/auth";
-import { useTranslation } from "react-i18next";
 
 const UserInfo = () => {
   const { t } = useTranslation();

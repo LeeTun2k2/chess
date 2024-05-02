@@ -27,8 +27,8 @@ class TournamentService():
         if '_id' in tournament:
             raise ValueError("Cannot create a tournament with an existing _id")
 
-        tournament["created_at"] = datetime.now()
-        tournament["updated_at"] = datetime.now()
+        tournament["created_at"] = datetime.now().isoformat()
+        tournament["updated_at"] = datetime.now().isoformat()
         result = self.tournaments_collection.insert_one(tournament)
         return self.map(self.tournaments_collection.find_one({'_id': result.inserted_id}))
     
@@ -40,7 +40,7 @@ class TournamentService():
         if '_id' in tournament:
             del tournament['_id'] 
 
-        tournament["updated_at"] = datetime.now()
+        tournament["updated_at"] = datetime.now().isoformat()
 
         result = self.tournaments_collection.update_one({'_id': ObjectId(_id)}, {'$set': tournament})
         if result.modified_count == 0:

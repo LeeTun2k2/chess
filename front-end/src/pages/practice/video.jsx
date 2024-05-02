@@ -9,10 +9,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import ReactHtmlParser from "html-react-parser";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ReactPlayer from "react-player";
-import ClientLayout from "../../components/layouts/clientLayout";
 import DocNav from "../../components/nav/doc_nav";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
@@ -40,8 +39,8 @@ export default function VideoPage(props) {
   }, [toast, t, id]);
 
   return (
-    <ClientLayout>
-      <Container maxW="6xl" py={8}>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
         <Flex>
           <Box w={"66%"}>
             <Flex align={"center"}>
@@ -74,6 +73,6 @@ export default function VideoPage(props) {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

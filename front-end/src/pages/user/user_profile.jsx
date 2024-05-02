@@ -1,6 +1,5 @@
 import { Box, Container, Flex, Spacer } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import ClientLayout from "../../components/layouts/clientLayout";
+import { Fragment, useEffect, useState } from "react";
 import Statistics from "../../components/user_profile/statistic";
 import UserInfo from "../../components/user_profile/user_info";
 import { getUserData } from "../../lib/auth";
@@ -76,8 +75,8 @@ export default function UserProfile() {
   const statistic = getStatistics();
 
   return (
-    <ClientLayout>
-      <Container maxW="6xl" py={8}>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
         <Flex direction={{ base: "column", md: "row" }}>
           <Box w={{ base: "100%", md: "30%" }} mb={{ base: 8, md: 0 }}>
             <UserInfo user={user} />
@@ -88,6 +87,6 @@ export default function UserProfile() {
           </Box>
         </Flex>
       </Container>
-    </ClientLayout>
+    </Fragment>
   );
 }

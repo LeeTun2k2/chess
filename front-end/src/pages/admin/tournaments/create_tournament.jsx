@@ -1,26 +1,25 @@
-import React, { useState } from "react";
-import AdminLayout from "../../../components/layouts/adminLayout";
 import {
-  Flex,
   Button,
+  Center,
   Container,
-  Heading,
-  useToast,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
-  Textarea,
-  Center,
   Select,
   Text,
+  Textarea,
+  useToast,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import React, { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "../../../lib/axios";
-import appSettings from "../../../settings/appSettings";
-import { toast_success, toast_error } from "../../../lib/hooks/toast";
-import { CHESS, XIANGQI } from "../../../settings/game";
+import { useNavigate } from "react-router-dom";
 import DateTimePicker from "../../../components/datetime/datetimePicker";
+import axios from "../../../lib/axios";
+import { toast_error, toast_success } from "../../../lib/hooks/toast";
+import appSettings from "../../../settings/appSettings";
+import { CHESS, XIANGQI } from "../../../settings/game";
 
 export default function AdminCreateTournamentPage() {
   const navigate = useNavigate();
@@ -73,10 +72,12 @@ export default function AdminCreateTournamentPage() {
   };
 
   return (
-    <AdminLayout>
-      <Container maxW="6xl" py={8}>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
         <Flex justify={"space-between"}>
-          <Heading mb={4}>{t("tournaments.create")}</Heading>
+          <Heading fontSize={"xl"} mb={4}>
+            {t("tournaments.create")}
+          </Heading>
           <Button
             onClick={() => {
               navigate("/admin/tournaments");
@@ -200,6 +201,6 @@ export default function AdminCreateTournamentPage() {
           </Center>
         </form>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }

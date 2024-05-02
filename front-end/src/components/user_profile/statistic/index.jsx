@@ -1,17 +1,17 @@
-import React, { useState } from "react";
 import {
   Box,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
   Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
-import ChessStatistics from "./chess_statistic";
-import XiangqiStatistics from "./xiangqi_statistic";
-import PuzzleStatistics from "./puzzle_statistic";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ChessStatistics from "./chess_statistic";
+import PuzzleStatistics from "./puzzle_statistic";
+import XiangqiStatistics from "./xiangqi_statistic";
 
 export default function Statistics(props) {
   const { t } = useTranslation();
@@ -25,7 +25,9 @@ export default function Statistics(props) {
 
   return (
     <Box width={{ base: "100%", md: "1/3" }} py={6} px={4}>
-      <Heading mb={4}>{t("profile.statistics")}</Heading>
+      <Heading fontSize={"xl"} mb={4}>
+        {t("profile.statistics")}
+      </Heading>
 
       <Tabs
         onChange={handleTabChange}

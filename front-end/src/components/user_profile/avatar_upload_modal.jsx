@@ -1,18 +1,17 @@
-import React, { useRef, useState } from "react";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
-  Input,
   FormControl,
   FormLabel,
-  useDisclosure,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
+import React, { useRef, useState } from "react";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
 import appSettings from "../../settings/appSettings";
@@ -42,6 +41,7 @@ const AvatarUploadModal = ({ isOpen, onClose }) => {
       console.log(response);
       const data = await response?.data;
       setImageUrl(data?.image);
+      console.log(imageUrl);
       onClose();
     } catch (error) {
       console.error("Error uploading image: ", error);

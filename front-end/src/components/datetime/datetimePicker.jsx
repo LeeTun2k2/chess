@@ -1,6 +1,6 @@
-import { Flex, Text, Input } from "@chakra-ui/react";
+import { Flex, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-export default function ({ value, onChange }) {
+export default function DatetimePicker({ value, onChange }) {
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
   const [date, setDate] = useState("");
@@ -27,7 +27,7 @@ export default function ({ value, onChange }) {
           if (input.length > 2) return;
           if (input < 0 || input > 23) return;
           setHour(input);
-          onChange(hour, minute, date);
+          onChange(input, minute, date);
         }}
       />
       <Text px={2}>:</Text>
@@ -41,16 +41,16 @@ export default function ({ value, onChange }) {
           if (input.length > 2) return;
           if (input < 0 || input > 59) return;
           setMinute(input);
-          onChange(hour, minute, date);
+          onChange(hour, input, date);
         }}
       />
       <Input
         type="date"
         value={date}
         onChange={(e) => {
-          const date = e?.target?.value;
-          setDate(date);
-          onChange(hour, minute, date);
+          const input = e?.target?.value;
+          setDate(input);
+          onChange(hour, minute, input);
         }}
         w={48}
         ml={2}

@@ -29,8 +29,8 @@ class BookService():
         if '_id' in book:
             raise ValueError("Cannot create a book with an existing _id")
 
-        book["created_at"] = datetime.now()
-        book["updated_at"] = datetime.now()
+        book["created_at"] = datetime.now().isoformat()
+        book["updated_at"] = datetime.now().isoformat()
         image = book["image"]
         status, message = ImageService().save_file(image, f"book-{uuid.uuid4().hex}", image.filename.split('.')[-1])
         if not status:
@@ -47,7 +47,7 @@ class BookService():
         if '_id' in book:
             del book['_id'] 
 
-        book["updated_at"] = datetime.now()
+        book["updated_at"] = datetime.now().isoformat()
 
         image = book["image"]
         old_file_name = existing_book["image"]

@@ -1,14 +1,13 @@
 import { Container, Heading } from "@chakra-ui/react";
-import AdminLayout from "../../components/layouts/adminLayout";
-import { useNavigate } from "react-router-dom";
+import { Fragment } from "react";
 export default function AdminDashboardPage() {
-  const navigate = useNavigate();
-
   return (
-    <AdminLayout>
-      <Container maxW="6xl" py={8}>
-        <Heading mb={4}>Dashboard</Heading>
+    <Fragment>
+      <Container maxW="container.2xl" py={4}>
+        <Heading fontSize={"xl"} mb={4}>
+          Dashboard
+        </Heading>
       </Container>
-    </AdminLayout>
+    </Fragment>
   );
 }
