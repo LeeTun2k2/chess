@@ -6,6 +6,7 @@ services:
       - 10040:80
     depends_on:
       - backend
+      - blitz-tactics
     networks:
       - frontend_backend
       - frontend_stockfish
@@ -28,12 +29,14 @@ services:
       - redis
       - stockfish
       - pikafish
+      - blitz-tactics
     networks:
       - frontend_backend
       - backend_stockfish
       - backend_pikafish
       - backend_mongodb
       - backend_redis
+      - backend-blitz-tactics
 
   stockfish:
     container_name: chess_stockfish
@@ -59,6 +62,7 @@ services:
     networks:
       - blitz-tactics-postgres
       - frontend-blitz-tactics
+      - backend-blitz-tactics
 
   postgres:
     container_name: chess_postgres
@@ -107,4 +111,6 @@ networks:
   blitz-tactics-postgres:
     driver: bridge
   frontend-blitz-tactics:
+    driver: bridge
+  backend-blitz-tactics:
     driver: bridge
