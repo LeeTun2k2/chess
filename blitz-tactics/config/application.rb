@@ -34,7 +34,10 @@ module BlitzTactics
 
     config.active_record.schema_format = :sql
     config.action_dispatch.default_headers = {
-      'X-Frame-Options' => 'ALLOWALL'
+      'X-Frame-Options' => 'ALLOWALL',
+      'Access-Control-Allow-Origin' => '*',
+      'Access-Control-Request-Method' => 'GET, PATCH, PUT, POST, OPTIONS, DELETE',
+      'Access-Control-Allow-Headers:' => 'Origin, X-Requested-With, Content-Type, Accept'
     }
 
     # Configuration for the application, engines, and railties goes here.

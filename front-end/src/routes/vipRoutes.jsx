@@ -4,7 +4,7 @@ import HomePage from "../pages/home";
 import CountDownPage from "../pages/vip/countDown";
 import HastePage from "../pages/vip/haste";
 import InfinityPage from "../pages/vip/infinity";
-import RatePage from "../pages/vip/rate";
+import RatedPage from "../pages/vip/rated";
 import RepetitionPage from "../pages/vip/repetition";
 import SpeedRunPage from "../pages/vip/speedRun";
 import ThreePage from "../pages/vip/three";
@@ -18,7 +18,7 @@ const VipRoutes = ({ user }) => {
         <Route path="three" element={<ThreePage />} />
         <Route path="count-down" element={<CountDownPage />} />
         <Route path="speed-run" element={<SpeedRunPage />} />
-        <Route path="rate" element={<RatePage />} />
+        <Route path="rated" element={<RatedPage />} />
         <Route path="infinity" element={<InfinityPage />} />
         <Route path="repetition" element={<RepetitionPage />} />
       </Route>
