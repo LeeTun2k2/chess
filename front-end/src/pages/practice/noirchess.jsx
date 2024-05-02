@@ -28,7 +28,7 @@ export default function NoirchessPage() {
               borderRadius={8}
             >
               <iframe
-                title="naruto"
+                title="iframe"
                 src="http://www.noirchess.com/Game/www/index.html"
                 allowFullScreen
               />

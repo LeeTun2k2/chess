@@ -5,7 +5,7 @@ export default function TestPage() {
   return (
     <Box w={"48%"}>
       <AspectRatio w={"100%"} ratio={1}>
-        <iframe title="naruto" src="" allowFullScreen />
+        <iframe title="iframe" src="" allowFullScreen />
       </AspectRatio>
     </Box>
   );

@@ -11,6 +11,7 @@ import AuthRoutes from "./routes/authRoutes";
 import ClientRoutes from "./routes/clientRoutes";
 import CommonRoutes from "./routes/commonRoutes";
 import ErrorRoutes from "./routes/errorRoutes";
+import VipRoutes from "./routes/vipRoutes";
 
 function App() {
   const [user, setUser] = useState(getUserData());
@@ -36,6 +37,10 @@ function App() {
           {AdminRoutes({ user })}
         </Route>
 
+        <Route path="/vip" element={<ClientLayout />}>
+          {VipRoutes({ user })}
+        </Route>
+           
         <Route path="*">{ErrorRoutes()}</Route>
       </Routes>
     </Router>

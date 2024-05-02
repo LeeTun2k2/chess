@@ -1,0 +1,36 @@
+<header class="main-header">
+  <div class="container">
+    <a href="/" class="logo">
+      <span class="large">UTE CHESS CLUB</span>
+    </a>
+
+    # <% if sound_enabled? %>
+    #   <a href="javascript:" class="volume-toggle link-right" data-enabled="true">
+    #     <svg class="volume"><use xlink:href="#volume-on"/></svg>
+    #   </a>
+    # <% else %>
+    #   <a href="javascript:" class="volume-toggle link-right" data-enabled="false">
+    #     <svg class="volume"><use xlink:href="#volume-off"/></svg>
+    #   </a>
+    # <% end %>
+
+    # <a href="/scoreboard" class="link-right">Scoreboard</a>
+    # <a href="/about" class="link-right">About</a>
+
+    # <% if user_signed_in? %>
+    #   <a href="/<%= current_user.username %>" class="link-right user-link">
+    #     <%= current_user.username %>
+    #   </a>
+    # <% else %>
+    #   <a href="<%= https_registration_url %>" class="link-right user-link sign-in">
+    #     <svg><use xlink:href="#sign-in"/></svg>
+    #     <span>Sign up</span>
+    #   </a>
+    # <% end %>
+
+    # <% if false %>
+    #   <a href="javascript:" class="link-right icon"><%= fa_icon "clock-o" %></a>
+    #   <a href="javascript:" class="link-right icon"><%= fa_icon "volume-down" %></a>
+    # <% end %>
+  </div>
+</header>

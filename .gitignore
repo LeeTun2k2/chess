@@ -44,3 +44,7 @@ engine/
 
 # environtments
 **.env**
+
+# volume
+**postgres_data**
+**mongodb_data**
