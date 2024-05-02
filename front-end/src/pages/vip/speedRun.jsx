@@ -3,10 +3,13 @@ import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import LeftNav from "../../components/nav/leftNav";
 import UpdateVipNow from "../../components/vip/updateVipNow";
+import { getUserData } from "../../lib/auth";
 import appSettings from "../../settings/appSettings";
 
 export default function SpeedRunPage() {
   const { t } = useTranslation();
+  const user = getUserData();
+  const token = btoa(user?.id ?? "");
 
   return (
     <Fragment>
@@ -30,7 +33,7 @@ export default function SpeedRunPage() {
             >
               <iframe
                 title="iframe"
-                src={`${appSettings.API_PROXY}/blitz-tactics/speedrun`}
+                src={`${appSettings.API_PROXY}/blitz-tactics/speedrun?token=${token}`}
                 allowFullScreen
               />
             </AspectRatio>
