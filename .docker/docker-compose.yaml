@@ -6,7 +6,7 @@ services:
       - 10040:80
     depends_on:
       - backend
-      - blitz-tactics
+      - chessBlitzTactics
     networks:
       - frontend_backend
       - frontend_stockfish
@@ -29,7 +29,7 @@ services:
       - redis
       - stockfish
       - pikafish
-      - blitz-tactics
+      - chessBlitzTactics
     networks:
       - frontend_backend
       - backend_stockfish
@@ -52,8 +52,8 @@ services:
       - frontend_pikafish
       - backend_pikafish
 
-  blitz-tactics:
-    container_name: chess_blitz-tactics
+  chessBlitzTactics:
+    container_name: chessBlitzTactics
     image: leetun2k2/chess_blitz-tactics:latest
     restart: always
     working_dir: /app
