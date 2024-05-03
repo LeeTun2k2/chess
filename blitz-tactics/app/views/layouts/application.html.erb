@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=700, user-scalable=yes">
 
   <%# Using 2 stylesheets here because webpacker is loading styles out-of-order %>
-  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_pack_tag 'application', media: 'all' %>
 
   <%= javascript_pack_tag 'application', defer: true %>
@@ -18,7 +18,6 @@
 
   <%= favicon_link_tag 'favicon.ico' %>
   <%= csrf_meta_tags %>
-  <meta http-equiv="X-Frame-Options" content="ALLOWALL">
 </head>
 
 <body data-controller="<%= params[:controller] %>" data-action="<%= params[:action] %>">
