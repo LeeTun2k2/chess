@@ -9,10 +9,6 @@ class TournamentService():
 
     def map(self, tournament):
         tournament['_id'] = str(tournament['_id'])
-        if tournament['created_at']:
-            tournament['created_at'] = tournament['created_at'].isoformat()
-        if tournament['updated_at']:
-            tournament['updated_at'] = tournament['updated_at'].isoformat()
         return tournament
 
     def get_all(self):

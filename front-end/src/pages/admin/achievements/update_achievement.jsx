@@ -28,7 +28,7 @@ export default function AdminUpdateAchievementPage() {
   const defaultData = useMemo(
     () => ({
       event: "",
-      time: Date.now(),
+      time: new Date(Date.now()).toISOString(),
       member: "",
       reward: "",
     }),
@@ -117,7 +117,7 @@ export default function AdminUpdateAchievementPage() {
                 onChange={(e) => {
                   setFormData({
                     ...formData,
-                    time: new Date(e?.target?.value),
+                    time: new Date(e?.target?.value).toISOString(),
                   });
                 }}
               />

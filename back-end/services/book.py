@@ -11,10 +11,6 @@ class BookService():
 
     def map(self, book):
         book['_id'] = str(book['_id'])
-        if book['created_at']:
-            book['created_at'] = book['created_at'].isoformat()
-        if book['updated_at']:
-            book['updated_at'] = book['updated_at'].isoformat()
         return book
 
     def get_all(self):

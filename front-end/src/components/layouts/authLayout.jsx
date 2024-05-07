@@ -4,7 +4,12 @@ import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (
-    <Flex minH={"100vh"} alignItems={"center"} justifyContent={"center"}>
+    <Flex
+      minH={"100vh"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      userSelect={"none"}
+    >
       <Outlet />
     </Flex>
   );

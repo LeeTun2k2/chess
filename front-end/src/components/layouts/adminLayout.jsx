@@ -6,7 +6,7 @@ import AdminHeader from "../common/adminHeader";
 
 const AdminLayout = () => {
   return (
-    <Flex minH={"100vh"} flexDir={"column"}>
+    <Flex minH={"100vh"} flexDir={"column"} userSelect={"none"}>
       <AdminHeader />
       <Outlet />
       <Spacer />

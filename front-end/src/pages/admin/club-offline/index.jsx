@@ -74,8 +74,8 @@ export default function AdminClubOfflinePage() {
               onChange={(hour, minute, date) => {
                 try {
                   const selectedDate = new Date(date);
-                  selectedDate.setHours(parseInt(hour) + 7);
-                  selectedDate.setMinutes(parseInt(minute));
+                  selectedDate.setHours(hour + 7);
+                  selectedDate.setMinutes(minute);
                   setFormData({
                     ...formData,
                     time: selectedDate.toISOString(),
