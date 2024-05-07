@@ -85,7 +85,7 @@ export default function AdminClubOfflinePage() {
             />
           </FormControl>
           <FormControl mt={4} id="location" isRequired>
-            <FormLabel>{t("tournaments.location")}</FormLabel>
+            <FormLabel>{t("others.location")}</FormLabel>
             <Input
               type="text"
               name="location"

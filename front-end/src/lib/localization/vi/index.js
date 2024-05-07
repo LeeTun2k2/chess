@@ -12,6 +12,7 @@ import friends from "./friends.json";
 import games from "./games.json";
 import header from "./header.json";
 import notifications from "./notifications.json";
+import others from "./others.json";
 import profile from "./profile.json";
 import puzzles from "./puzzles.json";
 import settings from "./settings.json";
@@ -42,6 +43,7 @@ const vi = {
   chat,
   friends,
   vip,
+  others,
 };
 
 export default vi;
