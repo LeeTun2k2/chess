@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "webpack-dev-server",
+    "dev": "./bin/webpack-dev-server",
+    "production": "./bin/webpack",
     "tsc": "./node_modules/.bin/tsc --noEmit",
     "eye:load": "eye l eye.rb",
     "eye:info": "eye i",
