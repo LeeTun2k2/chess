@@ -4,6 +4,8 @@ services:
     image: leetun2k2/chess_frontend:latest
     ports:
       - 10040:80
+    volumes:
+      - static_shared:/app/public
     depends_on:
       - backend
       - chessBlitzTactics
@@ -57,6 +59,8 @@ services:
     image: leetun2k2/chess_blitz-tactics:latest
     restart: always
     working_dir: /app
+    volumes:
+      - static_shared:/app/public
     depends_on:
       - postgres
     networks:
@@ -92,6 +96,9 @@ services:
     image: redis:latest
     networks:
       - backend_redis
+
+volumes:
+  static_shared:
 
 networks:
   frontend_backend:

@@ -7,8 +7,6 @@ RUN apt-get install -y nodejs
 
 RUN apt-get install -y build-essential
 RUN apt-get install -y postgresql-client
-RUN apt-get install -y nginx
-RUN apt-get install -y supervisor
 
 RUN npm install -g yarn@1
 
