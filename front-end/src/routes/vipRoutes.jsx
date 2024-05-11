@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Navigate, Outlet, Route } from "react-router-dom";
 import HomePage from "../pages/home";
+import UpgradeVipPage from "../pages/vip/upgradeVip";  // Import the Upgrade VIP page component
 import CountDownPage from "../pages/vip/countDown";
 import HastePage from "../pages/vip/haste";
 import InfinityPage from "../pages/vip/infinity";
@@ -13,7 +14,7 @@ const VipRoutes = ({ user }) => {
   return (
     <Fragment>
       <Route index element={<HomePage />} />
-      <Route element={!!user ? <Outlet /> : <Navigate to="/vip" />}>
+      <Route element={!!user ? <Outlet /> : <Navigate to="/upgrade-vip" replace />} >
         <Route path="haste" element={<HastePage />} />
         <Route path="three" element={<ThreePage />} />
         <Route path="count-down" element={<CountDownPage />} />
@@ -21,9 +22,10 @@ const VipRoutes = ({ user }) => {
         <Route path="rated" element={<RatedPage />} />
         <Route path="infinity" element={<InfinityPage />} />
         <Route path="repetition" element={<RepetitionPage />} />
+        <Route path="upgrade-vip" element={<UpgradeVipPage />} />
       </Route>
     </Fragment>
-  );
+  )
 };
 
 export default VipRoutes;
