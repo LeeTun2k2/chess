@@ -7,24 +7,24 @@ import {
   UnorderedList
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { FaBook } from "react-icons/fa";
+import { FaMedal } from "react-icons/fa";
 
-export default function NewBooks({ data }) {
+export default function NewAchievements({ data }) {
   const { t } = useTranslation();
   return (
     <Card p={1} variant={"outline"} overflow={"hidden"} borderRadius={4} mb={2} minH={120}>
       <Heading as={"h5"} fontSize={"sm"} display={"flex"} alignItems={"center"} mb={1}>
-        <FaBook style={{ marginRight: 4 }} />
-        {t("dashboard.new_books")}
+        <FaMedal style={{ marginRight: 4 }} />
+        {t("dashboard.new_achievements")}
       </Heading>
       <UnorderedList>
         {!!data ? (
           data?.map((item, index) => (
-            <ListItem key={`books-${index}`}>
+            <ListItem key={`achievements-${index}`}>
               <Link
               fontSize={"small"}
                 noOfLines={1}
-                href={`books/${item._id}`}
+                href={`achievements/${item._id}`}
               >
                 {item.title}
               </Link>

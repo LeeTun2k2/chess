@@ -7,6 +7,7 @@ import books from "./books.json";
 import chat from "./chat.json";
 import club from "./club.json";
 import common from "./common.json";
+import dashboard from "./dashboard.json";
 import footer from "./footer.json";
 import friends from "./friends.json";
 import games from "./games.json";
@@ -43,7 +44,8 @@ const en = {
   chat,
   friends,
   vip,
-  others
+  others,
+  dashboard
 };
 
 export default en;
