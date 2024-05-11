@@ -33,8 +33,8 @@ export default function AdminCreateTournamentPage() {
     variant: CHESS,
     initial_time: 0,
     bonus_time: 0,
-    start: Date.now(),
-    end: Date.now(),
+    start: new Date(Date.now()).toISOString(),
+    end: new Date(Date.now()).toISOString(),
   };
 
   const [formData, setFormData] = useState(defaultData);
@@ -46,12 +46,10 @@ export default function AdminCreateTournamentPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const now = Date.now();
-    if (
-      formData.start <= now ||
-      formData.end <= now ||
-      formData.start >= formData.end
-    ) {
+    const now = new Date(Date.now());
+    const start = new Date(formData.start);
+    const end = new Date(formData.end);
+    if (start <= now || end <= now || start >= end) {
       toast(toast_error(t("common.invalid_datetime")));
       return;
     }
@@ -163,11 +161,11 @@ export default function AdminCreateTournamentPage() {
                 value={formData.start}
                 onChange={(hour, minute, date) => {
                   const selectedDate = new Date(date);
-                  selectedDate.setHours(hour);
+                  selectedDate.setHours(hour + 7);
                   selectedDate.setMinutes(minute);
                   setFormData({
                     ...formData,
-                    start: selectedDate,
+                    start: selectedDate.toISOString(),
                   });
                 }}
               />
@@ -178,11 +176,11 @@ export default function AdminCreateTournamentPage() {
                 value={formData.end}
                 onChange={(hour, minute, date) => {
                   const selectedDate = new Date(date);
-                  selectedDate.setHours(hour);
+                  selectedDate.setHours(hour + 7);
                   selectedDate.setMinutes(minute);
                   setFormData({
                     ...formData,
-                    end: selectedDate,
+                    end: selectedDate.toISOString(),
                   });
                 }}
               />

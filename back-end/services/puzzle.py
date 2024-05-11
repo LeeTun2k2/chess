@@ -15,8 +15,6 @@ class PuzzleService():
 
     def map_puzzle(self, puzzle):
         puzzle['_id'] = str(puzzle['_id'])
-        if puzzle['created_at']:
-            puzzle['created_at'] = puzzle['created_at'].isoformat()
         return puzzle
 
     def get_all(self):

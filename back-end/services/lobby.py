@@ -9,8 +9,6 @@ class LobbyService():
 
     def map_lobby(self, lobby):
         lobby['_id'] = str(lobby['_id'])
-        if lobby['created_at']:
-            lobby['created_at'] = lobby['created_at'].isoformat()
         return lobby
 
     def create_lobby(self, lobby, player_id):

@@ -140,9 +140,6 @@ const PcMenu = ({ user }) => {
           <MenuItem onClick={() => navigate("/chessle")}>
             {t("header.chessle")}
           </MenuItem>
-          <MenuItem onClick={() => navigate("/noirchess")}>
-            {t("header.noirchess")}
-          </MenuItem>
           <MenuItem onClick={() => navigate("/videos")}>
             {t("header.videos")}
           </MenuItem>
@@ -170,7 +167,7 @@ const PcMenu = ({ user }) => {
           as={Button}
           variant="ghost"
           mx={2}
-          onClick={() => navigate("/tv")}
+          onClick={() => navigate("/vip")}
           display={{ base: "none", md: "flex" }}
         >
           {t("header.vip")}

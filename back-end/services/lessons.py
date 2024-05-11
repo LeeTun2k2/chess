@@ -12,8 +12,6 @@ class LessonService():
 
     def map_lesson(self, lesson):
         lesson['_id'] = str(lesson['_id'])
-        if lesson['created_at']:
-            lesson['created_at'] = lesson['created_at'].isoformat()
         return lesson
 
     def create_lesson(self, lesson_data):

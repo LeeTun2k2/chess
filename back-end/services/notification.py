@@ -9,10 +9,6 @@ class NotificationService():
 
     def map(self, notification):
         notification['_id'] = str(notification['_id'])
-        if notification['created_at']:
-            notification['created_at'] = notification['created_at'].isoformat()
-        if notification['updated_at']:
-            notification['updated_at'] = notification['updated_at'].isoformat()
         return notification
 
     def get_all(self):

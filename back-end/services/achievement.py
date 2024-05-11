@@ -9,10 +9,6 @@ class AchievementService():
 
     def map(self, achievement):
         achievement['_id'] = str(achievement['_id'])
-        if achievement['created_at']:
-            achievement['created_at'] = achievement['created_at'].isoformat()
-        if achievement['updated_at']:
-            achievement['updated_at'] = achievement['updated_at'].isoformat()
         return achievement
 
     def get_all(self):
