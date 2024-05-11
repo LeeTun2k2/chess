@@ -14,7 +14,7 @@ export default function UpdateVipNow() {
       mb={4}
       leftIcon={<FaDiamond />}
       rightIcon={<FaDiamond />}
-      onClick={() => navigate("/vip")}
+      onClick={() => navigate("/vip/upgrade-vip")}
     >
       {t("vip.upgrade_your_vip")}
     </Button>

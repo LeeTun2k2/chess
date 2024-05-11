@@ -13,6 +13,7 @@ class GameService():
         self.online_games_collection = self.db['online_games']
         self.friend_games_collection = self.db['friend_games']
         self.offline_games_collection = self.db['offline_games']
+        self.game_history_collection = self.db['game_history']
 
     def map(self, game):
         game["_id"] = str(game["_id"])
@@ -318,3 +319,15 @@ class GameService():
         
     def cache_move(self, fen, moves, white_time, black_time):
         pass
+
+    def save_game_history(self, game_id, result):
+        self.game_history_collection.insert_one({'game_id': game_id, 'result': result, 'timestamp': datetime.now()})
+
+    def get_player_stats(self, player_id):
+        total_games, wins, losses = self.game_history_collection.aggregate([
+            {'$match': {'$or': [{'white': player_id}, {'black': player_id}]}},
+            {'$group': {'_id': None, 'total_games': {'$sum': 1}, 
+                        'wins': {'$sum': {'$cond': [{'$eq': ['$result', 'win']}, 1, 0]}}, 
+                        'losses': {'$sum': {'$cond': [{'$eq': ['$result', 'loss']}, 1, 0]}}}}
+        ]).next().values()
+        return total_games, wins, losses
