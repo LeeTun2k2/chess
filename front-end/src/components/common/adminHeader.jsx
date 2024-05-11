@@ -61,6 +61,7 @@ const PcMenu = ({ user }) => {
     <Fragment>
       <Menu>
         <MenuButton
+          size={"sm"}
           textTransform={"uppercase"}
           as={Button}
           variant="ghost"
@@ -73,6 +74,7 @@ const PcMenu = ({ user }) => {
       </Menu>
       <Menu>
         <MenuButton
+          size={"sm"}
           textTransform={"uppercase"}
           as={Button}
           variant="ghost"
@@ -99,6 +101,7 @@ const PcMenu = ({ user }) => {
       </Menu>
       <Menu>
         <MenuButton
+          size={"sm"}
           textTransform={"uppercase"}
           as={Button}
           variant="ghost"
@@ -122,6 +125,7 @@ const PcMenu = ({ user }) => {
       </Menu>
       <Menu>
         <MenuButton
+          size={"sm"}
           textTransform={"uppercase"}
           as={Button}
           variant="ghost"
@@ -142,6 +146,7 @@ const PcMenu = ({ user }) => {
       </Menu>
       <Menu>
         <MenuButton
+          size={"sm"}
           textTransform={"uppercase"}
           as={Button}
           variant="ghost"
@@ -168,7 +173,11 @@ const PcMenu = ({ user }) => {
         <Fragment>
           <Spacer />
           <Menu>
-            <MenuButton display={{ base: "none", md: "flex" }} mr={16}>
+            <MenuButton
+              size={"sm"}
+              display={{ base: "none", md: "flex" }}
+              mr={16}
+            >
               <Flex align="center">
                 <Avatar name={user.name} src={user.avatar} size={"sm"} />
                 <Text

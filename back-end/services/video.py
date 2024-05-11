@@ -9,10 +9,6 @@ class VideoService():
 
     def map(self, video):
         video['_id'] = str(video['_id'])
-        if video['created_at']:
-            video['created_at'] = video['created_at'].isoformat()
-        if video['updated_at']:
-            video['updated_at'] = video['updated_at'].isoformat()
         return video
 
     def get_all(self):

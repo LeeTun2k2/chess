@@ -16,6 +16,7 @@
   "fail": "Fail",
   "create_success": "Create successful",
   "edit_success": "Edit successful",
+  "update_success": "Edit successful",
   "delete_success": "Delete successful",
   "create_fail": "Create failed",
   "edit_fail": "Edit failed",

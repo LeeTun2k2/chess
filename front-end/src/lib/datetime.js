@@ -9,6 +9,7 @@ export function formatDate(datestring) {
 
 export function formatDatetime(datestring) {
   const datetime = new Date(datestring);
+  datetime.setHours(datetime.getHours() - 7);
   const hour = String(datetime.getHours()).padStart(2, "0");
   const minute = String(datetime.getMinutes()).padStart(2, "0");
   const day = String(datetime.getDate()).padStart(2, "0");
