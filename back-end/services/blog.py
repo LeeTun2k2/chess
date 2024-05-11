@@ -13,10 +13,6 @@ class BlogService():
    
     def map(self, blog):
         blog['_id'] = str(blog['_id'])
-        if blog['created_at']:
-            blog['created_at'] = blog['created_at'].isoformat()
-        if blog['updated_at']:
-            blog['updated_at'] = blog['updated_at'].isoformat()
         return blog
 
     def get_all(self):

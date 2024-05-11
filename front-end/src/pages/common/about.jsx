@@ -10,6 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
+import Image1 from "../../assets/images/about/1.jpg";
+import Image2 from "../../assets/images/about/2.webp";
+
 const AboutPage = () => {
   const { t } = useTranslation();
 
@@ -73,25 +76,11 @@ const AboutPage = () => {
               </ListItem>
             </OrderedList>
           </Box>
-          <Image
-            src={
-              "https://live.staticflickr.com/575/22360631366_b801b39622_b.jpg"
-            }
-            alt="About Us"
-            mb={4}
-            w={400}
-          />
+          <Image src={Image1} alt="About Us" mb={4} w={400} />
         </Flex>
 
         <Flex mb={8} alignItems={"center"}>
-          <Image
-            src={
-              "https://i.guim.co.uk/img/media/ed9713c277cb37ac1fb759f5f06a6e2d3b3f2184/0_514_7716_4630/master/7716.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=e88f0a98c4957f25a2fb96b4291e3641"
-            }
-            alt="About Us"
-            mb={4}
-            w={400}
-          />
+          <Image src={Image2} alt="About Us" mb={4} w={400} />
           <Box ml={16}>
             <Heading as="h3" size="lg" mb={2}>
               {t("about.whatWeOffer.heading")}

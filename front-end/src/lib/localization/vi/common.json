@@ -16,6 +16,7 @@
   "fail": "Thất bại",
   "create_success": "Thêm thành công",
   "edit_success": "Cập nhật thành công",
+  "update_success": "Cập nhật thành công",
   "delete_success": "Xóa thành công",
   "create_fail": "Thêm không thành công",
   "edit_fail": "Cập nhật không thành công",

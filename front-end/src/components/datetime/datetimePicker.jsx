@@ -12,7 +12,13 @@ export default function DatetimePicker({ value, onChange }) {
     return `${year}-${month}-${day}`;
   }
   useEffect(() => {
-    if (value) setDate(formatDate(new Date(value)));
+    if (value) {
+      const date = new Date(value);
+      date.setHours(date.getHours() - 7);
+      setDate(formatDate(date));
+      setHour(date.getHours());
+      setMinute(date.getMinutes());
+    }
   }, [value]);
 
   return (
@@ -23,11 +29,11 @@ export default function DatetimePicker({ value, onChange }) {
         placeholder="hh"
         value={hour}
         onChange={(e) => {
-          const input = e?.target?.value ?? -1;
-          if (input.length > 2) return;
-          if (input < 0 || input > 23) return;
-          setHour(input);
-          onChange(input, minute, date);
+          const input = e?.target?.value?.length > 0 ? e.target.value : "0";
+          const value = parseInt(input);
+          if (value < 0 || value > 23) return;
+          setHour(value);
+          onChange(value, minute, date);
         }}
       />
       <Text px={2}>:</Text>
@@ -37,11 +43,12 @@ export default function DatetimePicker({ value, onChange }) {
         placeholder="mm"
         value={minute}
         onChange={(e) => {
-          const input = e?.target?.value ?? -1;
-          if (input.length > 2) return;
-          if (input < 0 || input > 59) return;
-          setMinute(input);
-          onChange(hour, input, date);
+          const input = e?.target?.value?.length > 0 ? e.target.value : "0";
+
+          const value = parseInt(input);
+          if (value < 0 || value > 59) return;
+          setMinute(value);
+          onChange(hour, value, date);
         }}
       />
       <Input
@@ -51,6 +58,10 @@ export default function DatetimePicker({ value, onChange }) {
           const input = e?.target?.value;
           setDate(input);
           onChange(hour, minute, input);
+        }}
+        onKeyPress={(e) => {
+          e.preventDefault();
+          return false;
         }}
         w={48}
         ml={2}

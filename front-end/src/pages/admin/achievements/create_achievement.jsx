@@ -24,7 +24,7 @@ export default function AdminCreateAchievementPage() {
 
   const defaultData = {
     event: "",
-    time: Date.now(),
+    time: new Date(Date.now()).toISOString(),
     member: "",
     reward: "",
   };
@@ -45,15 +45,6 @@ export default function AdminCreateAchievementPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const now = Date.now();
-    if (
-      formData.start <= now ||
-      formData.end <= now ||
-      formData.start >= formData.end
-    ) {
-      toast(toast_error(t("common.invalid_datetime")));
-      return;
-    }
     setLoading(true);
     axios
       .post(`${appSettings.API_PROXY}/achievements`, formData)
@@ -108,7 +99,7 @@ export default function AdminCreateAchievementPage() {
                 onChange={(e) => {
                   setFormData({
                     ...formData,
-                    time: new Date(e?.target?.value),
+                    time: new Date(e?.target?.value).toISOString(),
                   });
                 }}
               />

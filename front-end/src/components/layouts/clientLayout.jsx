@@ -6,7 +6,7 @@ import Header from "../common/header";
 
 const ClientLayout = () => {
   return (
-    <Flex minH={"100vh"} flexDir={"column"}>
+    <Flex minH={"100vh"} flexDir={"column"} userSelect={"none"}>
       <Header />
       <Outlet />
       <Spacer />
