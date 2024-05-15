@@ -4,7 +4,7 @@ import {
   Link,
   ListItem,
   Spinner,
-  UnorderedList
+  UnorderedList,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FaBook } from "react-icons/fa";
@@ -12,8 +12,23 @@ import { FaBook } from "react-icons/fa";
 export default function NewBooks({ data }) {
   const { t } = useTranslation();
   return (
-    <Card p={1} variant={"outline"} overflow={"hidden"} borderRadius={4} mb={2} minH={120}>
-      <Heading as={"h5"} fontSize={"sm"} display={"flex"} alignItems={"center"} mb={1}>
+    <Card
+      filter="auto"
+      brightness="98%"
+      p={1}
+      variant={"outline"}
+      overflow={"hidden"}
+      borderRadius={4}
+      mb={2}
+      minH={120}
+    >
+      <Heading
+        as={"h5"}
+        fontSize={"sm"}
+        display={"flex"}
+        alignItems={"center"}
+        mb={1}
+      >
         <FaBook style={{ marginRight: 4 }} />
         {t("dashboard.new_books")}
       </Heading>
@@ -21,11 +36,7 @@ export default function NewBooks({ data }) {
         {!!data ? (
           data?.map((item, index) => (
             <ListItem key={`books-${index}`}>
-              <Link
-              fontSize={"small"}
-                noOfLines={1}
-                href={`books/${item._id}`}
-              >
+              <Link fontSize={"small"} noOfLines={1} href={`books/${item._id}`}>
                 {item.title}
               </Link>
             </ListItem>
