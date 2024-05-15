@@ -31,7 +31,6 @@ const ClientRoutes = ({ user }) => {
       <Route path="book/:id" element={<BookPage />} />
       <Route path="videos" element={<VideoListPage />} />
       <Route path="video/:id" element={<VideoPage />} />
-
       <Route element={!!user ? <Outlet /> : <Navigate to="/login" />}>
         <Route path="profile" element={<UserProfile />} />
         <Route path="lobby" element={<LobbyPage />} />

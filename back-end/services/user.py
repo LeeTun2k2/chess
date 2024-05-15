@@ -95,6 +95,7 @@ class UserService():
         else:
             return False, "User not found."
     
+    
     def get_friends(self, user_id: str):
         user_data = self.users_collection.find_one({'_id': ObjectId(user_id)})
         if not user_data:

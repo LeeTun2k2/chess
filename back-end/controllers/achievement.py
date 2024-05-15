@@ -45,6 +45,7 @@ def get_achievement_by_id(achievement_id):
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
+
 @achievement_bp.route('/api/achievements', methods=['POST'])
 @jwt_required()
 def create_achievement():

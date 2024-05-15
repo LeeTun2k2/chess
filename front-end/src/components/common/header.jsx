@@ -13,6 +13,7 @@ import {
   Spacer,
   Text,
   useDisclosure,
+  Icon
 } from "@chakra-ui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
 import { client_menu } from "./data";
 import Sidebar from "./sidebar";
-
+import { FaBell } from "react-icons/fa";
 const Header = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -171,6 +172,11 @@ const PcMenu = ({ user }) => {
           display={{ base: "none", md: "flex" }}
         >
           {t("header.vip")}
+        </MenuButton>
+      </Menu>
+      <Menu>
+        <MenuButton display={{ base: "none", md: "flex" }} mr={16}>
+          <Icon as={FaBell} boxSize={6} />
         </MenuButton>
       </Menu>
       {user?.id ? (
