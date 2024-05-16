@@ -1,7 +1,7 @@
 from services.lobby import LobbyService
 from services.game import GameService
 from services.user import UserService
-from flask_socketio import emit
+from flask_socketio import emit, join_room
 
 lobby_service = LobbyService()
 game_service = GameService()
@@ -27,9 +27,12 @@ def request_game(user_id, lobby_id):
 
 def join_game(game_id: str): 
     game = game_service.get_game(game_id, "online")
-    emit('game_start', {'game_id': game_id, "status": game["status"]}, broadcast=True, namespace='/')
+    room = f'game-{game_id}'
+    join_room(room)
+    emit('game_start', {'game_id': game_id, "status": game["status"]}, room=room)
 
 def send_move(game_id: str, fen: str, move: str, whiteTime: int, blackTime: int):
+    room = f'game-{game_id}'
     emit(
         'receive_move', 
         {
@@ -38,28 +41,36 @@ def send_move(game_id: str, fen: str, move: str, whiteTime: int, blackTime: int)
             'game_id': game_id,
             'whiteTime': whiteTime,
             'blackTime': blackTime
-        }, 
-        broadcast=True, 
-        namespace='/')
+        }, room=room)
 
 def offer_draw(game_id: str, player_offer_id: str):
-    emit("offer_draw", {'game_id': game_id, "player_offer_id": player_offer_id}, broadcast=True, namespace='/')
+    room = f'game-{game_id}'
+    emit("offer_draw", {'game_id': game_id, "player_offer_id": player_offer_id}, room=room)
 
 def accept_draw(game_id: str, player_accept_id: str):
-    emit("accept_draw", {'game_id': game_id, "player_accept_id": player_accept_id}, broadcast=True, namespace='/')
-    game_service.draw(game_id)
+    room = f'game-{game_id}'
+    result = game_service.draw(game_id)
+    if result:
+        emit("accept_draw", {'game_id': game_id, "player_accept_id": player_accept_id}, room=room)
 
 def reject_draw(game_id: str, player_reject_id: str):
-    emit("reject_draw", {'game_id': game_id, "player_reject_id": player_reject_id}, broadcast=True, namespace='/')
+    room = f'game-{game_id}'
+    emit("reject_draw", {'game_id': game_id, "player_reject_id": player_reject_id}, room=room)
 
 def resign(game_id: str, player_resign_id: str):
-    emit("resign", {'game_id': game_id, "player_resign_id": player_resign_id}, broadcast=True, namespace='/')
-    game_service.resign(game_id, player_resign_id)
+    room = f'game-{game_id}'
+    result = game_service.resign(game_id, player_resign_id)
+    if result:
+        emit("resign", {'game_id': game_id, "player_resign_id": player_resign_id}, room=room)
 
 def timeout(game_id: str, player_timeout_id: str):
-    emit("timeout", {'game_id': game_id, "player_timeout_id": player_timeout_id}, broadcast=True, namespace='/')
-    game_service.timeout(game_id, player_timeout_id)
-
+    room = f'game-{game_id}'
+    result = game_service.timeout(game_id, player_timeout_id)
+    if result:
+        emit("timeout", {'game_id': game_id, "player_timeout_id": player_timeout_id}, room=room)
+    
 def checkmate(game_id: str):
-    emit("checkmate", {'game_id': game_id}, broadcast=True, namespace='/')
-    game_service.checkmate(game_id, "1")
+    room = f'game-{game_id}'
+    result = game_service.checkmate(game_id, "1")   
+    if result:
+        emit("checkmate", {'game_id': game_id}, room=room)
