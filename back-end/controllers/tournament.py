@@ -72,6 +72,7 @@ def create_tournament():
             "bonus_time": request.json.get('bonus_time'),
             "start": request.json.get('start'),
             "end": request.json.get('end'),
+            "players": [],
         }
         
         new_tournament = tournament_service.create(data)
@@ -114,5 +115,77 @@ def delete_tournament(tournament_id):
             return jsonify({'message': 'tournament deleted successfully'}), 200
         else:
             return jsonify({'message': 'tournament not found'}), 404
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+    
+@tournament_bp.route('/api/tournaments/<tournament_id>/join', methods=['POST'])
+@jwt_required()
+def join_tournament(tournament_id):
+    try:
+        user_id = get_jwt_identity()
+        
+        success = tournament_service.join(tournament_id, user_id)
+        if success:
+            return jsonify({'message': 'Successfully joined the tournament'}), 200
+        else:
+            return jsonify({'message': 'Failed to join the tournament'}), 400
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+@tournament_bp.route('/api/tournaments/<tournament_id>/leave', methods=['DELETE'])
+@jwt_required()
+def leave_tournament(tournament_id):
+    try:
+        user_id = get_jwt_identity()
+
+        success = tournament_service.leave(tournament_id, user_id)
+        if success:
+            return jsonify({'message': 'Successfully left the tournament'}), 200
+        else:
+            return jsonify({'message': 'Failed to leave the tournament'}), 400
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+@tournament_bp.route('/api/tournaments/<tournament_id>/scoreboard', methods=['GET'])
+def get_tournament_scoreboard(tournament_id):
+    try:
+        scoreboard = tournament_service.get_scoreboard(tournament_id)
+        if scoreboard is not None:
+            return jsonify({
+                "message": "success",
+                "scoreboard": scoreboard
+            }), 200
+        else:
+            return jsonify({'message': 'Tournament not found'}), 404
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+@tournament_bp.route('/api/tournaments/<tournament_id>/game-history', methods=['GET'])
+@jwt_required()
+def get_tournament_game_history(tournament_id):
+    user_id = get_jwt_identity()
+    try:
+        game_history = tournament_service.get_user_game_history(tournament_id, user_id)
+        if game_history is not None:
+            return jsonify({
+                "message": "success",
+                "game_history": game_history
+            }), 200
+        else:
+            return jsonify({'message': 'Tournament not found'}), 404
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+@tournament_bp.route('/api/tournaments/<tournament_id>/users/<user_id>/game-history', methods=['GET'])
+def get_user_game_history_in_tournament(tournament_id, user_id):
+    try:
+        game_history = tournament_service.get_user_game_history(tournament_id, user_id)
+        if game_history is not None:
+            return jsonify({
+                "message": "success",
+                "game_history": game_history
+            }), 200
+        else:
+            return jsonify({'message': 'User game history not found'}), 404
     except Exception as e:
         return jsonify({"message": str(e)}), 500

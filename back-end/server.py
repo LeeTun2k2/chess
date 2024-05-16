@@ -134,5 +134,10 @@ def timeout_socket(data):
 def timeout_socket(data):
     checkmate(data['game_id'])
 
+from sockets.tournament import *
+@socketio.on('join_tournament')
+def handle_join_tournament(data):
+    join_tournament(data["tournament_id"], data["user_id"])
+
 if __name__ == '__main__':
     socketio.run(app,host='0.0.0.0', port=5000, debug=True)

@@ -27,12 +27,15 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
 import { formatDate } from "../../lib/datetime";
 import { useCurrentPath } from "../../lib/hooks/route";
-import { toast_error } from "../../lib/hooks/toast";
+import { toast_error, toast_success } from "../../lib/hooks/toast";
+import socket from "../../lib/socket";
 import appSettings from "../../settings/appSettings";
 
 export default function TournamentPage(props) {
@@ -41,48 +44,129 @@ export default function TournamentPage(props) {
   const toast = useToast();
   const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const user = getUserData();
   const [data, setData] = useState({});
   const [userJoin, setUserJoin] = useState(false);
   const [your_games, setYourGames] = useState([]);
-  const [ranking, setRanking] = useState([]);
-  const [renderRanking, setRenderRanking] = useState([]);
+  const [scoreboard, setScoreBoard] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const pageSize = 10;
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(`${appSettings.API_PROXY}/tournaments/${id}`)
       .then((resp) => {
         setData(resp?.data?.tournament ?? {});
+        const players = resp?.data?.tournament?.players ?? [];
+        setUserJoin(players.includes(user?.id));
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-  }, [toast, id, t]);
+  }, [toast, id, t, user?.id]);
 
   useEffect(() => {
+    setIsLoading(true);
     axios
-      .get(`${appSettings.API_PROXY}/tournaments/${id}/your-games`)
+      .get(`${appSettings.API_PROXY}/tournaments/${id}/game-history`)
       .then((resp) => {
-        setYourGames(resp?.data?.games ?? []);
+        setYourGames(resp?.data?.game_history ?? []);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [toast, t, id]);
 
-  useEffect(() => {
+  const handleReloadScoreBoard = useCallback(() => {
+    setIsLoading(true);
     axios
-      .get(`${appSettings.API_PROXY}/tournaments/${id}/ranking`)
+      .get(`${appSettings.API_PROXY}/tournaments/${id}/scoreboard`)
       .then((resp) => {
-        setRanking([]);
-        setRenderRanking([]);
+        setScoreBoard(resp?.data?.scoreboard ?? []);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [toast, t, id]);
-  console.log(ranking);
+
+  const handleUserJoinTournament = useCallback(() => {
+    setIsLoading(true);
+    axios
+      .post(`${appSettings.API_PROXY}/tournaments/${id}/join`)
+      .then((resp) => {
+        setUserJoin(true);
+        toast(toast_success(t("tournaments.join_success")));
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      })
+      .finally(handleReloadScoreBoard);
+  }, [id, t, toast, handleReloadScoreBoard]);
+
+  const handleUserLeaveTournament = useCallback(() => {
+    setIsLoading(true);
+    axios
+      .delete(`${appSettings.API_PROXY}/tournaments/${id}/leave`)
+      .then((resp) => {
+        setUserJoin(false);
+        toast(toast_success(t("tournaments.leave_success")));
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      })
+      .finally(handleReloadScoreBoard);
+  }, [id, t, toast, handleReloadScoreBoard]);
+
+  const handleSocketJoinTournament = useCallback(() => {
+    console.log("join_tournament");
+  }, []);
+
+  const handleSocketTournamentGameFound = useCallback(
+    (game) => {
+      console.log("tournament_game_found");
+      navigate(`/online/${game._id}`);
+    },
+    [navigate]
+  );
+
+  useEffect(() => {
+    handleReloadScoreBoard();
+  }, [handleReloadScoreBoard]);
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.emit("join_tournament", { tournament_id: id, user_id: user.id });
+
+    socket.on("join_tournament", handleSocketJoinTournament);
+    socket.on("tournament_game_found", handleSocketTournamentGameFound);
+
+    return () => {
+      socket.off("join_tournament", handleSocketJoinTournament);
+      socket.off("tournament_game_found", handleSocketTournamentGameFound);
+      if (socket.readyState === 1) {
+        socket.disconnect();
+      }
+    };
+  }, [
+    handleSocketJoinTournament,
+    handleSocketTournamentGameFound,
+    id,
+    user.id,
+  ]);
 
   return (
     <Fragment>
@@ -113,31 +197,30 @@ export default function TournamentPage(props) {
             <Box>
               <Flex mb={2} alignItems={"end"}>
                 <Text fontSize={"l"} fontWeight={"bold"}>
-                  {t("tournaments.ranking")}
+                  {t("tournaments.scoreboard")}
                 </Text>
                 <Spacer />
-                {Date.now() < new Date(data?.start) &&
-                  (userJoin ? (
-                    <Button
-                      colorScheme="red"
-                      onClick={() => {
-                        setUserJoin(false);
-                      }}
-                    >
-                      <CloseIcon />
-                      <Text ml={2}>{t("tournaments.leave")}</Text>
-                    </Button>
-                  ) : (
-                    <Button
-                      colorScheme="green"
-                      onClick={() => {
-                        setUserJoin(true);
-                      }}
-                    >
-                      <AddIcon />
-                      <Text ml={2}>{t("tournaments.join")}</Text>
-                    </Button>
-                  ))}
+                {Date.now() > new Date(data?.start) ? (
+                  <Text>{t("tournaments.has_started")}</Text>
+                ) : userJoin ? (
+                  <Button
+                    isLoading={isLoading}
+                    colorScheme="red"
+                    onClick={handleUserLeaveTournament}
+                  >
+                    <CloseIcon />
+                    <Text ml={2}>{t("tournaments.leave")}</Text>
+                  </Button>
+                ) : (
+                  <Button
+                    isLoading={isLoading}
+                    colorScheme="green"
+                    onClick={handleUserJoinTournament}
+                  >
+                    <AddIcon />
+                    <Text ml={2}>{t("tournaments.join")}</Text>
+                  </Button>
+                )}
               </Flex>
               <Table
                 size={{ base: "sm", md: "md" }}
@@ -152,15 +235,16 @@ export default function TournamentPage(props) {
                     <Th width="15%" textAlign={"center"}>
                       {t("common.no")}
                     </Th>
-                    <Th width="30%">{t("tournaments.username")}</Th>
-                    <Th width="40%">{t("tournaments.name")}</Th>
+                    <Th width="25%">{t("tournaments.username")}</Th>
+                    <Th width="30%">{t("tournaments.name")}</Th>
+                    <Th width="15%">{t("tournaments.rating")}</Th>
                     <Th width="15%" textAlign={"right"}>
                       {t("tournaments.point")}
                     </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {renderRanking
+                  {scoreboard
                     .slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
                     .map((item, index) => (
                       <Tr key={index} userSelect="none">
@@ -173,7 +257,7 @@ export default function TournamentPage(props) {
                           whiteSpace="nowrap"
                           textOverflow="ellipsis"
                         >
-                          {item.username}{" "}
+                          {item.username}
                         </Td>
                         <Td
                           textAlign={"left"}
@@ -182,6 +266,14 @@ export default function TournamentPage(props) {
                           textOverflow="ellipsis"
                         >
                           {item.name}
+                        </Td>
+                        <Td
+                          textAlign={"left"}
+                          overflow="hidden"
+                          whiteSpace="nowrap"
+                          textOverflow="ellipsis"
+                        >
+                          {Math.floor(item.rating?.chess?.mu ?? 0)}
                         </Td>
                         <Td
                           textAlign={"right"}
@@ -211,9 +303,7 @@ export default function TournamentPage(props) {
                           </Button>
                           {Array.from(
                             {
-                              length: Math.ceil(
-                                renderRanking.length / pageSize
-                              ),
+                              length: Math.ceil(scoreboard.length / pageSize),
                             },
                             (_, i) =>
                               pageNumber - 5 <= i &&
@@ -235,7 +325,7 @@ export default function TournamentPage(props) {
                             size="sm"
                             onClick={() =>
                               (pageNumber + 1) * pageSize <=
-                                renderRanking.length &&
+                                scoreboard.length &&
                               setPageNumber(pageNumber + 1)
                             }
                           >
