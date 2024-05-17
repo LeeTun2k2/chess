@@ -21,6 +21,7 @@ import tournaments from "./tournaments.json";
 import users from "./users.json";
 import videos from "./videos.json";
 import vip from "./vip.json";
+import payment from "./payment.json";
 
 const vi = {
   common,
@@ -46,6 +47,7 @@ const vi = {
   vip,
   others,
   dashboard,
+  payment
 };
 
 export default vi;
