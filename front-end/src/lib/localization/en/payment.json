@@ -7,6 +7,7 @@
     "zalopay_description": "Pay with ATM via ZaloPay",
     "momo": "MoMo",
     "momo_description": "Pay with MoMo Wallet",
-    "pay_now": "Pay Now"
+    "pay_now": "Pay Now",
+    "payment_successful": "Congratulations on your successful payment. Enjoy the VIP service!"
 }
   
