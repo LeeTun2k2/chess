@@ -72,7 +72,7 @@ export default function MetricSummaryReport() {
                 <Text fontSize={"sm"}>{t("dashboard.cpu_utilization")}</Text>
                 <Text fontSize={"4xl"} fontWeight={"bold"} textAlign={"right"}>
                   {data.data_yesterday[0]["Average CPU utilization "]?.toFixed(
-                    3
+                    3,
                   ) ?? 0}
                   %
                 </Text>
@@ -82,7 +82,7 @@ export default function MetricSummaryReport() {
                 <Text fontSize={"sm"}>{t("dashboard.physical_memory")}</Text>
                 <Text fontSize={"4xl"} fontWeight={"bold"} textAlign={"right"}>
                   {data.data_yesterday[0]["Average physical memory"]?.toFixed(
-                    3
+                    3,
                   ) ?? 0}
                   %
                 </Text>
@@ -103,7 +103,7 @@ export default function MetricSummaryReport() {
                 <Text fontSize={"sm"}>{t("dashboard.cpu_utilization")}</Text>
                 <Text fontSize={"4xl"} fontWeight={"bold"} textAlign={"right"}>
                   {data.data_last_week[0]["Average CPU utilization "]?.toFixed(
-                    3
+                    3,
                   ) ?? 0}
                   %
                 </Text>
@@ -113,7 +113,7 @@ export default function MetricSummaryReport() {
                 <Text fontSize={"sm"}>{t("dashboard.physical_memory")}</Text>
                 <Text fontSize={"4xl"} fontWeight={"bold"} textAlign={"right"}>
                   {data.data_last_week[0]["Average physical memory"]?.toFixed(
-                    3
+                    3,
                   ) ?? 0}
                   %
                 </Text>

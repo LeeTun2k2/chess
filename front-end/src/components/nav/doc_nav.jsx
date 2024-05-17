@@ -16,7 +16,7 @@ export default function DocNav() {
         href: "/tournaments",
       },
     ],
-    [t]
+    [t],
   );
 
   const quick_pratice = useMemo(
@@ -25,7 +25,7 @@ export default function DocNav() {
       { _id: "books", text: t("header.books"), href: "/books" },
       { _id: "videos", text: t("header.videos"), href: "videos" },
     ],
-    [t]
+    [t],
   );
 
   const getData = () => {

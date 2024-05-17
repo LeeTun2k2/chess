@@ -13,7 +13,7 @@ import {
   Spacer,
   Text,
   useDisclosure,
-  Icon
+  Icon,
 } from "@chakra-ui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

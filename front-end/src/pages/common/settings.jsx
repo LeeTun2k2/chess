@@ -24,10 +24,10 @@ const SettingsPage = () => {
   const [theme, setTheme] = useState(savedTheme ?? "light");
   const { toggleColorMode } = useColorMode();
   const [boardSettings, setBoardSettings] = useState(
-    savedBoardSettings ?? "standard"
+    savedBoardSettings ?? "standard",
   );
   const [pieceSettings, setPieceSettings] = useState(
-    savedPieceSettings ?? "classic"
+    savedPieceSettings ?? "classic",
   );
   const [soundEnabled, setSoundEnabled] = useState(savedSoundEnabled);
   const [soundSettings, setSoundSettings] = useState(savedSoundSettings);

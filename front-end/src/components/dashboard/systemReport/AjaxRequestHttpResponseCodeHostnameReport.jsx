@@ -23,7 +23,7 @@ export default function AjaxRequestHttpResponseCodeHostnameReport({ theme }) {
   useEffect(() => {
     axios
       .get(
-        `${appSettings.API_PROXY}/dashboard/ajax_request_http_response_code_hostname`
+        `${appSettings.API_PROXY}/dashboard/ajax_request_http_response_code_hostname`,
       )
       .then((resp) => {
         setData(resp?.data?.data ?? defaultData);
@@ -107,13 +107,13 @@ export default function AjaxRequestHttpResponseCodeHostnameReport({ theme }) {
         <Flex w={"50%"} h={"100%"}>
           {renderColumnChart(
             data?.data_yesterday,
-            t("dashboard.yesterday")
+            t("dashboard.yesterday"),
           ) ?? <Spinner />}
         </Flex>
         <Flex w={"50%"} h={"100%"}>
           {renderColumnChart(
             data?.data_last_week,
-            t("dashboard.last_week")
+            t("dashboard.last_week"),
           ) ?? <Spinner />}
         </Flex>
       </Flex>

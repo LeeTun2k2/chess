@@ -25,9 +25,12 @@ export default function UpgradeVipPage() {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post(`${appSettings.API_PROXY}/momo_payment`, {
-        amount: price,
-      });
+      const response = await axios.post(
+        `${appSettings.API_PROXY}/momo_payment`,
+        {
+          amount: price,
+        },
+      );
       setPayUrl(response.data.payUrl);
       console.log(response.data);
       if (response.data.payUrl) {
@@ -42,18 +45,37 @@ export default function UpgradeVipPage() {
 
   return (
     <Container maxW="md" centerContent py={6}>
-      <Card border="1px solid" borderColor="green.500" px={4} pt={12} boxShadow="lg" w="100%">
+      <Card
+        border="1px solid"
+        borderColor="green.500"
+        px={4}
+        pt={12}
+        boxShadow="lg"
+        w="100%"
+      >
         <Heading as="h1" size="lg" textAlign="center" mb={4}>
           {t("vip.title")}
         </Heading>
         <Text fontSize="md" textAlign="center" noOfLines={2} color="gray">
           {t("vip.description")}
         </Text>
-        <Flex justifyContent="center" alignItems={{ base: "center", xl: "end" }} flexDir={{ base: "column", xl: "row" }} mb={4}>
+        <Flex
+          justifyContent="center"
+          alignItems={{ base: "center", xl: "end" }}
+          flexDir={{ base: "column", xl: "row" }}
+          mb={4}
+        >
           <Text fontSize="4xl" fontWeight="bold" color="green.500">
             {formatNumber(price)}
           </Text>
-          <Text fontSize="sm" color="gray" fontWeight="bold" mx={1} mb={2} textTransform="lowercase">
+          <Text
+            fontSize="sm"
+            color="gray"
+            fontWeight="bold"
+            mx={1}
+            mb={2}
+            textTransform="lowercase"
+          >
             vnđ / {t("vip.month")}
           </Text>
         </Flex>

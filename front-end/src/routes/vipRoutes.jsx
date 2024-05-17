@@ -21,7 +21,7 @@ const VipRoutes = ({ user }) => {
         <Route path="repetition" element={<RepetitionPage />} />
       </Route>
     </Fragment>
-  )
+  );
 };
 
 export default VipRoutes;

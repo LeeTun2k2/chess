@@ -88,7 +88,7 @@ export default function VipBannerSmall() {
           </Text>
         </ListItem>
         <Box py={1} />
-        <UpdateVipNow/>
+        <UpdateVipNow />
       </List>
     </Card>
   );

@@ -21,7 +21,13 @@ export default function VipBanner() {
   const price = 200000;
 
   return (
-    <Card border={"1px solid"} borderColor={"green.500"} px={4} pt={12} w={"25%"}>
+    <Card
+      border={"1px solid"}
+      borderColor={"green.500"}
+      px={4}
+      pt={12}
+      w={"25%"}
+    >
       <Heading
         as={"h2"}
         fontSize={"2xl"}
@@ -92,15 +98,15 @@ export default function VipBanner() {
         </ListItem>
         <Box py={1} />
         <Button
-      colorScheme="green"
-      w={"100%"}
-      mb={4}
-      leftIcon={<FaDiamond />}
-      rightIcon={<FaDiamond />}
-      onClick={() => navigate("/billing")}
-    >
-      {t("vip.upgrade_your_vip")}
-    </Button>
+          colorScheme="green"
+          w={"100%"}
+          mb={4}
+          leftIcon={<FaDiamond />}
+          rightIcon={<FaDiamond />}
+          onClick={() => navigate("/billing")}
+        >
+          {t("vip.upgrade_your_vip")}
+        </Button>
       </List>
     </Card>
   );

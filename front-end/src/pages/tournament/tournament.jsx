@@ -139,7 +139,7 @@ export default function TournamentPage(props) {
       console.log("tournament_game_found");
       navigate(`/online/${game._id}`);
     },
-    [navigate]
+    [navigate],
   );
 
   useEffect(() => {
@@ -318,7 +318,7 @@ export default function TournamentPage(props) {
                                 >
                                   {i + 1}
                                 </Button>
-                              )
+                              ),
                           )}
                           <Button
                             colorScheme="gray"

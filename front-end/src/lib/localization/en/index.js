@@ -45,7 +45,7 @@ const en = {
   friends,
   vip,
   others,
-  dashboard
+  dashboard,
 };
 
 export default en;
