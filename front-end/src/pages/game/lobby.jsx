@@ -31,6 +31,7 @@ import UpdateVipNow from "../../components/vip/updateVipNow";
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import socket from "../../lib/socket";
+import { filterGameTime } from "../../lib/time";
 import appSettings from "../../settings/appSettings";
 import {
   BLITZ,
@@ -46,6 +47,13 @@ export default function LobbyPage(props) {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
+  const [renderData, setRenderData] = useState([]);
+  const [filter, setFilter] = useState({
+    variant: "",
+    time: "",
+    minRating: 0,
+    maxRating: 3000,
+  });
   const toast = useToast();
   const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
@@ -60,6 +68,7 @@ export default function LobbyPage(props) {
       .then((res) => {
         if (res.data) {
           setData(res.data);
+          setRenderData(res.data);
         } else {
           toast(toast_error("Fail to load lobby!"));
         }
@@ -109,6 +118,18 @@ export default function LobbyPage(props) {
     };
   }, [handleLobbyCreated, handleLobbyClosed]);
 
+  const handleSearch = useCallback(() => {
+    const { variant, time, minRating, maxRating } = filter;
+    const filtered_data = data.filter(
+      (x) =>
+        (!variant || x.variant === variant) &&
+        x.rating >= minRating &&
+        x.rating <= maxRating &&
+        (!time || filterGameTime(x.initial_time) === time)
+    );
+    setRenderData(filtered_data);
+  }, [data, filter]);
+
   return (
     <Fragment>
       <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
@@ -138,15 +159,17 @@ export default function LobbyPage(props) {
             >
               <Thead bgColor={theme === "dark" ? "black" : "gray.200"}>
                 <Tr>
-                  <Th>{t("common.variant")}</Th>
-                  <Th>{t("common.player")}</Th>
-                  <Th>{t("common.rating")}</Th>
-                  <Th>{t("common.time")}</Th>
+                  <Th w={"20%"}>{t("common.variant")}</Th>
+                  <Th w={"40%"}>{t("common.player")}</Th>
+                  <Th w={"20%"} textAlign={"right"}>
+                    {t("common.rating")}
+                  </Th>
+                  <Th w={"20%"}>{t("common.time")}</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {data &&
-                  data.map((item, index) => {
+                {!!renderData &&
+                  renderData.map((item, index) => {
                     return (
                       (pageNumber - 1) * pageSize <= index &&
                       index < pageNumber * pageSize && (
@@ -168,7 +191,9 @@ export default function LobbyPage(props) {
                         >
                           <Td>{item.variant}</Td>
                           <Td>{item.player}</Td>
-                          <Td>{item.rating}</Td>
+                          <Td textAlign={"right"}>
+                            {Math.floor(item.rating ?? 0)}
+                          </Td>
                           <Td>
                             {item.initial_time}m + {item.bonus_time}s
                           </Td>
@@ -243,6 +268,10 @@ export default function LobbyPage(props) {
                 placeholder={`-- ${t("common.variant")} --`}
                 w={56}
                 title={t("lobby.select_variant")}
+                value={filter.variant}
+                onChange={(e) => {
+                  setFilter({ ...filter, variant: e.target.value });
+                }}
               >
                 <option value={CHESS}>{t("common.chess")}</option>
                 <option value={XIANGQI}>{t("common.xiangqi")}</option>
@@ -258,6 +287,10 @@ export default function LobbyPage(props) {
                 placeholder={`-- ${t("common.time")} --`}
                 width={56}
                 title={t("lobby.select_game_type")}
+                value={filter.time}
+                onChange={(e) => {
+                  setFilter({ ...filter, time: e.target.value });
+                }}
               >
                 <option value={BULLET}>{t("common.bullet")}</option>
                 <option value={BLITZ}>{t("common.blitz")}</option>
@@ -271,18 +304,28 @@ export default function LobbyPage(props) {
               </Text>
               <Spacer />
               <Input
-                defaultValue={0}
                 w={24}
                 placeholder={t("lobby.low_rating")}
+                type="number"
+                value={filter.minRating}
+                onChange={(e) => {
+                  const newValue = parseInt(e.target?.value ?? 0);
+                  setFilter({ ...filter, maxRating: newValue });
+                }}
               />
               <Text mx={1}>~</Text>
               <Input
-                defaultValue={3000}
                 w={24}
                 placeholder={t("lobby.high_rating")}
+                value={filter.maxRating}
+                type="number"
+                onChange={(e) => {
+                  const newValue = parseInt(e.target?.value ?? 0);
+                  setFilter({ ...filter, maxRating: newValue });
+                }}
               />
             </HStack>
-            <Button w="100%" mt={4}>
+            <Button w="100%" mt={4} onClick={handleSearch}>
               {t("common.filter")}
             </Button>
           </Box>

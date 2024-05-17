@@ -10,13 +10,16 @@ user_service = UserService()
 def request_game(user_id, lobby_id):
     lobby = lobby_service.get_lobby(lobby_id) 
     if lobby['status'] == 'OPEN':
+        print("Lobby is OPEN!")
         return
     
     user = user_service.get_by_id(user_id)
     if not user:
+        print("User not found!")
         return
     
     if user.id == lobby['player_id']:
+        print("User created lobbies is request!")
         return
 
     # get lobby

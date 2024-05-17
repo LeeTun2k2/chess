@@ -7,6 +7,7 @@ import FriendList from "../pages/friend/friends";
 import GameSettingsPage from "../pages/game/gameSettingsPage";
 import LobbyPage from "../pages/game/lobby";
 import OnlineGamePage from "../pages/game/online-game";
+import WaitingFriendGamePage from "../pages/game/waitingFriendGame";
 import WaitingGamePage from "../pages/game/waitingGame";
 import HomePage from "../pages/home";
 import BookPage from "../pages/practice/book";
@@ -36,6 +37,7 @@ const ClientRoutes = ({ user }) => {
         <Route path="profile" element={<UserProfile />} />
         <Route path="lobby" element={<LobbyPage />} />
         <Route path="wait/:id" element={<WaitingGamePage />} />
+        <Route path="friendwait/:id" element={<WaitingFriendGamePage />} />
         <Route path="new-game" element={<GameSettingsPage />} />
         <Route path="online/:id" element={<OnlineGamePage />} />
         <Route path="tournaments" element={<TournamentsPage />} />

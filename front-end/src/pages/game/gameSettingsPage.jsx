@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Flex,
-  Heading,
   Spacer,
   Text,
   useDisclosure,
@@ -41,9 +40,6 @@ export default function GameSettingsPage() {
             w={{ base: "100%", md: "48%" }}
             mb={{ base: 8, md: 0 }}
           >
-            <Heading fontSize={"xl"} mb={4}>
-              {t("games.new_game")}
-            </Heading>
             <NoLogicChessBoard isFree={true} />
           </Box>
 
