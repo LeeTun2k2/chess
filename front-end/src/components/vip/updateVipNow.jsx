@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 export default function UpdateVipNow() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
   return (
     <Button
       colorScheme="green"
