@@ -18,6 +18,7 @@ import header from "./header.json";
 import infinity from "./infinity.json";
 import notifications from "./notifications.json";
 import others from "./others.json";
+import payment from "./payment.json";
 import profile from "./profile.json";
 import puzzles from "./puzzles.json";
 import repetition from "./repetition.json";
@@ -60,6 +61,7 @@ const vi = {
   three,
   countdown,
   haste,
+  payment
 };
 
 export default vi;

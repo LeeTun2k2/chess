@@ -6,6 +6,7 @@ import requests
 import hmac
 import hashlib
 import uuid
+from datetime import datetime
 other_bp = Blueprint('other', __name__)
 
 images_service = ImageService()
@@ -62,13 +63,13 @@ def create_payment():
     secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
     orderInfo = "pay with MoMo"
     partnerCode = "MOMO"
-    redirectUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b"
-    ipnUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b"
+    redirectUrl = "http://localhost:3000/billing"
+    ipnUrl = "http://localhost:3000/billing"
     amount = request.json.get('amount')
     orderId = str(uuid.uuid4())
     requestId = str(uuid.uuid4())
     extraData = ""  # pass empty value or Encode base64 JsonString
-
+    print(orderId)
     rawSignature = "accessKey=" + accessKey + "&amount=" + amount + "&extraData=" + extraData + "&ipnUrl=" + ipnUrl + "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode + "&redirectUrl=" + redirectUrl + "&requestId=" + requestId + "&requestType=captureWallet"
     h = hmac.new(bytes(secretKey, 'ascii'), bytes(rawSignature, 'ascii'), hashlib.sha256)
     signature = h.hexdigest()
@@ -90,4 +91,73 @@ def create_payment():
     }
 
     response = requests.post(endpoint, json=data, headers={'Content-Type': 'application/json'})
+    return jsonify(response.json())
+
+
+
+@other_bp.route('/api/vnpay_payment', methods=['POST'])
+def create_vnpay_payment():
+    vnp_TmnCode = 'F8BBA842ECF85'  # Test TMN Code
+    vnp_HashSecret = 'K951B6PE1waDMi640xX08PD3vg6EkVlz'  # Test Hash Secret
+    vnp_Url = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
+    vnp_Returnurl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b'
+    vnp_IpnUrl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b'
+    vnp_TxnRef = str(uuid.uuid4())
+    vnp_OrderInfo = 'pay with VNPAY'
+    vnp_OrderType = 'other'
+    vnp_Amount = int(request.json.get('amount')) * 100  # VNPAY requires the amount in VND x 100
+    vnp_Locale = 'vn'
+    vnp_BankCode = ''
+
+    inputData = {
+        'vnp_Version': '2.1.0',
+        'vnp_Command': 'pay',
+        'vnp_TmnCode': vnp_TmnCode,
+        'vnp_Amount': vnp_Amount,
+        'vnp_CurrCode': 'VND',
+        'vnp_TxnRef': vnp_TxnRef,
+        'vnp_OrderInfo': vnp_OrderInfo,
+        'vnp_OrderType': vnp_OrderType,
+        'vnp_Locale': vnp_Locale,
+        'vnp_ReturnUrl': vnp_Returnurl,
+        'vnp_IpnUrl': vnp_IpnUrl,
+        'vnp_CreateDate': datetime.now().strftime('%Y%m%d%H%M%S')
+    }
+    if vnp_BankCode:
+        inputData['vnp_BankCode'] = vnp_BankCode
+
+    inputData = {k: v for k, v in sorted(inputData.items())}
+
+    queryString = '&'.join([f"{key}={value}" for key, value in inputData.items()])
+    hashData = '&'.join([f"{key}={value}" for key, value in inputData.items() if key.startswith('vnp_')])
+
+    vnp_SecureHash = hashlib.sha256((vnp_HashSecret + hashData).encode('utf-8')).hexdigest()
+    paymentUrl = f"{vnp_Url}?{queryString}&vnp_SecureHashType=SHA256&vnp_SecureHash={vnp_SecureHash}"
+
+    return jsonify({'payUrl': paymentUrl})
+
+# MoMo Payment Status Query Endpoint
+@other_bp.route('/api/momo_payment_status', methods=['POST'])
+def query_momo_payment_status():
+    endpoint = "https://test-payment.momo.vn/v2/gateway/api/query"
+    accessKey = "F8BBA842ECF85"
+    secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
+    partnerCode = "MOMO"
+    orderId = request.json.get('orderId')
+    requestId = str(uuid.uuid4())
+
+    rawSignature = "accessKey=" + accessKey + "&orderId=" + orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId
+    h = hmac.new(bytes(secretKey, 'ascii'), bytes(rawSignature, 'ascii'), hashlib.sha256)
+    signature = h.hexdigest()
+
+    data = {
+        'partnerCode': partnerCode,
+        'requestId': requestId,
+        'orderId': orderId,
+        'signature': signature,
+        'lang': 'vi'
+    }
+
+    response = requests.post(endpoint, json=data, headers={'Content-Type': 'application/json'})
+    print(response.json())
     return jsonify(response.json())
