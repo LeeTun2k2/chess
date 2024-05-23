@@ -1,13 +1,12 @@
 import { AspectRatio, Box, Container, Flex, Spacer } from "@chakra-ui/react";
 import React, { Fragment } from "react";
-import { useTranslation } from "react-i18next";
 import LeftNav from "../../components/nav/leftNav";
+import ToturialBox from "../../components/toturial/toturialBox";
 import UpdateVipNow from "../../components/vip/updateVipNow";
 import { getUserData } from "../../lib/auth";
 import appSettings from "../../settings/appSettings";
 
 export default function CountDownPage() {
-  const { t } = useTranslation();
   const user = getUserData();
   const token = btoa(user?.id ?? "");
   return (
@@ -42,7 +41,9 @@ export default function CountDownPage() {
 
           <Box w={{ base: "100%", md: "24%" }}>
             <UpdateVipNow />
-            <Box>{t("practices.toturial")}</Box>
+            <Box>
+              <ToturialBox name={"countdown"} />
+            </Box>
           </Box>
         </Flex>
       </Container>

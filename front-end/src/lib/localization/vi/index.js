@@ -5,18 +5,25 @@ import auth from "./auth.json";
 import blogs from "./blogs.json";
 import books from "./books.json";
 import chat from "./chat.json";
+import chessle from "./chessle.json";
 import club from "./club.json";
 import common from "./common.json";
+import countdown from "./countdown.json";
 import dashboard from "./dashboard.json";
 import footer from "./footer.json";
 import friends from "./friends.json";
 import games from "./games.json";
+import haste from "./haste.json";
 import header from "./header.json";
+import infinity from "./infinity.json";
 import notifications from "./notifications.json";
 import others from "./others.json";
 import profile from "./profile.json";
 import puzzles from "./puzzles.json";
+import repetition from "./repetition.json";
 import settings from "./settings.json";
+import speedrun from "./speedrun.json";
+import three from "./three.json";
 import tournaments from "./tournaments.json";
 import users from "./users.json";
 import videos from "./videos.json";
@@ -46,6 +53,13 @@ const vi = {
   vip,
   others,
   dashboard,
+  chessle,
+  infinity,
+  repetition,
+  speedrun,
+  three,
+  countdown,
+  haste,
 };
 
 export default vi;
