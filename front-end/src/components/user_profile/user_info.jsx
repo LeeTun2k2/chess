@@ -9,12 +9,15 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../../lib/auth";
 import AvatarUploadModal from "./avatar_upload_modal";
 import ChangePasswordModal from "./change_password_modal";
+import axios from "axios";
+import appSettings from "../../settings/appSettings";
 
 const UserInfo = () => {
   const { t } = useTranslation();
@@ -28,10 +31,40 @@ const UserInfo = () => {
     onOpen: onChangePasswordOpen,
     onClose: onChangePasswordClose,
   } = useDisclosure();
+  const toast = useToast();
 
   const containerWidth = useBreakpointValue({ base: "100%", md: "1/3" });
   const user = getUserData();
   const theme = localStorage.getItem("theme");
+
+  const [vipStatus, setVipStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchVipStatus = async () => {
+    setLoading(true);
+    axios
+      .get(`${appSettings.API_PROXY}/users/vip-status`)
+      .then((resp) => {
+        setVipStatus(resp.data);
+        console.error("Success to fetch VIP status", resp.data);
+      })
+      .catch((err) => {
+        toast({
+          title: t("common.something_went_wrong"),
+          status: "error",
+          isClosable: true,
+        });
+        console.error("Failed to fetch VIP status", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchVipStatus();
+  }, []);
+
   return (
     <Stack
       maxW="container.lg"
@@ -83,6 +116,11 @@ const UserInfo = () => {
           <Text color="gray.500" fontSize="md">
             <EmailIcon fontSize="lg" /> {user.email}
           </Text>
+          {vipStatus && (
+            <Text color="green.500" fontSize="md">
+              {vipStatus.is_vip ? `VIP until ${new Date(vipStatus.vip_expiry).toLocaleDateString()}` : "Not a VIP"}
+            </Text>
+          )}
         </Box>
 
         {/* Change Password */}
