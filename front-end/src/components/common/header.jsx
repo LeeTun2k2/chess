@@ -5,7 +5,6 @@ import {
   Button,
   Flex,
   HStack,
-  Icon,
   Image,
   Menu,
   MenuButton,
@@ -17,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaBell, FaList } from "react-icons/fa";
+import { FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
 import { client_menu } from "./data";
@@ -177,15 +176,6 @@ const PcMenu = ({ user }) => {
           className="menu-vip"
         >
           {t("header.vip")}
-        </MenuButton>
-      </Menu>
-      <Menu>
-        <MenuButton
-          display={{ base: "none", md: "flex" }}
-          mr={16}
-          className="menu-notifications"
-        >
-          <Icon as={FaBell} boxSize={6} />
         </MenuButton>
       </Menu>
       {user?.id ? (
