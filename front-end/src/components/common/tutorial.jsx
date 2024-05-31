@@ -1,40 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Joyride, { ACTIONS, STATUS } from 'react-joyride';
 import { Button, Box } from '@chakra-ui/react';
+import { useTranslation } from "react-i18next";
 
 const Tutorial = () => {
-  const [run, setRun] = useState(true);
+  const [run, setRun] = useState(false);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    // Automatically start the tutorial with the first step open
+    setRun(true);
+  }, []);
 
   const steps = [
     {
       target: '.menu-club',
-      content: 'This is the Club menu where you can find various club-related options.',
+      content: t("tutorial.menu-club"), 
+      disableBeacon: true,
     },
     {
       target: '.menu-play',
-      content: 'This is the Play menu where you can start playing games.',
+      content: t("tutorial.menu-play"),
+      disableBeacon: true,
     },
     {
       target: '.menu-practice',
-      content: 'This is the Practice menu where you can find practice options.',
+      content: t("tutorial.menu-practice"), 
+      disableBeacon: true,
     },
     {
       target: '.menu-tv',
-      content: 'This is the TV menu where you can watch live games.',
+      content: t("tutorial.menu-tv"),
+      disableBeacon: true,
     },
     {
       target: '.menu-vip',
-      content: 'This is the VIP menu where you can access VIP features.',
+      content: t("tutorial.menu-vip"), 
+      disableBeacon: true,
     },
     {
       target: '.menu-notifications',
-      content: 'This is where you will receive notifications.',
+      content: t("tutorial.menu-notifications"),
+      disableBeacon: true,
     },
     {
       target: '.menu-user',
-      content: 'This is your user menu where you can access your profile and settings.',
-    },
-  ];
+      content: t("tutorial.menu-user"), 
+      disableBeacon: true,
+    }
+];
 
   const handleJoyrideCallback = (data) => {
     const { status, action } = data;
@@ -47,7 +61,7 @@ const Tutorial = () => {
 
   return (
     <Box p={4}>
-      <Button colorScheme="teal" onClick={() => setRun(true)}>
+      <Button colorScheme="teal" onClick={() => setRun(!run)}>
         Start Tutorial
       </Button>
       <Joyride
@@ -67,6 +81,8 @@ const Tutorial = () => {
             zIndex: 1000,
           },
         }}
+        disableOverlayClose
+        disableBeacon={true} // Globally disables the beacon
       />
     </Box>
   );

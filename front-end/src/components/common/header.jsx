@@ -29,11 +29,17 @@ const Header = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const theme = localStorage.getItem("theme");
-
   const [user, setUser] = useState(null);
+  const [showTutorial, setShowTutorial] = useState(false);
   const user_data = getUserData();
+
   useEffect(() => {
     if (user_data) setUser({ ...user_data });
+    const isFirstVisit = localStorage.getItem('isFirstVisit') === null;
+    if (isFirstVisit) {
+      setShowTutorial(true);
+      localStorage.setItem('isFirstVisit', 'false');
+    }
   }, [user_data]);
 
   return (
@@ -63,7 +69,7 @@ const Header = () => {
           <Sidebar data={client_menu} isOpen={isOpen} onClose={onClose} />
         </Box>
       </Flex>
-      <Tutorial />
+      {showTutorial && <Tutorial />}
     </Box>
   );
 };
