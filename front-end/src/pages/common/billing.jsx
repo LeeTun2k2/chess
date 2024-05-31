@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -11,10 +10,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import axios from "axios";
-import appSettings from "../../settings/appSettings";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import checkIcon from "../../assets/images/icon/icon_check.png"; // Import the check icon image
 import { formatNumber } from "../../lib/number";
-import checkIcon from '../../assets/images/icon/icon_check.png';  // Import the check icon image
+import appSettings from "../../settings/appSettings";
 
 export default function BillingPage() {
   const { t } = useTranslation();
@@ -26,12 +26,12 @@ export default function BillingPage() {
   // Function to extract query parameters from the URL
   const getQueryParams = (url) => {
     const params = {};
-    const parser = document.createElement('a');
+    const parser = document.createElement("a");
     parser.href = url;
     const query = parser.search.substring(1);
-    const vars = query.split('&');
+    const vars = query.split("&");
     for (let i = 0; i < vars.length; i++) {
-      const pair = vars[i].split('=');
+      const pair = vars[i].split("=");
       params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
     }
     return params;
@@ -70,9 +70,12 @@ export default function BillingPage() {
 
   const queryPaymentStatus = async (orderId) => {
     try {
-      const response = await axios.post(`${appSettings.API_PROXY}/momo_payment_status`, { orderId });
+      const response = await axios.post(
+        `${appSettings.API_PROXY}/momo_payment_status`,
+        { orderId }
+      );
       // Add logic here to extend VIP subscription if payment is successful
-      if (response.data.resultCode == '0') {
+      if (response.data.resultCode === "0") {
         setIsPaymentSuccessful(true);
       }
     } catch (error) {
@@ -83,7 +86,12 @@ export default function BillingPage() {
   return (
     <Container maxW="md" centerContent py={6}>
       {isPaymentSuccessful ? (
-        <Box textAlign="center" display="flex" flexDirection="column" alignItems="center">
+        <Box
+          textAlign="center"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
           <Image src={checkIcon} alt="Check icon" boxSize="100px" mb={4} />
           <Text fontSize="xl" fontWeight="bold">
             {t("payment.payment_successfull")}
@@ -98,12 +106,18 @@ export default function BillingPage() {
             </Text>
           </Box>
           <Box w="100%" p={4} borderWidth={1} borderRadius="lg">
-            <Heading size="md" mb={4}>{t("payment.payment_method")}</Heading>
+            <Heading size="md" mb={4}>
+              {t("payment.payment_method")}
+            </Heading>
             <RadioGroup onChange={setPaymentMethod} value={paymentMethod}>
               <Stack direction="column" spacing={4}>
                 <Radio value="vnpay">
                   <Box display="flex" alignItems="center">
-                    <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjeDeEU8y0EmqKl5AtUF5loKkWn9rHvI9lKLAuqOyZ0SrFnAk&s" boxSize="50px" mr={4} />
+                    <Image
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjeDeEU8y0EmqKl5AtUF5loKkWn9rHvI9lKLAuqOyZ0SrFnAk&s"
+                      boxSize="50px"
+                      mr={4}
+                    />
                     <Text>
                       {t("payment.vnpay")}
                       <br />
@@ -113,7 +127,11 @@ export default function BillingPage() {
                 </Radio>
                 <Radio value="zalopay">
                   <Box display="flex" alignItems="center">
-                    <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6astgqkNctUyOO43ZDc011j_wr3_ImEmnVVvIPLmf8_Tw5s&s" boxSize="50px" mr={4} />
+                    <Image
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6astgqkNctUyOO43ZDc011j_wr3_ImEmnVVvIPLmf8_Tw5s&s"
+                      boxSize="50px"
+                      mr={4}
+                    />
                     <Text>
                       {t("payment.zalopay")}
                       <br />
@@ -123,7 +141,11 @@ export default function BillingPage() {
                 </Radio>
                 <Radio value="momo">
                   <Box display="flex" alignItems="center">
-                    <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdZKHXNJrsnKlR_LYGBNB9Z-2Rm4ZgEpG-LwBXD4ChKyBqKdQs&s" boxSize="50px" mr={4} />
+                    <Image
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdZKHXNJrsnKlR_LYGBNB9Z-2Rm4ZgEpG-LwBXD4ChKyBqKdQs&s"
+                      boxSize="50px"
+                      mr={4}
+                    />
                     <Text>
                       {t("payment.momo")}
                       <br />

@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   HStack,
+  Icon,
   Image,
   Menu,
   MenuButton,
@@ -13,17 +14,14 @@ import {
   Spacer,
   Text,
   useDisclosure,
-  Icon,
 } from "@chakra-ui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaList } from "react-icons/fa";
+import { FaBell, FaList } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
 import { client_menu } from "./data";
 import Sidebar from "./sidebar";
-import { FaBell } from "react-icons/fa";
-import Tutorial from "../common/tutorial";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -63,7 +61,6 @@ const Header = () => {
           <Sidebar data={client_menu} isOpen={isOpen} onClose={onClose} />
         </Box>
       </Flex>
-      <Tutorial />
     </Box>
   );
 };
@@ -183,7 +180,11 @@ const PcMenu = ({ user }) => {
         </MenuButton>
       </Menu>
       <Menu>
-        <MenuButton display={{ base: "none", md: "flex" }} mr={16} className="menu-notifications">
+        <MenuButton
+          display={{ base: "none", md: "flex" }}
+          mr={16}
+          className="menu-notifications"
+        >
           <Icon as={FaBell} boxSize={6} />
         </MenuButton>
       </Menu>
@@ -191,7 +192,11 @@ const PcMenu = ({ user }) => {
         <Fragment>
           <Spacer />
           <Menu>
-            <MenuButton display={{ base: "none", md: "flex" }} mr={16} className="menu-user">
+            <MenuButton
+              display={{ base: "none", md: "flex" }}
+              mr={16}
+              className="menu-user"
+            >
               <Flex align="center">
                 <Avatar name={user.name} src={user.avatar} size={"sm"} />
                 <Text

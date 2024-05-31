@@ -11,13 +11,13 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../../lib/auth";
+import appSettings from "../../settings/appSettings";
 import AvatarUploadModal from "./avatar_upload_modal";
 import ChangePasswordModal from "./change_password_modal";
-import axios from "axios";
-import appSettings from "../../settings/appSettings";
 
 const UserInfo = () => {
   const { t } = useTranslation();
@@ -38,32 +38,27 @@ const UserInfo = () => {
   const theme = localStorage.getItem("theme");
 
   const [vipStatus, setVipStatus] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const fetchVipStatus = async () => {
-    setLoading(true);
-    axios
-      .get(`${appSettings.API_PROXY}/users/vip-status`)
-      .then((resp) => {
-        setVipStatus(resp.data);
-        console.error("Success to fetch VIP status", resp.data);
-      })
-      .catch((err) => {
-        toast({
-          title: t("common.something_went_wrong"),
-          status: "error",
-          isClosable: true,
-        });
-        console.error("Failed to fetch VIP status", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
 
   useEffect(() => {
+    const fetchVipStatus = async () => {
+      axios
+        .get(`${appSettings.API_PROXY}/users/vip-status`)
+        .then((resp) => {
+          setVipStatus(resp.data);
+          console.error("Success to fetch VIP status", resp.data);
+        })
+        .catch((err) => {
+          toast({
+            title: t("common.something_went_wrong"),
+            status: "error",
+            isClosable: true,
+          });
+          console.error("Failed to fetch VIP status", err);
+        });
+    };
+
     fetchVipStatus();
-  }, []);
+  }, [t, toast]);
 
   return (
     <Stack
@@ -118,7 +113,9 @@ const UserInfo = () => {
           </Text>
           {vipStatus && (
             <Text color="green.500" fontSize="md">
-              {vipStatus.is_vip ? `VIP until ${new Date(vipStatus.vip_expiry).toLocaleDateString()}` : "Not a VIP"}
+              {vipStatus.is_vip
+                ? `VIP until ${new Date(vipStatus.vip_expiry).toLocaleDateString()}`
+                : "Not a VIP"}
             </Text>
           )}
         </Box>
