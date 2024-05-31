@@ -170,13 +170,33 @@ const PcMenu = ({ user }) => {
           textTransform={"uppercase"}
           as={Button}
           variant="ghost"
+          rightIcon={<ChevronDownIcon />}
           mx={2}
-          onClick={() => navigate("/vip")}
           display={{ base: "none", md: "flex" }}
           className="menu-vip"
         >
           {t("header.vip")}
         </MenuButton>
+        <MenuList p={0} overflow={"hidden"}>
+          <MenuItem onClick={() => navigate("/vip")}>
+            {t("header.upgrade_vip")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/count-down")}>
+            {t("header.count-down")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/haste")}>
+            {t("header.haste")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/infinity")}>
+            {t("header.infinity")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/speed-run")}>
+            {t("header.speed-run")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/three")}>
+            {t("header.three")}
+          </MenuItem>
+        </MenuList>
       </Menu>
       {user?.id ? (
         <Fragment>
