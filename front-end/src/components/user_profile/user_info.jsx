@@ -38,7 +38,6 @@ const UserInfo = () => {
   const theme = localStorage.getItem("theme");
 
   const [vipStatus, setVipStatus] = useState(null);
-
   useEffect(() => {
     const fetchVipStatus = async () => {
       axios

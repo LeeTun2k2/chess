@@ -29,6 +29,8 @@ import tournaments from "./tournaments.json";
 import users from "./users.json";
 import videos from "./videos.json";
 import vip from "./vip.json";
+import tutorial from "./tutorial.json";
+
 
 const en = {
   common,
@@ -61,7 +63,8 @@ const en = {
   three,
   countdown,
   haste,
-  payment
+  payment,
+  tutorial
 };
 
 export default en;

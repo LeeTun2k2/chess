@@ -92,6 +92,8 @@ const Tutorial = () => {
                   zIndex: 1000,
                 },
         }}
+        disableOverlayClose
+        disableBeacon={true} // Globally disables the beacon
       />
     </Box>
   );
