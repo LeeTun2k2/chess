@@ -163,7 +163,7 @@ def send_friend_request(friend_id):
 def get_friend_requests():
     try:
         current_user_id = get_jwt_identity()
-
+        print(current_user_id)
         service = UserService()
         friend_requests = service.get_friend_requests(current_user_id)
         return jsonify({"message": "success", "friend_requests": friend_requests}), 200
@@ -251,21 +251,14 @@ def unfriend(friend_id):
 
 @user_bp.post('/api/users/become-vip')
 @jwt_required()
-@login_required
 def become_vip():
     try:
         user_id = get_jwt_identity()
-        current_user_id = str(current_user.get_id())
-
-        # ensure that the JWT identity matches the current user
-        if user_id != current_user_id:
-            return "Invalid user", 401
-
         # get VIP duration from request
         data = request.get_json()
         vip_duration_days = data.get('vip_duration_days', 30)  # default to 30 days if not provided
 
-        vip_expiry = datetime.datetime.utcnow() + datetime.timedelta(days=vip_duration_days)
+        vip_expiry = datetime.utcnow() + timedelta(days=vip_duration_days)
 
         service = UserService()
         success, message = service.set_vip_status(user_id, True, vip_expiry)
@@ -279,10 +272,10 @@ def become_vip():
 
 @user_bp.get('/api/users/vip-status')
 @jwt_required()
-@login_required
 def vip_status():
     try:
         user_id = get_jwt_identity()
+        print(user_id)
         service = UserService()
         vip_status, vip_expiry = service.get_vip_status(user_id)
         if vip_expiry:

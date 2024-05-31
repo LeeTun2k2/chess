@@ -74,7 +74,24 @@ export default function BillingPage() {
       // Add logic here to extend VIP subscription if payment is successful
       if (response.data.resultCode == '0') {
         setIsPaymentSuccessful(true);
+        becomeVip();  // Call becomeVip function after successful payment
       }
+    } catch (error) {
+      console.error("There was an error!", error);
+    }
+  };
+
+  const becomeVip = async () => {
+    try {
+      const token = localStorage.getItem('access_token');  // Assuming you store the token in localStorage
+      const response = await axios.post(`${appSettings.API_PROXY}/users/become-vip`, {
+        vip_duration_days: 30  // or any duration you want
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log("VIP status updated", response.data);
     } catch (error) {
       console.error("There was an error!", error);
     }

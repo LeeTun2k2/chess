@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getUserData } from "../../lib/auth";
+import { getUserData, getAccessToken } from "../../lib/auth";
 import AvatarUploadModal from "./avatar_upload_modal";
 import ChangePasswordModal from "./change_password_modal";
 import axios from "axios";
@@ -42,8 +42,13 @@ const UserInfo = () => {
 
   const fetchVipStatus = async () => {
     setLoading(true);
+    const token = getAccessToken(); 
     axios
-      .get(`${appSettings.API_PROXY}/users/vip-status`)
+      .get(`${appSettings.API_PROXY}/users/vip-status`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((resp) => {
         setVipStatus(resp.data);
         console.error("Success to fetch VIP status", resp.data);
@@ -54,13 +59,13 @@ const UserInfo = () => {
           status: "error",
           isClosable: true,
         });
-        console.error("Failed to fetch VIP status", err);
+        console.error("Failed to fetch VIP status", token);
       })
       .finally(() => {
         setLoading(false);
       });
   };
-
+  
   useEffect(() => {
     fetchVipStatus();
   }, []);
