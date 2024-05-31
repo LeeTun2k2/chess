@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
 import { client_menu } from "./data";
 import Sidebar from "./sidebar";
+import Tutorial from "./tutorial";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Header = () => {
 
   useEffect(() => {
     if (user_data) setUser({ ...user_data });
-    const isFirstVisit = localStorage.getItem("isFirstVisit") === null;
+    const isFirstVisit = !!localStorage.getItem("isFirstVisit");
     if (isFirstVisit) {
       setShowTutorial(true);
       localStorage.setItem("isFirstVisit", "false");
@@ -66,6 +67,11 @@ const Header = () => {
           <Sidebar data={client_menu} isOpen={isOpen} onClose={onClose} />
         </Box>
       </Flex>
+      {showTutorial && (
+        <Box position={"absolute"} top={3} left={72}>
+          <Tutorial hideButtonStart={true} />
+        </Box>
+      )}
     </Box>
   );
 };

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { ACTIONS, STATUS } from "react-joyride";
 
-const Tutorial = () => {
+const Tutorial = ({ hideButtonStart }) => {
   const { t } = useTranslation();
   const theme = localStorage.getItem("theme");
   const [run, setRun] = useState(false);
@@ -62,9 +62,11 @@ const Tutorial = () => {
 
   return (
     <Box>
-      <Button colorScheme="teal" onClick={() => setRun(true)}>
-        {t("settings.Start Tutorial")}
-      </Button>
+      {!hideButtonStart && (
+        <Button colorScheme="teal" onClick={() => setRun(true)}>
+          {t("settings.Start Tutorial")}
+        </Button>
+      )}
       <Joyride
         steps={steps}
         run={run}
