@@ -1,13 +1,11 @@
 {
-  "heading": "Quản Lý Bài Viết",
-  "create": "Tạo Bài Viết Mới",
-  "update": "Chỉnh Sửa Bài Viết",
-  "no": "STT",
-  "title": "Tên",
-  "description": "Mô tả",
-  "image": "Hình ảnh",
-  "content": "Nội dung",
-  "updated_at": "Cập nhật",
-  "blogs": "Bài Viết",
-  "blog": "Bài viết"
+  "amount_due": "Amount Due",
+  "payment_method": "Payment Method",
+  "vnpay": "VNPAY",
+  "vnpay_description": "Pay with ATM/Visa/Master/JCB/QR via VNPAY",
+  "zalopay": "ZaloPay",
+  "zalopay_description": "Pay with ATM via ZaloPay",
+  "momo": "MoMo",
+  "momo_description": "Pay with MoMo Wallet",
+  "pay_now": "Pay Now"
 }

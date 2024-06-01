@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from logging import error
 from services.user import UserService
 from services.validate.user import validate
-
+from datetime import datetime, timedelta, timezone
 user_bp = Blueprint('user', __name__)
 
 @user_bp.put('/api/update-profile')
@@ -163,7 +163,7 @@ def send_friend_request(friend_id):
 def get_friend_requests():
     try:
         current_user_id = get_jwt_identity()
-
+        print(current_user_id)
         service = UserService()
         friend_requests = service.get_friend_requests(current_user_id)
         return jsonify({"message": "success", "friend_requests": friend_requests}), 200
@@ -246,3 +246,42 @@ def unfriend(friend_id):
     except Exception as e:
         error(e)
         return "Failed to unfriend.", 500
+
+
+
+@user_bp.post('/api/users/become-vip')
+@jwt_required()
+def become_vip():
+    try:
+        user_id = get_jwt_identity()
+        # get VIP duration from request
+        data = request.get_json()
+        vip_duration_days = data.get('vip_duration_days', 30)  # default to 30 days if not provided
+
+        vip_expiry = datetime.utcnow() + timedelta(days=vip_duration_days)
+
+        service = UserService()
+        success, message = service.set_vip_status(user_id, True, vip_expiry)
+        if success:
+            return jsonify({'message': message, 'vip_expiry': vip_expiry.isoformat()}), 200
+        else:
+            return jsonify({'error': message}), 400
+    except Exception as e:
+        error(e)
+        return "Failed to become VIP.", 500
+
+@user_bp.get('/api/users/vip-status')
+@jwt_required()
+def vip_status():
+    try:
+        user_id = get_jwt_identity()
+        print(user_id)
+        service = UserService()
+        vip_status, vip_expiry = service.get_vip_status(user_id)
+        if vip_expiry:
+            vip_expiry = vip_expiry.isoformat()
+
+        return jsonify({'is_vip': vip_status, 'vip_expiry': vip_expiry}), 200
+    except Exception as e:
+        error(e)
+        return "Failed to get VIP status.", 500

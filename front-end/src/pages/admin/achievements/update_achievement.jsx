@@ -32,7 +32,7 @@ export default function AdminUpdateAchievementPage() {
       member: "",
       reward: "",
     }),
-    []
+    [],
   );
   const [formData, setFormData] = useState(defaultData);
 

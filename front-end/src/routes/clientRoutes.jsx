@@ -4,9 +4,11 @@ import BlogPage from "../pages/club/blog";
 import BlogListPage from "../pages/club/blogs";
 import ChatPage from "../pages/friend/chat";
 import FriendList from "../pages/friend/friends";
+import AiGamePage from "../pages/game/aiGamePage";
 import GameSettingsPage from "../pages/game/gameSettingsPage";
 import LobbyPage from "../pages/game/lobby";
 import OnlineGamePage from "../pages/game/online-game";
+import WaitingFriendGamePage from "../pages/game/waitingFriendGame";
 import WaitingGamePage from "../pages/game/waitingGame";
 import HomePage from "../pages/home";
 import BookPage from "../pages/practice/book";
@@ -31,13 +33,14 @@ const ClientRoutes = ({ user }) => {
       <Route path="book/:id" element={<BookPage />} />
       <Route path="videos" element={<VideoListPage />} />
       <Route path="video/:id" element={<VideoPage />} />
-
       <Route element={!!user ? <Outlet /> : <Navigate to="/login" />}>
         <Route path="profile" element={<UserProfile />} />
         <Route path="lobby" element={<LobbyPage />} />
         <Route path="wait/:id" element={<WaitingGamePage />} />
+        <Route path="friendwait/:id" element={<WaitingFriendGamePage />} />
         <Route path="new-game" element={<GameSettingsPage />} />
         <Route path="online/:id" element={<OnlineGamePage />} />
+        <Route path="ai-game/:id" element={<AiGamePage />} />
         <Route path="tournaments" element={<TournamentsPage />} />
         <Route path="tournament/:id" element={<TournamentPage />} />
         <Route path="tv" element={<TvPage />} />

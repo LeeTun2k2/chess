@@ -40,7 +40,7 @@ export default function AdminUpdatetournamentPage() {
       start: Date.now(),
       end: Date.now(),
     }),
-    []
+    [],
   );
 
   const [formData, setFormData] = useState(defaultData);

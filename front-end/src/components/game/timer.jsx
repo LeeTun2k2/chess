@@ -1,7 +1,13 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
-export default function Timer({ game, isActive, onTimeout, setUserTime }) {
+export default function Timer({
+  game,
+  isActive,
+  onTimeout,
+  setUserTime,
+  isAi,
+}) {
   const { initial_time: time, bonus_time: bonus } = game;
   const [remain, setRemain] = useState(time * 60);
   const [active, setActive] = useState(isActive);
@@ -63,7 +69,7 @@ export default function Timer({ game, isActive, onTimeout, setUserTime }) {
       alignItems="center"
       userSelect={"none"}
     >
-      <Heading size="lg">{formatTime(remain)}</Heading>
+      <Heading size="lg">{isAi ? "--:--" : formatTime(remain)}</Heading>
     </Flex>
   );
 }

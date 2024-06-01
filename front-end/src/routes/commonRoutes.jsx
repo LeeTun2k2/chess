@@ -5,6 +5,7 @@ import DonatePage from "../pages/club/donate";
 import AboutPage from "../pages/common/about";
 import SettingsPage from "../pages/common/settings";
 import TestPage from "../pages/test";
+import BillingPage from "../pages/common/billing";
 
 const CommonRoutes = () => {
   return (
@@ -14,6 +15,8 @@ const CommonRoutes = () => {
       <Route path="donate" element={<DonatePage />} />
       <Route path="achievements" element={<AchievementsPage />} />
       <Route path="settings" element={<SettingsPage />} />
+      <Route path="billing" element={<BillingPage />} />
+      
     </Fragment>
   );
 };

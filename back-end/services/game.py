@@ -11,8 +11,7 @@ class GameService():
         self.redis = get_redis()
         self.users_collection = self.db['users']
         self.online_games_collection = self.db['online_games']
-        self.friend_games_collection = self.db['friend_games']
-        self.offline_games_collection = self.db['offline_games']
+        self.game_history_collection = self.db['game_history']
 
     def map(self, game):
         game["_id"] = str(game["_id"])
@@ -21,10 +20,6 @@ class GameService():
     def create_game(self, game, mode):
         if mode == 'online':
             return self.online_games_collection.insert_one(game)
-        elif mode == 'friend':
-            return self.friend_games_collection.insert_one(game)
-        elif mode == 'offline':
-            return self.offline_games_collection.insert_one(game)
         else:
             raise Exception('Invalid game mode')
         
@@ -32,10 +27,6 @@ class GameService():
         game = None
         if mode == 'online':
             game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
-        elif mode == 'friend':
-            game = self.friend_games_collection.find_one({'_id': ObjectId(game_id)})
-        elif mode == 'offline':
-            game = self.offline_games_collection.find_one({'_id': ObjectId(game_id)})
         else:
             raise Exception('Invalid game mode')
     
@@ -318,3 +309,15 @@ class GameService():
         
     def cache_move(self, fen, moves, white_time, black_time):
         pass
+
+    def save_game_history(self, game_id, result):
+        self.game_history_collection.insert_one({'game_id': game_id, 'result': result, 'timestamp': datetime.now()})
+
+    def get_player_stats(self, player_id):
+        total_games, wins, losses = self.game_history_collection.aggregate([
+            {'$match': {'$or': [{'white': player_id}, {'black': player_id}]}},
+            {'$group': {'_id': None, 'total_games': {'$sum': 1}, 
+                        'wins': {'$sum': {'$cond': [{'$eq': ['$result', 'win']}, 1, 0]}}, 
+                        'losses': {'$sum': {'$cond': [{'$eq': ['$result', 'loss']}, 1, 0]}}}}
+        ]).next().values()
+        return total_games, wins, losses

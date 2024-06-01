@@ -135,7 +135,6 @@ class AuthServices():
         if result.modified_count == 0:
             return False, 'User not found or password not updated.'
         
-        # send email
         self.email_service.send_new_password_email(email=email, password=new_password)
 
         return True, 'Reset password successfully.'
