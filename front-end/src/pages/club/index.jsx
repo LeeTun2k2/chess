@@ -31,13 +31,16 @@ export default function ClubPage(props) {
   useEffect(() => {
     const checkVipStatus = async () => {
       try {
-        const token = localStorage.getItem('access_token'); 
-        const response = await axios.get(`${appSettings.API_PROXY}/users/vip-status`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        setIsVip(response.data.is_vip); 
+        const token = localStorage.getItem("access_token");
+        const response = await axios.get(
+          `${appSettings.API_PROXY}/users/vip-status`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        setIsVip(response.data.is_vip);
       } catch (error) {
         console.error("There was an error!", error);
       }
