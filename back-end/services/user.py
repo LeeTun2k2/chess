@@ -95,6 +95,7 @@ class UserService():
         else:
             return False, "User not found."
     
+    
     def get_friends(self, user_id: str):
         user_data = self.users_collection.find_one({'_id': ObjectId(user_id)})
         if not user_data:
@@ -226,3 +227,23 @@ class UserService():
             return False, 'Failed to unfriend'
 
         return True, 'Unfriended successfully'
+    
+    def set_vip_status(self, user_id, vip_status, vip_expiry=None):
+        update_fields = {'is_vip': vip_status}
+        if vip_expiry:
+            update_fields['vip_expiry'] = vip_expiry
+        result = self.users_collection.update_one(
+            {'_id': ObjectId(user_id)},
+            {'$set': update_fields}
+        )
+        if result.modified_count == 0:
+            return False, "Failed to update VIP status."
+        return True, "VIP status updated successfully."
+    
+    def get_vip_status(self, user_id):
+        user_data = self.users_collection.find_one({'_id': ObjectId(user_id)})
+        if not user_data:
+            return None, "User not found."
+        vip_status = user_data.get('is_vip', False)
+        vip_expiry = user_data.get('vip_expiry')
+        return vip_status, vip_expiry

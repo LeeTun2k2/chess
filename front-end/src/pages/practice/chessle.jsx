@@ -1,12 +1,10 @@
 import { AspectRatio, Box, Container, Flex, Spacer } from "@chakra-ui/react";
 import React, { Fragment } from "react";
-import { useTranslation } from "react-i18next";
 import LeftNav from "../../components/nav/leftNav";
+import ToturialBox from "../../components/toturial/toturialBox";
 import UpdateVipNow from "../../components/vip/updateVipNow";
 
 export default function ChesslePage() {
-  const { t } = useTranslation();
-
   return (
     <Fragment>
       <Container maxW="container.2xl" py={4}>
@@ -39,7 +37,7 @@ export default function ChesslePage() {
 
           <Box w={{ base: "100%", md: "24%" }}>
             <UpdateVipNow />
-            <Box>{t("practices.toturial")}</Box>
+            <ToturialBox name={"chessle"} />
           </Box>
         </Flex>
       </Container>

@@ -45,15 +45,6 @@ export default function WaitingGamePage() {
     console.log("request_game");
   }, [id, user?.id]);
 
-  useEffect(() => {
-    // Emit request for game
-    socket.emit("request_game", {
-      lobby_id: id,
-      user_id: user?.id,
-    });
-    console.log("request_game");
-  }, [id, user?.id]);
-
   return (
     <Fragment>
       <Container maxW="container.xl" mt={10}>

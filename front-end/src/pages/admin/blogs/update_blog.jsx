@@ -35,7 +35,7 @@ export default function AdminUpdateBlogPage() {
       image: null,
       content: "",
     }),
-    []
+    [],
   );
   const [formData, setFormData] = useState(defaultData);
 

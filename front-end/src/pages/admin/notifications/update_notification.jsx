@@ -30,7 +30,7 @@ export default function AdminUpdateNotificationPage() {
       event: "",
       description: "",
     }),
-    []
+    [],
   );
   const [formData, setFormData] = useState(defaultData);
 

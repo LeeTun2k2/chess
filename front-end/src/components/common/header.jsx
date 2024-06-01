@@ -21,16 +21,23 @@ import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../lib/auth";
 import { client_menu } from "./data";
 import Sidebar from "./sidebar";
+import Tutorial from "./tutorial";
 
 const Header = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const theme = localStorage.getItem("theme");
-
   const [user, setUser] = useState(null);
+  const [showTutorial, setShowTutorial] = useState(false);
   const user_data = getUserData();
+
   useEffect(() => {
     if (user_data) setUser({ ...user_data });
+    const isFirstVisit = !!localStorage.getItem("isFirstVisit");
+    if (isFirstVisit) {
+      setShowTutorial(true);
+      localStorage.setItem("isFirstVisit", "false");
+    }
   }, [user_data]);
 
   return (
@@ -60,6 +67,11 @@ const Header = () => {
           <Sidebar data={client_menu} isOpen={isOpen} onClose={onClose} />
         </Box>
       </Flex>
+      {showTutorial && (
+        <Box position={"absolute"} top={3} left={72}>
+          <Tutorial hideButtonStart={true} />
+        </Box>
+      )}
     </Box>
   );
 };
@@ -79,6 +91,7 @@ const PcMenu = ({ user }) => {
           rightIcon={<ChevronDownIcon />}
           mx={2}
           display={{ base: "none", md: "flex" }}
+          className="menu-club"
         >
           {t("header.club")}
         </MenuButton>
@@ -107,6 +120,7 @@ const PcMenu = ({ user }) => {
           rightIcon={<ChevronDownIcon />}
           mx={2}
           display={{ base: "none", md: "flex" }}
+          className="menu-play"
         >
           {t("header.play")}
         </MenuButton>
@@ -130,6 +144,7 @@ const PcMenu = ({ user }) => {
           rightIcon={<ChevronDownIcon />}
           mx={2}
           display={{ base: "none", md: "flex" }}
+          className="menu-practice"
         >
           {t("header.practice")}
         </MenuButton>
@@ -157,6 +172,7 @@ const PcMenu = ({ user }) => {
           mx={2}
           onClick={() => navigate("/tv")}
           display={{ base: "none", md: "flex" }}
+          className="menu-tv"
         >
           {t("header.tv")}
         </MenuButton>
@@ -166,18 +182,43 @@ const PcMenu = ({ user }) => {
           textTransform={"uppercase"}
           as={Button}
           variant="ghost"
+          rightIcon={<ChevronDownIcon />}
           mx={2}
-          onClick={() => navigate("/vip")}
           display={{ base: "none", md: "flex" }}
+          className="menu-vip"
         >
           {t("header.vip")}
         </MenuButton>
+        <MenuList p={0} overflow={"hidden"}>
+          <MenuItem onClick={() => navigate("/vip")}>
+            {t("header.upgrade_vip")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/count-down")}>
+            {t("header.count-down")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/haste")}>
+            {t("header.haste")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/infinity")}>
+            {t("header.infinity")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/speed-run")}>
+            {t("header.speed-run")}
+          </MenuItem>
+          <MenuItem onClick={() => navigate("/vip/three")}>
+            {t("header.three")}
+          </MenuItem>
+        </MenuList>
       </Menu>
       {user?.id ? (
         <Fragment>
           <Spacer />
           <Menu>
-            <MenuButton display={{ base: "none", md: "flex" }} mr={16}>
+            <MenuButton
+              display={{ base: "none", md: "flex" }}
+              mr={16}
+              className="menu-user"
+            >
               <Flex align="center">
                 <Avatar name={user.name} src={user.avatar} size={"sm"} />
                 <Text

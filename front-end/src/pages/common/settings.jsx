@@ -1,36 +1,23 @@
 import {
-  Box,
   Container,
   Flex,
   HStack,
   Heading,
   Select,
   Spacer,
-  Switch,
   useColorMode,
 } from "@chakra-ui/react";
 import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Tutorial from "../../components/common/tutorial";
 
 const SettingsPage = () => {
   const savedLang = localStorage.getItem("lang");
   const savedTheme = localStorage.getItem("theme");
-  const savedBoardSettings = localStorage.getItem("boardSettings");
-  const savedPieceSettings = localStorage.getItem("pieceSettings");
-  const savedSoundEnabled = localStorage.getItem("soundEnabled") === "true";
-  const savedSoundSettings = localStorage.getItem("soundSettings");
 
   const [language, setLanguage] = useState(savedLang ?? "en");
   const [theme, setTheme] = useState(savedTheme ?? "light");
   const { toggleColorMode } = useColorMode();
-  const [boardSettings, setBoardSettings] = useState(
-    savedBoardSettings ?? "standard"
-  );
-  const [pieceSettings, setPieceSettings] = useState(
-    savedPieceSettings ?? "classic"
-  );
-  const [soundEnabled, setSoundEnabled] = useState(savedSoundEnabled);
-  const [soundSettings, setSoundSettings] = useState(savedSoundSettings);
 
   const { t, i18n } = useTranslation();
 
@@ -49,30 +36,6 @@ const SettingsPage = () => {
     window.location.reload();
   };
 
-  const handleBoardSettingsChange = (e) => {
-    const selectedBoardSettings = e.target.value;
-    setBoardSettings(selectedBoardSettings);
-    localStorage.setItem("boardSettings", selectedBoardSettings);
-  };
-
-  const handlePieceSettingsChange = (e) => {
-    const selectedPieceSettings = e.target.value;
-    setPieceSettings(selectedPieceSettings);
-    localStorage.setItem("pieceSettings", selectedPieceSettings);
-  };
-
-  const handleSoundToggle = () => {
-    const updatedSoundEnabled = !soundEnabled;
-    setSoundEnabled(updatedSoundEnabled);
-    localStorage.setItem("soundEnabled", updatedSoundEnabled);
-  };
-
-  const handleSoundSettingsChange = (e) => {
-    const selectedSoundSettings = e.target.value;
-    setSoundSettings(selectedSoundSettings);
-    localStorage.setItem("soundSettings", selectedSoundSettings);
-  };
-
   return (
     <Fragment>
       <Container maxW="6xl" mt={8}>
@@ -82,7 +45,20 @@ const SettingsPage = () => {
           justifyContent={"space-between"}
           display={{ base: "block", md: "flex" }}
         >
-          <HStack w={"100%"} py={4}>
+          <HStack w={"50%"} py={4}>
+            <Heading size="md" mb={2}>
+              {t("settings.tutorial")}
+            </Heading>
+            <Spacer />
+            <Tutorial />
+          </HStack>
+        </Flex>
+        <Flex
+          w={"100%"}
+          justifyContent={"space-between"}
+          display={{ base: "block", md: "flex" }}
+        >
+          <HStack w={"50%"} py={4}>
             <Heading size="md" mb={2}>
               {t("settings.languageSettings")}
             </Heading>
@@ -96,8 +72,13 @@ const SettingsPage = () => {
               <option value="vi">{t("settings.vietnamese")}</option>
             </Select>
           </HStack>
-          <Box w={"20%"} />
-          <HStack w={"100%"} py={4}>
+        </Flex>
+        <Flex
+          w={"100%"}
+          justifyContent={"space-between"}
+          display={{ base: "block", md: "flex" }}
+        >
+          <HStack w={"50%"} py={4}>
             <Heading size="md" mb={2}>
               {t("settings.themeSettings")}
             </Heading>
@@ -109,75 +90,6 @@ const SettingsPage = () => {
             >
               <option value="light">{t("settings.light")}</option>
               <option value="dark">{t("settings.dark")}</option>
-            </Select>
-          </HStack>
-        </Flex>
-        <Flex
-          w={"100%"}
-          justifyContent={"space-between"}
-          display={{ base: "block", md: "flex" }}
-        >
-          <HStack w={"100%"}>
-            <Heading size="md" mb={2}>
-              {t("settings.boardSettings")}
-            </Heading>
-            <Spacer />
-            <Select
-              value={boardSettings}
-              onChange={handleBoardSettingsChange}
-              w={{ base: 200, md: 300 }}
-            >
-              <option value="standard">{t("settings.standard")}</option>
-              <option value="custom">{t("settings.custom")}</option>
-            </Select>
-          </HStack>
-          <Box w={"20%"} />
-          <HStack mt={8} w={"100%"}>
-            <Heading size="md" mb={2}>
-              {t("settings.pieceSettings")}
-            </Heading>
-            <Spacer />
-            <Select
-              value={pieceSettings}
-              onChange={handlePieceSettingsChange}
-              w={{ base: 200, md: 300 }}
-            >
-              <option value="classic">{t("settings.classic")}</option>
-              <option value="modern">{t("settings.modern")}</option>
-            </Select>
-          </HStack>
-        </Flex>
-        <Flex
-          w={"100%"}
-          justifyContent={"space-between"}
-          display={{ base: "block", md: "flex" }}
-        >
-          <HStack mt={8} w={"100%"} align={"center"}>
-            <Heading size="md">{t("settings.soundSettings")}</Heading>
-            <Spacer />
-            <Switch
-              id="sound"
-              colorScheme="teal"
-              size="lg"
-              isChecked={soundEnabled}
-              onChange={handleSoundToggle}
-              mr={{ base: 0, md: 250 }}
-            />
-          </HStack>
-          <Box w={"20%"} />
-          <HStack mt={8} w={"100%"}>
-            <Heading size="md" mb={2}>
-              {t("settings.soundEffect")}
-            </Heading>
-            <Spacer />
-            <Select
-              placeholder={t("settings.selectSoundEffect")}
-              w={{ base: 200, md: 300 }}
-              value={soundSettings}
-              onChange={handleSoundSettingsChange}
-            >
-              <option value="classic">{t("settings.classic")}</option>
-              <option value="modern">{t("settings.modern")}</option>
             </Select>
           </HStack>
         </Flex>

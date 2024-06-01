@@ -48,7 +48,7 @@ export default function FriendPage(props) {
       },
       (error) => {
         console.log("Message fetching failed with error:", error);
-      }
+      },
     );
   }, []);
 
@@ -59,7 +59,7 @@ export default function FriendPage(props) {
     let message = new CometChat.TextMessage(
       selectedUser.id,
       text,
-      receiverType
+      receiverType,
     );
 
     try {
@@ -120,8 +120,8 @@ export default function FriendPage(props) {
                           .includes(searchText.toLowerCase()) ||
                         value?.name
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                    )
+                          .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
                 title="search"

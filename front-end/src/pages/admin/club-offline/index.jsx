@@ -26,7 +26,7 @@ export default function AdminClubOfflinePage() {
       time: new Date(Date.now()).toISOString(),
       location: "",
     }),
-    []
+    [],
   );
   const [formData, setFormData] = useState(defaultData);
 

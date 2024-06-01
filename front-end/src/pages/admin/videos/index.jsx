@@ -71,7 +71,7 @@ export default function AdminVideosPage() {
       .delete(`${appSettings.API_PROXY}/videos/${selectedItem._id}`)
       .then((resp) => {
         setRenderData(
-          renderData.filter((item) => item._id !== selectedItem._id)
+          renderData.filter((item) => item._id !== selectedItem._id),
         );
         setData(data.filter((item) => item._id !== selectedItem._id));
         toast(toast_success(t("common.delete_success")));
@@ -111,8 +111,8 @@ export default function AdminVideosPage() {
                     data.filter((value) =>
                       value?.title
                         ?.toLowerCase()
-                        .includes(searchText.toLowerCase())
-                    )
+                        .includes(searchText.toLowerCase()),
+                    ),
                   );
                 }}
                 title="search"
@@ -250,7 +250,7 @@ export default function AdminVideosPage() {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"

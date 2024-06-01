@@ -3,12 +3,12 @@ import {
   Button,
   Container,
   Flex,
-  Heading,
   Spacer,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaRobot, FaUserFriends } from "react-icons/fa";
 import { RiGlobalLine } from "react-icons/ri";
@@ -17,16 +17,43 @@ import NoLogicChessBoard from "../../components/game/noLogicChessBoard";
 import GroupButtonNav from "../../components/nav/groupButtonNav";
 import LeftNav from "../../components/nav/leftNav";
 import UpdateVipNow from "../../components/vip/updateVipNow";
+import axios from "../../lib/axios";
+import { toast_error } from "../../lib/hooks/toast";
+import appSettings from "../../settings/appSettings";
 import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 
 export default function GameSettingsPage() {
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   const [gameMode, setGameMode] = useState("online");
+  const [vipStatus, setVipStatus] = useState(null);
+
+  const fetchVipStatus = useCallback(() => {
+    axios
+      .get(`${appSettings.API_PROXY}/users/vip-status`)
+      .then((resp) => {
+        setVipStatus(resp.data);
+        console.error("Success to fetch VIP status", resp.data);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+        console.error("Failed to fetch VIP status", err);
+      });
+  }, [t, toast]);
+
+  useEffect(() => {
+    fetchVipStatus();
+  }, [fetchVipStatus]);
 
   return (
     <Fragment>
-      <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={gameMode} />
+      <NewOnlineGameModal
+        isOpen={isOpen}
+        onClose={onClose}
+        mode={gameMode}
+        vipStatus={vipStatus}
+      />
       <Container maxW="container.2xl" py={4}>
         <Flex direction={{ base: "column", md: "row" }}>
           <Box
@@ -41,9 +68,6 @@ export default function GameSettingsPage() {
             w={{ base: "100%", md: "48%" }}
             mb={{ base: 8, md: 0 }}
           >
-            <Heading fontSize={"xl"} mb={4}>
-              {t("games.new_game")}
-            </Heading>
             <NoLogicChessBoard isFree={true} />
           </Box>
 

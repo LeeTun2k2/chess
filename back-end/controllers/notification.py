@@ -10,6 +10,7 @@ notification_service = NotificationService()
 game_service = GameService()
 user_service = UserService()
 
+
 @notification_bp.route('/api/notifications', methods=['GET'])
 def get_all_notifications():
     try:
@@ -59,6 +60,7 @@ def get_game_in_notification(notification_id):
         }), 200
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+
 
 @notification_bp.route('/api/notifications', methods=['POST'])
 @jwt_required()

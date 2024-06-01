@@ -91,8 +91,8 @@ export default function AdmintournamentsPage() {
                       data.filter((value) =>
                         value?.name
                           ?.toLowerCase()
-                          .includes(searchText.toLowerCase())
-                      )
+                          .includes(searchText.toLowerCase()),
+                      ),
                     );
                   }}
                   title="search"
@@ -207,7 +207,7 @@ export default function AdmintournamentsPage() {
                               >
                                 {i + 1}
                               </Button>
-                            )
+                            ),
                         )}
                         <Button
                           colorScheme="gray"
