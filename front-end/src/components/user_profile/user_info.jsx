@@ -15,6 +15,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../../lib/auth";
+import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
 import AvatarUploadModal from "./avatar_upload_modal";
 import ChangePasswordModal from "./change_password_modal";
@@ -47,11 +48,7 @@ const UserInfo = () => {
           console.error("Success to fetch VIP status", resp.data);
         })
         .catch((err) => {
-          toast({
-            title: t("common.something_went_wrong"),
-            status: "error",
-            isClosable: true,
-          });
+          toast(toast_error(t("common.something_went_wrong")));
           console.error("Failed to fetch VIP status", err);
         });
     };

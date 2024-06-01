@@ -31,6 +31,7 @@ const NewOnlineGameModal = ({
   isOpen,
   onClose,
   mode = ONLINE | FRIEND | OFFLINE,
+  vipStatus,
 }) => {
   const { t } = useTranslation();
   const toast = useToast();
@@ -42,6 +43,8 @@ const NewOnlineGameModal = ({
   const [initial_time, setInitialTime] = useState();
   const [bonus_time, setBonusTime] = useState();
   const [Ai_level, setAiLevel] = useState(1);
+
+  const max_ai_level = vipStatus?.is_vip ? 10 : 3;
 
   const onVariantChange = (e) => {
     setVariant(e.target.value);
@@ -100,6 +103,23 @@ const NewOnlineGameModal = ({
 
   const newOfflineGame = (data) => {
     setLoading(true);
+    axios
+      .post(`${appSettings.API_PROXY}/ai-game`, data)
+      .then((res) => {
+        if (res.data) {
+          toast(toast_success(t("games.create_game_successfully")));
+          navigate(`/ai-game/${res.data?._id}`);
+        } else {
+          toast(toast_error(t("games.fail_to_create_game")));
+        }
+      })
+      .catch((err) => {
+        console.log(err?.response?.data);
+        toast(toast_error(t("games.fail_to_create_game")));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const onSubmit = () => {
@@ -179,10 +199,11 @@ const NewOnlineGameModal = ({
               <Slider
                 defaultValue={1}
                 min={1}
-                max={10}
+                max={max_ai_level}
+                value={Ai_level}
                 onChange={onAiLevelChange}
               >
-                {Array.from({ length: 10 }).map((_, i) => (
+                {Array.from({ length: max_ai_level }).map((_, i) => (
                   <SliderMark key={i} value={i + 1} mt="1" fontSize="sm">
                     {i + 1}
                   </SliderMark>

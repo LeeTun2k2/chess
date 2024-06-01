@@ -18,6 +18,7 @@ import GroupButtonNav from "../../components/nav/groupButtonNav";
 import LeftNav from "../../components/nav/leftNav";
 import UpdateVipNow from "../../components/vip/updateVipNow";
 import axios from "../../lib/axios";
+import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
 import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 
@@ -36,11 +37,7 @@ export default function GameSettingsPage() {
         console.error("Success to fetch VIP status", resp.data);
       })
       .catch((err) => {
-        toast({
-          title: t("common.something_went_wrong"),
-          status: "error",
-          isClosable: true,
-        });
+        toast(toast_error(t("common.something_went_wrong")));
         console.error("Failed to fetch VIP status", err);
       });
   }, [t, toast]);
@@ -51,7 +48,12 @@ export default function GameSettingsPage() {
 
   return (
     <Fragment>
-      <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={gameMode} />
+      <NewOnlineGameModal
+        isOpen={isOpen}
+        onClose={onClose}
+        mode={gameMode}
+        vipStatus={vipStatus}
+      />
       <Container maxW="container.2xl" py={4}>
         <Flex direction={{ base: "column", md: "row" }}>
           <Box

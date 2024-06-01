@@ -27,6 +27,7 @@ from controllers.others import other_bp
 from controllers.notification import notification_bp
 from controllers.blitzTactics import blitztactic_bp
 from controllers.adminDashboard import adminDashboard_bp
+from controllers.ai_game import ai_game_bp
 
 app = Flask(__name__)
 
@@ -51,6 +52,7 @@ CORS(other_bp)
 CORS(notification_bp)
 CORS(blitztactic_bp)
 CORS(adminDashboard_bp)
+CORS(ai_game_bp)
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
@@ -94,6 +96,7 @@ app.register_blueprint(other_bp)
 app.register_blueprint(notification_bp)
 app.register_blueprint(blitztactic_bp)
 app.register_blueprint(adminDashboard_bp)
+app.register_blueprint(ai_game_bp)
 
 socketio = SocketIO(app, cors_allowed_origins="*", transports=['websocket', 'polling'])
 
