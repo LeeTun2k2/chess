@@ -33,8 +33,8 @@ const Header = () => {
 
   useEffect(() => {
     if (user_data) setUser({ ...user_data });
-    const isFirstVisit = !!localStorage.getItem("isFirstVisit");
-    if (isFirstVisit) {
+    const isFirstVisit = localStorage.getItem("isFirstVisit");
+    if (isFirstVisit === null) {
       setShowTutorial(true);
       localStorage.setItem("isFirstVisit", "false");
     }
