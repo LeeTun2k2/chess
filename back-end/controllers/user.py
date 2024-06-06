@@ -275,7 +275,6 @@ def become_vip():
 def vip_status():
     try:
         user_id = get_jwt_identity()
-        print(user_id)
         service = UserService()
         vip_status, vip_expiry = service.get_vip_status(user_id)
         if vip_expiry:

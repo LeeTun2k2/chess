@@ -1,7 +1,7 @@
 import { Box, Container, Flex, Spacer } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
-import Statistics from "../../components/user_profile/statistic";
 import UserInfo from "../../components/user_profile/user_info";
+import GameHistory from "../../components/user_profile/game_history"; // Import the GameHistory component
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
 import { useCurrentPath } from "../../lib/hooks/route";
@@ -14,76 +14,36 @@ export default function UserProfile() {
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    const getAvatarUrl = () => {
-      return `${appSettings.API_PROXY}/user-${user_data.id}`;
-    };
-
     const getUser = () => {
       if (user_data) {
         setUser({
           ...user_data,
-          avatar: getAvatarUrl(),
+          avatar: `${appSettings.API_PROXY}/user-${user_data.id}`,
         });
         return;
       }
 
       axios
         .get(`${appSettings.API_PROXY}/user/${username}`)
-        .then((res) => {})
+        .then((res) => {
+          setUser(res.data);
+        })
         .catch((err) => {
-          console.log(err);
+          console.error('Error fetching user:', err);
         });
     };
     getUser();
   }, [username, user_data]);
 
-  const getStatistics = () => {
-    return {
-      chess: {
-        elo: {
-          last_month: 1943,
-          current_month: 2041,
-        },
-        game: {
-          last_month: 24,
-          current_month: 13,
-        },
-      },
-      xiangqi: {
-        elo: {
-          last_month: 1943,
-          current_month: 2041,
-        },
-        game: {
-          last_month: 24,
-          current_month: 13,
-        },
-      },
-      puzzle: {
-        elo: {
-          last_month: 1943,
-          current_month: 2041,
-        },
-        game: {
-          last_month: 24,
-          current_month: 13,
-        },
-      },
-    };
-  };
-
-  const statistic = getStatistics();
-
   return (
     <Fragment>
-      <Container maxW="container.2xl" py={4}>
-        <Flex direction={{ base: "column", md: "row" }}>
-          <Box w={{ base: "100%", md: "30%" }} mb={{ base: 8, md: 0 }}>
+      <Container maxW="container.xl" py={4}>
+        <Flex direction={{ base: "column", md: "row" }} gap={8}>
+          <Box flex="1">
             <UserInfo user={user} />
           </Box>
-          <Spacer display={{ base: "none", md: "block" }} />
-          <Box w={{ base: "100%", md: "66%" }}>
-            <Statistics data={statistic} />
+          <Box flex="2">
+            <GameHistory userId={user.id} />
           </Box>
         </Flex>
       </Container>
