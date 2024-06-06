@@ -12,31 +12,31 @@ const Tutorial = ({ hideButtonStart }) => {
     {
       target: ".menu-club",
       content: t(
-        "settings.This is the Club menu where you can find various club-related options"
+        "settings.This is the Club menu where you can find various club-related options",
       ),
     },
     {
       target: ".menu-play",
       content: t(
-        "settings.This is the Play menu where you can start playing games."
+        "settings.This is the Play menu where you can start playing games.",
       ),
     },
     {
       target: ".menu-practice",
       content: t(
-        "settings.This is the Practice menu where you can find practice options."
+        "settings.This is the Practice menu where you can find practice options.",
       ),
     },
     {
       target: ".menu-tv",
       content: t(
-        "settings.This is the TV menu where you can watch live games."
+        "settings.This is the TV menu where you can watch live games.",
       ),
     },
     {
       target: ".menu-vip",
       content: t(
-        "settings.This is the VIP menu where you can access VIP features."
+        "settings.This is the VIP menu where you can access VIP features.",
       ),
     },
     {
@@ -46,7 +46,7 @@ const Tutorial = ({ hideButtonStart }) => {
     {
       target: ".menu-user",
       content: t(
-        "settings.This is your user menu where you can access your profile and settings."
+        "settings.This is your user menu where you can access your profile and settings.",
       ),
     },
   ];

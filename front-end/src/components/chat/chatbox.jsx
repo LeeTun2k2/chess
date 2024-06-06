@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import OpenAI from "openai";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSend } from "react-icons/io5";
 import { getUserData } from "../../lib/auth";
@@ -28,11 +28,14 @@ const ChatBox = () => {
   ]);
   const [inputValue, setInputValue] = useState("");
 
-  const suggestions = [
-    t("chat.about_ute_chess_club"),
-    t("chat.when_club_offline"),
-    t("chat.how_to_play_chess"),
-  ];
+  const suggestions = useMemo(
+    () => [
+      t("chat.about_ute_chess_club"),
+      t("chat.when_club_offline"),
+      t("chat.how_to_play_chess"),
+    ],
+    [t]
+  );
 
   useEffect(() => {
     const openai = new OpenAI({
@@ -42,61 +45,62 @@ const ChatBox = () => {
     setOpenAIInstance(openai);
   }, []);
 
-  const sendMessage = async (text) => {
-    const trimmedInputValue = inputValue.trim();
-    const trimmedText = text ? text.trim() : "";
+  const sendMessage = useCallback(
+    async (text) => {
+      const trimmedInputValue = inputValue.trim();
+      const trimmedText = text ? text.trim() : "";
 
-    if (trimmedInputValue === "" && trimmedText === "") return;
+      if (!trimmedInputValue && !trimmedText) return;
 
-    const oldMessages = [...messages];
-    const message = {
-      text: trimmedText || trimmedInputValue,
-      user_id: user?.id,
-      username: user?.username,
-    };
-
-    setMessages([...oldMessages, message]); // Set the message immediately for smooth UX
-    setInputValue(""); // Clear input field
-
-    const gptMessage = {
-      role: "user",
-      content: trimmedText || trimmedInputValue,
-    };
-
-    // Show loading indicator
-    const loadingMessage = {
-      username: "System",
-      text: <Spinner size="sm" />,
-      user_id: "system",
-    };
-    setMessages([...oldMessages, message, loadingMessage]);
-
-    try {
-      const completion = await openaiInstance.chat.completions.create({
-        messages: [
-          { role: "system", content: "You are a helpful assistant." },
-          ...oldMessages.map((item) => ({
-            role: item.id ? "user" : "assistant",
-            content: item.text,
-          })),
-          gptMessage,
-        ],
-        model: "gpt-3.5-turbo-0125",
-        max_tokens: 100,
-      });
-
-      const botMessageContent = completion.choices[0].message.content;
-      const botMessage = {
-        username: t("chat.assistant"),
-        text: botMessageContent,
-        user_id: "assistant",
+      const message = {
+        text: trimmedText || trimmedInputValue,
+        user_id: user?.id,
+        username: user?.username,
       };
 
-      setTimeout(() => {
-        setMessages([...oldMessages, message, botMessage]);
-      }, 2500);
-    } catch (error) {
-      console.error("Error sending message:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        message,
+        { username: "System", text: <Spinner size="sm" />, user_id: "system" },
+      ]);
+      setInputValue("");
+
+      try {
+        const completion = await openaiInstance.chat.completions.create({
+          messages: [
+            { role: "system", content: "You are a helpful assistant." },
+            ...messages.map((item) => ({
+              role: item.user_id === "assistant" ? "assistant" : "user",
+              content: item.text,
+            })),
+            { role: "user", content: trimmedText || trimmedInputValue },
+          ],
+          model: "gpt-3.5-turbo-0125",
+          max_tokens: 100,
+        });
+
+        const botMessageContent = completion.choices[0].message.content;
+        const botMessage = {
+          username: t("chat.assistant"),
+          text: botMessageContent,
+          user_id: "assistant",
+        };
+
+        setMessages((prevMessages) => [
+          ...prevMessages.slice(0, -1),
+          botMessage,
+        ]);
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+    },
+    [inputValue, messages, openaiInstance, t, user]
+  );
+
+  const handleInputChange = (e) => setInputValue(e.target.value);
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
     }
   };
 
@@ -175,9 +179,7 @@ const ChatBox = () => {
                 key={idx}
                 w={"100%"}
                 mb={2}
-                onClick={() => {
-                  sendMessage(item);
-                }}
+                onClick={() => sendMessage(item)}
               >
                 {item}
               </Button>
@@ -190,21 +192,15 @@ const ChatBox = () => {
           <Input
             placeholder={t("chat.type_your_message_here")}
             value={inputValue}
-            onChange={(e) => setInputValue(e.target?.value)}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                sendMessage();
-              }
-            }}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
             colorScheme="gray"
             variant={"outline"}
             borderColor={"lightgray"}
           />
           <Button
             colorScheme="gray"
-            onClick={() => {
-              sendMessage();
-            }}
+            onClick={() => sendMessage()}
             title={t("chat.send")}
           >
             <IoSend fontSize={24} />

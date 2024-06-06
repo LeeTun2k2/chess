@@ -72,12 +72,12 @@ export default function BillingPage() {
     try {
       const response = await axios.post(
         `${appSettings.API_PROXY}/momo_payment_status`,
-        { orderId }
+        { orderId },
       );
       // Add logic here to extend VIP subscription if payment is successful
       if (response.data.resultCode === "0") {
         setIsPaymentSuccessful(true);
-        becomeVip();  // Call becomeVip function after successful payment
+        becomeVip(); // Call becomeVip function after successful payment
       }
     } catch (error) {
       console.error("There was an error!", error);
@@ -86,14 +86,18 @@ export default function BillingPage() {
 
   const becomeVip = async () => {
     try {
-      const token = localStorage.getItem('access_token');  // Assuming you store the token in localStorage
-      const response = await axios.post(`${appSettings.API_PROXY}/users/become-vip`, {
-        vip_duration_days: 30  // or any duration you want
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      const token = localStorage.getItem("access_token"); // Assuming you store the token in localStorage
+      const response = await axios.post(
+        `${appSettings.API_PROXY}/users/become-vip`,
+        {
+          vip_duration_days: 30, // or any duration you want
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       console.log("VIP status updated", response.data);
     } catch (error) {
       console.error("There was an error!", error);

@@ -16,7 +16,6 @@ const CommonRoutes = () => {
       <Route path="achievements" element={<AchievementsPage />} />
       <Route path="settings" element={<SettingsPage />} />
       <Route path="billing" element={<BillingPage />} />
-      
     </Fragment>
   );
 };
