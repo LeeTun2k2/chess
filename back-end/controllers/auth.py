@@ -107,7 +107,7 @@ def login():
 @jwt_required(refresh=True)
 def refresh():
     user_id = get_jwt_identity()
-    access_token = AuthServices().refresh_token(user_id==user_id)
+    access_token = AuthServices().refresh_token(user_id=user_id)
     return jsonify({'access_token':access_token}), 200
 
 @auth_bp.get('/api/logout')

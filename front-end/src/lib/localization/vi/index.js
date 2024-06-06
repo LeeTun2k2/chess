@@ -63,7 +63,7 @@ const vi = {
   countdown,
   haste,
   payment,
-  tutorial
+  tutorial,
 };
 
 export default vi;
