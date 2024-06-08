@@ -5,8 +5,8 @@ MONGO_URI_ATLAS = 'mongodb://admin:admin@ac-sbfny3p-shard-00-00.dqwy5sj.mongodb.
 MONGO_DB_NAME = 'chess'
 
 def get_mongo():
-    return MongoClient(MONGO_URI_ATLAS)
+    return MongoClient(MONGO_URI)
 
 def get_db():
-    client = MongoClient(MONGO_URI_ATLAS)
+    client = MongoClient(MONGO_URI)
     return client[MONGO_DB_NAME]
