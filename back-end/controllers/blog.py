@@ -103,3 +103,14 @@ def toggle_like_blog(blog_id):
         return jsonify(blog), 200
     except Exception as e:
         return str(e), 500
+    
+@blog_bp.route('/api/blogs/top/<number>', methods=['GET'])
+def get_top_blogs(number):
+    try:
+        blogs = blog_service.get_top(int(number))
+        return jsonify({
+            "message": "success",
+            "blogs": blogs
+        }), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500

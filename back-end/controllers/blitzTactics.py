@@ -5,7 +5,7 @@ import base64
 
 blitztactic_bp = Blueprint('blitztactics', __name__)
 
-BLITZ_TACTICS_URL = "http://localhost:8080"
+BLITZ_TACTICS_URL = "https://chess.workon.space/UcG7F4xRfTzW1eVtLyPmNkQiOoAhDjBsErXuZvCwYxJbGzHpQqKiUlPfKsJdMgInLbHnVcXdFgBvNcMdHgXjZkLpWmRnPiOuYqAtWsEdRfYgUhIjOlP"
 
 user_service = UserService()
 

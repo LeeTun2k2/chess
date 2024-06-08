@@ -1,5 +1,17 @@
-import { Box, Container, Flex, Spacer } from "@chakra-ui/react";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import {
+  Box,
+  Container,
+  Flex,
+  Spacer,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useToast,
+} from "@chakra-ui/react";
+import { Fragment, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import GameReport from "../../components/dashboard/applicationReport/gameReport";
 import UserReport from "../../components/dashboard/applicationReport/userReport";
 import VipReport from "../../components/dashboard/applicationReport/vipReport";
@@ -15,57 +27,101 @@ import ApdexReport from "../../components/dashboard/systemReport/ApdexReport";
 import BrowserInteractionReport from "../../components/dashboard/systemReport/BrowserInteractionReport";
 import MetricSummaryReport from "../../components/dashboard/systemReport/MetricSummaryReport";
 import TransactionSummaryReport from "../../components/dashboard/systemReport/TransactionSummaryReport";
+import axios from "../../lib/axios";
+import { toast_error } from "../../lib/hooks/toast";
+import appSettings from "../../settings/appSettings";
 export default function AdminDashboardPage() {
+  const { t } = useTranslation();
   const theme = localStorage.getItem("theme");
-  const defaultData = useMemo(() => {
-    return {
-      books: [],
-      videos: [],
-      blogs: [],
-      achievements: [],
-    };
-  }, []);
-  const [data, setData] = useState(defaultData);
+  const toast = useToast();
+  const [books, setBooks] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [achievements, setAchievements] = useState([]);
   useEffect(() => {
-    setData(defaultData);
-  }, [defaultData]);
+    axios
+      .get(`${appSettings.API_PROXY}/blogs/top/5`)
+      .then((resp) => {
+        setBlogs(resp?.data?.blogs ?? []);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+
+    axios
+      .get(`${appSettings.API_PROXY}/books/top/5`)
+      .then((resp) => {
+        setBooks(resp?.data?.books ?? []);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+
+    axios
+      .get(`${appSettings.API_PROXY}/videos/top/5`)
+      .then((resp) => {
+        setVideos(resp?.data?.videos ?? []);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+
+    axios
+      .get(`${appSettings.API_PROXY}/achievements/top/5`)
+      .then((resp) => {
+        setAchievements(resp?.data?.achievements ?? []);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+  }, [toast, t]);
 
   return (
     <Fragment>
-      <Container maxW="container.2xl" py={4}>
-        <Flex>
-          <Box w={"41%"}>
-            <MetricSummaryReport />
-            <AjaxRequestHttpMethodReport theme={theme} />
-          </Box>
-          <Spacer />
-          <Box w={"41%"}>
-            <TransactionSummaryReport />
-            <ApdexReport theme={theme} />
-          </Box>
-          <Spacer />
-          <Box w={"16%"}>
-            <NewBooks data={data?.books} />
-            <NewVideos data={data?.videos} />
-            <NewBlogs data={data?.blogs} />
-            <NewAchievements data={data?.achievements} />
-          </Box>
-        </Flex>
-        <Flex>
-          <Box w={"50%"}>
-            <UserReport />
-            <GameReport />
-            <VipReport />
-          </Box>
-          <Spacer />
-          <Box w={"49%"}>
-            <AjaxRequestHttpResponseCodeHostnameReport theme={theme} />
-            <BrowserInteractionReport theme={theme} />
-            <AjaxRequestHostnameReport theme={theme} />
-            <AjaxRequestPageUrlReport theme={theme} />
-          </Box>
-        </Flex>
-      </Container>
+      <Tabs>
+        <TabList mx={8}>
+          <Tab>{t("admin.application_report")}</Tab>
+          <Tab>{t("admin.performance_report")}</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Container maxW="container.2xl" py={4}>
+              <UserReport />
+              <GameReport />
+              <VipReport />
+              <Box>
+                <NewBooks data={books} />
+                <NewVideos data={videos} />
+                <NewBlogs data={blogs} />
+                <NewAchievements data={achievements} />
+              </Box>
+            </Container>
+          </TabPanel>
+          <TabPanel>
+            <Container maxW="container.2xl" py={4}>
+              <Flex>
+                <Box w={"41%"}>
+                  <MetricSummaryReport />
+                  <AjaxRequestHttpMethodReport theme={theme} />
+                </Box>
+                <Spacer />
+                <Box w={"41%"}>
+                  <TransactionSummaryReport />
+                  <ApdexReport theme={theme} />
+                </Box>
+              </Flex>
+              <Flex>
+                <Box w={"49%"}>
+                  <AjaxRequestHttpResponseCodeHostnameReport theme={theme} />
+                  <BrowserInteractionReport theme={theme} />
+                  <AjaxRequestHostnameReport theme={theme} />
+                  <AjaxRequestPageUrlReport theme={theme} />
+                </Box>
+              </Flex>
+            </Container>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Fragment>
   );
 }

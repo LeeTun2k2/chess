@@ -1,5 +1,6 @@
 import about from "./about.json";
 import achievements from "./achievements.json";
+import admin from "./admin.json";
 import adminFooter from "./adminFooter.json";
 import auth from "./auth.json";
 import blogs from "./blogs.json";
@@ -26,10 +27,10 @@ import settings from "./settings.json";
 import speedrun from "./speedrun.json";
 import three from "./three.json";
 import tournaments from "./tournaments.json";
+import tutorial from "./tutorial.json";
 import users from "./users.json";
 import videos from "./videos.json";
 import vip from "./vip.json";
-import tutorial from "./tutorial.json";
 
 const en = {
   common,
@@ -64,6 +65,7 @@ const en = {
   haste,
   payment,
   tutorial,
+  admin
 };
 
 export default en;

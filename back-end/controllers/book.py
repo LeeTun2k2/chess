@@ -82,3 +82,14 @@ def delete_book(book_id):
             return jsonify({'message': 'Book not found'}), 404
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+
+@book_bp.route('/api/books/top/<number>', methods=['GET'])
+def get_top_books(number:int):
+    try:
+        books = book_service.get_top(int(number))
+        return jsonify({
+            "message": "success",
+            "books": books
+        }), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500

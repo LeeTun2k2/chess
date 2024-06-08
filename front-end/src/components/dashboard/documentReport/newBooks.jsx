@@ -36,7 +36,7 @@ export default function NewBooks({ data }) {
         {!!data ? (
           data?.map((item, index) => (
             <ListItem key={`books-${index}`}>
-              <Link fontSize={"small"} noOfLines={1} href={`books/${item._id}`}>
+              <Link fontSize={"small"} noOfLines={1} href={`book/${item._id}`}>
                 {item.title}
               </Link>
             </ListItem>

@@ -46,3 +46,8 @@ class VideoService():
     def delete(self, video_id):
         result = self.videos_collection.delete_one({'_id': ObjectId(video_id)})
         return result.deleted_count > 0
+    
+    def get_top(self, number):
+        data = self.videos_collection.find({}).sort('updated_at', -1).limit(number)
+        data = [self.map(video) for video in data]
+        return data

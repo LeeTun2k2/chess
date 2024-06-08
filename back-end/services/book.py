@@ -62,3 +62,8 @@ class BookService():
     def delete(self, book_id):
         result = self.books_collection.delete_one({'_id': ObjectId(book_id)})
         return result.deleted_count > 0
+    
+    def get_top(self, number):
+        data = self.books_collection.find({}).sort('updated_at', -1).limit(number)
+        data = [self.map(book) for book in data]
+        return data

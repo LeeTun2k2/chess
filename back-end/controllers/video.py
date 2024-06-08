@@ -83,3 +83,14 @@ def delete_video(video_id):
             return jsonify({'message': 'video not found'}), 404
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+    
+@video_bp.route('/api/videos/top/<number>', methods=['GET'])
+def get_top_videos(number):
+    try:
+        videos = video_service.get_top(int(number))
+        return jsonify({
+            "message": "success",
+            "videos": videos
+        }), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
