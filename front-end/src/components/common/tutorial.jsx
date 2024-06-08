@@ -64,7 +64,6 @@ const Tutorial = () => {
         callback={handleJoyrideCallback}
         styles={{
           options: {
-
             arrowColor: "#e3ffeb",
             backgroundColor: "#e3ffeb",
             overlayColor: "rgba(79, 26, 0, 0.4)",
