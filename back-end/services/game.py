@@ -5,6 +5,7 @@ from random import randint
 from common.constant import CHESS, XIANGQI, CHESS_FEN, XIANGQI_FEN
 from datetime import datetime
 from services.rating import rate_1vs1
+
 class GameService():
     def __init__(self) -> None:
         self.db = get_db()
@@ -131,6 +132,9 @@ class GameService():
                 {'$set': {'status': 'DRAW'}}
             )
 
+            # Save game history
+            self.save_game_history(game_id, 'DRAW')
+
             # Update ratings for both players
             self.users_collection.update_one(
                 {'_id': ObjectId(white)},
@@ -174,6 +178,9 @@ class GameService():
                 {'_id': ObjectId(game_id)},
                 {'$set': {'status': 'RESIGNED', 'winner': winner_id}}
             )
+
+            # Save game history
+            self.save_game_history(game_id, 'RESIGNED')
 
             # Calculate updated ratings for winner and loser
             rate1, rate2 = rate_1vs1(winner_user["rating"]["chess"], loser_user["rating"]["chess"], 1.0)
@@ -223,6 +230,9 @@ class GameService():
                 {'$set': {'status': 'TIMEOUT', 'winner': winner_id}}
             )
 
+            # Save game history
+            self.save_game_history(game_id, 'TIMEOUT')
+
             # Calculate updated ratings for winner and loser
             rate1, rate2 = rate_1vs1(winner_user["rating"]["chess"], loser_user["rating"]["chess"], 1.0)
 
@@ -261,6 +271,9 @@ class GameService():
                 {'_id': ObjectId(game_id)},
                 {'$set': {'status': 'CHECKMATE', 'winner': player_win_id}}
             )
+
+            # Save game history
+            self.save_game_history(game_id, 'CHECKMATE')
 
             # Get the IDs of the players
             white_id = game['white']
@@ -311,7 +324,15 @@ class GameService():
         pass
 
     def save_game_history(self, game_id, result):
-        self.game_history_collection.insert_one({'game_id': game_id, 'result': result, 'timestamp': datetime.now()})
+        game = self.online_games_collection.find_one({'_id': ObjectId(game_id)})
+        if game:
+            self.game_history_collection.insert_one({
+                'game_id': game_id,
+                'white': game['white'],
+                'black': game['black'],
+                'result': result,
+                'timestamp': datetime.now()
+            })
 
     def get_player_stats(self, player_id):
         total_games, wins, losses = self.game_history_collection.aggregate([
@@ -321,3 +342,9 @@ class GameService():
                         'losses': {'$sum': {'$cond': [{'$eq': ['$result', 'loss']}, 1, 0]}}}}
         ]).next().values()
         return total_games, wins, losses
+
+    def get_game_history(self, player_id):
+        history = self.game_history_collection.find(
+            {'$or': [{'white': player_id}, {'black': player_id}]}
+        ).sort('timestamp', -1)
+        return list(map(self.map, history))
