@@ -39,7 +39,7 @@ export default function NewAchievements({ data }) {
               <Link
                 fontSize={"small"}
                 noOfLines={1}
-                href={`achievements/${item._id}`}
+                href={`achievement/${item._id}`}
               >
                 {item.title}
               </Link>

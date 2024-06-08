@@ -36,7 +36,7 @@ export default function NewBlogs({ data }) {
         {!!data ? (
           data?.map((item, index) => (
             <ListItem key={`blogs-${index}`}>
-              <Link fontSize={"small"} noOfLines={1} href={`blogs/${item._id}`}>
+              <Link fontSize={"small"} noOfLines={1} href={`blog/${item._id}`}>
                 {item.title}
               </Link>
             </ListItem>

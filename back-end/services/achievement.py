@@ -62,3 +62,8 @@ class AchievementService():
     def delete(self, achievement_id):
         result = self.achievements_collection.delete_one({'_id': ObjectId(achievement_id)})
         return result.deleted_count > 0
+    
+    def get_top(self, number):
+        data = self.achievements_collection.find({}).sort('updated_at', -1).limit(number)
+        data = [self.map(achievement) for achievement in data]
+        return data

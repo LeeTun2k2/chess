@@ -36,11 +36,7 @@ export default function NewVideos({ data }) {
         {!!data ? (
           data?.map((item, index) => (
             <ListItem key={`videos-${index}`}>
-              <Link
-                fontSize={"small"}
-                noOfLines={1}
-                href={`videos/${item._id}`}
-              >
+              <Link fontSize={"small"} noOfLines={1} href={`video/${item._id}`}>
                 {item.title}
               </Link>
             </ListItem>
