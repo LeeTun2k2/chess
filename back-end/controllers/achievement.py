@@ -96,3 +96,14 @@ def delete_achievement(achievement_id):
             return jsonify({'message': 'achievement not found'}), 404
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+    
+@achievement_bp.route('/api/achievements/top/<number>', methods=['GET'])
+def get_top_achievements(number):
+    try:
+        achievements = achievement_service.get_top(int(number))
+        return jsonify({
+            "message": "success",
+            "achievements": achievements
+        }), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500

@@ -19,7 +19,7 @@ import DateTimePicker from "../../../components/datetime/datetimePicker";
 import axios from "../../../lib/axios";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
-import { CHESS, XIANGQI } from "../../../settings/game";
+import { CHESS } from "../../../settings/game";
 
 export default function AdminCreateTournamentPage() {
   const navigate = useNavigate();
@@ -121,7 +121,7 @@ export default function AdminCreateTournamentPage() {
                 w={{ base: 200, md: 200 }}
               >
                 <option value={CHESS}>{t("common.chess")}</option>
-                <option value={XIANGQI}>{t("common.xiangqi")}</option>
+                {/* <option value={XIANGQI}>{t("common.xiangqi")}</option> */}
               </Select>
             </FormControl>
             <FormControl />

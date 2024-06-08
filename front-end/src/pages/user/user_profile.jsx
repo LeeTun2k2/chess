@@ -1,5 +1,6 @@
-import { Box, Container, Flex, Spacer } from "@chakra-ui/react";
+import { Box, Container, Flex } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
+import GameHistory from "../../components/user_profile/game_history"; // Import the GameHistory component
 import UserInfo from "../../components/user_profile/user_info";
 import GameHistory from "../../components/user_profile/game_history"; // Import the GameHistory component
 import { getUserData } from "../../lib/auth";
@@ -29,7 +30,7 @@ export default function UserProfile() {
           setUser(res.data);
         })
         .catch((err) => {
-          console.error('Error fetching user:', err);
+          console.error("Error fetching user:", err);
         });
     };
     getUser();

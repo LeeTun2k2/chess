@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Joyride, { ACTIONS, STATUS } from 'react-joyride';
-import { Button, Box } from '@chakra-ui/react';
+import { Box } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const Tutorial = () => {
@@ -14,41 +13,36 @@ const Tutorial = () => {
 
   const steps = [
     {
-      target: '.menu-club',
-      content: t("tutorial.menu-club"), 
+      target: ".menu-club",
+      content: t("tutorial.menu-club"),
       disableBeacon: true,
     },
     {
-      target: '.menu-play',
+      target: ".menu-play",
       content: t("tutorial.menu-play"),
       disableBeacon: true,
     },
     {
-      target: '.menu-practice',
-      content: t("tutorial.menu-practice"), 
+      target: ".menu-practice",
+      content: t("tutorial.menu-practice"),
       disableBeacon: true,
     },
     {
-      target: '.menu-tv',
+      target: ".menu-tv",
       content: t("tutorial.menu-tv"),
       disableBeacon: true,
     },
     {
-      target: '.menu-vip',
-      content: t("tutorial.menu-vip"), 
+      target: ".menu-vip",
+      content: t("tutorial.menu-vip"),
       disableBeacon: true,
     },
     {
-      target: '.menu-notifications',
-      content: t("tutorial.menu-notifications"),
+      target: ".menu-user",
+      content: t("tutorial.menu-user"),
       disableBeacon: true,
     },
-    {
-      target: '.menu-user',
-      content: t("tutorial.menu-user"), 
-      disableBeacon: true,
-    }
-];
+  ];
 
   const handleJoyrideCallback = (data) => {
     const { status, action } = data;
@@ -70,11 +64,11 @@ const Tutorial = () => {
         callback={handleJoyrideCallback}
         styles={{
           options: {
-            arrowColor: '#e3ffeb',
-            backgroundColor: '#e3ffeb',
-            overlayColor: 'rgba(79, 26, 0, 0.4)',
-            primaryColor: '#000',
-            textColor: '#004a14',
+            arrowColor: "#e3ffeb",
+            backgroundColor: "#e3ffeb",
+            overlayColor: "rgba(79, 26, 0, 0.4)",
+            primaryColor: "#000",
+            textColor: "#004a14",
             zIndex: 1000,
           },
         }}

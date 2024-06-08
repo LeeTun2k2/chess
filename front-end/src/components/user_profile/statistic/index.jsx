@@ -1,17 +1,7 @@
-import {
-  Box,
-  Heading,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
+import { Box, Heading, Tab, TabList, Tabs } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ChessStatistics from "./chess_statistic";
-import PuzzleStatistics from "./puzzle_statistic";
-import XiangqiStatistics from "./xiangqi_statistic";
 
 export default function Statistics(props) {
   const { t } = useTranslation();
@@ -41,17 +31,7 @@ export default function Statistics(props) {
           <Tab>{t("profile.puzzle")}</Tab>
         </TabList>
 
-        <TabPanels>
-          <TabPanel>
-            <ChessStatistics data={data.chess} />
-          </TabPanel>
-          <TabPanel>
-            <XiangqiStatistics data={data.xiangqi} />
-          </TabPanel>
-          <TabPanel>
-            <PuzzleStatistics data={data.puzzle} />
-          </TabPanel>
-        </TabPanels>
+        <ChessStatistics data={data.chess} />
       </Tabs>
     </Box>
   );
