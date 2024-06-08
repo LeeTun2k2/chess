@@ -75,7 +75,7 @@ export default function BillingPage() {
         { orderId },
       );
       // Add logic here to extend VIP subscription if payment is successful
-      if (response.data.resultCode === "0") {
+      if (response.data.resultCode === "0" || response.data.resultCode === 0) {
         setIsPaymentSuccessful(true);
         becomeVip(); // Call becomeVip function after successful payment
       }
