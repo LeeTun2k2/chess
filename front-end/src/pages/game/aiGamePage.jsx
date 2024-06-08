@@ -63,11 +63,11 @@ export default function AiGamePage() {
   }, []);
   const whiteTime = useMemo(
     () => (user.id === game?.white ? yourTime : opponentTime),
-    [user.id, game?.white, yourTime, opponentTime],
+    [user.id, game?.white, yourTime, opponentTime]
   );
   const blackTime = useMemo(
     () => (user.id === game?.black ? yourTime : opponentTime),
-    [user.id, game?.black, yourTime, opponentTime],
+    [user.id, game?.black, yourTime, opponentTime]
   );
 
   useEffect(() => {

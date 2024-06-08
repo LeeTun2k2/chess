@@ -72,7 +72,7 @@ export default function BillingPage() {
     try {
       const response = await axios.post(
         `${appSettings.API_PROXY}/momo_payment_status`,
-        { orderId },
+        { orderId }
       );
       // Add logic here to extend VIP subscription if payment is successful
       if (response.data.resultCode === "0" || response.data.resultCode === 0) {
@@ -96,7 +96,7 @@ export default function BillingPage() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
       console.log("VIP status updated", response.data);
     } catch (error) {

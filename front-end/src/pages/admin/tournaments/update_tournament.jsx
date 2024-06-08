@@ -20,7 +20,7 @@ import axios from "../../../lib/axios";
 import { useCurrentPath } from "../../../lib/hooks/route";
 import { toast_error, toast_success } from "../../../lib/hooks/toast";
 import appSettings from "../../../settings/appSettings";
-import { CHESS, XIANGQI } from "../../../settings/game";
+import { CHESS } from "../../../settings/game";
 
 export default function AdminUpdatetournamentPage() {
   const path = useCurrentPath();
@@ -40,7 +40,7 @@ export default function AdminUpdatetournamentPage() {
       start: Date.now(),
       end: Date.now(),
     }),
-    [],
+    []
   );
 
   const [formData, setFormData] = useState(defaultData);
@@ -132,7 +132,7 @@ export default function AdminUpdatetournamentPage() {
                 w={{ base: 200, md: 200 }}
               >
                 <option value={CHESS}>{t("common.chess")}</option>
-                <option value={XIANGQI}>{t("common.xiangqi")}</option>
+                {/* <option value={XIANGQI}>{t("common.xiangqi")}</option> */}
               </Select>
             </FormControl>
             <FormControl />

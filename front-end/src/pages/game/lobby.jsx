@@ -40,7 +40,6 @@ import {
   CLASSICAL,
   ONLINE,
   RAPID,
-  XIANGQI,
 } from "../../settings/game";
 
 export default function LobbyPage(props) {
@@ -88,7 +87,7 @@ export default function LobbyPage(props) {
       const lobby = resp.lobby;
       if (lobby) setData((prevData) => [lobby, ...prevData]);
     },
-    [setData],
+    [setData]
   );
 
   const handleLobbyClosed = useCallback(
@@ -98,7 +97,7 @@ export default function LobbyPage(props) {
       if (lobbyId)
         setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
     },
-    [setData],
+    [setData]
   );
 
   useEffect(() => {
@@ -125,7 +124,7 @@ export default function LobbyPage(props) {
         (!variant || x.variant === variant) &&
         x.rating >= minRating &&
         x.rating <= maxRating &&
-        (!time || filterGameTime(x.initial_time) === time),
+        (!time || filterGameTime(x.initial_time) === time)
     );
     setRenderData(filtered_data);
   }, [data, filter]);
@@ -232,7 +231,7 @@ export default function LobbyPage(props) {
                               >
                                 {i + 1}
                               </Button>
-                            ),
+                            )
                         )}
                         <Button
                           colorScheme="gray"
@@ -274,7 +273,7 @@ export default function LobbyPage(props) {
                 }}
               >
                 <option value={CHESS}>{t("common.chess")}</option>
-                <option value={XIANGQI}>{t("common.xiangqi")}</option>
+                {/* <option value={XIANGQI}>{t("common.xiangqi")}</option> */}
               </Select>
             </HStack>
             <HStack mt={4}>

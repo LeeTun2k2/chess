@@ -68,7 +68,7 @@ export default function AiChessBoard({
             `${appSettings.API_PROXY}/ai-game/${game._id}/request_ai_move`,
             {
               fen: CHESS_FEN,
-            },
+            }
           );
           const { move } = response.data;
           console.log({ move });
@@ -86,7 +86,7 @@ export default function AiChessBoard({
     };
 
     fetchAIMove();
-  }, [game?._id, user?.id, game?.black, t, toast]);
+  }, [game?._id, user?.id, game?.black, t, toast, chess, toggleTurn]);
 
   const findMovableDests = (square) => {
     const moves = chess.moves({ square: square, verbose: true });
@@ -115,7 +115,7 @@ export default function AiChessBoard({
         `${appSettings.API_PROXY}/ai-game/${game._id}/request_ai_move`,
         {
           fen: fen,
-        },
+        }
       );
       const { move: aiMove } = response.data;
       console.log({ aiMove });

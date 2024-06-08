@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../lib/axios";
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
-import { CHESS, FRIEND, OFFLINE, ONLINE, XIANGQI } from "../../settings/game";
+import { CHESS, FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 
 const NewOnlineGameModal = ({
   isOpen,
@@ -164,7 +164,7 @@ const NewOnlineGameModal = ({
               value={variant}
             >
               <option value={CHESS}>{t("games.chess")}</option>
-              <option value={XIANGQI}>{t("games.xiangqi")}</option>
+              {/* <option value={XIANGQI}>{t("games.xiangqi")}</option> */}
             </Select>
           </FormControl>
           <HStack mt={4}>
