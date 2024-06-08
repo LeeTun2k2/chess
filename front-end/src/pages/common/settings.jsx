@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Tutorial from "../../components/common/tutorial";
 
 const SettingsPage = () => {
   const savedLang = localStorage.getItem("lang");
@@ -40,19 +39,6 @@ const SettingsPage = () => {
     <Fragment>
       <Container maxW="6xl" mt={8}>
         <Heading mb={16}>{t("settings.heading")}</Heading>
-        <Flex
-          w={"100%"}
-          justifyContent={"space-between"}
-          display={{ base: "block", md: "flex" }}
-        >
-          <HStack w={"50%"} py={4}>
-            <Heading size="md" mb={2}>
-              {t("settings.tutorial")}
-            </Heading>
-            <Spacer />
-            <Tutorial />
-          </HStack>
-        </Flex>
         <Flex
           w={"100%"}
           justifyContent={"space-between"}

@@ -39,11 +39,6 @@ const Tutorial = () => {
       disableBeacon: true,
     },
     {
-      target: ".menu-notifications",
-      content: t("tutorial.menu-notifications"),
-      disableBeacon: true,
-    },
-    {
       target: ".menu-user",
       content: t("tutorial.menu-user"),
       disableBeacon: true,

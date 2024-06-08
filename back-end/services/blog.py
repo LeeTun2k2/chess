@@ -107,3 +107,8 @@ class BlogService():
             )
         
         return self.map(self.blogs_collection.find_one({'_id': ObjectId(blog_id)}))
+    
+    def get_top(self, number):
+        data = self.blogs_collection.find({}).sort('updated_at', -1).limit(number)
+        data = [self.map(blog) for blog in data]
+        return data
