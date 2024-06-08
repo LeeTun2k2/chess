@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Joyride, { ACTIONS, STATUS } from "react-joyride";
 
 const Tutorial = () => {
   const [run, setRun] = useState(false);
@@ -64,7 +65,6 @@ const Tutorial = () => {
         callback={handleJoyrideCallback}
         styles={{
           options: {
-
             arrowColor: "#e3ffeb",
             backgroundColor: "#e3ffeb",
             overlayColor: "rgba(79, 26, 0, 0.4)",
