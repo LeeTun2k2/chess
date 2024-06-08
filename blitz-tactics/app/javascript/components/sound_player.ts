@@ -1,5 +1,5 @@
 import { toggleSound } from '../api/requests'
-import { dispatch, subscribe } from '../events'
+import { subscribe } from '../events'
 
 const theme = 'sfx'
 const supportsAudio = !!(<any>window).Audio
@@ -25,16 +25,10 @@ export default class SoundPlayer {
 
   constructor() {
     this.volumeIconEl = this.el.querySelector(`.volume-toggle`)
-    this.soundEnabled = this.volumeIconEl.dataset.enabled == `true`
     this.playSounds = this.soundEnabled && supportsAudio
     if (this.playSounds) {
       this.loadSounds()
     }
-    this.volumeIconEl.addEventListener('click', () => {
-      // click the sound/volume icon in the main header to toggle sound on/off
-      this.soundEnabled = !this.soundEnabled
-      dispatch(`sound:enabled`, this.soundEnabled)
-    });
     subscribe({
       'sound:enabled': enabled => {
         const el = this.volumeIconEl.querySelector(`use`)
