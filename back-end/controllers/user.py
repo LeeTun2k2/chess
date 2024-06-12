@@ -257,6 +257,7 @@ def become_vip():
         # get VIP duration from request
         data = request.get_json()
         vip_duration_days = data.get('vip_duration_days', 30)  # default to 30 days if not provided
+        orderId = data.get('order_id')
 
         vip_expiry = datetime.utcnow() + timedelta(days=vip_duration_days)
 

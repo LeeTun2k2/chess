@@ -69,7 +69,6 @@ def create_payment():
     orderId = str(uuid.uuid4())
     requestId = str(uuid.uuid4())
     extraData = ""  # pass empty value or Encode base64 JsonString
-    print(orderId)
     rawSignature = "accessKey=" + accessKey + "&amount=" + amount + "&extraData=" + extraData + "&ipnUrl=" + ipnUrl + "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode + "&redirectUrl=" + redirectUrl + "&requestId=" + requestId + "&requestType=captureWallet"
     h = hmac.new(bytes(secretKey, 'ascii'), bytes(rawSignature, 'ascii'), hashlib.sha256)
     signature = h.hexdigest()
@@ -91,10 +90,37 @@ def create_payment():
     }
 
     response = requests.post(endpoint, json=data, headers={'Content-Type': 'application/json'})
+    
+    # Log the payment
+    others_service.log_payment('create_payment', response.json().get('resultCode'), orderId, response.json())
+
     return jsonify(response.json())
 
+@other_bp.route('/api/momo_payment_status', methods=['POST'])
+def query_momo_payment_status():
+    endpoint = "https://test-payment.momo.vn/v2/gateway/api/query"
+    accessKey = "F8BBA842ECF85"
+    secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
+    partnerCode = "MOMO"
+    orderId = request.json.get('orderId')
+    requestId = str(uuid.uuid4())
 
+    rawSignature = "accessKey=" + accessKey + "&orderId=" + orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId
+    h = hmac.new(bytes(secretKey, 'ascii'), bytes(rawSignature, 'ascii'), hashlib.sha256)
+    signature = h.hexdigest()
 
+    data = {
+        'partnerCode': partnerCode,
+        'requestId': requestId,
+        'orderId': orderId,
+        'signature': signature,
+        'lang': 'vi'
+    }
+
+    response = requests.post(endpoint, json=data, headers={'Content-Type': 'application/json'})
+    others_service.log_payment('query_payment_status', response.json().get('resultCode'), orderId, response.json())
+
+    return jsonify(response.json())
 @other_bp.route('/api/vnpay_payment', methods=['POST'])
 def create_vnpay_payment():
     vnp_TmnCode = 'F8BBA842ECF85'  # Test TMN Code
@@ -136,28 +162,13 @@ def create_vnpay_payment():
 
     return jsonify({'payUrl': paymentUrl})
 
-# MoMo Payment Status Query Endpoint
-@other_bp.route('/api/momo_payment_status', methods=['POST'])
-def query_momo_payment_status():
-    endpoint = "https://test-payment.momo.vn/v2/gateway/api/query"
-    accessKey = "F8BBA842ECF85"
-    secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
-    partnerCode = "MOMO"
-    orderId = request.json.get('orderId')
-    requestId = str(uuid.uuid4())
 
-    rawSignature = "accessKey=" + accessKey + "&orderId=" + orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId
-    h = hmac.new(bytes(secretKey, 'ascii'), bytes(rawSignature, 'ascii'), hashlib.sha256)
-    signature = h.hexdigest()
+@other_bp.route('/api/payments', methods=['GET'])
+@jwt_required()
+def get_all_payments():
+    try:
+        payments = others_service.get_all_payments()
+        return jsonify(payments), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
 
-    data = {
-        'partnerCode': partnerCode,
-        'requestId': requestId,
-        'orderId': orderId,
-        'signature': signature,
-        'lang': 'vi'
-    }
-
-    response = requests.post(endpoint, json=data, headers={'Content-Type': 'application/json'})
-    print(response.json())
-    return jsonify(response.json())
