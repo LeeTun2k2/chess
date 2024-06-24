@@ -2,14 +2,6 @@ import pytest
 from unittest.mock import patch
 from flask import url_for
 from flask_jwt_extended import create_access_token
-from server import create_app
-
-@pytest.fixture(scope='module')
-def test_client():
-    flask_app = create_app()
-
-    with flask_app.test_client() as client:
-        yield client
 
 def get_auth_headers(user_id):
     access_token = create_access_token(identity=user_id)
