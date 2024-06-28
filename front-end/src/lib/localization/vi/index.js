@@ -31,6 +31,7 @@ import tutorial from "./tutorial.json";
 import users from "./users.json";
 import videos from "./videos.json";
 import vip from "./vip.json";
+import history from "./history.json";
 
 const vi = {
   common,
@@ -65,7 +66,8 @@ const vi = {
   haste,
   payment,
   tutorial,
-  admin
+  admin,
+  history
 };
 
 export default vi;
