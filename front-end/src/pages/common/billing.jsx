@@ -91,6 +91,7 @@ export default function BillingPage() {
         `${appSettings.API_PROXY}/users/become-vip`,
         {
           vip_duration_days: 30, // or any duration you want
+          order_id: orderId
         },
         {
           headers: {
