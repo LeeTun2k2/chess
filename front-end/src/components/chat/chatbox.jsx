@@ -7,7 +7,7 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSend } from "react-icons/io5";
 import { getUserData } from "../../lib/auth";
@@ -17,8 +17,6 @@ const ChatBox = () => {
   const user = getUserData();
   const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
-
-  const [openaiInstance, setOpenAIInstance] = useState(null);
   const [messages, setMessages] = useState([
     {
       text: t("chat.hello"),
@@ -37,23 +35,6 @@ const ChatBox = () => {
     ],
     [t]
   );
-
-  useEffect(() => {
-    const initializeOpenAI = async () => {
-      try {
-        const OpenAI = await import("openai");
-        const openai = new OpenAI.default({
-          apiKey: appSettings.OPENAI_KEY,
-          dangerouslyAllowBrowser: true,
-        });
-        setOpenAIInstance(openai);
-      } catch (error) {
-        console.error("Error initializing OpenAI:", error);
-      }
-    };
-
-    initializeOpenAI();
-  }, []);
 
   const sendMessage = async (messageContent) => {
     const trimmedInputValue = messageContent.trim();
