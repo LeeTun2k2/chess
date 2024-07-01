@@ -43,5 +43,6 @@
   "status": "Trạng thái",
   "player": "Người chơi",
   "rating": "Đánh giá",
-  "filter": "Lọc"
+  "filter": "Lọc",
+  "upload": "Tải lên"
 }

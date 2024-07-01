@@ -39,56 +39,26 @@ export default function UserProfile() {
   }, [username, user_data]);
 
   useEffect(() => {
-    axios.get(`${appSettings.API_PROXY}/player/${user_data.id}/history`)
-      .then(response => {
+    axios
+      .get(`${appSettings.API_PROXY}/player/${user_data.id}/history`)
+      .then((response) => {
         setHistory(response.data);
-        console.log('game history:', response.data);
       })
-      .catch(error => {
-        console.error('Failed to fetch game history:', error);
+      .catch((error) => {
+        console.error("Failed to fetch game history:", error);
       });
   }, [user_data.id]);
 
-  const getStatistics = () => {
-    const currentMonth = new Date().getMonth();
-    const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-
-    const gamesLastMonth = history.filter(game => {
-      const gameDate = new Date(game.timestamp);
-      return gameDate.getMonth() === lastMonth;
-    }).length;
-
-    const gamesCurrentMonth = history.filter(game => {
-      const gameDate = new Date(game.timestamp);
-      return gameDate.getMonth() === currentMonth;
-    }).length;
-
-    return {
-      chess: {
-        elo: {
-          last_month: 1943,
-          current_month: 2041,
-        },
-        game: {
-          last_month: gamesLastMonth,
-          current_month: gamesCurrentMonth,
-        },
-      },
-    };
-  };
-
-  const statistic = getStatistics();
-
   return (
     <Fragment>
-      <Container maxW="container.2xl" py={4}>
+      <Container maxW="container.2xl" pt={4}>
         <Flex direction={{ base: "column", md: "row" }}>
-          <Box w={{ base: "100%", md: "30%" }} mb={{ base: 8, md: 0 }}>
+          <Box w={{ base: "100%", md: "30%" }}>
             <UserInfo user={user} />
           </Box>
           <Spacer display={{ base: "none", md: "block" }} />
           <Box w={{ base: "100%", md: "66%" }}>
-            <Statistics data={statistic} userId={user_data.id} />
+            <Statistics data={history} userId={user_data.id} />
           </Box>
         </Flex>
       </Container>

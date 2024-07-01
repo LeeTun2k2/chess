@@ -43,5 +43,6 @@
   "status": "Status",
   "player": "Player",
   "rating": "Rating",
-  "filter": "Filter"
+  "filter": "Filter",
+  "upload": "Upload"
 }
