@@ -344,7 +344,18 @@ class GameService():
         return total_games, wins, losses
 
     def get_game_history(self, player_id):
-        history = self.game_history_collection.find(
-            {'$or': [{'white': player_id}, {'black': player_id}]}
-        ).sort('timestamp', -1)
-        return list(map(self.map, history))
+        # get all user
+        users = list(self.users_collection.find())
+        # to dictionary
+        id_usernames = {}
+        for user in users:
+            id_usernames[str(user["_id"])] = user["username"]
+
+        # games
+        games = self.online_games_collection.find({'$or': [{'white': player_id}, {'black': player_id}]}).sort('created_at', -1)
+        res = []
+        for game in games:
+            game['white_username'] = id_usernames[game['white']]
+            game['black_username'] = id_usernames[game['black']]
+            res.append(self.map(game))
+        return res

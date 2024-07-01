@@ -22,10 +22,10 @@ const AdminHeader = () => {
   const navigate = useNavigate();
   const theme = localStorage.getItem("theme");
   const [user, setUser] = useState(null);
-  const user_data = getUserData();
   useEffect(() => {
+    const user_data = getUserData();
     if (user_data) setUser({ ...user_data });
-  }, [user_data]);
+  }, [getUserData]);
 
   return (
     <Box

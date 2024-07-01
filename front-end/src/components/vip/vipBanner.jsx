@@ -87,15 +87,6 @@ export default function VipBanner() {
             {t("vip.powerful_ai_info_description")}
           </Text>
         </ListItem>
-        <ListItem>
-          <ListIcon as={CheckIcon} color="green.500" />
-          <Text noOfLines={1} display={"inline"}>
-            {t("vip.special_tag")}
-          </Text>
-          <Text ml={6} fontSize={"sm"} color={"gray"} noOfLines={2}>
-            {t("vip.special_tag_info_description")}
-          </Text>
-        </ListItem>
         <Box py={1} />
         <Button
           colorScheme="green"

@@ -28,6 +28,11 @@ def upload_image():
 
     if file and allowed_file(file.filename):
         filename = file.filename
+        for ext in ALLOWED_EXTENSIONS:
+            fullfilename = f"{filename}.{ext}"
+            filepath = os.path.join(UPLOAD_FOLDER, fullfilename)
+            if os.path.isfile(filepath):
+                os.remove(filepath)
         file.save(os.path.join(UPLOAD_FOLDER, filename))
         return jsonify({"image": f"/images/{filename}"}), 200
     else:
@@ -36,7 +41,8 @@ def upload_image():
 def find_matching_file(filename):
     for ext in ALLOWED_EXTENSIONS:
         full_filename = filename + '.' + ext
-        if os.path.isfile(os.path.join(UPLOAD_FOLDER, full_filename)):
+        filepath = os.path.join(UPLOAD_FOLDER, full_filename)
+        if os.path.isfile(filepath):
             return full_filename
     return None
 

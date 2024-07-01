@@ -10,5 +10,10 @@
   "active": "Hoạt Động",
   "admin_management": "Quản Lý Ban Quản Trị",
   "new_admin": "Admin",
-  "enter_email": "Nhập Email"
+  "enter_email": "Nhập Email",
+  "upload_avatar": "Tải ảnh lên",
+  "select_an_image": "Chọn ảnh",
+  "change_password": "Đổi mật khẩu",
+  "old_password": "Mật khẩu cũ",
+  "new_password": "Mật khẩu mới"
 }
