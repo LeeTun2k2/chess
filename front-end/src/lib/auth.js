@@ -1,4 +1,5 @@
 import appSettings from "../settings/appSettings";
+import { getVipStatus } from "./hooks/getVipStatus";
 
 export const setAccessToken = (access_token) => {
   localStorage.setItem("access_token", access_token);
@@ -37,9 +38,12 @@ export const setUserData = (user) => {
 export const getUserData = () => {
   const user_data = JSON.parse(localStorage.getItem("user"));
   if (!user_data) return null;
+  console.log("Get user data")
+  const vip_info = getVipStatus()
   return {
     ...user_data,
     avatar: `${appSettings.API_PROXY}/images/user-${user_data?.id ?? ""}`,
+    vip_info
   };
 };
 

@@ -21,5 +21,6 @@
   "normal_tag_info": "No special tag assigned",
   "better_puzzle_info_description": "Game modes like haste, three, countdown, ...",
   "powerful_ai_info_description": "AI with greater depth for more challenging gameplay",
-  "special_tag_info_description": "Colorful tag name to make you stand out"
+  "special_tag_info_description": "Colorful tag name to make you stand out",
+  "your_vip_is_active": "You activated VIP function"
 }

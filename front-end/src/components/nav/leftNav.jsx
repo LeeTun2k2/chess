@@ -1,9 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import { Fragment } from "react";
+import { getUserData } from "../../lib/auth";
 import ImageSlider from "../slider/imageSlider";
+import HasVipBanner from "../vip/hasVipBanner";
 import VipBannerSmall from "../vip/vipBannerSmall";
 
 export default function LeftNav() {
+  const user_data = getUserData();
+  const isVip =
+    user_data?.vip_info?.is_vip && user_data?.vip_info?.vip_expiry !== null;
   return (
     <Fragment>
       <ImageSlider
@@ -14,7 +19,7 @@ export default function LeftNav() {
         ]}
       />
       <Box py={2} />
-      <VipBannerSmall />
+      {!!isVip ? <HasVipBanner /> : <VipBannerSmall />}
     </Fragment>
   );
 }
