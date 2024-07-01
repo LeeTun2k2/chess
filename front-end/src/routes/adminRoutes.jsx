@@ -4,6 +4,9 @@ import AdminDashboardPage from "../pages/admin";
 import AdminAchievementsPage from "../pages/admin/achievements";
 import AdminCreateAchievementPage from "../pages/admin/achievements/create_achievement";
 import AdminUpdateAchievementPage from "../pages/admin/achievements/update_achievement";
+import AdminBannersPage from "../pages/admin/banners";
+import AdminCreateBannerPage from "../pages/admin/banners/create_banner";
+import AdminUpdateBannerPage from "../pages/admin/banners/update_banner";
 import AdminBlogsPage from "../pages/admin/blogs";
 import AdminCreateBlogsPage from "../pages/admin/blogs/create_blog";
 import AdminUpdateBlogPage from "../pages/admin/blogs/update_blog";
@@ -78,7 +81,11 @@ const AdminRoutes = ({ user }) => {
       <Route path="donate" element={<AdminDonatePage />} />
       <Route path="club-offline" element={<AdminClubOfflinePage />} />
 
-      <Route path="*" element={<Navigate to={"admin"} />} />
+      <Route path="banners" element={<AdminBannersPage />} />
+      <Route path="create-banner" element={<AdminCreateBannerPage />} />
+      <Route path="update-banner/:id" element={<AdminUpdateBannerPage />} />
+
+      <Route path="*" element={<Navigate to={"/admin"} />} />
     </Route>
   );
 };
