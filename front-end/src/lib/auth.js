@@ -38,7 +38,6 @@ export const setUserData = (user) => {
 export const getUserData = () => {
   const user_data = JSON.parse(localStorage.getItem("user"));
   if (!user_data) return null;
-  console.log("Get user data")
   const vip_info = getVipStatus()
   return {
     ...user_data,

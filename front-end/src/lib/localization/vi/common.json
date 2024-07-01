@@ -44,5 +44,9 @@
   "player": "Người chơi",
   "rating": "Đánh giá",
   "filter": "Lọc",
-  "upload": "Tải lên"
+  "upload": "Tải lên",
+  "bullet": "Siêu chớp",
+  "blitz": "Chớp",
+  "rapid": "Nhanh",
+  "classical": "Tiêu chuẩn"
 }

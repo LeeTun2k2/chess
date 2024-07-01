@@ -85,7 +85,10 @@ export default function LobbyPage(props) {
     (resp) => {
       console.log("lobby_created");
       const lobby = resp.lobby;
-      if (lobby) setData((prevData) => [lobby, ...prevData]);
+      if (lobby) {
+        setData((prevData) => [lobby, ...prevData]);
+        setRenderData((prevData) => [lobby, ...prevData]);
+      }
     },
     [setData]
   );
@@ -94,8 +97,12 @@ export default function LobbyPage(props) {
     (resp) => {
       console.log("lobby_closed");
       const lobbyId = resp.lobby_id;
-      if (lobbyId)
+      if (lobbyId) {
         setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
+        setRenderData((prevData) =>
+          prevData.filter((item) => item._id !== lobbyId)
+        );
+      }
     },
     [setData]
   );

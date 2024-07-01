@@ -44,5 +44,9 @@
   "player": "Player",
   "rating": "Rating",
   "filter": "Filter",
-  "upload": "Upload"
+  "upload": "Upload",
+  "bullet": "Bullet",
+  "blitz": "Blitz",
+  "rapid": "Rapid",
+  "classical": "Classical"
 }
