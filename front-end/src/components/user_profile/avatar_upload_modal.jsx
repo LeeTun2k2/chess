@@ -12,11 +12,13 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getUserData } from "../../lib/auth";
 import axios from "../../lib/axios";
 import appSettings from "../../settings/appSettings";
 
 const AvatarUploadModal = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef();
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,10 +40,8 @@ const AvatarUploadModal = ({ isOpen, onClose }) => {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } },
       );
-      console.log(response);
       const data = await response?.data;
       setImageUrl(data?.image);
-      console.log(imageUrl);
       onClose();
     } catch (error) {
       console.error("Error uploading image: ", error);
@@ -53,21 +53,21 @@ const AvatarUploadModal = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="sm">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Set Avatar</ModalHeader>
+        <ModalHeader>{t("users.upload_avatar")}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl>
-            <FormLabel>Select an image:</FormLabel>
+            <FormLabel>{t("users.select_an_image")}</FormLabel>
             <Input type="file" ref={fileInputRef} p={1} />
           </FormControl>
         </ModalBody>
 
         <ModalFooter>
           <Button colorScheme="teal" onClick={handleUpload} isLoading={loading}>
-            Upload
+            {t("common.upload")}
           </Button>
           <Button ml={2} onClick={onClose} isDisabled={loading}>
-            Cancel
+            {t("common.cancel")}
           </Button>
         </ModalFooter>
       </ModalContent>

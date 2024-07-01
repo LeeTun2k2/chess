@@ -60,7 +60,9 @@ const UserInfo = () => {
     <Stack
       maxW="container.lg"
       width={containerWidth}
-      py={6}
+      h={"100%"}
+      pt={24}
+      pb={12}
       px={4}
       boxShadow="md"
       borderRadius="md"
@@ -100,25 +102,27 @@ const UserInfo = () => {
 
         {/* Name and Username */}
         <Box>
-          <Heading fontSize="xl">{user.name}</Heading>
-          <Text color="gray.500" fontSize="md">
+          <Heading fontSize="xl" mb={4}>
+            {user.name}
+          </Heading>
+          <Text color="gray.500" fontSize="lg" mb={2}>
             @{user.username}
           </Text>
-          <Text color="gray.500" fontSize="md">
+          <Text color="gray.500" fontSize="lg" mb={2}>
             <EmailIcon fontSize="lg" /> {user.email}
           </Text>
           {vipStatus && (
             <Text color="green.500" fontSize="md">
               {vipStatus.is_vip
-                ? `VIP until ${new Date(vipStatus.vip_expiry).toLocaleDateString()}`
+                ? `VIP - ${new Date(vipStatus.vip_expiry).toLocaleDateString()}`
                 : "Not a VIP"}
             </Text>
           )}
         </Box>
 
         {/* Change Password */}
-        <Box>
-          <Button colorScheme="teal" size="sm" onClick={onChangePasswordOpen}>
+        <Box mt={8}>
+          <Button colorScheme="teal" size="lg" onClick={onChangePasswordOpen}>
             {t("profile.changePassword")}
           </Button>
         </Box>

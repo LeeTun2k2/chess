@@ -33,7 +33,7 @@ const ChatBox = () => {
       t("chat.when_club_offline"),
       t("chat.how_to_play_chess"),
     ],
-    [t]
+    [t],
   );
 
   const sendMessage = async (messageContent) => {
@@ -81,7 +81,7 @@ const ChatBox = () => {
             Authorization: `Bearer ${appSettings.OPENAI_KEY}`,
           },
           body: JSON.stringify(model),
-        }
+        },
       );
 
       if (!response.ok) {

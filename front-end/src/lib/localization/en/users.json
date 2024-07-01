@@ -10,5 +10,10 @@
   "active": "Active",
   "admin_management": "Admins Management",
   "new_admin": "Admin",
-  "enter_email": "Enter Email"
+  "enter_email": "Enter Email",
+  "upload_avatar": "Upload Avatar",
+  "select_an_image": "Select an image",
+  "change_password": "Change password",
+  "old_password": "Old password",
+  "new_password": "New password"
 }

@@ -43,5 +43,10 @@
   "status": "Status",
   "player": "Player",
   "rating": "Rating",
-  "filter": "Filter"
+  "filter": "Filter",
+  "upload": "Upload",
+  "bullet": "Bullet",
+  "blitz": "Blitz",
+  "rapid": "Rapid",
+  "classical": "Classical"
 }

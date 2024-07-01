@@ -27,13 +27,13 @@ const ClientRoutes = ({ user }) => {
   return (
     <Fragment>
       <Route index element={<HomePage />} />
-      <Route path="blogs" element={<BlogListPage />} />
-      <Route path="blog/:id" element={<BlogPage />} />
-      <Route path="books" element={<BookListPage />} />
-      <Route path="book/:id" element={<BookPage />} />
-      <Route path="videos" element={<VideoListPage />} />
-      <Route path="video/:id" element={<VideoPage />} />
       <Route element={!!user ? <Outlet /> : <Navigate to="/login" />}>
+        <Route path="blogs" element={<BlogListPage />} />
+        <Route path="blog/:id" element={<BlogPage />} />
+        <Route path="books" element={<BookListPage />} />
+        <Route path="book/:id" element={<BookPage />} />
+        <Route path="videos" element={<VideoListPage />} />
+        <Route path="video/:id" element={<VideoPage />} />
         <Route path="profile" element={<UserProfile />} />
         <Route path="lobby" element={<LobbyPage />} />
         <Route path="wait/:id" element={<WaitingGamePage />} />

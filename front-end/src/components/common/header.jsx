@@ -29,7 +29,11 @@ const Header = () => {
   const theme = localStorage.getItem("theme");
   const [user, setUser] = useState(null);
   const [showTutorial, setShowTutorial] = useState(false);
-  const user_data = getUserData();
+  const [user_data, setUserData] = useState();
+
+  useEffect(() => {
+    setUserData(getUserData());
+  }, [getUserData]);
 
   useEffect(() => {
     if (user_data) setUser({ ...user_data });

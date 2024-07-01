@@ -2,7 +2,6 @@ import { CheckIcon } from "@chakra-ui/icons";
 import {
   Box,
   Card,
-  Flex,
   Heading,
   List,
   ListIcon,
@@ -10,12 +9,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { formatNumber } from "../../lib/number";
-import UpdateVipNow from "./updateVipNow";
 
-export default function VipBannerSmall() {
+export default function HasVipBanner() {
   const { t } = useTranslation();
-  const price = 200000;
 
   return (
     <Card border={"1px solid"} borderColor={"green.500"} px={4} pt={12}>
@@ -28,37 +24,16 @@ export default function VipBannerSmall() {
       >
         {t("vip.title")}
       </Heading>
-      <Heading
-        as={"h2"}
+
+      <Text
         fontSize={"2xl"}
-        textAlign={"center"}
-        noOfLines={1}
-        display={{ base: "block", lg: "none" }}
+        fontWeight={"bold"}
+        color={"green.500"}
+        align={"center"}
+        py={4}
       >
-        VIP
-      </Heading>
-      <Text fontSize={"md"} textAlign={"center"} noOfLines={2} color={"gray"}>
-        {t("vip.description")}
+        {t("vip.your_vip_is_active")}
       </Text>
-      <Flex
-        justifyContent={"center"}
-        alignItems={{ base: "center", xl: "end" }}
-        flexDir={{ base: "column", xl: "row" }}
-      >
-        <Text fontSize={"4xl"} fontWeight={"bold"} color={"green.500"}>
-          {formatNumber(price)}
-        </Text>
-        <Text
-          fontSize={"sm"}
-          color={"gray"}
-          fontWeight={"bold"}
-          mx={1}
-          mb={2}
-          textTransform={"lowercase"}
-        >
-          vnđ / {t("vip.month")}
-        </Text>
-      </Flex>
       <List spacing={4} px={4} mt={4}>
         <ListItem>
           <ListIcon as={CheckIcon} color="green.500" />
@@ -79,7 +54,6 @@ export default function VipBannerSmall() {
           </Text>
         </ListItem>
         <Box py={1} />
-        <UpdateVipNow />
       </List>
     </Card>
   );

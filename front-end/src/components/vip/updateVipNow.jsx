@@ -15,11 +15,14 @@ export default function UpdateVipNow() {
     const checkVipStatus = async () => {
       try {
         const token = localStorage.getItem("access_token");
-        const response = await axios.get(`${appSettings.API_PROXY}/users/vip-status`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await axios.get(
+          `${appSettings.API_PROXY}/users/vip-status`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
         setIsVip(response.data.is_vip); // Update state with the is_vip value
       } catch (error) {
         console.error("There was an error checking the VIP status!", error);

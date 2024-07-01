@@ -1,5 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Text, Spinner, Center } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Heading,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Text,
+  Spinner,
+  Center,
+} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import appSettings from "../../settings/appSettings";
 import axios from "../../lib/axios";
@@ -10,14 +22,15 @@ function GameHistory({ userId }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${appSettings.API_PROXY}/player/${userId}/history`)
-      .then(response => {
+    axios
+      .get(`${appSettings.API_PROXY}/player/${userId}/history`)
+      .then((response) => {
         setHistory(response.data);
-        console.log('Game history:', response.data);
+        console.log("Game history:", response.data);
         setLoading(false);
       })
-      .catch(error => {
-        console.error('Failed to fetch game history:', error);
+      .catch((error) => {
+        console.error("Failed to fetch game history:", error);
         setLoading(false);
       });
   }, [userId]);
@@ -32,7 +45,9 @@ function GameHistory({ userId }) {
 
   return (
     <Box>
-      <Heading size="md" mb={4}>{t("history.heading")}</Heading>
+      <Heading size="md" mb={4}>
+        {t("history.heading")}
+      </Heading>
       <Table variant="simple">
         <Thead>
           <Tr>
