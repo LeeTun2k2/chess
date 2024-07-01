@@ -90,7 +90,7 @@ export default function LobbyPage(props) {
         setRenderData((prevData) => [lobby, ...prevData]);
       }
     },
-    [setData]
+    [setData],
   );
 
   const handleLobbyClosed = useCallback(
@@ -100,11 +100,11 @@ export default function LobbyPage(props) {
       if (lobbyId) {
         setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
         setRenderData((prevData) =>
-          prevData.filter((item) => item._id !== lobbyId)
+          prevData.filter((item) => item._id !== lobbyId),
         );
       }
     },
-    [setData]
+    [setData],
   );
 
   useEffect(() => {
@@ -131,7 +131,7 @@ export default function LobbyPage(props) {
         (!variant || x.variant === variant) &&
         x.rating >= minRating &&
         x.rating <= maxRating &&
-        (!time || filterGameTime(x.initial_time) === time)
+        (!time || filterGameTime(x.initial_time) === time),
     );
     setRenderData(filtered_data);
   }, [data, filter]);
@@ -238,7 +238,7 @@ export default function LobbyPage(props) {
                               >
                                 {i + 1}
                               </Button>
-                            )
+                            ),
                         )}
                         <Button
                           colorScheme="gray"

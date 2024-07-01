@@ -67,7 +67,7 @@ const vi = {
   payment,
   tutorial,
   admin,
-  history
+  history,
 };
 
 export default vi;

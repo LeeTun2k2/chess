@@ -145,7 +145,7 @@ export default function Statistics({ data }) {
                         >
                           {i + 1}
                         </Button>
-                      )
+                      ),
                   )}
                   <Button
                     colorScheme="gray"

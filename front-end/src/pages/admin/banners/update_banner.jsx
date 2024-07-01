@@ -33,7 +33,7 @@ export default function AdminUpdateBannerPage() {
       description: "",
       image: null,
     }),
-    []
+    [],
   );
   const [formData, setFormData] = useState(defaultData);
 

@@ -67,7 +67,7 @@ const en = {
   payment,
   tutorial,
   admin,
-  history
+  history,
 };
 
 export default en;
