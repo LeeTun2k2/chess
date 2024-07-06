@@ -96,3 +96,13 @@ def getGameHistory(player_id):
     except Exception as e:
         error(e)
         return "Fail to get game history.", 500
+    
+@game_bp.get('/api/onlineGame/report')
+@jwt_required()
+def getGameReport():
+    try:
+        history = game_service.get_online_game_report()
+        return jsonify(history), 200
+    except Exception as e:
+        error(e)
+        return "Fail to get game history.", 500

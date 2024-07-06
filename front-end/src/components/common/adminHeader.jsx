@@ -166,6 +166,9 @@ const PcMenu = ({ user }) => {
           <MenuItem onClick={() => navigate("/admin/notifications")}>
             {t("header.notifications")}
           </MenuItem>
+          <MenuItem onClick={() => navigate("/admin/banners")}>
+            {t("header.banners")}
+          </MenuItem>
         </MenuList>
       </Menu>
 

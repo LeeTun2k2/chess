@@ -75,3 +75,13 @@ def request_ai_move(id):
         error(e)
         return "Fail to send move.", 500
     
+@ai_game_bp.get('/api/aiGame/report')
+@jwt_required()
+def getGameReport():
+    try:
+        history = game_service.get_offline_game_report()
+        return jsonify(history), 200
+    except Exception as e:
+        error(e)
+        return "Fail to get game history.", 500
+    
