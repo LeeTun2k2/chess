@@ -285,3 +285,13 @@ def vip_status():
     except Exception as e:
         error(e)
         return "Failed to get VIP status.", 500
+
+@user_bp.get('/api/users/report')
+@jwt_required()
+def getUserReport():
+    try:
+        report = UserService().get_user_report()
+        return jsonify({'data': report}), 200
+    except Exception as e:
+        error(e)
+        return "Failed to get VIP status.", 500

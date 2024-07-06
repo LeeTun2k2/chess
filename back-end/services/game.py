@@ -359,3 +359,49 @@ class GameService():
             game['black_username'] = id_usernames[game['black']]
             res.append(self.map(game))
         return res
+    
+    def get_online_game_report(self): 
+        onlineGame = self.online_games_collection.find()
+
+        online = {
+            'count': 0,
+            'variant': {
+                'chess': 0,
+            },
+            'time': {
+                'bullet': 0,
+                'blitz': 0,
+                'rapid': 0,
+                'classical': 0
+            },
+            'status': {
+                'draw': 0,
+                'black_win': 0,
+                'white_win': 0  
+            }
+        }
+
+        for game in onlineGame:
+            online['count'] += 1
+            if game['variant'] == 'CHESS':
+                online['variant']['chess'] += 1
+            
+            if game['initial_time'] <= 3:
+                online['time']['bullet'] += 1
+            elif game['initial_time'] <= 5:
+                online['time']['blitz'] += 1
+            elif game['initial_time'] <= 15:
+                online['time']['rapid'] += 1
+            else:
+                online['time']['classical'] += 1
+        
+            winner = game.get('winner')
+
+            if winner and game['white'] == winner:
+                online['status']['white_win'] += 1
+            elif winner and game['black'] == winner:
+                online['status']['black_win'] += 1
+            else:
+                online['status']['draw'] += 1
+
+        return online

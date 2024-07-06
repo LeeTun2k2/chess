@@ -247,3 +247,54 @@ class UserService():
         vip_status = user_data.get('is_vip', False)
         vip_expiry = user_data.get('vip_expiry')
         return vip_status, vip_expiry
+
+    def get_user_report(self):
+        users = self.users_collection.find()
+        
+        report = {
+            'count': 0,
+            'vefify': {
+                'is_verified': 0,
+                'not_verified': 0
+            },
+            'lock': {
+                'is_locked': 0,
+                'not_locked': 0
+            },
+            'rating': {
+                '<1000': 0,
+                '<1500': 0,
+                '<2000': 0,
+                '>2000': 0,
+                'average': 0
+            },
+            'role': {
+                'user': 0,
+                'admin': 0
+            }
+        }
+        for user in users:
+            report['count'] += 1
+            if user['is_verified']:
+                report['vefify']['is_verified'] += 1 
+            else: 
+                report['vefify']['not_verified'] += 1
+            if user['is_locked']:
+                report['lock']['is_locked'] += 1 
+            else: 
+                report['lock']['not_locked'] += 1
+            rating = user["rating"]["chess"]["mu"]
+            if rating < 1000:
+                report['rating']['<1000'] += 1
+            elif rating < 1500:
+                report['rating']['<1500'] += 1
+            elif rating < 2000:
+                report['rating']['<2000'] += 1
+            else:
+                report['rating']['>2000'] += 1
+            if user['role'] == 'ADMIN':
+                report['role']['admin'] += 1
+            else:
+                report['role']['user'] += 1
+
+        return report
