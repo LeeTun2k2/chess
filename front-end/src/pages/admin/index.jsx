@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
     axios
       .get(`${appSettings.API_PROXY}/onlineGame/report`)
       .then((resp) => {
-        setOnlineGameReport(resp?.data?.data);
+        setOnlineGameReport(resp?.data);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
@@ -100,7 +100,7 @@ export default function AdminDashboardPage() {
     axios
       .get(`${appSettings.API_PROXY}/aiGame/report`)
       .then((resp) => {
-        setAiGameReport(resp?.data?.data);
+        setAiGameReport(resp?.data);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
@@ -128,7 +128,10 @@ export default function AdminDashboardPage() {
               </Flex>
               <Flex w={"100%"}>
                 <Box w={"65%"}>
-                  <GameReport data={{ onlineGameReport, aiGameReport }} />
+                  <GameReport
+                    online={onlineGameReport}
+                    offline={aiGameReport}
+                  />
                 </Box>
                 <Spacer />
                 <Box w={"33%"}>

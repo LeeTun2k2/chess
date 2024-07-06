@@ -46,15 +46,15 @@ export default function UserReport({ data }) {
           <VerifyChart theme={theme} data={data?.vefify} />
         </Box>
         <Box w={"50%"}>
-          <ViolentChart data={data?.lock} />
+          <ViolentChart theme={theme} data={data?.lock} />
         </Box>
       </Flex>
       <Flex>
         <Box w={"50%"}>
-          <RoleChart data={data?.role} />
+          <RoleChart theme={theme} data={data?.role} />
         </Box>
         <Box w={"50%"}>
-          <RatingChart data={data?.rating} />
+          <RatingChart theme={theme} data={data?.rating} />
         </Box>
       </Flex>
     </Card>
