@@ -83,3 +83,71 @@ class AiGameService():
             else:
                 raise Exception('Fail to generate move')
 
+    def get_offline_game_report(self): 
+        offlineGame = self.ai_games_collection.find()
+
+        offline = {
+            'count': 0,
+            'variant': {
+                'chess': 0,
+            },
+            'time': {
+                'bullet': 0,
+                'blitz': 0,
+                'rapid': 0,
+                'classical': 0
+            },
+            'status': {
+                'draw': 0,
+                'black_win': 0,
+                'white_win': 0  
+            },
+            'ai_level': {
+                '1': 0,
+                '2': 0,
+                '3': 0,
+                '4': 0,
+                '5': 0,
+                '6': 0,
+                '7': 0,
+                '8': 0,
+                '9': 0,
+                '10': 0
+            },
+            'winner': {
+                'player': 0,
+                'ai': 0
+            }
+        }
+
+        for game in offlineGame:
+            offline['count'] += 1
+            if game['variant'] == 'CHESS':
+                offline['variant']['chess'] += 1
+            
+            if game['initial_time'] <= 3:
+                offline['time']['bullet'] += 1
+            elif game['initial_time'] <= 5:
+                offline['time']['blitz'] += 1
+            elif game['initial_time'] <= 15:
+                offline['time']['rapid'] += 1
+            else:
+                offline['time']['classical'] += 1
+            
+            if game['status'] == 'DRAW':
+                offline['status']['draw'] += 1
+            elif game['status'] == 'BLACK_WIN':
+                offline['status']['black_win'] += 1
+            elif game['status'] == 'WHITE_WIN':
+                offline['status']['white_win'] += 1
+
+            ai_level = str(game.get('Ai_level', 1))
+            if ai_level in offline['ai_level']:
+                offline['ai_level'][ai_level] += 1
+
+            if game.get('winner') == 'ai':
+                offline['winner']['ai'] += 1
+            else:
+                offline['winner']['player'] += 1
+
+        return offline
