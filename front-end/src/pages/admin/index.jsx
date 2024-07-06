@@ -21,7 +21,6 @@ import NewBooks from "../../components/dashboard/documentReport/newBooks";
 import NewVideos from "../../components/dashboard/documentReport/newVideos";
 import AjaxRequestHostnameReport from "../../components/dashboard/systemReport/AjaxRequestHostnameReport";
 import AjaxRequestHttpMethodReport from "../../components/dashboard/systemReport/AjaxRequestHttpMethodReport";
-import AjaxRequestHttpResponseCodeHostnameReport from "../../components/dashboard/systemReport/AjaxRequestHttpResponseCodeHostnameReport";
 import AjaxRequestPageUrlReport from "../../components/dashboard/systemReport/AjaxRequestPageUrlReport";
 import ApdexReport from "../../components/dashboard/systemReport/ApdexReport";
 import BrowserInteractionReport from "../../components/dashboard/systemReport/BrowserInteractionReport";
@@ -38,6 +37,11 @@ export default function AdminDashboardPage() {
   const [blogs, setBlogs] = useState([]);
   const [videos, setVideos] = useState([]);
   const [achievements, setAchievements] = useState([]);
+  const [userReport, setUserReport] = useState();
+  const [onlineGameReport, setOnlineGameReport] = useState();
+  const [aiGameReport, setAiGameReport] = useState();
+  const [paymentReport, setPaymentReport] = useState();
+
   useEffect(() => {
     axios
       .get(`${appSettings.API_PROXY}/blogs/top/5`)
@@ -74,6 +78,33 @@ export default function AdminDashboardPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
+
+    axios
+      .get(`${appSettings.API_PROXY}/users/report`)
+      .then((resp) => {
+        setUserReport(resp?.data?.data);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+
+    axios
+      .get(`${appSettings.API_PROXY}/onlineGame/report`)
+      .then((resp) => {
+        setOnlineGameReport(resp?.data?.data);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
+
+    axios
+      .get(`${appSettings.API_PROXY}/aiGame/report`)
+      .then((resp) => {
+        setAiGameReport(resp?.data?.data);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
   }, [toast, t]);
 
   return (
@@ -86,34 +117,48 @@ export default function AdminDashboardPage() {
         <TabPanels>
           <TabPanel>
             <Container maxW="container.2xl" py={4}>
-              <UserReport />
-              <GameReport />
-              <VipReport />
-              <Box>
-                <NewBooks data={books} />
-                <NewVideos data={videos} />
-                <NewBlogs data={blogs} />
-                <NewAchievements data={achievements} />
-              </Box>
+              <Flex w={"100%"}>
+                <Box w={"49%"}>
+                  <UserReport data={userReport} />
+                </Box>
+                <Spacer />
+                <Box w={"49%"}>
+                  <VipReport data={paymentReport} />
+                </Box>
+              </Flex>
+              <Flex w={"100%"}>
+                <Box w={"65%"}>
+                  <GameReport data={{ onlineGameReport, aiGameReport }} />
+                </Box>
+                <Spacer />
+                <Box w={"33%"}>
+                  <NewBooks data={books} />
+                  <NewVideos data={videos} />
+                  <NewBlogs data={blogs} />
+                  <NewAchievements data={achievements} />
+                </Box>
+              </Flex>
             </Container>
           </TabPanel>
           <TabPanel>
             <Container maxW="container.2xl" py={4}>
               <Flex>
-                <Box w={"41%"}>
+                <Box w={"49%"}>
                   <MetricSummaryReport />
                   <AjaxRequestHttpMethodReport theme={theme} />
                 </Box>
                 <Spacer />
-                <Box w={"41%"}>
+                <Box w={"49%"}>
                   <TransactionSummaryReport />
                   <ApdexReport theme={theme} />
                 </Box>
               </Flex>
               <Flex>
                 <Box w={"49%"}>
-                  <AjaxRequestHttpResponseCodeHostnameReport theme={theme} />
                   <BrowserInteractionReport theme={theme} />
+                </Box>
+                <Spacer />
+                <Box w={"49%"}>
                   <AjaxRequestHostnameReport theme={theme} />
                   <AjaxRequestPageUrlReport theme={theme} />
                 </Box>
