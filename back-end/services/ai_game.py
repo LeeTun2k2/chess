@@ -134,12 +134,14 @@ class AiGameService():
             else:
                 offline['time']['classical'] += 1
             
-            if game['status'] == 'DRAW':
-                offline['status']['draw'] += 1
-            elif game['status'] == 'BLACK_WIN':
-                offline['status']['black_win'] += 1
-            elif game['status'] == 'WHITE_WIN':
+            winner = game.get('winner')
+
+            if winner and game['white'] == winner:
                 offline['status']['white_win'] += 1
+            elif winner and game['black'] == winner:
+                offline['status']['black_win'] += 1
+            else:
+                offline['status']['draw'] += 1
 
             ai_level = str(game.get('Ai_level', 1))
             if ai_level in offline['ai_level']:
