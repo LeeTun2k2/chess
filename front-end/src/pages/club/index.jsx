@@ -19,14 +19,13 @@ import { formatDate, formatDatetime } from "../../lib/datetime";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
 
-export default function ClubPage(props) {
+export default function ClubPage({ user }) {
   const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
   const toast = useToast();
 
   const [meetingInfo, setMeetingInfo] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const isVip = !!localStorage.getItem("vipStatus");
 
   useEffect(() => {
     axios
@@ -147,7 +146,7 @@ export default function ClubPage(props) {
             h={"fit-content"}
             borderRadius={8}
           >
-            {!isVip && <UpdateVipNow />}
+            {<UpdateVipNow user={user} />}
             <ChatBox />
           </Box>
         </Flex>

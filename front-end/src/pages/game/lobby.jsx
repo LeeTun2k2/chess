@@ -42,7 +42,7 @@ import {
   RAPID,
 } from "../../settings/game";
 
-export default function LobbyPage(props) {
+export default function LobbyPage({ user }) {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
@@ -90,7 +90,7 @@ export default function LobbyPage(props) {
         setRenderData((prevData) => [lobby, ...prevData]);
       }
     },
-    [setData],
+    [setData]
   );
 
   const handleLobbyClosed = useCallback(
@@ -100,11 +100,11 @@ export default function LobbyPage(props) {
       if (lobbyId) {
         setData((prevData) => prevData.filter((item) => item._id !== lobbyId));
         setRenderData((prevData) =>
-          prevData.filter((item) => item._id !== lobbyId),
+          prevData.filter((item) => item._id !== lobbyId)
         );
       }
     },
-    [setData],
+    [setData]
   );
 
   useEffect(() => {
@@ -131,14 +131,19 @@ export default function LobbyPage(props) {
         (!variant || x.variant === variant) &&
         x.rating >= minRating &&
         x.rating <= maxRating &&
-        (!time || filterGameTime(x.initial_time) === time),
+        (!time || filterGameTime(x.initial_time) === time)
     );
     setRenderData(filtered_data);
   }, [data, filter]);
 
   return (
     <Fragment>
-      <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
+      <NewOnlineGameModal
+        isOpen={isOpen}
+        onClose={onClose}
+        mode={ONLINE}
+        is_vip={user?.is_vip}
+      />
       <Container maxW="container.2xl" py={4}>
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -238,7 +243,7 @@ export default function LobbyPage(props) {
                               >
                                 {i + 1}
                               </Button>
-                            ),
+                            )
                         )}
                         <Button
                           colorScheme="gray"

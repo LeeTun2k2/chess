@@ -4,13 +4,12 @@ import { useTranslation } from "react-i18next";
 import { FaDiamond } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-export default function UpdateVipNow() {
+export default function UpdateVipNow({ user }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const isVip = !!localStorage.getItem("vipStatus");
   return (
     <Fragment>
-      {!isVip && (
+      {!user?.is_vip && (
         <Button
           colorScheme="green"
           w={"100%"}

@@ -1,7 +1,6 @@
 from bson import ObjectId
 from database.mongodb import get_db
 from models.users import User
-import re
 
 class UserService():
     def __init__(self) -> None:
@@ -17,7 +16,9 @@ class UserService():
             is_verified=user_data["is_verified"], 
             is_locked=user_data["is_locked"], 
             role=user_data["role"],
-            rating=user_data["rating"])
+            rating=user_data["rating"],
+            is_vip=user_data.get("is_vip")
+            )
         return user
 
     def get_all(self):

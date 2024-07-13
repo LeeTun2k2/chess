@@ -18,19 +18,18 @@ import LeftNav from "../../components/nav/leftNav";
 import UpdateVipNow from "../../components/vip/updateVipNow";
 import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 
-export default function GameSettingsPage() {
+export default function GameSettingsPage({ user }) {
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [gameMode, setGameMode] = useState("online");
-  const vipStatus = localStorage.getItem("vipStatus");
   return (
     <Fragment>
       <NewOnlineGameModal
         isOpen={isOpen}
         onClose={onClose}
         mode={gameMode}
-        vipStatus={vipStatus}
+        is_vip={user?.is_vip}
       />
       <Container maxW="container.2xl" py={4}>
         <Flex direction={{ base: "column", md: "row" }}>

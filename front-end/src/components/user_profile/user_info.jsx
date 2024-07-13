@@ -32,7 +32,6 @@ const UserInfo = () => {
   const containerWidth = useBreakpointValue({ base: "100%", md: "1/3" });
   const user = getUserData();
   const theme = localStorage.getItem("theme");
-  const vipStatus = localStorage.getItem("vipStatus");
 
   return (
     <Stack
@@ -89,7 +88,7 @@ const UserInfo = () => {
           <Text color="gray.500" fontSize="lg" mb={2}>
             <EmailIcon fontSize="lg" /> {user.email}
           </Text>
-          {vipStatus && (
+          {user?.is_vip && (
             <Text color="green.500" fontSize="md">
               VIP
             </Text>

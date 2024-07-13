@@ -37,11 +37,9 @@ export const setUserData = (user) => {
 export const getUserData = () => {
   const user_data = JSON.parse(localStorage.getItem("user"));
   if (!user_data) return null;
-  const vip_info = localStorage.getItem("vipStatus")
   return {
     ...user_data,
     avatar: `${appSettings.API_PROXY}/images/user-${user_data?.id ?? ""}`,
-    vip_info,
   };
 };
 
