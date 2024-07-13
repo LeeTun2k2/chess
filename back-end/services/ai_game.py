@@ -36,7 +36,7 @@ class AiGameService():
         game = self.ai_games_collection.find_one({'_id': ObjectId(game_id)})
         
         if game:
-            game["_id"] = str(game["_id"])
+            game.get["_id"] = str(game.get("_id"))
             return game
         return None
     
@@ -71,7 +71,7 @@ class AiGameService():
     def request_ai_move(self, game_id, fen):
         game = self.ai_games_collection.find_one({'_id': ObjectId(game_id)})
         if game:
-            level = game["Ai_level"]
+            level = game.get("Ai_level")
             payload = {
                 'fen': fen,
                 'depth': level
@@ -122,23 +122,23 @@ class AiGameService():
 
         for game in offlineGame:
             offline['count'] += 1
-            if game['variant'] == 'CHESS':
+            if game.get('variant') == 'CHESS':
                 offline['variant']['chess'] += 1
             
-            if game['initial_time'] <= 3:
+            if game.get('initial_time', 0) <= 3:
                 offline['time']['bullet'] += 1
-            elif game['initial_time'] <= 5:
+            elif game.get('initial_time', 0) <= 5:
                 offline['time']['blitz'] += 1
-            elif game['initial_time'] <= 15:
+            elif game.get('initial_time', 0) <= 15:
                 offline['time']['rapid'] += 1
             else:
                 offline['time']['classical'] += 1
             
             winner = game.get('winner')
 
-            if winner and game['white'] == winner:
+            if winner and game.get('white') == winner:
                 offline['status']['white_win'] += 1
-            elif winner and game['black'] == winner:
+            elif winner and game.get('black') == winner:
                 offline['status']['black_win'] += 1
             else:
                 offline['status']['draw'] += 1
@@ -151,5 +151,4 @@ class AiGameService():
                 offline['winner']['ai'] += 1
             else:
                 offline['winner']['player'] += 1
-
         return offline

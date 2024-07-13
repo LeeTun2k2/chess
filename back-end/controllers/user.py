@@ -163,7 +163,6 @@ def send_friend_request(friend_id):
 def get_friend_requests():
     try:
         current_user_id = get_jwt_identity()
-        print(current_user_id)
         service = UserService()
         friend_requests = service.get_friend_requests(current_user_id)
         return jsonify({"message": "success", "friend_requests": friend_requests}), 200
@@ -334,9 +333,8 @@ def get_vip_report():
             'vip_count': vip_count,
             'recent_vip_count': recent_vip_count,
             'upcoming_expiry_count': upcoming_expiry_count,
-            'users': users  
+            'users': [service.map_user(user).to_json() for user in users]  
         }
-
         return jsonify({'data': report}), 200
     except Exception as e:
         error(e)
