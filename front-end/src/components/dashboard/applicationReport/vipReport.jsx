@@ -2,6 +2,8 @@ import { Box, Card, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FaDiamond } from "react-icons/fa6";
 import CountChart from "./vipReport/countChart";
+import CurrentExpiredChart from "./vipReport/currentExpiredChart";
+import VipList from "./vipReport/vipList";
 
 export default function VipReport({ vipReport, userReport }) {
   const { t } = useTranslation();
@@ -15,8 +17,8 @@ export default function VipReport({ vipReport, userReport }) {
       variant={"outline"}
       overflow={"hidden"}
       borderRadius={4}
+      h={"99%"}
       mb={2}
-      minH={120}
     >
       <Heading
         as={"h5"}
@@ -34,8 +36,6 @@ export default function VipReport({ vipReport, userReport }) {
             {t("dashboard.total_vips")}
           </Text>
           <Text fontSize={"4xl"} fontWeight={"bold"} textAlign={"left"}>
-            {vipReport?.recent_vip_count ?? 0}
-            {vipReport?.upcoming_expiry_count ?? 0}
             {vipReport?.vip_count ?? 0}
           </Text>
         </Box>
@@ -50,27 +50,16 @@ export default function VipReport({ vipReport, userReport }) {
             }}
           />
         </Box>
-      </Flex>
-      <Flex>
         <Box w={"50%"}>
-          <CountChart
-            theme={theme}
-            data={{
-              vip: vipReport?.vip_count,
-              not_vip: userReport?.count - vipReport?.vip_count ?? 0,
-            }}
-          />
-        </Box>
-        <Box w={"50%"}>
-          <CountChart
-            theme={theme}
-            data={{
-              vip: vipReport?.vip_count,
-              not_vip: userReport?.count - vipReport?.vip_count ?? 0,
-            }}
-          />
+          <CurrentExpiredChart theme={theme} data={vipReport} />
         </Box>
       </Flex>
+      <Box>
+        <Text fontSize={"sm"} fontWeight={"bold"}>
+          {t("dashboard.viplist")}
+        </Text>
+        <VipList data={vipReport?.users} />
+      </Box>
     </Card>
   );
 }

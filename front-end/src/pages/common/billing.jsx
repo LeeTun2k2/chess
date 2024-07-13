@@ -113,7 +113,12 @@ export default function BillingPage() {
           flexDirection="column"
           alignItems="center"
         >
-          <Image src={"../../assets/images/icon/icon_check.jpg"} alt="Check icon" boxSize="100px" mb={4} />
+          <Image
+            src={"../../assets/images/icon/icon_check.jpg"}
+            alt="Check icon"
+            boxSize="100px"
+            mb={4}
+          />
           <Text fontSize="xl" fontWeight="bold">
             {t("payment.payment_successfull")}
           </Text>

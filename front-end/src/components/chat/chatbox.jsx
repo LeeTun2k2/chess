@@ -60,7 +60,11 @@ const ChatBox = () => {
 
     const model = {
       messages: [
-        { role: "system", content: "You are a virtual assistant for the SPKT Chess Club, with weekend afternoon and afternoon activities. Answer as briefly as possible." },
+        {
+          role: "system",
+          content:
+            "You are a virtual assistant for the SPKT Chess Club, with weekend afternoon and afternoon activities. Answer as briefly as possible.",
+        },
         ...messages.map((item) => ({
           role: item.user_id === "assistant" ? "assistant" : "user",
           content: item.text,

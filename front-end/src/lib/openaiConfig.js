@@ -1,4 +1,4 @@
-import { Configuration, OpenAI } from 'openai';
+import { Configuration, OpenAI } from "openai";
 import appSettings from "../settings/appSettings";
 
 const openai = new OpenAI({
@@ -9,8 +9,8 @@ const openai = new OpenAI({
 async function getAssistant() {
   try {
     const assistant = await openai.beta.assistants.retrieve(
-        "asst_Q1pdDHBdpZWunosrvWzU65Nf"
-      );
+      "asst_Q1pdDHBdpZWunosrvWzU65Nf",
+    );
     console.log(assistant);
     return assistant;
   } catch (error) {
@@ -45,16 +45,24 @@ async function addMessageToThread(threadId, content) {
 }
 
 // Function to create and stream a run
-async function createAndStreamRun(threadId, assistantId, onTextCreated, onTextDelta, onToolCallCreated, onToolCallDelta) {
+async function createAndStreamRun(
+  threadId,
+  assistantId,
+  onTextCreated,
+  onTextDelta,
+  onToolCallCreated,
+  onToolCallDelta,
+) {
   try {
-    const run = openai.beta.threads.runs.stream(threadId, {
-      assistant_id: assistantId,
-    })
-    .on('textCreated', onTextCreated)
-    .on('textDelta', onTextDelta)
-    .on('toolCallCreated', onToolCallCreated)
-    .on('toolCallDelta', onToolCallDelta);
-    
+    const run = openai.beta.threads.runs
+      .stream(threadId, {
+        assistant_id: assistantId,
+      })
+      .on("textCreated", onTextCreated)
+      .on("textDelta", onTextDelta)
+      .on("toolCallCreated", onToolCallCreated)
+      .on("toolCallDelta", onToolCallDelta);
+
     return run;
   } catch (error) {
     console.error("Error creating and streaming run:", error);
@@ -67,5 +75,5 @@ export {
   getAssistant,
   createThread,
   addMessageToThread,
-  createAndStreamRun
+  createAndStreamRun,
 };
