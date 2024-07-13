@@ -25,7 +25,7 @@ const AdminHeader = () => {
   useEffect(() => {
     const user_data = getUserData();
     if (user_data) setUser({ ...user_data });
-  }, [getUserData]);
+  }, []);
 
   return (
     <Box

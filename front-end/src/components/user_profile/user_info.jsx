@@ -9,7 +9,6 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -29,7 +28,6 @@ const UserInfo = () => {
     onOpen: onChangePasswordOpen,
     onClose: onChangePasswordClose,
   } = useDisclosure();
-  const toast = useToast();
 
   const containerWidth = useBreakpointValue({ base: "100%", md: "1/3" });
   const user = getUserData();

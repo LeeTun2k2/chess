@@ -6,7 +6,6 @@ import {
   Spacer,
   Text,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import React, { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,7 +21,7 @@ import { FRIEND, OFFLINE, ONLINE } from "../../settings/game";
 export default function GameSettingsPage() {
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
+
   const [gameMode, setGameMode] = useState("online");
   const vipStatus = localStorage.getItem("vipStatus");
   return (

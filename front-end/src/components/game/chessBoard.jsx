@@ -65,7 +65,7 @@ export default function ChessBoard({
 
     const turn = game.fen.includes("w") ? "white" : "black";
     setTurn(turn);
-  }, [game?.fen]);
+  }, [game]);
 
   const findMovableDests = (square) => {
     const moves = chess.moves({ square: square, verbose: true });

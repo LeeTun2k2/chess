@@ -96,7 +96,7 @@ export default function OnlineGamePage() {
         }
       }
     },
-    [id, gameStatus]
+    [id, gameStatus, toggleTurn]
   );
 
   const handleOfferDraw = useCallback(
