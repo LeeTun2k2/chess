@@ -33,3 +33,10 @@ class LessonService():
             return self.map_lesson(lesson)
         else:
             raise Exception('Lesson not found')
+        
+    def delete_lesson_by_id(self, lesson_id):
+        result = self.lessons_collection.delete_one({'_id': ObjectId(lesson_id)})
+        if result.deleted_count > 0:
+            return True
+        else:
+            return False
