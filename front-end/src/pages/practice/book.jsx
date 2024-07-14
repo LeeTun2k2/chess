@@ -66,9 +66,10 @@ export default function BookPage(props) {
             <Divider mb={4} borderColor={theme === "dark" ?? "black"} />
             <Image
               w={"100%"}
+              maxH={240}
               src={`${appSettings.API_PROXY}/images/${data.image}`}
               alt={data.title}
-              objectFit={"cover"}
+              objectFit={"contain"}
               borderRadius={4}
             />
             <Box mt={4}>{ReactHtmlParser(data.content ?? "")}</Box>
