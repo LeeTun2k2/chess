@@ -43,5 +43,8 @@
   "game_stop_by_checkmate": "Trò chơi kết thúc do chiếu tướng.",
   "game_url": "URL trò chơi",
   "copied": "Đã sao chép!",
-  "copy": "Sao chép"
+  "copy": "Sao chép",
+  "minutes": "Phút",
+  "seconds": "Giây",
+  "send_link_to_your_friend":"Gửi đường dẫn này cho bạn của bạn"
 }

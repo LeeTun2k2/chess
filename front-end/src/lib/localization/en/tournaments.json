@@ -11,5 +11,9 @@
   "join": "Join",
   "username": "Username",
   "point": "Point",
-  "your_games": "Your Games"
+  "your_games": "Your Games",
+  "scoreboard": "Score board",
+  "rating":"Rating",
+  "join_success": "Join Success",
+  "leave_success":"Leave Success"
 }

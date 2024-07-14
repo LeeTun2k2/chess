@@ -43,5 +43,8 @@
   "game_stop_by_checkmate": "Game ended by checkmate.",
   "game_url": "Game URL",
   "copied": "Copied!",
-  "copy": "Copy"
+  "copy": "Copy",
+  "minutes": "Minutes",
+  "seconds": "Seconds",
+  "send_link_to_your_friend":"Send this link to your friend"
 }
