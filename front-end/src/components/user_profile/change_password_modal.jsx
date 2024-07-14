@@ -15,9 +15,11 @@ import { PasswordField } from "../auth/PasswordField";
 import { toast_error, toast_success } from "../../lib/hooks/toast";
 import axios from "axios";
 import appSettings from "../../settings/appSettings";
+import { useTranslation } from "react-i18next";
 
 export default function ChangePasswordModal({ isOpen, onClose }) {
   const toast = useToast();
+  const { t } = useTranslation();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -34,8 +36,8 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
 
     if (validatePassword(oldPassword) === false) {
       const model = toast_error(
-        "Old password fail.",
-        "New password has a minimum length of 8 characters and do not contain any special charaters.",
+        t("changePassword.oldPasswordFail"),
+        t("changePassword.passwordRequirement")
       );
       toast(model);
       ok = false;
@@ -43,8 +45,8 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
 
     if (validatePassword(newPassword) === false) {
       const model = toast_error(
-        "Change password fail.",
-        "New password has a minimum length of 8 characters and do not contain any special charaters.",
+        t("changePassword.changePasswordFail"),
+        t("changePassword.passwordRequirement")
       );
       toast(model);
       ok = false;
@@ -58,19 +60,19 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
         {
           oldPassword: oldPassword,
           newPassword: newPassword,
-        },
+        }
       );
 
       if (response.status === 200) {
-        const model = toast_success("Password changed successfully.");
+        const model = toast_success(t("changePassword.success"));
         toast(model);
         onClose();
       } else {
-        const model = toast_error("Failed to change password.");
+        const model = toast_error(t("changePassword.failure"));
         toast(model);
       }
     } catch (error) {
-      const model = toast_error("An error occurred while changing password.");
+      const model = toast_error(t("changePassword.error"));
       toast(model);
     }
   };
@@ -79,16 +81,16 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
     <Modal isOpen={isOpen} onClose={onClose} size="sm">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Change Password</ModalHeader>
+        <ModalHeader>{t("changePassword.title")}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <PasswordField
-            label={"Old password"}
+            label={t("changePassword.oldPassword")}
             id={"old-password"}
             onChange={onOldPasswordChange}
           />
           <PasswordField
-            label={"New password"}
+            label={t("changePassword.newPassword")}
             id={"new-password"}
             onChange={onNewPasswordChange}
           />
@@ -96,10 +98,10 @@ export default function ChangePasswordModal({ isOpen, onClose }) {
 
         <ModalFooter>
           <Button colorScheme="teal" onClick={handleChangePassword}>
-            Change Password
+            {t("changePassword.changeButton")}
           </Button>
           <Button ml={2} onClick={onClose}>
-            Cancel
+            {t("changePassword.cancelButton")}
           </Button>
         </ModalFooter>
       </ModalContent>

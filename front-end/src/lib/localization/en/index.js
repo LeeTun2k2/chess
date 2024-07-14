@@ -32,6 +32,7 @@ import users from "./users.json";
 import videos from "./videos.json";
 import vip from "./vip.json";
 import history from "./history.json";
+import changePassword from "./changePassword.json"
 
 const en = {
   common,
@@ -68,6 +69,7 @@ const en = {
   tutorial,
   admin,
   history,
+  changePassword
 };
 
 export default en;
