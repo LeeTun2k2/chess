@@ -1,6 +1,7 @@
 import { AspectRatio, Box, Container, Flex, Heading } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import LeftNav from "../../../components/nav/leftNav";
 
 export default function PuzzlePage() {
   const { t } = useTranslation();
@@ -30,6 +31,12 @@ export default function PuzzlePage() {
           </Box>
         </Box>
         <Box w="30%"></Box>
+        <Box
+          w={{ base: "0%", md: "24%" }}
+          display={{ base: "none", md: "block" }}
+        >
+          <LeftNav />
+        </Box>
       </Flex>
     </Container>
   );
