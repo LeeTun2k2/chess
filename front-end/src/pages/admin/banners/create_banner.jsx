@@ -109,7 +109,6 @@ export default function AdminCreateBannerPage() {
               formData.image.length > 0 && (
                 <Image
                   h={100}
-                  w={100}
                   src={`${appSettings.API_PROXY}/images/${formData.image}`}
                   alt={formData.title}
                 />

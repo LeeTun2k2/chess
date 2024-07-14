@@ -35,7 +35,7 @@ export default function AdminUpdateBlogPage() {
       image: null,
       content: "",
     }),
-    [],
+    []
   );
   const [formData, setFormData] = useState(defaultData);
 
@@ -130,7 +130,6 @@ export default function AdminUpdateBlogPage() {
               formData.image.length > 0 && (
                 <Image
                   h={100}
-                  w={100}
                   src={`${appSettings.API_PROXY}/images/${formData.image}`}
                   alt={formData.title}
                 />
