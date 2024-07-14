@@ -9,10 +9,19 @@ import SpeedRunPage from "../pages/vip/speedRun";
 import ThreePage from "../pages/vip/three";
 
 const VipRoutes = ({ user }) => {
+  console.log(user);
   return (
     <Fragment>
       <Route index element={<VipPage />} />
-      <Route element={!!user ? <Outlet /> : <Navigate to="/vip" />}>
+      <Route
+        element={
+          !!user?.is_vip || user?.role === "ADMIN" ? (
+            <Outlet />
+          ) : (
+            <Navigate to="/vip" />
+          )
+        }
+      >
         <Route path="haste" element={<HastePage />} />
         <Route path="three" element={<ThreePage />} />
         <Route path="count-down" element={<CountDownPage />} />

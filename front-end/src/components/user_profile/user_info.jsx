@@ -9,14 +9,10 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { getUserData } from "../../lib/auth";
-import { toast_error } from "../../lib/hooks/toast";
-import appSettings from "../../settings/appSettings";
 import AvatarUploadModal from "./avatar_upload_modal";
 import ChangePasswordModal from "./change_password_modal";
 
@@ -32,29 +28,10 @@ const UserInfo = () => {
     onOpen: onChangePasswordOpen,
     onClose: onChangePasswordClose,
   } = useDisclosure();
-  const toast = useToast();
 
   const containerWidth = useBreakpointValue({ base: "100%", md: "1/3" });
   const user = getUserData();
   const theme = localStorage.getItem("theme");
-
-  const [vipStatus, setVipStatus] = useState(null);
-  useEffect(() => {
-    const fetchVipStatus = async () => {
-      axios
-        .get(`${appSettings.API_PROXY}/users/vip-status`)
-        .then((resp) => {
-          setVipStatus(resp.data);
-          console.error("Success to fetch VIP status", resp.data);
-        })
-        .catch((err) => {
-          toast(toast_error(t("common.something_went_wrong")));
-          console.error("Failed to fetch VIP status", err);
-        });
-    };
-
-    fetchVipStatus();
-  }, [t, toast]);
 
   return (
     <Stack
@@ -111,11 +88,9 @@ const UserInfo = () => {
           <Text color="gray.500" fontSize="lg" mb={2}>
             <EmailIcon fontSize="lg" /> {user.email}
           </Text>
-          {vipStatus && (
+          {user?.is_vip && (
             <Text color="green.500" fontSize="md">
-              {vipStatus.is_vip
-                ? `VIP - ${new Date(vipStatus.vip_expiry).toLocaleDateString()}`
-                : "Not a VIP"}
+              VIP
             </Text>
           )}
         </Box>

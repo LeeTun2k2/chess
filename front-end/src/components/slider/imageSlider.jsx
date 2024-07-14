@@ -76,7 +76,7 @@ const ImageSlider = ({
         indicators
       >
         {images.map((image, index) => (
-          <div key={image._id}>
+          <div key={`image-slider-${index}`}>
             <img
               src={`${appSettings.API_PROXY}/images/${image}`}
               alt={`Slide ${index}`}

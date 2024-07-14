@@ -1,3 +1,6 @@
+import json
+created_video_id = None
+
 def test_get_all_videos(test_client):
     # Make GET request to fetch all videos
     response = test_client.get('/api/videos')
@@ -6,55 +9,57 @@ def test_get_all_videos(test_client):
 
 def test_get_video_by_id(test_client):
     # Make GET request to fetch video by ID
-    response = test_client.get('/api/videos/1')  # Replace '1' with an existing video ID for testing
+    response = test_client.get('/api/videos/6663c405180790be0683de4b')  # Replace '1' with an existing video ID for testing
     assert response.status_code in [200, 404]  # Assuming 404 for video not found is valid too
 
-def test_create_video(test_client):
-    # Prepare test data
+def test_create_video(test_client, admin_access_token):
+    global created_video_id
     new_video_data = {
         'title': 'New Video',
         'description': 'Description of the new video',
         'link': 'https://www.youtube.com/new_video',
         'content': 'Video content'
     }
+    headers = {
+        'Authorization': f'Bearer {admin_access_token}',
+        'Content-Type': 'application/json'
+    }
 
-    # Simulate JWT authentication
-    with test_client.session_transaction() as session:
-        session['_user_id'] = '<user_id>'  # Replace with a valid user ID for testing
-
-    # Make POST request to create a new video
-    response = test_client.post('/api/videos', json=new_video_data)
+    response = test_client.post('/api/videos', headers=headers, json=new_video_data)
     assert response.status_code == 201
     assert b'success' in response.data
+    data = json.loads(response.data)
+    created_video_id = data['video']['_id']
 
-def test_update_video(test_client):
-    # Prepare test data
+def test_update_video(test_client, admin_access_token):
+    global created_video_id
     update_data = {
         'title': 'Updated Video Title',
         'description': 'Updated description of the video',
         'link': 'https://www.youtube.com/updated_video',
         'content': 'Updated video content'
     }
+    headers = {
+        'Authorization': f'Bearer {admin_access_token}',
+        'Content-Type': 'application/json'
+    }
+    response = test_client.put(f'/api/videos/{created_video_id}',headers=headers, json=update_data)
+    assert response.status_code in [200, 404]
 
-    # Simulate JWT authentication
-    with test_client.session_transaction() as session:
-        session['_user_id'] = '<user_id>'  # Replace with a valid user ID for testing
+def test_delete_video(test_client, admin_access_token):
+    global created_video_id
+    headers = {
+        'Authorization': f'Bearer {admin_access_token}',
+        'Content-Type': 'application/json'
+    }
+    response = test_client.delete(f'/api/videos/{created_video_id}', headers=headers) 
+    assert response.status_code in [200, 404]  
 
-    # Make PUT request to update a video
-    response = test_client.put('/api/videos/1', json=update_data)  # Replace '1' with an existing video ID for testing
-    assert response.status_code in [200, 404]  # Assuming 404 for video not found is valid too
-
-def test_delete_video(test_client):
-    # Simulate JWT authentication
-    with test_client.session_transaction() as session:
-        session['_user_id'] = '<user_id>'  # Replace with a valid user ID for testing
-
-    # Make DELETE request to delete a video
-    response = test_client.delete('/api/videos/1')  # Replace '1' with an existing video ID for testing
-    assert response.status_code in [200, 404]  # Assuming 404 for video not found is valid too
-
-def test_get_top_videos(test_client):
-    # Make GET request to fetch top videos
-    response = test_client.get('/api/videos/top/5')  # Replace '5' with the number of top videos to fetch
+def test_get_top_videos(test_client, admin_access_token):
+    headers = {
+        'Authorization': f'Bearer {admin_access_token}',
+        'Content-Type': 'application/json'
+    }
+    response = test_client.get('/api/videos/top/5', headers=headers)  
     assert response.status_code == 200
     assert b'success' in response.data

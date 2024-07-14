@@ -29,6 +29,7 @@ import TransactionSummaryReport from "../../components/dashboard/systemReport/Tr
 import axios from "../../lib/axios";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
+
 export default function AdminDashboardPage() {
   const { t } = useTranslation();
   const theme = localStorage.getItem("theme");
@@ -40,7 +41,7 @@ export default function AdminDashboardPage() {
   const [userReport, setUserReport] = useState();
   const [onlineGameReport, setOnlineGameReport] = useState();
   const [aiGameReport, setAiGameReport] = useState();
-  const [paymentReport, setPaymentReport] = useState();
+  const [vipReport, setVipReport] = useState();
 
   useEffect(() => {
     axios
@@ -105,6 +106,15 @@ export default function AdminDashboardPage() {
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       });
+
+    axios
+      .get(`${appSettings.API_PROXY}/users/vip-report`)
+      .then((resp) => {
+        setVipReport(resp?.data?.data);
+      })
+      .catch((err) => {
+        toast(toast_error(t("common.something_went_wrong")));
+      });
   }, [toast, t]);
 
   return (
@@ -123,7 +133,7 @@ export default function AdminDashboardPage() {
                 </Box>
                 <Spacer />
                 <Box w={"49%"}>
-                  <VipReport data={paymentReport} />
+                  <VipReport vipReport={vipReport} userReport={userReport} />
                 </Box>
               </Flex>
               <Flex w={"100%"}>

@@ -175,8 +175,6 @@ def change_password():
         current_password = data.get('oldPassword')
         new_password = data.get('newPassword')
         
-        print(current_password)
-        print(new_password)
         user_id = get_jwt_identity()
         
         ok, message = AuthServices().authenticate_user(user_id, current_password)

@@ -9,8 +9,7 @@ import VipBannerSmall from "../vip/vipBannerSmall";
 
 export default function LeftNav() {
   const user_data = getUserData();
-  const isVip =
-    user_data?.vip_info?.is_vip && user_data?.vip_info?.vip_expiry !== null;
+  const isVip = user_data?.is_vip;
 
   const [images, setImages] = useState([]);
 

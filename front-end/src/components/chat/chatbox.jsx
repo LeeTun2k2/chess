@@ -60,14 +60,18 @@ const ChatBox = () => {
 
     const model = {
       messages: [
-        { role: "system", content: "You are a helpful assistant." },
+        {
+          role: "system",
+          content:
+            "You are a virtual assistant for the SPKT Chess Club, with weekend afternoon and afternoon activities. Answer as briefly as possible.",
+        },
         ...messages.map((item) => ({
           role: item.user_id === "assistant" ? "assistant" : "user",
           content: item.text,
         })),
         { role: "user", content: trimmedInputValue },
       ],
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
       max_tokens: 100,
     };
 

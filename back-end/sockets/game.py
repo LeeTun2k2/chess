@@ -2,10 +2,13 @@ from services.lobby import LobbyService
 from services.game import GameService
 from services.user import UserService
 from flask_socketio import emit, join_room
+from database.redis import get_redis
+import json
 
 lobby_service = LobbyService()
 game_service = GameService()
 user_service = UserService()
+redis = get_redis()
 
 def request_game(user_id, lobby_id):
     lobby = lobby_service.get_lobby(lobby_id) 
@@ -32,19 +35,21 @@ def join_game(game_id: str):
     game = game_service.get_game(game_id, "online")
     room = f'game-{game_id}'
     join_room(room)
-    emit('game_start', {'game_id': game_id, "status": game["status"]}, room=room)
+    rawData = redis.get(room)
+    data = json.loads(rawData)
+    emit('game_start', {'game_id': game_id, "status": game["status"], "data": data}, room=room)
 
 def send_move(game_id: str, fen: str, move: str, whiteTime: int, blackTime: int):
     room = f'game-{game_id}'
-    emit(
-        'receive_move', 
-        {
+    data = {
             'move': move, 
             'fen': fen,
             'game_id': game_id,
             'whiteTime': whiteTime,
             'blackTime': blackTime
-        }, room=room)
+        }
+    emit('receive_move', data, room=room)
+    redis.set(room, json.dumps(data))
 
 def offer_draw(game_id: str, player_offer_id: str):
     room = f'game-{game_id}'

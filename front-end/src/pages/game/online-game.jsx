@@ -88,9 +88,15 @@ export default function OnlineGamePage() {
           setGameStatus("ended");
           console.log("game_loaded");
         }
+        if (data && data.data && data.data.fen) {
+          const fen = data.data.fen;
+          const turn = fen.includes("w") ? "white" : "black";
+          if (turn === "black") toggleTurn();
+          setGame((g) => ({ ...g, fen: fen }));
+        }
       }
     },
-    [id, gameStatus],
+    [id, gameStatus, toggleTurn],
   );
 
   const handleOfferDraw = useCallback(

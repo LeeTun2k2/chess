@@ -12,7 +12,6 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import checkIcon from "../../assets/images/icon/icon_check.png"; // Import the check icon image
 import { formatNumber } from "../../lib/number";
 import appSettings from "../../settings/appSettings";
 
@@ -114,7 +113,12 @@ export default function BillingPage() {
           flexDirection="column"
           alignItems="center"
         >
-          <Image src={checkIcon} alt="Check icon" boxSize="100px" mb={4} />
+          <Image
+            src={"../../assets/images/icon/icon_check.jpg"}
+            alt="Check icon"
+            boxSize="100px"
+            mb={4}
+          />
           <Text fontSize="xl" fontWeight="bold">
             {t("payment.payment_successfull")}
           </Text>
