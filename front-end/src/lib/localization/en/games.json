@@ -46,5 +46,9 @@
   "copy": "Copy",
   "minutes": "Minutes",
   "seconds": "Seconds",
-  "send_link_to_your_friend":"Send this link to your friend"
+  "send_link_to_your_friend":"Send this link to your friend",
+  "you_send_accept_draw": "You have accepted the offer draw.",
+  "you_send_reject_draw": "You have rejected the offer draw.",
+  "you_send_offer_draw": "You have sent an offer draw.",
+  "you_resign": "You have resigned"
 }
