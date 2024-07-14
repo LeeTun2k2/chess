@@ -19,25 +19,22 @@ class AiGameService():
 
     def create(self, user_id, game):
         game['status'] = "STARTED"
-        random = randint(0, 1)
-        if random == 0:
+        random_value = randint(0, 1)
+        if random_value == 0:
             game['white'] = 'ai'
             game['black'] = user_id
         else:
             game['white'] = user_id
             game['black'] = 'ai'
-        
         result = self.ai_games_collection.insert_one(game)
         game_data = self.get(result.inserted_id)
-        game_data["_id"] = str(game_data["_id"])
         return game_data
         
     def get(self, game_id):
         game = self.ai_games_collection.find_one({'_id': ObjectId(game_id)})
         
         if game:
-            game.get["_id"] = str(game.get("_id"))
-            return game
+            return self.map(game)
         return None
     
     def draw(self, game_id):
@@ -71,7 +68,7 @@ class AiGameService():
     def request_ai_move(self, game_id, fen):
         game = self.ai_games_collection.find_one({'_id': ObjectId(game_id)})
         if game:
-            level = game.get("Ai_level")
+            level = game["Ai_level"]
             payload = {
                 'fen': fen,
                 'depth': level
