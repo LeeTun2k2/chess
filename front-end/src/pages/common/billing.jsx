@@ -69,7 +69,7 @@ export default function BillingPage() {
     try {
       const response = await axios.post(
         `${appSettings.API_PROXY}/momo_payment_status`,
-        { orderId },
+        { orderId }
       );
       // Add logic here to extend VIP subscription if payment is successful
       if (response.data.resultCode === "0" || response.data.resultCode === 0) {
@@ -94,7 +94,7 @@ export default function BillingPage() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
       console.log("VIP status updated", response.data);
     } catch (error) {
@@ -135,7 +135,7 @@ export default function BillingPage() {
             </Heading>
             <RadioGroup onChange={setPaymentMethod} value={paymentMethod}>
               <Stack direction="column" spacing={4}>
-              <Radio value="momo">
+                <Radio value="momo">
                   <Box display="flex" alignItems="center">
                     <Image
                       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdZKHXNJrsnKlR_LYGBNB9Z-2Rm4ZgEpG-LwBXD4ChKyBqKdQs&s"
@@ -177,7 +177,6 @@ export default function BillingPage() {
                     </Text>
                   </Box>
                 </Radio>
-                
               </Stack>
             </RadioGroup>
             <Button colorScheme="blue" w="100%" mt={4} onClick={handlePayment}>
