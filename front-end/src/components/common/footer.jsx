@@ -76,13 +76,13 @@ export default function Footer() {
           <VStack spacing={2} alignItems="flex-start" w={150}>
             <Text fontWeight="bold">{t("footer.upgrade")}</Text>
             <VStack alignItems="flex-start">
-              <CustomLink href="https://www.facebook.com/utechessclub">
+              <CustomLink href="/vip">
                 <Text ml={2} display="flex" alignItems="center">
                   <IoDiamond style={{ marginRight: 8 }} />
                   {t("footer.vip")}
                 </Text>
               </CustomLink>
-              <CustomLink href="https://mail.google.com/mail/?view=cm&fs=1&to=clbcospkt@gmail.com">
+              <CustomLink href="/billing">
                 <Text ml={2} display="flex" alignItems="center">
                   <FaRegCreditCard style={{ marginRight: 8 }} />
                   {t("footer.payment")}

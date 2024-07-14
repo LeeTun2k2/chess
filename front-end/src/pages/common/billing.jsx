@@ -18,7 +18,7 @@ import appSettings from "../../settings/appSettings";
 export default function BillingPage() {
   const { t } = useTranslation();
   const [orderId, setOrderId] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("vnpay");
+  const [paymentMethod, setPaymentMethod] = useState("momo");
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
   const price = "200000";
 
@@ -48,8 +48,6 @@ export default function BillingPage() {
     let endpoint;
     if (paymentMethod === "momo") {
       endpoint = `${appSettings.API_PROXY}/momo_payment`;
-    } else if (paymentMethod === "vnpay") {
-      endpoint = `${appSettings.API_PROXY}/vnpay_payment`;
     } else {
       alert("Update later");
       return;
@@ -137,6 +135,20 @@ export default function BillingPage() {
             </Heading>
             <RadioGroup onChange={setPaymentMethod} value={paymentMethod}>
               <Stack direction="column" spacing={4}>
+              <Radio value="momo">
+                  <Box display="flex" alignItems="center">
+                    <Image
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdZKHXNJrsnKlR_LYGBNB9Z-2Rm4ZgEpG-LwBXD4ChKyBqKdQs&s"
+                      boxSize="50px"
+                      mr={4}
+                    />
+                    <Text>
+                      {t("payment.momo")}
+                      <br />
+                      <small>{t("payment.momo_description")}</small>
+                    </Text>
+                  </Box>
+                </Radio>
                 <Radio value="vnpay">
                   <Box display="flex" alignItems="center">
                     <Image
@@ -165,20 +177,7 @@ export default function BillingPage() {
                     </Text>
                   </Box>
                 </Radio>
-                <Radio value="momo">
-                  <Box display="flex" alignItems="center">
-                    <Image
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdZKHXNJrsnKlR_LYGBNB9Z-2Rm4ZgEpG-LwBXD4ChKyBqKdQs&s"
-                      boxSize="50px"
-                      mr={4}
-                    />
-                    <Text>
-                      {t("payment.momo")}
-                      <br />
-                      <small>{t("payment.momo_description")}</small>
-                    </Text>
-                  </Box>
-                </Radio>
+                
               </Stack>
             </RadioGroup>
             <Button colorScheme="blue" w="100%" mt={4} onClick={handlePayment}>
