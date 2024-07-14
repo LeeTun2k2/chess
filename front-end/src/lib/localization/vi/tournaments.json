@@ -10,7 +10,11 @@
   "ranking": "Xếp hạng",
   "leave": "Rời khỏi",
   "join": "Tham gia",
-  "username": "Username",
+  "username": "Tên người dùng",
   "point": "Điểm",
-  "your_games": "Ván cờ của bạn"
+  "your_games": "Ván cờ của bạn",
+  "scoreboard": "Bảng điểm",
+  "rating":"Đánh giá",
+  "join_success": "Tham gia thành công",
+  "leave_success":"Rời khỏi thành công"
 }

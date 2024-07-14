@@ -9,7 +9,6 @@ import SpeedRunPage from "../pages/vip/speedRun";
 import ThreePage from "../pages/vip/three";
 
 const VipRoutes = ({ user }) => {
-  console.log(user);
   return (
     <Fragment>
       <Route index element={<VipPage />} />

@@ -85,6 +85,16 @@ export default function FriendPage(props) {
       });
   }, [toast, t, loadMessage]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (selectedUser) {
+        loadMessage(selectedUser);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [selectedUser, loadMessage]);
+
   return (
     <Fragment>
       <Container maxW="container.2xl" py={4}>

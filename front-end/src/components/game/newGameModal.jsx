@@ -151,7 +151,7 @@ const NewOnlineGameModal = ({
             ? t("games.online_game")
             : mode === FRIEND
               ? t("games.friend_game")
-              : t("games.conputer_game")}
+              : t("games.computer_game")}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -174,7 +174,7 @@ const NewOnlineGameModal = ({
               </FormLabel>
               <Input
                 id="initial-time"
-                placeholder="Minutes"
+                placeholder={t("games.minutes")}
                 type="number"
                 required
                 onChange={onInitialTimeChange}
@@ -186,7 +186,7 @@ const NewOnlineGameModal = ({
               </FormLabel>
               <Input
                 id="bonus-time"
-                placeholder="Seconds"
+                placeholder={t("games.seconds")}
                 type="number"
                 required
                 onChange={onBonusTimeChange}
