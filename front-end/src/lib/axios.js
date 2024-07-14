@@ -21,8 +21,6 @@ const refreshAccessToken = async (refreshToken) => {
     const newAccessToken = response.data.access_token;
     return newAccessToken;
   } catch (error) {
-    console.error("Error refreshing access token:", error);
-    console.error("Try to login again");
     window.location.href = "/logout";
     throw error;
   }
@@ -46,7 +44,6 @@ axios.interceptors.request.use(
     } else {
       const refreshToken = getRefreshToken();
       if (!accessToken && !refreshToken) {
-        console.error("Access token and refresh token not found");
         return config;
       } else if (refreshToken) {
         try {
@@ -54,11 +51,9 @@ axios.interceptors.request.use(
           config.headers.Authorization = `Bearer ${newAccessToken}`;
           setAccessToken(newAccessToken);
         } catch (refreshError) {
-          console.error("Error refreshing access token:", refreshError.message);
           throw refreshError;
         }
       } else {
-        console.error("Refresh token not found");
         throw new Error("Refresh token not found");
       }
     }
@@ -85,7 +80,6 @@ axios.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return axios(originalRequest);
         } catch (refreshError) {
-          console.error("Error refreshing access token:", refreshError);
           window.location.href = "/logout";
           throw refreshError;
         }

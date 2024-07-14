@@ -31,7 +31,7 @@ const NewOnlineGameModal = ({
   isOpen,
   onClose,
   mode = ONLINE | FRIEND | OFFLINE,
-  vipStatus,
+  is_vip,
 }) => {
   const { t } = useTranslation();
   const toast = useToast();
@@ -44,7 +44,7 @@ const NewOnlineGameModal = ({
   const [bonus_time, setBonusTime] = useState();
   const [Ai_level, setAiLevel] = useState(1);
 
-  const max_ai_level = vipStatus?.is_vip ? 10 : 3;
+  const max_ai_level = is_vip ? 10 : 3;
 
   const onVariantChange = (e) => {
     setVariant(e.target.value);

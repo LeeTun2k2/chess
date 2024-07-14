@@ -42,7 +42,7 @@ import {
   RAPID,
 } from "../../settings/game";
 
-export default function LobbyPage(props) {
+export default function LobbyPage({ user }) {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
@@ -138,7 +138,12 @@ export default function LobbyPage(props) {
 
   return (
     <Fragment>
-      <NewOnlineGameModal isOpen={isOpen} onClose={onClose} mode={ONLINE} />
+      <NewOnlineGameModal
+        isOpen={isOpen}
+        onClose={onClose}
+        mode={ONLINE}
+        is_vip={user?.is_vip}
+      />
       <Container maxW="container.2xl" py={4}>
         <Flex
           direction={{ base: "column", md: "row" }}

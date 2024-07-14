@@ -10,7 +10,6 @@ import WinrateChart from "./gameReport/winrate";
 export default function GameReport({ online, offline }) {
   const { t } = useTranslation();
   const theme = localStorage.getItem("theme");
-  console.log(online, offline);
   return (
     <Card
       filter="auto"

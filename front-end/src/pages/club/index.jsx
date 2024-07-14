@@ -19,34 +19,15 @@ import { formatDate, formatDatetime } from "../../lib/datetime";
 import { toast_error } from "../../lib/hooks/toast";
 import appSettings from "../../settings/appSettings";
 
-export default function ClubPage(props) {
+export default function ClubPage({ user }) {
   const theme = localStorage.getItem("theme");
   const { t } = useTranslation();
   const toast = useToast();
 
   const [meetingInfo, setMeetingInfo] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const [isVip, setIsVip] = useState(true);
 
   useEffect(() => {
-    const checkVipStatus = async () => {
-      try {
-        const token = localStorage.getItem("access_token");
-        const response = await axios.get(
-          `${appSettings.API_PROXY}/users/vip-status`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        setIsVip(response.data.is_vip);
-      } catch (error) {
-        console.error("There was an error!", error);
-      }
-    };
-    checkVipStatus();
-
     axios
       .get(`${appSettings.API_PROXY}/offline-calendar`)
       .then((resp) => {
@@ -165,7 +146,7 @@ export default function ClubPage(props) {
             h={"fit-content"}
             borderRadius={8}
           >
-            {!isVip && <UpdateVipNow />}
+            {<UpdateVipNow user={user} />}
             <ChatBox />
           </Box>
         </Flex>

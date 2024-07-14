@@ -163,7 +163,6 @@ def send_friend_request(friend_id):
 def get_friend_requests():
     try:
         current_user_id = get_jwt_identity()
-        print(current_user_id)
         service = UserService()
         friend_requests = service.get_friend_requests(current_user_id)
         return jsonify({"message": "success", "friend_requests": friend_requests}), 200
@@ -295,3 +294,48 @@ def getUserReport():
     except Exception as e:
         error(e)
         return "Failed to get VIP status.", 500
+    
+
+@user_bp.get('/api/users/vip-report')
+@jwt_required()
+def get_vip_report():
+    try:
+        service = UserService()
+        users_cursor = service.users_collection.find({'is_vip': True})
+        
+        users = []
+        for user in users_cursor:
+            user['_id'] = str(user['_id'])
+            users.append(user)
+
+        vip_count = 0
+        recent_vip_count = 0
+        upcoming_expiry_count = 0
+
+        now = datetime.utcnow().replace(tzinfo=timezone.utc)
+        three_months_ago = now - timedelta(days=90)
+        one_week_later = now + timedelta(days=7)
+
+        for user in users:
+            vip_count += 1
+            vip_expiry = user.get('vip_expiry')
+
+            if vip_expiry:
+                if vip_expiry.tzinfo is None:
+                    vip_expiry = vip_expiry.replace(tzinfo=timezone.utc)
+
+                if vip_expiry >= three_months_ago:
+                    recent_vip_count += 1
+                if now <= vip_expiry <= one_week_later:
+                    upcoming_expiry_count += 1
+
+        report = {
+            'vip_count': vip_count,
+            'recent_vip_count': recent_vip_count,
+            'upcoming_expiry_count': upcoming_expiry_count,
+            'users': [service.map_user(user).to_json() for user in users]  
+        }
+        return jsonify({'data': report}), 200
+    except Exception as e:
+        error(e)
+        return "Failed to get VIP report.", 500

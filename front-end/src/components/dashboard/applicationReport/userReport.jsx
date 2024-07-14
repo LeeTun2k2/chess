@@ -9,7 +9,6 @@ import ViolentChart from "./userReport/violentChart";
 export default function UserReport({ data }) {
   const { t } = useTranslation();
   const theme = localStorage.getItem("theme");
-  console.log(data);
   return (
     <Card
       filter="auto"

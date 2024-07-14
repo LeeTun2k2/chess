@@ -1,6 +1,6 @@
+// src/__test__/components/VipBannerSmall.test.js
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import renderer from 'react-test-renderer';
 import VipBannerSmall from '../../../src/components/vip/VipBannerSmall';
 
 jest.mock('../../../src/components/vip/updateVipNow', () => () => <div>UpdateVipNow Component</div>);
@@ -24,32 +24,9 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-jest.mock('../../../src/lib/number', () => ({
-  formatNumber: (number) => number.toString(),
-}));
-
-test('renders VipBannerSmall component', () => {
-  render(<VipBannerSmall />);
-
-  // Kiểm tra tiêu đề hiển thị
-  expect(screen.getByText('VIP Title')).toBeInTheDocument();
-  expect(screen.getByText('VIP')).toBeInTheDocument();
-
-  // Kiểm tra mô tả
-  expect(screen.getByText('VIP Description')).toBeInTheDocument();
-
-  // Kiểm tra giá hiển thị
-  expect(screen.getByText('200000')).toBeInTheDocument();
-  expect(screen.getByText('vnđ / month')).toBeInTheDocument();
-
-  // Kiểm tra danh sách tính năng
-  expect(screen.getByText('Better Puzzle')).toBeInTheDocument();
-  expect(screen.getByText('Better Puzzle Info')).toBeInTheDocument();
-  expect(screen.getByText('Powerful AI')).toBeInTheDocument();
-  expect(screen.getByText('Powerful AI Info')).toBeInTheDocument();
-  expect(screen.getByText('Special Tag')).toBeInTheDocument();
-  expect(screen.getByText('Special Tag Info')).toBeInTheDocument();
-
-  // Kiểm tra sự hiện diện của component UpdateVipNow
-  expect(screen.getByText('UpdateVipNow Component')).toBeInTheDocument();
+describe('Components > VipBannerSmall', () => {
+  it('renders a snapshot for VipBannerSmall using renderer', () => {
+    const tree = renderer.create(<VipBannerSmall />).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 });

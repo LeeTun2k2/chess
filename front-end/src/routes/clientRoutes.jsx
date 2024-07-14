@@ -35,10 +35,10 @@ const ClientRoutes = ({ user }) => {
         <Route path="videos" element={<VideoListPage />} />
         <Route path="video/:id" element={<VideoPage />} />
         <Route path="profile" element={<UserProfile />} />
-        <Route path="lobby" element={<LobbyPage />} />
+        <Route path="lobby" element={<LobbyPage user={user} />} />
         <Route path="wait/:id" element={<WaitingGamePage />} />
         <Route path="friendwait/:id" element={<WaitingFriendGamePage />} />
-        <Route path="new-game" element={<GameSettingsPage />} />
+        <Route path="new-game" element={<GameSettingsPage user={user} />} />
         <Route path="online/:id" element={<OnlineGamePage />} />
         <Route path="ai-game/:id" element={<AiGamePage />} />
         <Route path="tournaments" element={<TournamentsPage />} />

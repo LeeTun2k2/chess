@@ -32,7 +32,7 @@ def delete_lesson(lesson_id):
         if lesson['author_id'] != user_id:
             return 'Unauthorized', 401
 
-        lesson_service.delete_lesson(lesson_id)
+        lesson_service.delete_lesson_by_id(lesson_id)
         return 'Lesson deleted successfully', 200
     except Exception as e:
         return str(e), 500
@@ -43,4 +43,4 @@ def get_lesson_by_id(lesson_id):
         lesson = lesson_service.get_lesson_by_id(lesson_id)
         return jsonify(lesson), 200
     except Exception as e:
-        return str(e), 404
+        return str(e), 500

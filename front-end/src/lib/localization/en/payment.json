@@ -8,5 +8,6 @@
   "momo": "MoMo",
   "momo_description": "Pay with MoMo Wallet",
   "pay_now": "Pay Now",
-  "payment_successful": "Congratulations on your successful payment. Enjoy the VIP service!"
+  "payment_successful": "Congratulations on your successful payment. Enjoy the VIP service!",
+  "payment_failed": "Payment fail!"
 }

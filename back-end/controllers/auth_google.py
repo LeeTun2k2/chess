@@ -37,7 +37,6 @@ def login_google():
         data = request.get_json()
         email: str = data.get('email')
         name: str = data.get('name')
-        print(data)
         user = UserService().get_by_email(email)
         if not user:
             register_google(email, name)

@@ -37,7 +37,7 @@ export default function ChessBoard({
 }) {
   const user = getUserData() ?? { id: "" };
   const toast = useToast();
-  const [chess] = useState(new Chess(CHESS_FEN));
+  const [chess, setChess] = useState(new Chess(CHESS_FEN));
   const [fen, setFen] = useState("");
   const [lastMove, setLastMove] = useState([]);
   const [isMovable] = useState(false);
@@ -56,6 +56,16 @@ export default function ChessBoard({
   useEffect(() => {
     setOrientation(user.id === game.black ? "black" : "white");
   }, [game, user.id]);
+
+  useEffect(() => {
+    if (!game || !game.fen) return;
+
+    setFen(game.fen);
+    setChess(new Chess(game.fen));
+
+    const turn = game.fen.includes("w") ? "white" : "black";
+    setTurn(turn);
+  }, [game]);
 
   const findMovableDests = (square) => {
     const moves = chess.moves({ square: square, verbose: true });
@@ -79,10 +89,12 @@ export default function ChessBoard({
   };
 
   const handleSendMove = (from, to, promotion) => {
+    const nextState = new Chess(chess.fen());
+    nextState.move({ from, to, promotion });
     socket.emit("send_move", {
       game_id: game._id,
       move: { from, to, promotion },
-      fen: chess.fen(),
+      fen: nextState.fen(),
       blackTime: 0,
       whiteTime: 0,
     });
