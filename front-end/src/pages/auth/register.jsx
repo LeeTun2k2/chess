@@ -84,7 +84,7 @@ export default function RegisterPage() {
         .post(`${appSettings.API_PROXY}/register`, body)
         .then((res) => {
           toast(toast_success(t("common.success")));
-          navigate("/login");
+          navigate("/verify-email");
         })
         .catch((error) => {
           toast(toast_error(t("common.fail"), error.response.data));

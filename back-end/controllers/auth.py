@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, redirect
 from logging import error
 from flask_login import login_required
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -55,11 +55,11 @@ def send_verification():
         error(e)
         return 'Fail to send verification.', 500
     
-@auth_bp.post('/api/verify-email')
+@auth_bp.get('/api/verify-email')
 def verify_email():
     try:
         # get data from request
-        data = request.get_json()
+        data = request.args
         email: str = data.get('email')
         token: str = data.get('token')
 
@@ -71,9 +71,9 @@ def verify_email():
         # register
         authService = AuthServices()
         ok, message = authService.verify(email=email, token=token)
-        if not ok: 
-            return message, 409
-        return message, 201
+        if not ok:
+            return redirect('/verify-failure'), 409
+        return redirect('/verify-successful'), 200
     except Exception as e:
         error(e)
         return 'Fail to verify email.', 500
@@ -160,8 +160,8 @@ def reset_password():
         authService = AuthServices()
         ok, msg = authService.reset_password(email, token)
         if not ok: 
-            return msg, 404
-        return msg, 200
+            return redirect('/reset-password-failure'), 409
+        return redirect('/reset-password-successful'), 200
     except Exception as e:
         error(e)
         return 'Fail to reset password.', 500
