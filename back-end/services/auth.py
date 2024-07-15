@@ -41,6 +41,10 @@ class AuthServices():
         
         result = self.users_collection.insert_one(user_data)
 
+        if not result:
+            return False, 'Fail to register!'
+        
+        self.send_verification(email)
         return True, 'Registration successful!'
     
     def send_verification(self, email: str):
@@ -82,6 +86,9 @@ class AuthServices():
         if not user_data or not check_password_hash(user_data['password'], password):
             return False, 'Invalid username or password. Please try again.'
         
+        if not user_data.get("is_verified"):
+            return False, 'Fail to login. You must to validate your email first.'
+
         user = User()
         user.id = user_data['_id']
         login_user(user)
