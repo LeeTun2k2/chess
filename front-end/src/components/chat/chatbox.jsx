@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { IoSend } from "react-icons/io5";
 import { getUserData } from "../../lib/auth";
 import appSettings from "../../settings/appSettings";
+import dataConfig from "./configData.json"
 
 const ChatBox = () => {
   const user = getUserData();
@@ -28,7 +29,7 @@ const ChatBox = () => {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [databaseData, setDatabaseData] = useState(null);
+  const [databaseData, setDatabaseData] = useState(dataConfig);
   const suggestions = useMemo(
     () => [
       t("chat.about_ute_chess_club"),
@@ -44,10 +45,14 @@ const ChatBox = () => {
     if (!isChecked) {
       const response = await fetch(`${appSettings.API_PROXY}/get-all-database`);
       const data = await response.json();
-      setDatabaseData(data);
+      const combined = {
+        ...data,
+        ...dataConfig
+    };
+      setDatabaseData(combined);
     }
     else{
-      setDatabaseData(null);
+      setDatabaseData(dataConfig);
     }
   };
 
@@ -85,7 +90,7 @@ const ChatBox = () => {
         })),
         {
           role: "assistant",
-          content: `Additional data: ${databaseData ? JSON.stringify(databaseData) : ''}`,
+          content: `Additional data:  ${databaseData ? JSON.stringify(databaseData) : ''}`,
         },
         { role: "user", content: trimmedInputValue},
       ],
@@ -154,7 +159,7 @@ const ChatBox = () => {
   return (
     <Box w={"100%"} mx="auto">
       <Flex justifyContent="space-between" mb={4}>
-        <Text fontWeight="bold">Enable Database Fetch</Text>
+        <Text fontStyle="italic">{t("chat.sync_data")}</Text>
         <Switch
           isChecked={isChecked}
           onChange={handleToggle}

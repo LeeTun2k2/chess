@@ -8,5 +8,6 @@
   "please_login": "Đăng nhập để trò chuyện",
   "type_your_message": "Nhập tin nhắn của bạn",
   "no_message": "Không tìm thấy tin nhắn",
-  "messages": "Tin nhắn"
+  "messages": "Tin nhắn",
+  "sync_data":"Đồng bộ dữ liệu"
 }

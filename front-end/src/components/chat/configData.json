@@ -1,0 +1,35 @@
+{
+    "clubName": "HCMUTE Chess Club",
+    "establishedYear": 2016,
+    "motto": "Strategy, Spirit, Unity",
+    "location": "HCMUTE, 01 Vo Van Ngan, Linh Chieu, Thu Duc, Ho Chi Minh City",
+    "members": [
+        {
+            "name": "Le Quang Tung",
+            "role": "President",
+            "contact": "0901234567"
+        },
+        {
+            "name": "Nguyen Duc Hien",
+            "role": "Vice President",
+            "contact": "0912345678"
+        }
+    ],
+    "activities": [
+        {
+            "name": "Internal Tournament",
+            "frequency": "Monthly"
+        },
+        {
+            "name": "Training Sessions",
+            "frequency": "Weekly"
+        },
+        {
+            "name": "City-level Competitions",
+            "frequency": "Quarterly / Monthly"
+        }
+    ],
+    "socialMedia": {
+        "facebook": "https://www.facebook.com/utechessclub"
+    }
+}
