@@ -3,6 +3,7 @@ from database.mongodb import get_db
 from database.redis import get_redis
 from datetime import datetime
 import random
+from common.constant import *
 
 class TournamentService():
     def __init__(self) -> None:
@@ -10,6 +11,7 @@ class TournamentService():
         self.tournaments_collection = self.db['tournaments']
         self.users_collection = self.db['users']
         self.redis = get_redis()
+        self.tournament_games_collection = self.db['tournament_games']
 
     def map(self, tournament):
         tournament['_id'] = str(tournament['_id'])
@@ -60,7 +62,8 @@ class TournamentService():
         user_data['id'] = str(user['_id'])
         user_data['username'] = user['username']
         user_data['name'] = user['name']
-        user_data['rating'] = user['rating']
+        user_data['rating'] = user['rating']['chess']['mu']
+        user_data['score'] = 0
 
         result = self.tournaments_collection.update_one(
             {'_id': ObjectId(tournament_id)},
@@ -139,10 +142,6 @@ class TournamentService():
         return f"tournament:{tournament_id}:pool"
 
     def join_pool(self, tournament_id, player_id):
-        tournament = self.tournaments_collection.find_one({"_id": ObjectId(tournament_id)})
-        if not tournament:
-            raise ValueError("Tournament not found")
-
         pool_key = self._get_redis_pool_key(tournament_id)
         if self.redis.sismember(pool_key, player_id):
             raise ValueError("Player already in the pool")
@@ -150,10 +149,6 @@ class TournamentService():
         self.redis.sadd(pool_key, player_id)
 
     def leave_pool(self, tournament_id, player_id):
-        tournament = self.tournaments_collection.find_one({"_id": ObjectId(tournament_id)})
-        if not tournament:
-            raise ValueError("Tournament not found")
-
         pool_key = self._get_redis_pool_key(tournament_id)
         if not self.redis.sismember(pool_key, player_id):
             raise ValueError("Player not in the pool")
@@ -167,17 +162,36 @@ class TournamentService():
 
         pool_key = self._get_redis_pool_key(tournament_id)
         pool = list(self.redis.smembers(pool_key))
-        if len(pool) < 2:
+        if len(pool) < 3:
             return None
 
         # Randomly select two players from the pool
         player1, player2 = random.sample(pool, 2)
 
-        # Match players (you can replace this with actual game logic)
-        game = {'_id': 123}
-        print(f"Matched {player1} vs {player2}")
+        # create game
+        game = {
+            'tournament_id': tournament_id,
+            'white': str(player1)[2:-1],
+            'black': str(player2)[2:-1],
+            'status': 'matched',
+            "variant": tournament.get("variant", CHESS),
+            "fen": CHESS_FEN,
+            "initial_time": tournament.get("initial_time", 10),
+            "bonus_time": tournament.get("bonus_time", 0),
+            "status": "STARTED",
+            'created_at': datetime.now().isoformat(),
+        }
+
+        # add game to db
+        game_id = self.tournament_games_collection.insert_one(game).inserted_id
+        game['_id'] = str(game_id)
 
         # Remove matched players from the pool
         self.redis.srem(pool_key, player1, player2)
         return game
     
+    def get_tournament_pool(self, tournament_id):
+        pool_key = self._get_redis_pool_key(tournament_id)
+        pool = list(self.redis.smembers(pool_key))
+        return pool
+        

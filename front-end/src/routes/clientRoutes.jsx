@@ -19,6 +19,7 @@ import PuzzlePage from "../pages/practice/puzzle";
 import VideoPage from "../pages/practice/video";
 import VideoListPage from "../pages/practice/videos";
 import TournamentPage from "../pages/tournament/tournament";
+import TournamentGamePage from "../pages/tournament/tournamentGame";
 import TournamentsPage from "../pages/tournament/tournaments";
 import TvPage from "../pages/tv";
 import UserProfile from "../pages/user/user_profile";
@@ -43,6 +44,7 @@ const ClientRoutes = ({ user }) => {
         <Route path="ai-game/:id" element={<AiGamePage />} />
         <Route path="tournaments" element={<TournamentsPage />} />
         <Route path="tournament/:id" element={<TournamentPage />} />
+        <Route path="tournament/game/:id" element={<TournamentGamePage />} />
         <Route path="tv" element={<TvPage />} />
         <Route path="friends" element={<FriendList />} />
         <Route path="chat" element={<ChatPage />} />
