@@ -91,14 +91,14 @@ export default function ChessBoard({
   const handleSendMove = (from, to, promotion) => {
     const nextState = new Chess(chess.fen());
     nextState.move({ from, to, promotion });
-    socket.emit("send_move", {
+    socket.emit("tournament_game_send_move", {
       game_id: game._id,
       move: { from, to, promotion },
       fen: nextState.fen(),
       blackTime: 0,
       whiteTime: 0,
     });
-    console.log("send_move");
+    console.log("tournament_game_send_move");
   };
 
   const config = {
@@ -191,7 +191,10 @@ export default function ChessBoard({
 
           if (chess.isCheckmate()) {
             const winner_id = game.fen.includes("b") ? game.white : game.black;
-            socket.emit("checkmate", { game_id: game._id, winner_id });
+            socket.emit("tournament_game_checkmate", {
+              game_id: game._id,
+              winner_id,
+            });
             setGameStatus("ended");
           }
         }
@@ -199,10 +202,10 @@ export default function ChessBoard({
     };
 
     socket.connect();
-    socket.on("receive_move", handleReceiveMove);
+    socket.on("tournament_game_receive_move", handleReceiveMove);
 
     return () => {
-      socket.off("receive_move", handleReceiveMove);
+      socket.off("tournament_game_receive_move", handleReceiveMove);
       if (socket.readyState === 1) {
         socket.disconnect();
       }

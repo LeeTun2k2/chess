@@ -77,8 +77,8 @@ def timeout(game_id: str, player_timeout_id: str):
     if result:
         emit("timeout", {'game_id': game_id, "player_timeout_id": player_timeout_id}, room=room)
     
-def checkmate(game_id: str):
+def checkmate(game_id: str, winner_id: str):
     room = f'game-{game_id}'
-    result = game_service.checkmate(game_id, "1")   
+    result = game_service.checkmate(game_id, winner_id)   
     if result:
         emit("checkmate", {'game_id': game_id}, room=room)
