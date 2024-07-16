@@ -6,6 +6,7 @@ import {
   Input,
   Spinner,
   Text,
+  Switch,
 } from "@chakra-ui/react";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,19 +27,32 @@ const ChatBox = () => {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [isChecked, setIsChecked] = useState(false);
+  const [databaseData, setDatabaseData] = useState(null);
   const suggestions = useMemo(
     () => [
       t("chat.about_ute_chess_club"),
       t("chat.when_club_offline"),
       t("chat.how_to_play_chess"),
     ],
-    [t],
+    [t]
   );
+
+  const handleToggle = async () => {
+    setIsChecked(!isChecked);
+    console.log(databaseData);
+    if (!isChecked) {
+      const response = await fetch(`${appSettings.API_PROXY}/get-all-database`);
+      const data = await response.json();
+      setDatabaseData(data);
+    }
+    else{
+      setDatabaseData(null);
+    }
+  };
 
   const sendMessage = async (messageContent) => {
     const trimmedInputValue = messageContent.trim();
-
     if (!trimmedInputValue) {
       console.error("Message content is empty");
       return;
@@ -63,16 +77,20 @@ const ChatBox = () => {
         {
           role: "system",
           content:
-            "You are a virtual assistant for the SPKT Chess Club, with weekend afternoon and afternoon activities. Answer as briefly as possible.",
+            "You are a virtual assistant for the SPKT Chess Club. Answer as briefly as possible.",
         },
         ...messages.map((item) => ({
           role: item.user_id === "assistant" ? "assistant" : "user",
           content: item.text,
         })),
-        { role: "user", content: trimmedInputValue },
+        {
+          role: "assistant",
+          content: `Additional data: ${databaseData ? JSON.stringify(databaseData) : ''}`,
+        },
+        { role: "user", content: trimmedInputValue},
       ],
-      model: "gpt-4o",
-      max_tokens: 100,
+      model: "gpt-3.5-turbo",
+      max_tokens: 300,
     };
 
     try {
@@ -85,7 +103,7 @@ const ChatBox = () => {
             Authorization: `Bearer ${appSettings.OPENAI_KEY}`,
           },
           body: JSON.stringify(model),
-        },
+        }
       );
 
       if (!response.ok) {
@@ -120,7 +138,6 @@ const ChatBox = () => {
       });
     } catch (error) {
       console.error("Error sending message:", error);
-      // Handle specific errors or log them accordingly
     } finally {
       setLoading(false);
     }
@@ -136,6 +153,14 @@ const ChatBox = () => {
 
   return (
     <Box w={"100%"} mx="auto">
+      <Flex justifyContent="space-between" mb={4}>
+        <Text fontWeight="bold">Enable Database Fetch</Text>
+        <Switch
+          isChecked={isChecked}
+          onChange={handleToggle}
+          colorScheme="teal"
+        />
+      </Flex>
       <Flex
         p={4}
         mb={4}
