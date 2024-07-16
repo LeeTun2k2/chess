@@ -8,5 +8,6 @@
   "please_login": "Please log in to chat",
   "type_your_message": "Type your message here",
   "no_message": "No messages were found",
-  "messages": "Messages"
+  "messages": "Messages",
+  "sync_data": "Data synchronization"
 }

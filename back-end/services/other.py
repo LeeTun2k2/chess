@@ -67,9 +67,9 @@ class OtherService():
         all_data['tournaments'] = [self._convert_document(doc) for doc in self.tournaments_collection.find()]
         all_data['lobbies'] = [self._convert_document(doc) for doc in self.lobbies_collection.find({"status": "OPEN"})]
         all_data['lessons'] = [{'title': doc['title'], 'description': doc['description']} for doc in self.lessons_collection.find()]
-        all_data['books'] = [self._convert_document(doc) for doc in self.books_collection.find()]
+        all_data['books'] = [{'title': doc['title'], 'description': doc['description']} for doc in self.books_collection.find()]
         all_data['blogs'] = [{'title': doc['title']} for doc in self.blogs_collection.find()]
-        all_data['notifications'] = [self._convert_document(doc) for doc in self.notifications_collection.find()]
+        all_data['notifications'] = [{'title': doc['title'], 'description': doc['description']} for doc in self.notifications_collection.find()]
         all_data['calendar_meeting'] = [{'location': doc['location'], 'time': doc['time']} for doc in self.others_collection.find()]
 
         return all_data
