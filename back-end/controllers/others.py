@@ -171,4 +171,23 @@ def get_all_payments():
         return jsonify(payments), 200
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+    
 
+
+@other_bp.route('/api/get-all-database', methods=['GET'])
+def get_all_database():
+    try:
+        data = others_service.get_all_data()
+        # Debug log
+        for collection_name, documents in data.items():
+            for document in documents:
+                try:
+                    jsonify(document)
+                except Exception as e:
+                    print(f"Error serializing document in {collection_name}: {document}")
+                    print(f"Exception: {e}")
+        return jsonify(data), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+
+    
