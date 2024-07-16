@@ -191,6 +191,7 @@ export default function ChessBoard({
 
           if (chess.isCheckmate()) {
             socket.emit("checkmate", { game_id: game._id });
+            setGameStatus("ended");
           }
         }
       })();
