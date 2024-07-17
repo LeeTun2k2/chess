@@ -15,5 +15,6 @@
   "scoreboard": "Score board",
   "rating":"Rating",
   "join_success": "Join Success",
-  "leave_success":"Leave Success"
+  "leave_success":"Leave Success",
+  "back_to_tournament": "Back to Tournament"
 }
