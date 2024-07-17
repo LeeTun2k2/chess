@@ -75,9 +75,9 @@ export default function TournamentPage(props) {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`${appSettings.API_PROXY}/tournaments/${id}/game-history`)
+      .get(`${appSettings.API_PROXY}/tournamentGame/${id}/game-history`)
       .then((resp) => {
-        setYourGames(resp?.data?.game_history ?? []);
+        setYourGames(resp?.data?.data ?? []);
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
@@ -367,11 +367,26 @@ export default function TournamentPage(props) {
           <Box w={"30%"} border={"1px solid lightgray"} borderRadius={8} p={4}>
             <Text fontWeight={"bold"}>{t("tournaments.your_games")}</Text>
             {your_games.map((item, index) => (
-              <Card key={index} p={2} variant={"outline"} borderRadius={4}>
+              <Card
+                key={index}
+                p={2}
+                variant={"outline"}
+                borderRadius={4}
+                cursor={"pointer"}
+                onClick={() => {
+                  navigate(`/tournament/game/${item._id}`);
+                }}
+              >
                 <Flex>
-                  <Text>{item.white}</Text>
-                  <Text>-</Text>
-                  <Text>{item.black}</Text>
+                  <Text w={"45%"} textAlign={"left"} noOfLines={1}>
+                    {item.white_username ?? ""}
+                  </Text>
+                  <Text w={"10%"} textAlign={"center"}>
+                    -
+                  </Text>
+                  <Text w={"45%"} textAlign={"left"} noOfLines={1}>
+                    {item.black_username ?? ""}
+                  </Text>
                 </Flex>
               </Card>
             ))}

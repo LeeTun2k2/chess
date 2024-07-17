@@ -50,5 +50,7 @@
   "you_send_accept_draw": "You have accepted the offer draw.",
   "you_send_reject_draw": "You have rejected the offer draw.",
   "you_send_offer_draw": "You have sent an offer draw.",
-  "you_resign": "You have resigned"
+  "you_resign": "You have resigned",
+  "create_game_successfully": "Create game successfully.",
+  "fail_to_create_game": "Fail to create game."
 }
