@@ -50,5 +50,7 @@
   "you_send_accept_draw": "Bạn vừa mới chấp nhận lời đề nghị hòa.",
   "you_send_reject_draw": "Bạn vừa mới từ chối lời đề nghị hòa.",
   "you_send_offer_draw": "Bạn vừa mới gửi lời đề nghị hòa.",
-  "you_resign": "Bạn vừa mới đầu hàng."
+  "you_resign": "Bạn vừa mới đầu hàng.",
+  "create_game_successfully": "Tạo game mới thành công.",
+  "fail_to_create_game": "Tạo game mới không thành công."
 }

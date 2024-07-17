@@ -31,6 +31,27 @@ class TournamentGameService():
     def get_by_lobby_id(self, lobby_id):
         return self.tournament_game_collections.find_one({'lobby_id': ObjectId(lobby_id)})
     
+    def get_tournament_game_by_user_id(self, tournament_id, user_id):
+        users = list(self.users_collection.find())
+        id_usernames = {}
+        for user in users:
+            id_usernames[str(user["_id"])] = user["username"]
+        print(tournament_id, user_id)
+        query = {
+            "tournament_id": tournament_id,
+            "$or": [
+                {"black": user_id},
+                {"white": user_id}
+            ]
+        }
+        games = self.tournament_game_collections.find(query)
+        res = []
+        for game in games:
+            game['white_username'] = id_usernames[game['white']]
+            game['black_username'] = id_usernames[game['black']]
+            res.append(self.map(game))
+        return res
+    
     def get_by_tournament_id(self, tournament_id):
         games = self.tournament_game_collections.find({'tournament_id': ObjectId(tournament_id)})
         return [self.map(game) for game in games]
