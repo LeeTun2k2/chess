@@ -46,13 +46,6 @@ export default function AdminCreateTournamentPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const now = new Date(Date.now());
-    const start = new Date(formData.start);
-    const end = new Date(formData.end);
-    if (start <= now || end <= now || start >= end) {
-      toast(toast_error(t("common.invalid_datetime")));
-      return;
-    }
     setLoading(true);
     axios
       .post(`${appSettings.API_PROXY}/tournaments`, formData)

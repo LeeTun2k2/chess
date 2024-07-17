@@ -108,13 +108,14 @@ export default function TournamentPage(props) {
       .post(`${appSettings.API_PROXY}/tournaments/${id}/join`)
       .then((resp) => {
         setUserJoin(true);
+        socket.emit("join_tournament", { tournament_id: id, user_id: user.id });
         toast(toast_success(t("tournaments.join_success")));
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(handleReloadScoreBoard);
-  }, [id, t, toast, handleReloadScoreBoard]);
+  }, [id, t, toast, handleReloadScoreBoard, user]);
 
   const handleUserLeaveTournament = useCallback(() => {
     setIsLoading(true);
@@ -122,13 +123,17 @@ export default function TournamentPage(props) {
       .delete(`${appSettings.API_PROXY}/tournaments/${id}/leave`)
       .then((resp) => {
         setUserJoin(false);
+        socket.emit("leave_tournament", {
+          tournament_id: id,
+          user_id: user.id,
+        });
         toast(toast_success(t("tournaments.leave_success")));
       })
       .catch((err) => {
         toast(toast_error(t("common.something_went_wrong")));
       })
       .finally(handleReloadScoreBoard);
-  }, [id, t, toast, handleReloadScoreBoard]);
+  }, [id, t, toast, handleReloadScoreBoard, user]);
 
   const handleSocketJoinTournament = useCallback(() => {
     console.log("join_tournament");
@@ -136,10 +141,11 @@ export default function TournamentPage(props) {
 
   const handleSocketTournamentGameFound = useCallback(
     (game) => {
-      console.log("tournament_game_found");
-      navigate(`/online/${game._id}`);
+      if (user.id === game.white || user.id === game.black) {
+        navigate(`/tournament/game/${game._id}`);
+      }
     },
-    [navigate],
+    [navigate, user]
   );
 
   useEffect(() => {
@@ -158,6 +164,10 @@ export default function TournamentPage(props) {
       socket.off("join_tournament", handleSocketJoinTournament);
       socket.off("tournament_game_found", handleSocketTournamentGameFound);
       if (socket.readyState === 1) {
+        socket.emit("leave_tournament", {
+          tournament_id: id,
+          user_id: user.id,
+        });
         socket.disconnect();
       }
     };
@@ -200,8 +210,8 @@ export default function TournamentPage(props) {
                   {t("tournaments.scoreboard")}
                 </Text>
                 <Spacer />
-                {Date.now() > new Date(data?.start) ? (
-                  <Text>{t("tournaments.has_started")}</Text>
+                {Date.now() > new Date(data?.end) ? (
+                  <Text>{t("tournaments.has_ended")}</Text>
                 ) : userJoin ? (
                   <Button
                     isLoading={isLoading}
@@ -221,6 +231,20 @@ export default function TournamentPage(props) {
                     <Text ml={2}>{t("tournaments.join")}</Text>
                   </Button>
                 )}
+                {/* <Button
+                  onClick={() => {
+                    axios
+                      .get(`${appSettings.API_PROXY}/tournament/${id}/pool`)
+                      .then((resp) => {
+                        alert(resp.data.pool);
+                      })
+                      .catch(() => {
+                        alert("fail");
+                      });
+                  }}
+                >
+                  Test Pool
+                </Button> */}
               </Flex>
               <Table
                 size={{ base: "sm", md: "md" }}
@@ -273,7 +297,7 @@ export default function TournamentPage(props) {
                           whiteSpace="nowrap"
                           textOverflow="ellipsis"
                         >
-                          {Math.floor(item.rating?.chess?.mu ?? 0)}
+                          {Math.floor(item.rating ?? 0)}
                         </Td>
                         <Td
                           textAlign={"right"}
@@ -281,7 +305,7 @@ export default function TournamentPage(props) {
                           whiteSpace="nowrap"
                           textOverflow="ellipsis"
                         >
-                          {item.point ?? 0}
+                          {item.score ?? 0}
                         </Td>
                       </Tr>
                     ))}
@@ -318,7 +342,7 @@ export default function TournamentPage(props) {
                                 >
                                   {i + 1}
                                 </Button>
-                              ),
+                              )
                           )}
                           <Button
                             colorScheme="gray"

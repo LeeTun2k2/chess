@@ -29,6 +29,7 @@ from controllers.blitzTactics import blitztactic_bp
 from controllers.adminDashboard import adminDashboard_bp
 from controllers.ai_game import ai_game_bp
 from controllers.banner import banner_bp
+from controllers.tournament_game import tournament_game_bp
 
 app = Flask(__name__)
 
@@ -55,6 +56,7 @@ CORS(blitztactic_bp)
 CORS(adminDashboard_bp)
 CORS(ai_game_bp)
 CORS(banner_bp)
+CORS(tournament_game_bp)
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = 'a' # token_hex()
@@ -101,6 +103,8 @@ app.register_blueprint(blitztactic_bp)
 app.register_blueprint(adminDashboard_bp)
 app.register_blueprint(ai_game_bp)
 app.register_blueprint(banner_bp)
+app.register_blueprint(tournament_game_bp)
+
 
 socketio = SocketIO(app, cors_allowed_origins="*", transports=['websocket', 'polling'])
 
@@ -150,12 +154,49 @@ def timeout_socket(data):
 
 @socketio.on('checkmate')
 def timeout_socket(data):
-    checkmate(data['game_id'])
+    checkmate(data['game_id'], data['winner_id'])
 
 from sockets.tournament import *
 @socketio.on('join_tournament')
 def handle_join_tournament(data):
     join_tournament(data["tournament_id"], data["user_id"])
+
+@socketio.on('leave_tournament')
+def handle_leave_tournament(data):
+    leave_tournament(data["tournament_id"], data["user_id"])
+
+from sockets import tournament_game
+@socketio.on('tournament_game_offer_draw')
+def tournament_game_offer_draw_socket(data):
+    tournament_game.offer_draw(data['game_id'], data['player_offer_id'])
+
+@socketio.on('tournament_game_accept_draw')
+def tournament_game_accept_draw_socket(data):
+    tournament_game.accept_draw(data['game_id'], data['player_accept_id'])
+
+@socketio.on('tournament_game_reject_draw')
+def tournament_game_reject_draw_socket(data):
+    tournament_game.reject_draw(data['game_id'], data['player_reject_id'])
+
+@socketio.on('tournament_game_resign')
+def tournament_game_resign_socket(data):
+    tournament_game.resign(data['game_id'], data["player_resign_id"])
+
+@socketio.on('tournament_game_timeout')
+def tournament_game_timeout_socket(data):
+    tournament_game.timeout(data['game_id'], data["player_timeout_id"])
+
+@socketio.on('tournament_game_checkmate')
+def tournament_game_timeout_socket(data):
+    tournament_game.checkmate(data['game_id'], data['winner_id'])
+
+@socketio.on('tournament_game_join_game')
+def tournament_game_join_game_socket(data):
+    tournament_game.join_game(data['game_id'])
+
+@socketio.on('tournament_game_send_move')
+def tournament_game_send_move_socket(data):
+    tournament_game.send_move(data['game_id'], data['fen'], data['move'], data['whiteTime'], data['blackTime'])
 
 if __name__ == '__main__':
     socketio.run(app,host='0.0.0.0', port=5000, debug=True)

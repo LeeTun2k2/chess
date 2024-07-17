@@ -189,3 +189,12 @@ def get_user_game_history_in_tournament(tournament_id, user_id):
             return jsonify({'message': 'User game history not found'}), 404
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+    
+@tournament_bp.route('/api/tournament/<tournament_id>/pool', methods=['GET'])
+def get_pool(tournament_id):
+    try:
+        pool = tournament_service.get_tournament_pool(tournament_id)
+        print(pool)
+        return jsonify({"pool": str(pool)}), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500

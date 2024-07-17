@@ -6,14 +6,13 @@ import {
   Input,
   Spinner,
   Text,
-  Switch,
 } from "@chakra-ui/react";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSend } from "react-icons/io5";
 import { getUserData } from "../../lib/auth";
 import appSettings from "../../settings/appSettings";
-import dataConfig from "./configData.json"
+import dataConfig from "./configData.json";
 
 const ChatBox = () => {
   const user = getUserData();
@@ -28,7 +27,6 @@ const ChatBox = () => {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [databaseData, setDatabaseData] = useState(dataConfig);
   const suggestions = useMemo(
     () => [
@@ -39,22 +37,23 @@ const ChatBox = () => {
     [t]
   );
 
-  const handleToggle = async () => {
-    setIsChecked(!isChecked);
-    console.log(databaseData);
-    if (!isChecked) {
-      const response = await fetch(`${appSettings.API_PROXY}/get-all-database`);
-      const data = await response.json();
-      const combined = {
-        ...data,
-        ...dataConfig
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${appSettings.API_PROXY}/get-all-database`);
+        const data = await response.json();
+        const combined = {
+          ...data,
+          ...dataConfig
+        };
+        setDatabaseData(combined);
+      } catch (error) {
+        console.error("Error fetching database data:", error);
+      }
     };
-      setDatabaseData(combined);
-    }
-    else{
-      setDatabaseData(dataConfig);
-    }
-  };
+
+    fetchData();
+  }, []);
 
   const sendMessage = async (messageContent) => {
     const trimmedInputValue = messageContent.trim();
@@ -158,14 +157,6 @@ const ChatBox = () => {
 
   return (
     <Box w={"100%"} mx="auto">
-      <Flex justifyContent="space-between" mb={4}>
-        <Text fontStyle="italic">{t("chat.sync_data")}</Text>
-        <Switch
-          isChecked={isChecked}
-          onChange={handleToggle}
-          colorScheme="teal"
-        />
-      </Flex>
       <Flex
         p={4}
         mb={4}
