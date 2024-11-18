@@ -5,7 +5,7 @@ from random import randint
 import requests
 import json
 
-STOCKFISH_URL = 'https://chess.workon.space/stockfish'
+STOCKFISH_URL = 'https://chess.levincitest.com/stockfish'
 class AiGameService():
     def __init__(self) -> None:
         self.db = get_db()

@@ -18,7 +18,7 @@ class NrqlBuilder:
         return f"SELECT average(duration), percentile(duration, 50) as 'Median', percentile(duration, 75) FROM BrowserInteraction TIMESERIES SINCE {time_period}"
 
     def build_ajax_request_http_response_code_hostname(self, time_period: str):
-        return f"SELECT count(*) FROM AjaxRequest WHERE hostname='chess.workon.space' FACET httpResponseCode SINCE {time_period}"
+        return f"SELECT count(*) FROM AjaxRequest WHERE hostname='chess.levincitest.com' FACET httpResponseCode SINCE {time_period}"
 
     def build_transaction_summary(self, time_period: str):
         return (f"FROM Transaction SELECT count(*) as 'Total transactions', "

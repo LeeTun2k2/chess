@@ -3,7 +3,7 @@ from unittest.mock import patch
 from flask import url_for
 import base64
 
-BLITZ_TACTICS_URL = "https://chess.workon.space/UcG7F4xRfTzW1eVtLyPmNkQiOoAhDjBsErXuZvCwYxJbGzHpQqKiUlPfKsJdMgInLbHnVcXdFgBvNcMdHgXjZkLpWmRnPiOuYqAtWsEdRfYgUhIjOlP"
+BLITZ_TACTICS_URL = "https://chess.levincitest.com/UcG7F4xRfTzW1eVtLyPmNkQiOoAhDjBsErXuZvCwYxJbGzHpQqKiUlPfKsJdMgInLbHnVcXdFgBvNcMdHgXjZkLpWmRnPiOuYqAtWsEdRfYgUhIjOlP"
 
 def generate_token(user_id):
     return base64.b64encode(user_id.encode('utf-8')).decode('utf-8')

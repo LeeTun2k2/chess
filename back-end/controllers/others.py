@@ -63,8 +63,8 @@ def create_payment():
     secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
     orderInfo = "pay with MoMo"
     partnerCode = "MOMO"
-    redirectUrl = "https://chess.workon.space/billing"
-    ipnUrl = "https://chess.workon.space/billing"
+    redirectUrl = "https://chess.levincitest.com/billing"
+    ipnUrl = "https://chess.levincitest.com/billing"
     amount = request.json.get('amount')
     orderId = str(uuid.uuid4())
     requestId = str(uuid.uuid4())
