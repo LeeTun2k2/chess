@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="retro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="assets/levinci-group-logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Donations</title>
+  </head>
+  <body class="min-h-screen flex items-center justify-center">
+    <div class="container mx-auto">
+      <h1 class="text-3xl font-bold text-center mb-6">
+        Support Us with a Donation
+      </h1>
+      <p class="text-gray-700 text-center mb-8">
+        Your support helps us keep our project going. Thank you for considering
+        a donation!
+      </p>
+
+      <div class="container justify-center w-full flex gap-4">
+        <!-- Paypal Card -->
+        <div
+          class="card bg-white card-compact bg-base-100 w-72 shadow-xl p-2 cursor-pointer transform transition-transform duration-200 hover:scale-105"
+          onclick="window.location.href='/paypal.html'"
+        >
+          <figure>
+            <img
+              class="w-full h-44 object-cover rounded"
+              src="assets/paypal.jpg"
+              alt="Paypal Logo"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Paypal</h2>
+            <p class="text-justify">
+              Paypal is a secure, online payment platform that allows users to
+              send and receive money, make purchases, and manage their finances
+              with ease.
+            </p>
+          </div>
+        </div>
+
+        <!-- Stripe Card -->
+        <div
+          class="card bg-white card-compact bg-base-100 w-72 shadow-xl p-2 cursor-pointer transform transition-transform duration-200 hover:scale-105"
+          onclick="window.location.href='/stripe.html'"
+        >
+          <figure>
+            <img
+              class="w-full h-44 object-cover rounded"
+              src="assets/stripe.jpg"
+              alt="Stripe Logo"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Stripe</h2>
+            <p class="text-justify">
+              Stripe is a powerful online payment processor designed for
+              businesses of all sizes, offering a seamless integration for
+              secure and fast transactions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Wise Card -->
+        <div
+          class="card bg-white card-compact bg-base-100 w-72 shadow-xl p-2 cursor-pointer transform transition-transform duration-200 hover:scale-105"
+          onclick="window.location.href='/wise.html'"
+        >
+          <figure>
+            <img
+              class="w-full h-44 object-cover rounded"
+              src="assets/wise.jpg"
+              alt="Wise Logo"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Wise</h2>
+            <p class="text-justify">
+              Wise (formerly TransferWise) specializes in international money
+              transfers, offering low fees and transparent exchange rates for
+              individuals and businesses.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
